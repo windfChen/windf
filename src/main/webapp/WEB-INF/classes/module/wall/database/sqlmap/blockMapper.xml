@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windf.module.wall.dataAccess.BlockAccess" >
+	
+	<resultMap type="com.windf.module.wall.bean.Block" id="blockMap" autoMapping="true">
+		<id column="id" property="id" />
+        <association property="owner" columnPrefix="owner_" javaType="com.windf.module.user.bean.SsoUser" autoMapping="true" >
+        	<id column="owner_id" property="id" />
+        </association>
+    </resultMap>
+    
+    <sql id="selectFields">
+			block.id 					as id,
+			block.x 					as x,
+			block.y 					as y,
+			block.createDate 	as createDate,
+			block.modifyDate 	as modifyDate,
+			owner.id 	as owner_id,
+			owner.turename 	as owner_turename,
+			owner.username 	as owner_username
+	</sql>
+
+    <insert id="insert" parameterType="com.windf.module.wall.bean.Block" useGeneratedKeys="true" keyProperty="id">
+        insert into wall_block(x,y,z, createDate, modifyDate, fk_owner_id) 
+        	values(#{x},
+        				#{y},
+        				#{z},
+        				now(),
+        				now(),
+        				null
+        				)
+    </insert>
+    <update id="updateOwner" parameterType="com.windf.module.wall.bean.Block" >
+        update wall_block set fk_owner_id = #{owner.id} where id = #{id}
+    </update>
+    <delete id="deleteById" parameterType="int" >
+        delete from wall_block where id = #{id}
+    </delete>
+    <select id="getBlockById" parameterType="int" resultMap="blockMap">
+       SELECT
+			<include refid="selectFields" />
+		FROM
+			wall_block block
+		 LEFT JOIN sso_user owner ON block.fk_owner_id = owner .id
+		WHERE
+			block.id = #{id}
+    </select>
+    <select id="getBlocksBySeat"  resultMap="blockMap" >
+       SELECT
+			<include refid="selectFields" />
+		FROM 
+			wall_block block
+		 LEFT JOIN sso_user owner ON block.fk_owner_id = owner.id
+		WHERE block.x &gt;= #{param1}
+		  and block.y &gt;= #{param2}
+		  and block.x &lt;= #{param3}
+		  and block.y &lt;= #{param4}
+    </select>
+    <select id="getBlockBySeat" resultMap="blockMap">
+       SELECT
+			<include refid="selectFields" />
+		FROM
+			wall_block block
+		 LEFT JOIN sso_user owner ON block.fk_owner_id = owner.id
+		WHERE block.x = #{param1} 
+		  AND block.y = #{param2}
+    </select>
+     <select id="getBlocksByOwner" parameterType="com.windf.module.user.bean.SsoUser" resultMap="blockMap" >
+       SELECT
+			<include refid="selectFields" />
+		FROM 
+			wall_block block
+		 LEFT JOIN sso_user owner ON block.fk_owner_id = owner.id
+		WHERE owner.username = #{username}
+    </select>
+</mapper>
