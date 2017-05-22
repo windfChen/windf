@@ -1,5 +1,8 @@
 package com.windf.module.module.service.impl;
 
+import java.io.File;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,9 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		 */
 		String exampleConfigPath = Constant.DEFAULT_MODULE_CLASS_PATH +  Constant.DEFAULT_EXAMPLE_PATH;
 		String newModuleConfigPath = Constant.DEFAULT_MODULE_CLASS_PATH + moduleDto.getName();
-		FileUtil.copyFolder(exampleConfigPath, newModuleConfigPath);
+		List<File> list = FileUtil.copyWebFolder(exampleConfigPath, newModuleConfigPath);
+		
+		System.out.println(list);
 		
 	}
 }

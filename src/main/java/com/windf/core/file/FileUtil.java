@@ -8,9 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.windf.plugins.log.Logger;
 import com.windf.plugins.log.LogFactory;
+import com.windf.plugins.log.Logger;
 
 public class FileUtil {
 	private static Logger logger = LogFactory.getLogger(FileUtil.class); 
@@ -41,7 +43,16 @@ public class FileUtil {
 	 */
 	public static String getWebappPath() {
 		String classPath = getClassPath();
-		return classPath.substring(0, classPath.lastIndexOf("WEB-INF"));
+		return classPath.substring(0, classPath.lastIndexOf("/WEB-INF"));
+	}
+	
+	/**
+	 * 复制web目录下的文件夹
+	 * @param source
+	 * @param target
+	 */
+	public static List<File> copyWebFolder(String source, String target) {
+		 return copyFolder(getWebappPath() + source, getWebappPath() + target);
 	}
 	
 	 /**
@@ -52,9 +63,9 @@ public class FileUtil {
 	  * @param source 源目录
 	  * @param target 目标目录
 	  */
-	 public static void copyFolder(String source, String target) {
-		 source = getWebappPath() + source;
-		 target = getWebappPath() + target;
+	 private static List<File> copyFolder(String source, String target) {
+		 
+		 List<File> list = new LinkedList<File>();
 		 
 		/*
 		 * 获取目标目录，如果目标目录不存在创建
@@ -69,13 +80,41 @@ public class FileUtil {
 		 */
 		File sourceFolder = new File(source);
 		File[] sourceFiles = sourceFolder.listFiles();
-		for (File file : sourceFiles) {
-			if (file.isFile()) {
-				copyFile(file.getPath(), target + File.pathSeparator + file.getName()); 
-			} else if (file.isDirectory()) {
-				copyFolder(file.getPath(), target + File.pathSeparator + file.getName());
+		if (sourceFiles != null) {
+			for (File file : sourceFiles) {
+				if (file.isFile()) {
+					String targetFilePath = target + File.separator + file.getName();
+					boolean success = copyFile(file.getPath(), targetFilePath); 
+					
+					/*
+					 * 添加复制的文件到文件列表
+					 */
+					if (success) {
+						File targetFile = new File(targetFilePath);
+						list.add(targetFile);
+					}
+				} else if (file.isDirectory()) {
+					String targetDirectoryPath = target + File.separator + file.getName();
+					List<File> tempList = copyFolder(file.getPath(), targetDirectoryPath);
+					
+					/*
+					 * 添加复制的文件夹到文件列表
+					 */
+					if (tempList != null && tempList.size() > 0) {
+						File targetDirectory = new File(targetDirectoryPath);
+						list.add(targetDirectory);
+					}
+					
+					/*
+					 * 添加复制的所有文件到文件列表
+					 */
+					list.addAll(tempList);
+					
+				}
 			}
 		}
+		
+		return list;
 
 	}
 
@@ -84,7 +123,7 @@ public class FileUtil {
 	 * @param source
 	 * @param target
 	 */
-	 public static boolean copyFile(String source, String target) {
+	 private static boolean copyFile(String source, String target) {
 		boolean result = false;
 		 
 		/*
