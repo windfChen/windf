@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.windf.core.util.JSONUtil;
-import com.windf.plugins.log.LogService;
+import com.windf.plugins.log.Logger;
 import com.windf.plugins.log.LogFactory;
 
 /**
@@ -13,7 +13,7 @@ import com.windf.plugins.log.LogFactory;
  *
  */
 public abstract class ParentControler {
-	protected static LogService logger = null;
+	protected static Logger logger = null;
 	
 	public ParentControler () {
 		// 日初始化日志
