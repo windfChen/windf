@@ -4,4 +4,4 @@
  * @author chenyafeng
  *
  */
-package com.windf.moudle.example;
+package com.windf.module.example;

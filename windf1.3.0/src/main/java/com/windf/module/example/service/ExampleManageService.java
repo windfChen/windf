@@ -1,4 +1,4 @@
-package com.windf.moudle.example.service;
+package com.windf.module.example.service;
 
 public interface ExampleManageService {
 
