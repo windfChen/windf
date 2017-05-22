@@ -2,9 +2,7 @@ package com.windf.plugins.log.impl;
 
 import org.apache.log4j.Logger;
 
-import com.windf.plugins.log.LogService;
-
-public class Log4jLogService implements LogService{
+public class Log4jLogService implements com.windf.plugins.log.Logger{
 	private Logger logger = null;
 	
 	@SuppressWarnings("rawtypes") 
@@ -50,6 +48,26 @@ public class Log4jLogService implements LogService{
 	@Override
 	public void info(String message, Throwable e ){
 		logger.info(message,  e);
+	}
+
+	@Override
+	public void error(Throwable e) {
+		logger.info(e);
+	}
+
+	@Override
+	public void warn(Throwable e) {
+		logger.warn(e);
+	}
+
+	@Override
+	public void debug(Throwable e) {
+		logger.debug(e);
+	}
+
+	@Override
+	public void info(Throwable e) {
+		logger.info(e);
 	}
 
 }
