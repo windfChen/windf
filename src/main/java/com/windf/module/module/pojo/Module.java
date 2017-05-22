@@ -1,4 +1,4 @@
-package com.windf.moudle.moudle.pojo;
+package com.windf.module.module.pojo;
 
 import java.util.List;
 

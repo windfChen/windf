@@ -53,6 +53,9 @@ public class FileUtil {
 	  * @param target 目标目录
 	  */
 	 public static void copyFolder(String source, String target) {
+		 source = getWebappPath() + source;
+		 target = getWebappPath() + target;
+		 
 		/*
 		 * 获取目标目录，如果目标目录不存在创建
 		 */
