@@ -1,8 +1,8 @@
-package com.windf.module.module.service;
+package com.windf.module.development.service;
 
 import com.windf.core.exception.EntityException;
-import com.windf.module.module.pojo.Module;
-import com.windf.module.module.pojo.ModuleDto;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.ModuleDto;
 
 public interface ModuleManageService {
 	/**
