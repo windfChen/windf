@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.windf.core.exception.EntityException;
 import com.windf.module.module.Constant;
+import com.windf.module.module.pojo.Module;
 import com.windf.module.module.pojo.ModuleDto;
 import com.windf.module.module.service.ModuleManageService;
 import com.windf.plugins.web.ParentControler;
@@ -28,26 +29,50 @@ public class ModuleManageControler extends ParentControler{
 	private ModuleManageService moduleManageService ;
 	
 	@ResponseBody
-	@RequestMapping(value = "/", method = {RequestMethod.GET})
-	public Map<String, Object> index(HttpServletRequest request) {
+	@RequestMapping(value = "/create", method = {RequestMethod.GET})
+	public Map<String, Object> create(HttpServletRequest request) {
 		// 验证参数
-		String moduleName = request.getParameter("name");
-		if (StringUtils.isEmpty(moduleName)) {
+		String moduleCode = request.getParameter("code");
+		if (StringUtils.isEmpty(moduleCode)) {
 			return paramErrorMap();
 		}
 		
 		// 构建参数
 		ModuleDto moduleDto = new ModuleDto();
-		moduleDto.setName(moduleName);
+		moduleDto.setCode(moduleCode);
 		
 		// 调用服务
 		try {
 			moduleManageService.createModule(moduleDto);
 		} catch (EntityException e) {
 			e.printStackTrace();
+			return errorMessageMap(e.getMessage());
 		}
 		
-		return successMap("");
+		return successMap("创建成功");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/", method = {RequestMethod.GET})
+	public Map<String, Object> get(HttpServletRequest request) {
+		// 验证参数
+		String moduleCode = request.getParameter("code");
+		if (StringUtils.isEmpty(moduleCode)) {
+			return paramErrorMap();
+		}
+		
+		// 构建参数
+		
+		// 调用服务
+		Module module = null;
+		try {
+			module = moduleManageService.getModule(moduleCode);
+		} catch (EntityException e) {
+			e.printStackTrace();
+			return errorMessageMap(e.getMessage());
+		}
+		
+		return successMap(module);
 	}
 	
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
