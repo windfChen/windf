@@ -1,4 +1,4 @@
-package com.windf.module.module;
+package com.windf.module.development;
 
 import java.io.File;
 
@@ -6,8 +6,8 @@ public class Constant {
 	/*
 	 * web 相关
 	 */
-	public static final String WEB_BASE_PATH = "/module";
-	public static final String WEB_BASE_VIEW = "module";
+	public static final String WEB_BASE_PATH = "/dev";
+	public static final String WEB_BASE_VIEW = "/dev";
 	
 	
 	public static final String DEFAULT_EXAMPLE_PATH = "example";

@@ -1,4 +1,4 @@
-package com.windf.module.module.service.impl;
+package com.windf.module.development.service.impl;
 
 import java.io.File;
 import java.util.List;
@@ -12,10 +12,10 @@ import com.windf.core.file.FileUtil;
 import com.windf.core.file.JavaFileUtil;
 import com.windf.core.file.JavaFileUtil.LineReader;
 import com.windf.core.util.StringUtil;
-import com.windf.module.module.Constant;
-import com.windf.module.module.pojo.Module;
-import com.windf.module.module.pojo.ModuleDto;
-import com.windf.module.module.service.ModuleManageService;
+import com.windf.module.development.Constant;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.ModuleDto;
+import com.windf.module.development.service.ModuleManageService;
 
 @Service
 public class ModuleManageServiceImpl  implements ModuleManageService {

@@ -1,4 +1,4 @@
-package com.windf.module.module.pojo;
+package com.windf.module.development.pojo;
 
 public class ModuleDto {
 	private String code;

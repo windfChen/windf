@@ -1,4 +1,4 @@
-package com.windf.module.module.web.controler;
+package com.windf.module.development.web.controler;
 
 import java.util.Map;
 
@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.windf.core.exception.EntityException;
-import com.windf.module.module.Constant;
-import com.windf.module.module.pojo.Module;
-import com.windf.module.module.pojo.ModuleDto;
-import com.windf.module.module.service.ModuleManageService;
+import com.windf.module.development.Constant;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.ModuleDto;
+import com.windf.module.development.service.ModuleManageService;
 import com.windf.plugins.web.ParentControler;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = Constant.WEB_BASE_PATH)
+@RequestMapping(value = Constant.WEB_BASE_PATH + "/module")
 public class ModuleManageControler extends ParentControler{
 	
 	@Resource
