@@ -13,6 +13,7 @@ import com.windf.core.file.JavaFileUtil;
 import com.windf.core.file.JavaFileUtil.LineReader;
 import com.windf.core.util.StringUtil;
 import com.windf.module.module.Constant;
+import com.windf.module.module.pojo.Module;
 import com.windf.module.module.pojo.ModuleDto;
 import com.windf.module.module.service.ModuleManageService;
 
@@ -24,15 +25,21 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		/*
 		 * 验证参数
 		 */
-		if (moduleDto == null || StringUtils.isEmpty(moduleDto.getName())) {
+		if (moduleDto == null || StringUtils.isEmpty(moduleDto.getCode())) {
 			throw new EntityException("参数错误");
+		}
+		/*
+		 * 验证条件
+		 */
+		if (getModule(moduleDto.getCode()) != null) {
+			throw new EntityException("模块已存在");
 		}
 
 		/*
 		 * 复制配置文件
 		 */
 		String exampleConfigPath = Constant.DEVELOPMENT_JAVA_PATH + File.separator + Constant.DEFAULT_EXAMPLE_PATH;
-		String newModuleConfigPath = Constant.DEVELOPMENT_JAVA_PATH + File.separator + moduleDto.getName();
+		String newModuleConfigPath = Constant.DEVELOPMENT_JAVA_PATH + File.separator + moduleDto.getCode();
 		List<File> list = FileUtil.copyFolder(exampleConfigPath, newModuleConfigPath);
 		
 		/*
@@ -47,12 +54,12 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 				}
 				
 				// 修改文件内容
-				modifyFile(file, moduleDto.getName());
+				modifyFile(file, moduleDto.getCode());
 				
 				// 修改文件名
 				String fileName = file.getName();
 				String newFileName = fileName.replace(StringUtil.firstLetterUppercase(Constant.DEFAULT_EXAMPLE_PATH), 
-						StringUtil.firstLetterUppercase(moduleDto.getName()));
+						StringUtil.firstLetterUppercase(moduleDto.getCode()));
 				FileUtil.rename(file, newFileName);
 				
 				
@@ -60,6 +67,24 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		}
 		
 		
+	}
+	
+	@Override
+	public Module getModule(String code) throws EntityException {
+		
+		Module result = null;
+		
+		/*
+		 * 获取模块
+		 */
+		String moduleConfigPath = Constant.DEVELOPMENT_JAVA_PATH + File.separator + code;
+		File file = new File(moduleConfigPath);
+		if (file.exists()) {
+			result = new Module();
+			result.setCode(code);
+		}
+		
+		return result;
 	}
 
 	/**
@@ -78,4 +103,5 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 				}
 			});
 	}
+
 }
