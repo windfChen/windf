@@ -1,12 +1,14 @@
 package com.windf.module.development.pojo;
 
 import java.util.List;
+import java.util.Map;
 
 public class Module {
 	private String code;
 	private String name;
 	private String basePath;
 	private String info;
+	private Map<String, String> path;
 	private List<String>	dependent;
 	
 	// TODO servicves:List<Service>  urls:List<URL>
@@ -34,6 +36,12 @@ public class Module {
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	public Map<String, String> getPath() {
+		return path;
+	}
+	public void setPath(Map<String, String> path) {
+		this.path = path;
 	}
 	public List<String> getDependent() {
 		return dependent;

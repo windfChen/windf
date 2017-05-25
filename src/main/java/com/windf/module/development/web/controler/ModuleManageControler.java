@@ -45,7 +45,6 @@ public class ModuleManageControler extends ParentControler{
 		try {
 			moduleManageService.createModule(moduleDto);
 		} catch (EntityException e) {
-			e.printStackTrace();
 			return errorMessageMap(e.getMessage());
 		}
 		
@@ -68,7 +67,6 @@ public class ModuleManageControler extends ParentControler{
 		try {
 			module = moduleManageService.getModule(moduleCode);
 		} catch (EntityException e) {
-			e.printStackTrace();
 			return errorMessageMap(e.getMessage());
 		}
 		
@@ -76,7 +74,7 @@ public class ModuleManageControler extends ParentControler{
 	}
 	
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
-	public String index2() {
+	public String index() {
 		return Constant.WEB_BASE_VIEW + "/index" ;
 	}
 	
