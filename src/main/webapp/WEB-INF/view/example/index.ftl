@@ -2,11 +2,9 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>windf</title> 
-	<script type="text/javascript">
-		window.location = '${rc.contextPath}/wall/';
-	</script>
+	<title>example</title>
 </head>
 <body>
+example Module index page!!!
 </body>
 </html>

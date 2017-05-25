@@ -37,7 +37,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		 * 验证前置条件
 		 */
 		if (getModule(moduleDto.getCode()) != null) {
-			//throw new EntityException("模块已存在");
+			throw new EntityException("模块已存在");
 		}
 
 		/*
@@ -65,13 +65,15 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 			String key = (String) pathMapKeyIterator.next();
 			String value = pathMap.get(key);
 			
-//			copyFolder(exampleConfigPath, newModuleConfigPath, moduleDto.getCode());
+			if ("classes".equals(key)) {
+				String exampleConfigPath = Constant.DEVELOPMENT_JAVA_PATH + File.separator + templateModuleCode;
+				copyFolder(exampleConfigPath, Constant.DEVELOPMENT_JAVA_PATH, moduleDto.getCode());
+			} else {
+				String newModuleConfigPath = value.replace("/example", "").replace("\\example", "");
+				copyFolder(FileUtil.getWebappPath() + value, FileUtil.getWebappPath() + newModuleConfigPath, moduleDto.getCode());
+			}
 		}
-		 
 		
-		String exampleConfigPath = Constant.DEVELOPMENT_JAVA_PATH + File.separator + Constant.DEFAULT_EXAMPLE_PATH;
-		String newModuleConfigPath = Constant.DEVELOPMENT_JAVA_PATH;
-		copyFolder(exampleConfigPath, newModuleConfigPath, moduleDto.getCode());
 		
 	}
 
@@ -102,7 +104,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		List<File> list = FileUtil.copyFolder(path, newPath + File.separator + moduleCode);
 		
 		/*
-		 * 修改每个java文件的文件名和内容
+		 * 修改每个文件的文件名和内容
 		 */
 		if (!CollectionUtils.isEmpty(list)) {
 			for (int i = 0; i < list.size(); i++) {
