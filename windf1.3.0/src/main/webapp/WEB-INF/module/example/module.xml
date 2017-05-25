@@ -1,0 +1,10 @@
+<module>
+	<code>example</code>
+	<path>
+		<classes>/WEB-INF/classes/com/whaty/module/example</classes>
+		<config>/WEB-INF/config/module/example</config>
+		<html>/WEB-INF/html/module/example</html>
+		<resource>/resource/module/example</resource>
+		<incoming>/incoming/module/example</incoming>
+	</path>
+</module>

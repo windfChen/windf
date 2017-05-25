@@ -121,6 +121,12 @@
 		  <artifactId>proxool-cglib</artifactId>
 		  <version>1.0.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -153,15 +159,6 @@
         </dependency>  
 		<!-- orm end -->
 		<!-- plugins end -->
-		
-		<!-- ucenter start-->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			 <version> 1.8.0</version>
-		</dependency>
-		<!-- ucenter end-->
-		
 		
 	</dependencies>
 

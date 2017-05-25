@@ -45,6 +45,11 @@ public class FileUtil {
 		String classPath = getClassPath();
 		return classPath.substring(0, classPath.lastIndexOf("/WEB-INF"));
 	}
+	
+	public static File getWebappFile(String webPath) {
+		File exampleDescriptFile = new File(getWebappPath() + webPath);
+		return exampleDescriptFile;
+	}
 
 	/**
 	 * 复制web目录下的文件夹
