@@ -89,13 +89,22 @@ public class ReflectUtil {
 		return new HashMap();
 	}
 	
+	/**
+	 * 根据class，转换字符串类型
+	 * @param clazz
+	 * @param value
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T> T getValue(Class clazz, String value) {
-		return (T) value;
+		T result = null;
+		if (clazz.isAssignableFrom(Integer.class)) {
+			result = (T) new Integer(value);
+		} else if (clazz.isAssignableFrom(String.class)){
+			result = (T) value;
+		}
 		
-	}
-
-	public static <T> T setValue(T object, String textTrim) {
-		return (T) textTrim;
+		return result;
 	}
 
 }

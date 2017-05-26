@@ -3,13 +3,10 @@ package com.windf.module.development.file;
 import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -148,38 +145,4 @@ public class XmlFileUtil {
 		return (T) result;
 	}
 	
-	public static void readAll(String xmlFilePath) {
-		SAXReader saxReader = new SAXReader();
-		Document document;
-		try {
-			document = saxReader.read(xmlFilePath);
-			List nodes = document.getRootElement().elements();
-			for (int i = 0; i < nodes.size(); i++) {
-				Element node = (Element) nodes.get(i);
-				
-				if ("filter".equals(node.getName().toLowerCase())) {
-					Iterator iterator = node.elementIterator();
-					
-					while (iterator.hasNext()) {
-						Element item = (Element) iterator.next();
-						String url = item.attributeValue("url");
-						String params = item.attributeValue("params");
-						String returnType = item.attributeValue("returnType");
-						
-						List<String> paramList = null;
-						if (StringUtils.isEmpty(params) || "*".equals(params)) {
-							paramList = null;
-						} else {
-							paramList = Arrays.asList(params.split(","));
-						}
-					}
-					
-					break;
-				} 
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
