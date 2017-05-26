@@ -1,0 +1,17 @@
+<module>
+	<moduleConfigPath>/WEB-INF/classes/module/</moduleConfigPath>
+	<sourcePath>
+		<java>/src/main/java/com/windf/module/</java>
+		<resource>/src/main/resource/module/</resource>
+	</sourcePath>
+	<classPath>
+		<classes>/WEB-INF/classes/com/whaty/module/</classes>
+		<resource>/WEB-INF/classes/module/</resource>
+	</classPath>
+	<webPath>
+		<html>/WEB-INF/view/module/</html>
+		<resource>/resources/module/</resource>
+		<incoming>/incoming/module/</incoming>
+		<export>/export/module/</export>
+	</webPath>
+</module>

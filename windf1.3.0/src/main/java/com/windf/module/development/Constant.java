@@ -2,6 +2,8 @@ package com.windf.module.development;
 
 import java.io.File;
 
+import com.windf.core.file.FileUtil;
+
 public class Constant {
 	/*
 	 * web 相关
@@ -12,16 +14,12 @@ public class Constant {
 	
 	public static final String DEFAULT_EXAMPLE_PATH = "example";
 	
-	public static String  DEVELOPMENT_BASE_PATH= null;
-	public static String DEVELOPMENT_JAVA_PATH = null;
-	public static String DEVELOPMENT_RESOURCE_PATH = null;
+	public static String  DEVELOPMENT_BASE_PATH = null;
 	
 	static {
 		String classPath = Constant.class.getClassLoader().getResource("").getPath();
 		String basePath = classPath.substring(0, classPath.lastIndexOf("src"));
-		DEVELOPMENT_BASE_PATH = new File(basePath).getPath();
-		DEVELOPMENT_JAVA_PATH = DEVELOPMENT_BASE_PATH + "/src/main/java/com/windf/module";
-		DEVELOPMENT_RESOURCE_PATH = DEVELOPMENT_BASE_PATH + "/src/main/resource";
+		DEVELOPMENT_BASE_PATH = new File(basePath).getPath() + File.separator;
 	}
 	
 }

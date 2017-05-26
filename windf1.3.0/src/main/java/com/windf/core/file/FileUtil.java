@@ -23,7 +23,7 @@ public class FileUtil {
 	 * @return
 	 */
 	public static String getClassPath() {
-		return FileUtil.class.getClassLoader().getResource("").getPath();
+		return new File(FileUtil.class.getClassLoader().getResource("").getPath()).getPath();
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class FileUtil {
 	 */
 	public static String getWebappPath() {
 		String classPath = getClassPath();
-		return classPath.substring(0, classPath.lastIndexOf("/WEB-INF"));
+		return classPath.substring(0, classPath.lastIndexOf("WEB-INF"));
 	}
 	
 	public static File getWebappFile(String webPath) {

@@ -1,9 +1,8 @@
-package com.windf.core.file;
+package com.windf.module.development.file;
 
 import java.io.File;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
