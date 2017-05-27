@@ -1,4 +1,4 @@
-<module>
+<master>
 	<moduleConfigPath>/WEB-INF/classes/module/</moduleConfigPath>
 	<sourcePath>
 		<java>/src/main/java/com/windf/module/</java>
@@ -14,4 +14,9 @@
 		<incoming>/incoming/module/</incoming>
 		<export>/export/module/</export>
 	</webPath>
-</module>
+	<allModules>
+		<module>
+			<code>example</code>
+		</module>
+	</allModules>
+</master>
