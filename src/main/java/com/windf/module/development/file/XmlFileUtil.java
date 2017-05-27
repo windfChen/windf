@@ -232,6 +232,7 @@ public class XmlFileUtil {
 				stopDeadlock = new HashSet<Class>();
 			} 
 			if (!stopDeadlock.add(object.getClass())) {	
+				element.getParent().remove(element);
 				return false;
 			}
 
@@ -253,7 +254,6 @@ public class XmlFileUtil {
 				
 			}
 		}
-		
 		
 		return true;
 	}

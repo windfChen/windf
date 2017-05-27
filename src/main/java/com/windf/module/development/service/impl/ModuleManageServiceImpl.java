@@ -7,6 +7,7 @@ import com.windf.core.exception.EntityException;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.ModuleDto;
+import com.windf.module.development.pojo.ModuleMaster;
 import com.windf.module.development.service.ModuleManageService;
 
 @Service
@@ -34,7 +35,6 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		String templateModuleCode = Constant.DEFAULT_EXAMPLE_PATH;
 		Module exampleModule = Module.loadModule(templateModuleCode);
 		
-		
 		/*
 		 * 复制创建新模块
 		 */
@@ -48,6 +48,12 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		newModule.setBasePath(moduleDto.getBasePath());
 		newModule.write();
 		
+		/*
+		 * 修改统计文件
+		 */
+		ModuleMaster moduleMaster = ModuleMaster.getInstance();
+		moduleMaster.addModule(newModule);
+		moduleMaster.write();
 		
 		return newModule;
 	}
