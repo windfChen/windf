@@ -1,23 +1,32 @@
 package com.windf.module.development.file;
 
 import java.io.File;
-import java.lang.reflect.ParameterizedType;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 import com.windf.core.exception.EntityException;
 import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.core.util.reflect.SimpleField;
+import com.windf.module.development.Constant;
 
 public class XmlFileUtil {
+	private static final String DEFAULT_LIST_ITEM_ELEMENT_NAME = "item";
+	
 	/**
 	 * 读取xml文档，加载所有xml内容到map里面
 	 * @param xmlFile
@@ -65,10 +74,9 @@ public class XmlFileUtil {
 						// 判断是否为泛型
 						Type genericType = null;
 						Class genericClass = null;
-						if (type instanceof  ParameterizedType) {	// 如果是，获取泛型中的类型
-							 ParameterizedType parameterizedType = (ParameterizedType) type;  
-				             genericType = parameterizedType.getActualTypeArguments()[0];
-				             genericClass = (Class) parameterizedType.getRawType();
+						if (ReflectUtil.isGeneric(type)) {	// 如果是，获取泛型中的类型
+							 genericType = ReflectUtil.getGenericOfCollection(type);
+				             genericClass = ReflectUtil.getRawType(type);
 						} else {
 							genericClass = (Class) type;
 						}
@@ -89,14 +97,13 @@ public class XmlFileUtil {
 						// 判断是否为泛型
 						Type valueType = null;
 						Class genericClass = null;
-						if (type instanceof  ParameterizedType) {	// 如果是，获取泛型中的类型
-							 ParameterizedType parameterizedType = (ParameterizedType) type;  
-							 Type keyType = parameterizedType.getActualTypeArguments()[0];
+						if (ReflectUtil.isGeneric(type)) {	// 如果是，获取泛型中的类型
+							 Type keyType = ReflectUtil.getGenericOfMapKey(type);
 							 if (keyType != String.class) {
 								 throw new EntityException("map的key必须是String类型");
 							 }
-				             valueType = parameterizedType.getActualTypeArguments()[1];
-				             genericClass = (Class) parameterizedType.getRawType();
+							 valueType = ReflectUtil.getGenericOfMapValue(type);
+							 genericClass = ReflectUtil.getRawType(type);
 						} else {
 							genericClass = (Class) type;
 						}
@@ -143,6 +150,112 @@ public class XmlFileUtil {
 		}
 		
 		return (T) result;
+	}
+	
+	/**
+	 * 把对象写入xml文件中
+	 * @param obj
+	 * @param xmlFile
+	 * @return
+	 */
+	public static boolean writeObject2Xml(Object obj, File xmlFile) {
+		
+		String fileName = xmlFile.getName();
+		if (fileName.lastIndexOf(".") > 0) {
+			fileName = fileName.substring(0, fileName.lastIndexOf("."));
+		}
+		
+		Document document = DocumentHelper.createDocument(); 
+		Element element = document.addElement(fileName);
+        
+        writeObject2Xml(obj, element, null);
+
+        // 创建输出格式(OutputFormat对象)
+        OutputFormat format = OutputFormat.createPrettyPrint();
+
+        ///设置输出文件的编码
+        format.setEncoding(Constant.DEFAULT_ENCODING);
+
+        try {
+            // 创建XMLWriter对象
+            XMLWriter writer = new XMLWriter(new FileOutputStream(xmlFile), format);
+
+            //设置不自动进行转义
+            writer.setEscapeText(false);
+
+            // 生成XML文件
+            writer.write(document);
+
+            //关闭XMLWriter对象
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		return false;
+	}
+	/**
+	 * 把对象写入xml文件中
+	 * @param object
+	 * @param xmlFile
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public static boolean writeObject2Xml(Object object, Element element, Set<Class> stopDeadlock) {
+		
+		if (ReflectUtil.isBaseType(object.getClass())) {
+			element.setText(object.toString());
+		} else if (ReflectUtil.isCollection(object.getClass())) {
+			Collection collection = (Collection) object;
+			Iterator iterator = collection.iterator();
+			while (iterator.hasNext()) {
+				Element subElement = element.addElement(DEFAULT_LIST_ITEM_ELEMENT_NAME);
+				Object obj = (Object) iterator.next();
+				writeObject2Xml(obj, subElement, null);
+			}
+		} else if (ReflectUtil.isMap(object.getClass())) {
+			Map map = (Map) object;
+			Iterator iterator = map.keySet().iterator();
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				Object obj = map.get(key);
+				
+				Element subElement = element.addElement(key);
+				writeObject2Xml(obj, subElement, null);
+				
+			}
+		} else {
+			/*
+			 *  防止死循环
+			 */
+			if (stopDeadlock == null) {
+				stopDeadlock = new HashSet<Class>();
+			} 
+			if (!stopDeadlock.add(object.getClass())) {	
+				return false;
+			}
+
+			/*
+			 *  获得对象的所有非空属性
+			 */
+			Map<String, Object> getterMethodValueMap = ReflectUtil.getAllGetterMethods(object);
+			
+			/*
+			 * 遍历对象的getter属性对应的值，把属性名和值放到xml文件里
+			 */
+			Iterator<String> getterMethodValueMapKeysIterator = getterMethodValueMap.keySet().iterator();
+			while (getterMethodValueMapKeysIterator.hasNext()) {
+				String methodName = getterMethodValueMapKeysIterator.next();
+				Object result = getterMethodValueMap.get(methodName);
+				
+				Element subElement = element.addElement(methodName);
+				writeObject2Xml(result, subElement, stopDeadlock);
+				
+			}
+		}
+		
+		
+		return true;
 	}
 	
 }

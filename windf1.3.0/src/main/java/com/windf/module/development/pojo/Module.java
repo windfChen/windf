@@ -50,6 +50,12 @@ public class Module {
 
 		return loadModule(newCode);
 	}
+	
+	public void write() throws EntityException {
+		File file = new File(FileUtil.getWebappPath() + 
+				ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
+		XmlFileUtil.writeObject2Xml(this, file);
+	}
 
 	private void cloneSourceDirectorys(ModuleMaster moduleMaster, String newCode) {
 		Map<String, String> sourcePath = moduleMaster.getSourcePath();

@@ -7,9 +7,10 @@ import com.windf.module.development.pojo.ModuleDto;
 public interface ModuleManageService {
 	/**
 	 * 创建模块
+	 * @return 
 	 * @throws EntityException 
 	 */
-	void createModule(ModuleDto moduleDto) throws EntityException;
+	Module createModule(ModuleDto moduleDto) throws EntityException;
 
 	/**
 	 * 获得模块
