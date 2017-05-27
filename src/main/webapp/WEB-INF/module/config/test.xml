@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<test>
+  <basePath>/trets</basePath>
+  <name>testname</name>
+  <code>test</code>
+  <info>info</info>
+</test>
