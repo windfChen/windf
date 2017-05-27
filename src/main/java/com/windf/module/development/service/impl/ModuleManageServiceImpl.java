@@ -13,7 +13,7 @@ import com.windf.module.development.service.ModuleManageService;
 public class ModuleManageServiceImpl  implements ModuleManageService {
 
 	@Override
-	public void createModule(ModuleDto moduleDto) throws EntityException {
+	public Module createModule(ModuleDto moduleDto) throws EntityException {
 		/*
 		 * 验证参数
 		 */
@@ -40,6 +40,16 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		 */
 		Module newModule = exampleModule.clone(moduleDto.getCode());
 		
+		/*
+		 * 设置、保存模块属性
+		 */
+		newModule.setName(moduleDto.getName());
+		newModule.setInfo(moduleDto.getInfo());
+		newModule.setBasePath(moduleDto.getBasePath());
+		newModule.write();
+		
+		
+		return newModule;
 	}
 
 	@Override

@@ -43,11 +43,9 @@ public class SimpleField {
 			fieldClazz = getter.getReturnType();
 			setter = object.getClass().getMethod(setterName, fieldClazz);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-			throw new EntityException();
+			throw new EntityException(e);
 		} catch (SecurityException e) {
-			e.printStackTrace();
-			throw new EntityException();
+			throw new EntityException(e);
 		}
 	}
 	

@@ -2,9 +2,7 @@ package com.windf.module.development;
 
 import java.io.File;
 
-import com.windf.core.file.FileUtil;
-
-public class Constant {
+public class Constant extends com.windf.core.Constant{
 	/*
 	 * web 相关
 	 */

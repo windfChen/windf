@@ -1,7 +1,6 @@
 package com.windf.module.development.pojo;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 import com.windf.core.exception.EntityException;
@@ -37,14 +36,6 @@ public class ModuleMaster {
 	
 	public ModuleMaster() {
 		
-	}
-
-	public static ModuleMaster getModuleMaster() {
-		return moduleMaster;
-	}
-
-	public static void setModuleMaster(ModuleMaster moduleMaster) {
-		ModuleMaster.moduleMaster = moduleMaster;
 	}
 
 	public String getModuleConfigPath() {
