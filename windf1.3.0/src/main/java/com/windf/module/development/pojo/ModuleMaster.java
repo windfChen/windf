@@ -1,10 +1,13 @@
 package com.windf.module.development.pojo;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.windf.core.exception.EntityException;
 import com.windf.core.file.FileUtil;
+import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.module.development.file.XmlFileUtil;
 
 /**
@@ -12,7 +15,7 @@ import com.windf.module.development.file.XmlFileUtil;
  * @author chenyafeng
  *
  */
-public class ModuleMaster {
+public class ModuleMaster implements Cloneable {
 	
 	private static final String DEFAULT_MASTER_CONFIG_FILE = "/WEB-INF/module/master.xml";
 	
@@ -33,11 +36,44 @@ public class ModuleMaster {
 	private Map<String, String> sourcePath;
 	private Map<String, String> classPath;
 	private Map<String, String> webPath;
+	private List<Module> modules;
 	
 	public ModuleMaster() {
 		
 	}
-
+	
+	public Module addModule(Module module) {
+		if (modules == null) {
+			modules = new ArrayList<Module>();
+		}
+		modules.add(module);
+		return module;
+	}
+	
+	public void write() {
+		/*
+		 * 只保留需要持久化的module属性
+		 */
+		ModuleMaster writeModuleMaster = null;
+		try {
+			writeModuleMaster = (ModuleMaster) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		if (writeModuleMaster != null && writeModuleMaster.getModules() != null) {
+			List<Module> writeModules = new ArrayList<Module>();
+			for (int i = 0; i < writeModuleMaster.getModules().size(); i++) {
+				Module module = writeModuleMaster.getModules().get(i);
+				Module newModule = (Module) ReflectUtil.cloneOnlyBaseType(module);
+				writeModules.add(newModule);
+			}
+			writeModuleMaster.setModules(writeModules);
+		}
+		
+		File file = new File(FileUtil.getWebappPath() + DEFAULT_MASTER_CONFIG_FILE);
+		XmlFileUtil.writeObject2Xml(writeModuleMaster, file);
+	}
+	
 	public String getModuleConfigPath() {
 		return moduleConfigPath;
 	}
@@ -68,6 +104,22 @@ public class ModuleMaster {
 
 	public void setWebPath(Map<String, String> webPath) {
 		this.webPath = webPath;
+	}
+
+	public static ModuleMaster getModuleMaster() {
+		return moduleMaster;
+	}
+
+	public static void setModuleMaster(ModuleMaster moduleMaster) {
+		ModuleMaster.moduleMaster = moduleMaster;
+	}
+
+	public List<Module> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Module> modules) {
+		this.modules = modules;
 	}
 	
 }

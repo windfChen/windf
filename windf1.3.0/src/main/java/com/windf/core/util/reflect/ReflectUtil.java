@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.windf.module.development.pojo.Module;
 
 public class ReflectUtil {
 
@@ -245,6 +248,48 @@ public class ReflectUtil {
 	public static Type getGenericOfCollection(Type type) {
 		ParameterizedType parameterizedType = (ParameterizedType) type;
 		return  parameterizedType.getActualTypeArguments()[0];
+	}
+
+	public static Object cloneOnlyBaseType(Object object) {
+			Class<? extends Object> clazz = object.getClass();
+			Object newObject = null;
+			try {
+				newObject = clazz.newInstance();
+			} catch (InstantiationException e1) {
+				e1.printStackTrace();
+			} catch (IllegalAccessException e1) {
+				e1.printStackTrace();
+			}
+			
+			if (newObject != null) {
+				Map<String, Object> getterMethodMap = getAllGetterMethods(object);
+				Iterator<String> iterator = getterMethodMap.keySet().iterator();
+				while (iterator.hasNext()) {
+					String key = (String) iterator.next();
+					Object value = getterMethodMap.get(key);
+					
+					if (ReflectUtil.isBaseType(value.getClass())) {
+						String setterMethodName = "set" + key.substring(0, 1).toUpperCase() + key.substring(1);
+						try {
+							Method setterMethod = clazz.getMethod(setterMethodName, value.getClass());
+							setterMethod.invoke(newObject, value);
+						} catch (NoSuchMethodException e) {
+							e.printStackTrace();
+						} catch (SecurityException e) {
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			return newObject;
+			
 	}
 
 }
