@@ -1,0 +1,10 @@
+.sResultsTb th { border: 1px #ddd solid; border-width: 1px 0; }
+
+.sResultsTb th{ border:1px #ddd solid; border-width:1px 0;}
+.sResultsTb td{ line-height:45px; text-align:center; border-bottom:1px #eee solid; font-size:'SimSun'; font-size:12px;}
+.ysqT{ color:#8c47c2;}
+.bhT{ color:#ff0000;}
+.sResultsTb tr:hover td { background:#fcfcfc; cursor:pointer;}
+.cp1 { padding: 5px 20px; } 
+.sL5 { border-right: 1px #ddd solid; } 
+.sL4 { text-align: center; display: block; margin: 12px 0; }

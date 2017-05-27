@@ -7,7 +7,7 @@ public class Constant extends com.windf.core.Constant{
 	 * web 相关
 	 */
 	public static final String WEB_BASE_PATH = "/dev";
-	public static final String WEB_BASE_VIEW = "/dev";
+	public static final String WEB_BASE_VIEW = "/module/development/";
 	
 	
 	public static final String DEFAULT_EXAMPLE_PATH = "example";
