@@ -58,7 +58,7 @@ public class ModuleManageControler extends ParentControler{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/", method = {RequestMethod.GET})
+	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public Map<String, Object> get(HttpServletRequest request) {
 		// 验证参数
 		String moduleCode = request.getParameter("code");
@@ -79,7 +79,7 @@ public class ModuleManageControler extends ParentControler{
 
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
 	public String index() {
-		return Constant.WEB_BASE_VIEW + "/index" ;
+		return Constant.WEB_BASE_VIEW + "index" ;
 	}
 	
 	@ResponseBody
