@@ -32,6 +32,7 @@ public abstract class BaseControler {
 		}
 		
 		request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		request.setAttribute("modulePath", this.getBasePath() + this.getModulePath());
 	}
 	
 	/**
@@ -41,6 +42,12 @@ public abstract class BaseControler {
 	protected String getBasePath() {
 		return request.getContextPath();
 	}
+	
+	/**
+	 * 返回项目的跟路径
+	 * @return
+	 */
+	protected abstract String getModulePath();
 	
 	/**
 	 * 获取参数

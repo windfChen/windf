@@ -64,6 +64,41 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 	}
 
 	@Override
+	public Module modifyModule(ModuleDto moduleDto) throws EntityException {
+		/*
+		 * 验证参数
+		 */
+		if (moduleDto == null || StringUtils.isEmpty(moduleDto.getCode())) {
+			throw new EntityException("参数错误");
+		}
+		
+		/*
+		 * 验证前置条件
+		 */
+		Module module = getModule(moduleDto.getCode());
+		if (module == null) {
+			throw new EntityException("模块不存在");
+		}
+		
+		/*
+		 * 设置、保存模块属性
+		 */
+		module.setName(moduleDto.getName());
+		module.setInfo(moduleDto.getInfo());
+		module.setBasePath(moduleDto.getBasePath());
+		module.write();
+		
+		/*
+		 * 修改统计文件
+		 */
+		ModuleMaster moduleMaster = ModuleMaster.getInstance();
+		moduleMaster.addModule(module);
+		moduleMaster.write();
+		
+		return module;
+	}
+
+	@Override
 	public Module getModule(String code) throws EntityException {
 		Module result = null;
 		
@@ -120,6 +155,5 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		
 		return page;
 	}
-
 
 }

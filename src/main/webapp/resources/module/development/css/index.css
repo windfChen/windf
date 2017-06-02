@@ -15,3 +15,7 @@
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .tabl_op_li { float: left; }
 .tabl_op_link { display: inline-block; padding: 3px 8px; font-size: 12px; color: #666; }
+
+.buttons {padding: 15px; text-align: center; position: relative;}
+.buttons .add_button { margin-left: 10px; background-position: 0 -163px; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src="../images/icons.png", enabled=true, sizingMethod=scale); border: 0 none; cursor: pointer; height: 40px; width: 150px; background-color: #c10000; border-radius: 6px; }
+.buttons .add_button span { color: #fff; font-size: 16px; }
