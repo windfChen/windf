@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.windf.module.development.pojo.Module;
-
 public class ReflectUtil {
 
 	/**
@@ -23,8 +21,7 @@ public class ReflectUtil {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public static boolean isBaseType(Class clazz) {
+	public static boolean isBaseType(Class<? extends Object> clazz) {
 		boolean result = true;
 		if (!clazz.isPrimitive()) {
 			if (!clazz.getName().startsWith("java.lang")) {
@@ -43,6 +40,42 @@ public class ReflectUtil {
 	public static boolean isBaseType(Object obj) {
 		return isBaseType(obj.getClass());
 	}
+	
+	public static boolean isInteger(Class<? extends Object> clazz) {
+		boolean result = false;
+		
+		if (clazz != null) {
+			if ("java.lang.Integer".equals(clazz.getName())) {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	public static boolean isLong(Class<? extends Object> clazz) {
+		boolean result = false;
+		
+		if (clazz != null) {
+			if ("java.lang.Long".equals(clazz.getName())) {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	public static boolean isDate(Class<? extends Object> clazz) {
+		boolean result = false;
+		
+		if (clazz != null) {
+			if ("java.util.Date".equals(clazz.getName())) {
+				result = true;
+			}
+		}
+		
+		return result;
+	}
 
 	/**
 	 * 判断类，是否是集合类型
@@ -50,17 +83,16 @@ public class ReflectUtil {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static boolean isCollection(Class clazz) {
+	public static boolean isCollection(Class<? extends Object> clazz) {
 		boolean result = false;
 		if (clazz.isAssignableFrom(List.class) || clazz.isAssignableFrom(Set.class)) {
 			result = true;
 		}
 		if (!result) {
 			if (!result) {
-				Class[] interfaces = clazz.getInterfaces();
+				Class<? extends Object>[] interfaces = clazz.getInterfaces();
 				for (int i = 0; i < interfaces.length; i++) {
-					Class c = interfaces[i];
+					Class<? extends Object> c = interfaces[i];
 					if (c.isAssignableFrom(List.class) || c.isAssignableFrom(Set.class)) {
 						result = true;
 						break;
@@ -77,9 +109,9 @@ public class ReflectUtil {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Collection createCollection(Class clazz) {
-		Collection result = null;
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static Collection<? extends Object> createCollection(Class<? extends Object> clazz) {
+		Collection<? extends Object> result = null;
 		if (clazz.isAssignableFrom(List.class)) {
 			result = new ArrayList();
 		} else if (clazz.isAssignableFrom(Set.class)) {
@@ -94,17 +126,16 @@ public class ReflectUtil {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static boolean isMap(Class clazz) {
+	public static boolean isMap(Class<? extends Object> clazz) {
 		boolean result = false;
 		if (clazz.isAssignableFrom(Map.class)) {
 			result = true;
 		}
 
 		if (!result) {
-			Class[] interfaces = clazz.getInterfaces();
+			Class<? extends Object>[] interfaces = clazz.getInterfaces();
 			for (int i = 0; i < interfaces.length; i++) {
-				Class c = interfaces[i];
+				Class<? extends Object> c = interfaces[i];
 				if (c.isAssignableFrom(Map.class)) {
 					result = true;
 					break;
@@ -133,8 +164,8 @@ public class ReflectUtil {
 	 * @param value
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> T getValue(Class clazz, String value) {
+	@SuppressWarnings("unchecked")
+	public static <T> T getValue(Class<? extends Object> clazz, String value) {
 		T result = null;
 		if (clazz.isAssignableFrom(Integer.class)) {
 			result = (T) new Integer(value);
@@ -233,10 +264,10 @@ public class ReflectUtil {
 	 * @param type
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public static Class getRawType(Type type) {
+	@SuppressWarnings("unchecked")
+	public static Class<? extends Object> getRawType(Type type) {
 		ParameterizedType parameterizedType = (ParameterizedType) type;
-		Class genericClass = (Class) parameterizedType.getRawType();
+		Class<? extends Object> genericClass = (Class<? extends Object>) parameterizedType.getRawType();
 		return genericClass;
 	}
 
