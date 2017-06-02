@@ -3,6 +3,11 @@ package com.windf.plugins.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import com.windf.core.util.JSONUtil;
 import com.windf.plugins.log.Logger;
 import com.windf.plugins.log.LogFactory;
@@ -12,17 +17,47 @@ import com.windf.plugins.log.LogFactory;
  * @author 陈亚峰
  *
  */
-public abstract class ParentControler {
-	protected static final String PARAMETER_ERROR_PAGE = "/error/parameter";
+public abstract class BaseControler {
+	protected static final String PARAMETER_ERROR_PAGE = "/common/error/parameter";
+	protected static final String SUCCESS_MESSAGE_PAGE = "/common/info/success";
+	
 	protected static Logger logger = null;
 	
+	protected HttpServletRequest request;
 	
-	
-	public ParentControler () {
+	public BaseControler () {
 		// 日初始化日志
 		if (logger == null) {
 			logger = LogFactory.getLogger(this.getClass());
 		}
+		
+		request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+	}
+	
+	/**
+	 * 返回项目的跟路径
+	 * @return
+	 */
+	protected String getBasePath() {
+		return request.getContextPath();
+	}
+	
+	/**
+	 * 获取参数
+	 * @param name
+	 * @return
+	 */
+	protected String getParameter(String name) {
+		return request.getParameter(name);
+	}
+	
+	/**
+	 * 设置值
+	 * @param name
+	 * @param value
+	 */
+	protected void setValue(String name, Object value) {
+		request.setAttribute(name, value);
 	}
 	
 	/**
@@ -95,4 +130,20 @@ public abstract class ParentControler {
 		map.put("tip", tip);
 		return map;
 	}
+	
+	/**
+	 * 返回正确信息
+	 * @param message
+	 * @param sureHref
+	 * @param sureButtonWord
+	 * @return
+	 */
+	protected String returnSuccessPage(String message, String sureHref, String sureButtonWord) {
+		
+		this.setValue("message", message);
+		this.setValue("sureHref", sureHref);
+		
+		return SUCCESS_MESSAGE_PAGE;
+	}
+	
 }
