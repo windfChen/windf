@@ -1,0 +1,6 @@
+<module>
+	<code>development</code>
+	<name>开发人员工具</name>
+	<info>开发人员用于开发项目</info>
+	<basePath>/dev</basePath>
+</module>
