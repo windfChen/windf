@@ -15,6 +15,13 @@ public interface ModuleManageService {
 	Module createModule(ModuleDto moduleDto) throws EntityException;
 
 	/**
+	 * 修改模块
+	 * @param moduleDto
+	 * @throws EntityException
+	 */
+	Module modifyModule(ModuleDto moduleDto) throws EntityException;
+
+	/**
 	 * 获得模块
 	 * @param code
 	 * @return

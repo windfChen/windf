@@ -2,6 +2,7 @@ package com.windf.module.development.pojo;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,23 @@ public class ModuleMaster implements Cloneable {
 		if (modules == null) {
 			modules = new ArrayList<Module>();
 		}
-		modules.add(module);
+		
+		/*
+		 * 遍历是否已经存在，存在的要替换
+		 */
+		int index = -1;
+		for (int i = 0; i < modules.size(); i++) {
+			Module m = modules.get(i);
+			if (m.getCode().equals(module.getCode())) {
+				index = i;
+			}
+		}
+		if (index == -1) {
+			modules.add(module);
+		} else {
+			modules.remove(index);
+			modules.add(index, module);
+		}
 		return module;
 	}
 	

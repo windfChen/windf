@@ -5,11 +5,14 @@
 	<title>模块管理</title>
 	<link type="text/css" rel="stylesheet" href="${rc.contextPath}/resources/common/css/base.css" />
 	<link type="text/css" rel="stylesheet" href="${rc.contextPath}/resources/common/css/page.css" />
+	<link type="text/css" rel="stylesheet" href="${rc.contextPath}/resources/common/css/minwindown.css" />
 	<link type="text/css" rel="stylesheet" href="${rc.contextPath}/resources/module/development/css/index.css" />
-	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/page.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/jquery/jquery.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/page.js"></script>
+	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/minwindown.js" charset="utf-8"></script>
 	<script>
 		var _basePath = "${rc.contextPath}";
+		var _modulePath = "${modulePath}";
 	</script>
 </head>
 <body>
@@ -36,13 +39,8 @@
 				<td>
 					<ul class="clearfix">
 						<li class="tabl_op_li">
-							<a href="javascript:void(0);" class="tabl_op_link">
+							<a href="javascript:void(0);" class="tabl_op_link" onclick="minwindown('修改模块', 'create?code=${m.code}', '',{height:'300px'});;return false;">
 								<i class="iconfont icon_kzkt-teach-stroke"></i>修改基本信息
-							</a>
-						</li>
-						<li class="tabl_op_li">
-							<a href="javascript:void(0);" class="tabl_op_link" onclick="removeModule('${m.code}');return false;">
-								<i class="iconfont icon_kzkt-penV-stroke"></i>删除
 							</a>
 						</li>
 						<li class="tabl_op_li">
@@ -64,10 +62,12 @@
 		function onPageJump(pageIndex) {
 			window.location = '?pageIndex=' + pageIndex + '&pageSize=1';
 		}
-		
-		function removeModule(code) {
-			window.location = _basePath + '/dev/module/remove?code=' + code;
-		}
 	</script>
+	
+	<div class="buttons">
+		<button class="add_button" onclick="minwindown('添加模块', 'create', '',{height:'300px'});" type="submit">
+			<span>添加</span>
+		</button>
+	</div>
 </body>
 </html>

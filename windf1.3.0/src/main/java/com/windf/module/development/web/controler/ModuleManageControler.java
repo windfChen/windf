@@ -3,7 +3,6 @@ package com.windf.module.development.web.controler;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -28,9 +27,33 @@ public class ModuleManageControler extends BaseControler{
 	@Resource
 	private ModuleManageService moduleManageService ;
 	
-	@ResponseBody
+	@Override
+	protected String getModulePath() {
+		return Constant.WEB_BASE_PATH;
+	}
+
 	@RequestMapping(value = "/create", method = {RequestMethod.GET})
-	public Map<String, Object> create(HttpServletRequest request) {
+	public String toCreate() {
+		
+		// 验证参数
+		String moduleCode = this.getParameter("code");
+		if (!ParameterUtil.hasEmpty(moduleCode)) {
+
+			// 调用服务
+			try {
+				Module module = moduleManageService.getModule(moduleCode);
+				this.setValue("bean", module);
+			} catch (EntityException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return Constant.WEB_BASE_VIEW + "create" ;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/create", method = {RequestMethod.POST})
+	public Map<String, Object> create() {
 		// 验证参数
 		String moduleCode = this.getParameter("code");
 		String moduleName = this.getParameter("name");
@@ -54,7 +77,36 @@ public class ModuleManageControler extends BaseControler{
 			return errorMessageMap(e.getMessage());
 		}
 		
-		return successMap("创建成功");
+		return returnMap(true, "创建成功");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/modify", method = {RequestMethod.POST})
+	public Map<String, Object> modify() {
+		// 验证参数
+		String moduleCode = this.getParameter("code");
+		String moduleName = this.getParameter("name");
+		String moduleInfo = this.getParameter("info");
+		String moduleBasePath = this.getParameter("basePath");
+		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
+			return paramErrorMap();
+		}
+		
+		// 构建参数
+		ModuleDto moduleDto = new ModuleDto();
+		moduleDto.setCode(moduleCode);
+		moduleDto.setName(moduleName);
+		moduleDto.setInfo(moduleInfo);
+		moduleDto.setBasePath(moduleBasePath);
+		
+		// 调用服务
+		try {
+			moduleManageService.modifyModule(moduleDto);
+		} catch (EntityException e) {
+			return errorMessageMap(e.getMessage());
+		}
+		
+		return returnMap(true, "修改成功");
 	}
 	
 	@ResponseBody
