@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.windf.core.exception.EntityException;
-import com.windf.core.util.StringUtil;
+import com.windf.core.util.Page;
+import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.ModuleDto;
@@ -36,7 +37,7 @@ public class ModuleManageControler extends ParentControler{
 		String moduleName = request.getParameter("name");
 		String moduleInfo = request.getParameter("info");
 		String moduleBasePath = request.getParameter("basePath");
-		if (StringUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
+		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
 			return paramErrorMap();
 		}
 		
@@ -62,7 +63,7 @@ public class ModuleManageControler extends ParentControler{
 	public Map<String, Object> get(HttpServletRequest request) {
 		// 验证参数
 		String moduleCode = request.getParameter("code");
-		if (StringUtil.isEmpty(moduleCode)) {
+		if (ParameterUtil.hasEmpty(moduleCode)) {
 			return paramErrorMap();
 		}
 		
@@ -78,33 +79,27 @@ public class ModuleManageControler extends ParentControler{
 	}
 
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
-	public String index() {
+	public String index(HttpServletRequest request, ModelMap model) {
+		/*
+		 * 获取参数
+		 */
+		String pageIndexStr = ParameterUtil.defaultValue(request.getParameter("pageIndex"), "1");
+		String pageSizeStr = ParameterUtil.defaultValue(request.getParameter("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
+		
+		/*
+		 * 验证参数
+		 */
+		Integer pageIndex = ParameterUtil.getInteger(pageIndexStr);
+		Integer pageSize = ParameterUtil.getInteger(pageSizeStr);
+		if (ParameterUtil.hasEmpty(pageIndex, pageSize)) {
+			return PARAMETER_ERROR_PAGE;
+		}
+		
+		
+		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);
+		model.put("page", page);
+		
 		return Constant.WEB_BASE_VIEW + "index" ;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/login", method = {RequestMethod.POST})
-	public Map<String, Object> login(ModelMap map, HttpServletRequest request) {
-//		map.put("platform", platform);
-//		map.put("resourceType", resourceType);
-//		map.put("keyword", keyword) ;
-//		map.put("pageSize", pageSize) ;
-//		map.put("pageIndex", pageIndex) ;
-		
-		return map;
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/register", method = {RequestMethod.POST })
-	public Map<String, Object> register(HttpServletRequest request) {
-//		String username = request.getParameter("u");
-//		String password = request.getParameter("p");
-//		String truename = request.getParameter("n");
-		
-		
-		Map<String, Object> result = null;
-		result = successMap();
-		return result;
 	}
 
 }

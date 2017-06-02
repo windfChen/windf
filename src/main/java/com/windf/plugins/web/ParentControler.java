@@ -13,7 +13,10 @@ import com.windf.plugins.log.LogFactory;
  *
  */
 public abstract class ParentControler {
+	protected static final String PARAMETER_ERROR_PAGE = "/error/parameter";
 	protected static Logger logger = null;
+	
+	
 	
 	public ParentControler () {
 		// 日初始化日志

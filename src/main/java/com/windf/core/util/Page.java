@@ -2,58 +2,77 @@ package com.windf.core.util;
 
 import java.io.Serializable;
 import java.util.List;
-/**
- * 分页
- */
+
 public class Page<T> implements Serializable {
+	public static final Integer DEFAULT_PAGE_SIZE = 10;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
-	/*
-	 * 搜索内容
-	 */
-	private List<T> results;
-	
-	/*
-	 * 总计
-	 */
-	private Long total ;
-	
-	/*
-	 * 页码
-	 */
-	private Integer pageIndex ;
-	
-	/*
-	 * 页大小
-	 */
-	private Integer pageSize ;
 
-	public List<T> getResults() {
-		return results;
+	private List<T> data;
+	private Long total;
+	private Long pageIndex;
+	private Integer pageSize;
+
+	public Page() {
+
 	}
 
-	public void setResults(List<T> results) {
-		this.results = results;
+	public Page(Long pageIndex, Integer pageSize) {
+		this.pageIndex = pageIndex;
+		this.pageSize = pageSize;
+	}
+
+	public Long getStartIndex() {
+		if (pageIndex == null || pageSize == null) {
+			return null;
+		}
+
+		return (pageIndex - 1) * pageSize;
+	}
+
+	public Long getEndIndex() {
+		if (pageIndex == null || pageSize == null) {
+			return null;
+		}
+
+		Long endIndex = this.getStartIndex() + pageSize;
+		if (total != null) {
+			endIndex = endIndex > total ? total : endIndex;
+		}
+		return endIndex;
+	}
+
+	public Long getTotalPage() {
+		if (pageIndex == null || pageSize == null || total == null) {
+			return null;
+		}
+
+		Long totalPage = (total % pageSize > 0) ? (total / pageSize + 1) : (total / pageSize);
+		return totalPage;
+	}
+
+	public List<T> getData() {
+		return data;
+	}
+
+	public void setData(List<T> data) {
+		this.data = data;
 	}
 
 	public Long getTotal() {
 		return total;
 	}
 
-	public void setTotal(Long total) {
-		this.total = total;
-	}
-
-	public Integer getPageIndex() {
+	public Long getPageIndex() {
 		return pageIndex;
 	}
 
-	public void setPageIndex(Integer pageIndex) {
+	public void setPageIndex(Long pageIndex) {
 		this.pageIndex = pageIndex;
+	}
+
+	public void setTotal(Long total) {
+		this.total = total;
 	}
 
 	public Integer getPageSize() {
@@ -63,5 +82,5 @@ public class Page<T> implements Serializable {
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
 	}
-	
+
 }
