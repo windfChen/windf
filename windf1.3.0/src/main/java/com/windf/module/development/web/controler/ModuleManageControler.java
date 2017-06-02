@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,12 +18,12 @@ import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.ModuleDto;
 import com.windf.module.development.service.ModuleManageService;
-import com.windf.plugins.web.ParentControler;
+import com.windf.plugins.web.BaseControler;
 
 @Controller
 @Scope("prototype")
 @RequestMapping(value = Constant.WEB_BASE_PATH + "/module")
-public class ModuleManageControler extends ParentControler{
+public class ModuleManageControler extends BaseControler{
 	
 	@Resource
 	private ModuleManageService moduleManageService ;
@@ -33,10 +32,10 @@ public class ModuleManageControler extends ParentControler{
 	@RequestMapping(value = "/create", method = {RequestMethod.GET})
 	public Map<String, Object> create(HttpServletRequest request) {
 		// 验证参数
-		String moduleCode = request.getParameter("code");
-		String moduleName = request.getParameter("name");
-		String moduleInfo = request.getParameter("info");
-		String moduleBasePath = request.getParameter("basePath");
+		String moduleCode = this.getParameter("code");
+		String moduleName = this.getParameter("name");
+		String moduleInfo = this.getParameter("info");
+		String moduleBasePath = this.getParameter("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
 			return paramErrorMap();
 		}
@@ -60,9 +59,9 @@ public class ModuleManageControler extends ParentControler{
 	
 	@ResponseBody
 	@RequestMapping(value = "", method = {RequestMethod.GET})
-	public Map<String, Object> get(HttpServletRequest request) {
+	public Map<String, Object> get() {
 		// 验证参数
-		String moduleCode = request.getParameter("code");
+		String moduleCode = this.getParameter("code");
 		if (ParameterUtil.hasEmpty(moduleCode)) {
 			return paramErrorMap();
 		}
@@ -79,12 +78,12 @@ public class ModuleManageControler extends ParentControler{
 	}
 
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
-	public String index(HttpServletRequest request, ModelMap model) {
+	public String index() {
 		/*
 		 * 获取参数
 		 */
-		String pageIndexStr = ParameterUtil.defaultValue(request.getParameter("pageIndex"), "1");
-		String pageSizeStr = ParameterUtil.defaultValue(request.getParameter("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
+		String pageIndexStr = ParameterUtil.defaultValue(this.getParameter("pageIndex"), "1");
+		String pageSizeStr = ParameterUtil.defaultValue(this.getParameter("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
 		
 		/*
 		 * 验证参数
@@ -95,11 +94,15 @@ public class ModuleManageControler extends ParentControler{
 			return PARAMETER_ERROR_PAGE;
 		}
 		
-		
 		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);
-		model.put("page", page);
+		this.setValue("page", page);
 		
 		return Constant.WEB_BASE_VIEW + "index" ;
+	}
+	
+	@RequestMapping(value = "/remove", method = {RequestMethod.GET})
+	public String remove() {
+		return returnSuccessPage("删除成功", this.getBasePath() + "/dev/module/index", "");
 	}
 
 }
