@@ -6,10 +6,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.tools.zip.ZipEntry;
+import org.apache.tools.zip.ZipFile;
 
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
@@ -185,4 +192,53 @@ public class FileUtil {
 		String directory = file.getParentFile().getAbsolutePath();
 		file.renameTo(new File(directory + File.separator + newName));
 	}
+	
+	/**
+	 * 解压缩
+	 * @param zipFile
+	 * @param unzipDir
+	 * @return
+	 * @throws Exception
+	 */
+	public static String unzip(File zipFile, String unzipDir) throws Exception {
+		ZipEntry entry = null;
+		ZipFile zipfile = new ZipFile(zipFile);
+		if(StringUtils.isBlank(unzipDir)){
+			String tmp = zipFile.getPath();
+			unzipDir = tmp.substring(0, tmp.lastIndexOf(".") );
+		}
+		File newFile = new File(unzipDir);
+		if (!newFile.exists()) {
+			newFile.mkdirs();
+		}
+		@SuppressWarnings("unchecked")
+		Enumeration<ZipEntry> ea = zipfile.getEntries();
+		byte b[] = new byte[1024];
+		int length;
+		while (ea.hasMoreElements()) {
+			entry = (ZipEntry) ea.nextElement();
+			String entryName = entry.getName();
+			if (!entry.isDirectory()) {
+				File newefile = new File( unzipDir + "/" + entryName);
+				if (!newefile.getParentFile().exists()){
+					newefile.getParentFile().mkdirs();
+				}
+				OutputStream outputStream = new FileOutputStream(newefile);
+				InputStream inputStream = zipfile.getInputStream(entry);
+				while ((length = inputStream.read(b)) > 0) {
+					outputStream.write(b, 0, length);
+				}
+				outputStream.close();
+				inputStream.close();
+			}else{
+				File newefile = new File( unzipDir + "/" + entryName);
+				if (!newefile.exists()) {
+					newefile.mkdirs();
+				}
+			}
+		}
+		zipfile.close();
+		return unzipDir;
+	}
+
 }
