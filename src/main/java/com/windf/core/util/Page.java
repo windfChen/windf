@@ -26,8 +26,13 @@ public class Page<T> implements Serializable {
 		if (pageIndex == null || pageSize == null) {
 			return null;
 		}
-
-		return (pageIndex - 1) * pageSize;
+		
+		long startIndex = (pageIndex - 1) * pageSize;
+		if (total != null) {
+			startIndex = startIndex > total ? total : startIndex;
+		}
+		
+		return startIndex;
 	}
 
 	public Long getEndIndex() {

@@ -109,26 +109,6 @@ public class ModuleManageControler extends BaseControler{
 		return returnMap(true, "修改成功");
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "", method = {RequestMethod.GET})
-	public Map<String, Object> get() {
-		// 验证参数
-		String moduleCode = this.getParameter("code");
-		if (ParameterUtil.hasEmpty(moduleCode)) {
-			return paramErrorMap();
-		}
-		
-		// 调用服务
-		Module module = null;
-		try {
-			module = moduleManageService.getModule(moduleCode);
-		} catch (EntityException e) {
-			return errorMessageMap(e.getMessage());
-		}
-		
-		return successMap(module);
-	}
-
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
 	public String index() {
 		/*
@@ -150,11 +130,6 @@ public class ModuleManageControler extends BaseControler{
 		this.setValue("page", page);
 		
 		return Constant.WEB_BASE_VIEW + "index" ;
-	}
-	
-	@RequestMapping(value = "/remove", method = {RequestMethod.GET})
-	public String remove() {
-		return returnSuccessPage("删除成功", this.getBasePath() + "/dev/module/index", "");
 	}
 
 }

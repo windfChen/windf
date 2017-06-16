@@ -37,4 +37,11 @@ public interface ModuleManageService {
 	 * @return
 	 */
 	Page<Module> listAllModule(ModuleSearch moduleSearch, Integer pageNum, Integer pageSize);
+	
+	/**
+	 * 根据basePath获取模块
+	 * @param basePath
+	 * @return
+	 */
+	Module getModuleByPath(String basePath);
 }
