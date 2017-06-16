@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/jquery/jquery.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/page.js"></script>
 	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/minwindown.js" charset="utf-8"></script>
+	
 	<script>
 		var _basePath = "${rc.contextPath}";
 		var _modulePath = "${modulePath}";
@@ -69,5 +70,8 @@
 			<span>添加</span>
 		</button>
 	</div>
+	
+	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/canvas-nest.min.js"></script>
+	<canvas height="926" width="1920" style="position: fixed; top: 0px; left: 0px; z-index: -1; opacity: 0.5;" id="c_n1"></canvas>
 </body>
 </html>
