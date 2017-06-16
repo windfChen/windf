@@ -17,7 +17,7 @@ import com.windf.module.development.file.XmlFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
 
 public class Module {
-	
+
 	public static Module loadModule(String moduleCode) throws EntityException {
 		String exampleDescriptPath = ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + moduleCode + ".xml";
 		File exampleDescriptFile = FileUtil.getWebappFile(exampleDescriptPath);
@@ -36,6 +36,8 @@ public class Module {
 	private String info;
 	private Map<String, String> path;
 	private List<String> dependent;
+	private List<URL> urls;
+	private List<Controler> controlers;
 
 	// TODO servicves:List<Service> urls:List<URL>
 
@@ -45,15 +47,15 @@ public class Module {
 		this.cloneSourceDirectorys(moduleMaster, newCode);
 
 		this.cloneWebDirectorys(moduleMaster, newCode);
-		
+
 		this.cloneConfigFile(moduleMaster, newCode);
 
 		return loadModule(newCode);
 	}
-	
+
 	public void write() throws EntityException {
-		File file = new File(FileUtil.getWebappPath() + 
-				ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
+		File file = new File(
+				FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
 		XmlFileUtil.writeObject2Xml(this, file);
 	}
 
@@ -79,12 +81,12 @@ public class Module {
 	}
 
 	private void cloneConfigFile(ModuleMaster moduleMaster, String newCode) {
-		String templateModuleConfigFilePath = FileUtil.getWebappPath() + 
-				ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml";
-		String newModuleConfigFilePath = FileUtil.getWebappPath() + 
-				ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + newCode + ".xml";
+		String templateModuleConfigFilePath = FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH
+				+ this.getCode() + ".xml";
+		String newModuleConfigFilePath = FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH
+				+ newCode + ".xml";
 		FileUtil.copyFile(templateModuleConfigFilePath, newModuleConfigFilePath);
-		
+
 		this.modifyFileContent(new File(newModuleConfigFilePath), newCode);
 	}
 
@@ -169,6 +171,22 @@ public class Module {
 
 	public void setDependent(List<String> dependent) {
 		this.dependent = dependent;
+	}
+
+	public List<URL> getUrls() {
+		return urls;
+	}
+
+	public void setUrls(List<URL> urls) {
+		this.urls = urls;
+	}
+
+	public List<Controler> getControlers() {
+		return controlers;
+	}
+
+	public void setControlers(List<Controler> controlers) {
+		this.controlers = controlers;
 	}
 
 }

@@ -16,6 +16,14 @@ public class JavaFileUtil {
 	 * @param lineReader
 	 */
 	public static void readLine(File file, LineReader lineReader) {
+		readLine(file, lineReader, false);
+	}
+	/**
+	 * 按行读取每个内容
+	 * @param file
+	 * @param lineReader
+	 */
+	public static void readLine(File file, LineReader lineReader, boolean readonly) {
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		String lineContent = null;
@@ -35,13 +43,15 @@ public class JavaFileUtil {
 			/*
 			 * 重新写入文件
 			 */
-			writer = new BufferedWriter(new FileWriter(file));
-			for (int i = 0; i < oldLines.size(); i++) {
-				lineContent = oldLines.get(i);
-				writer.write(lineContent);
-				writer.newLine();
+			if (!readonly) {
+				writer = new BufferedWriter(new FileWriter(file));
+				for (int i = 0; i < oldLines.size(); i++) {
+					lineContent = oldLines.get(i);
+					writer.write(lineContent);
+					writer.newLine();
+				}
+				writer.flush();
 			}
-			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -58,6 +68,13 @@ public class JavaFileUtil {
 				}
 			}
 		}
+		
+	}
+	
+	public static boolean getMethod(String classPath, String methodName) {
+		
+		
+		return false;
 		
 	}
 

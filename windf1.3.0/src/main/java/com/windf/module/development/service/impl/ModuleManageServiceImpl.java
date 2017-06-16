@@ -156,4 +156,14 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		return page;
 	}
 
+	@Override
+	public Module getModuleByPath(String basePath) {
+		// TODO
+		ModuleSearch moduleSearch = new ModuleSearch();
+		moduleSearch.setBasePath(basePath);
+		
+		listAllModule(moduleSearch, 1, 1);
+		return null;
+	}
+
 }

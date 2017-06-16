@@ -54,6 +54,16 @@ public class SimpleField {
 	 * @param value
 	 * @return
 	 */
+	public boolean setStringValue(String value) {
+		Class<? extends Object>[] parameterTypes = setter.getParameterTypes();
+		return setValue(ReflectUtil.getValue(parameterTypes[0], value));
+	}
+	
+	/**
+	 * 通过setter为field设置值
+	 * @param value
+	 * @return
+	 */
 	public boolean setValue(Object value) {
 		boolean result = false;
 		try {
