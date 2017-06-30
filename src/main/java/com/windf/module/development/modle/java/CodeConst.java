@@ -1,4 +1,4 @@
-package com.windf.module.development.modle;
+package com.windf.module.development.modle.java;
 
 public class CodeConst {
 	public static final String TAB = "    ";

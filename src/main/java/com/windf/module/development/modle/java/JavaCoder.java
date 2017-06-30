@@ -1,4 +1,4 @@
-package com.windf.module.development.modle;
+package com.windf.module.development.modle.java;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
-public class JavaCoder {
+public class JavaCoder extends AbstractType{
 
 	public static void main(String[] args) {
 		JavaCoder j = new JavaCoder("F:/temp/UrlControler.java");
@@ -34,7 +34,6 @@ public class JavaCoder {
 	private String classPath;
 	private String packageInfo;
 	private List<String> imports = new ArrayList<String>();
-	private List<String> classAnnotations;
 	private String className;
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 	private List<Method> methods = new ArrayList<Method>();
@@ -106,7 +105,7 @@ public class JavaCoder {
 				
 				if (lineContent.startsWith("public class ")) {
 					if (annotations.size() > 0) {
-						classAnnotations = annotations;
+						setAnnotations(annotations);
 						annotations = new ArrayList<String>();
 					}
 					className = lineContent;
@@ -230,9 +229,7 @@ public class JavaCoder {
 		result.addAll(imports);
 		result.add("");
 		
-		if (!CollectionUtils.isEmpty(classAnnotations)) {
-			result.addAll(classAnnotations);
-		}
+		result.addAll(getAnnotations(0));
 		result.add(className);
 		result.add("");
 		
