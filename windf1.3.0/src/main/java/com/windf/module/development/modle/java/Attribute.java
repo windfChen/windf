@@ -1,9 +1,9 @@
-package com.windf.module.development.modle;
+package com.windf.module.development.modle.java;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Attribute extends ClassContent {
+class Attribute extends AbstractType {
 	/*
 	 * codes
 	 */
@@ -48,7 +48,7 @@ class Attribute extends ClassContent {
 		List<String> result = new ArrayList<String>();
 		
 		result.addAll(this.getComment());
-		result.addAll(this.getAnnotations());
+		result.addAll(this.getAnnotations(1));
 		result.add(codes);
 		
 		return result;

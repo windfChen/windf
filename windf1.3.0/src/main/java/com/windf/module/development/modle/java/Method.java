@@ -1,4 +1,4 @@
-package com.windf.module.development.modle;
+package com.windf.module.development.modle.java;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
-class Method extends ClassContent{
+class Method extends AbstractType{
 	/*
 	 * 代码
 	 */
@@ -162,7 +162,7 @@ class Method extends ClassContent{
 		List<String> result = new ArrayList<String>();
 		
 		result.addAll(this.getComment());
-		result.addAll(this.getAnnotations());
+		result.addAll(this.getAnnotations(1));
 		
 		result.add(methodStart);
 		for (int i = 0; i < codeBlocks.size(); i++) {

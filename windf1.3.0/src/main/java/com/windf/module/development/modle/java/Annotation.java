@@ -1,4 +1,4 @@
-package com.windf.module.development.modle;
+package com.windf.module.development.modle.java;
 
 import java.util.HashMap;
 import java.util.Iterator;
