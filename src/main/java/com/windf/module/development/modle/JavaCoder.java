@@ -6,18 +6,32 @@ import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
+import com.windf.core.exception.EntityException;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
+import com.windf.module.development.pojo.ExceptionType;
+import com.windf.module.development.pojo.Parameter;
+import com.windf.module.development.pojo.Return;
 
 public class JavaCoder {
 
 	public static void main(String[] args) {
 		JavaCoder j = new JavaCoder("F:/temp/UrlControler.java");
+		try {
+			List<Parameter> p = new ArrayList<Parameter>();
+			p.add(new Parameter("String", "userId"));
+			p.add(new Parameter("String", "username"));
+			j.createMethod("test", new Return("String"), p, new ExceptionType("EntityException"));
+			
+			j.createAttribute("Integer", "bb");
+			
+		} catch (EntityException e) {
+			e.printStackTrace();
+		}
 		 j.write();
 	}
 	
 	private String classPath;
-	
 	private String packageInfo;
 	private List<String> imports = new ArrayList<String>();
 	private List<String> classAnnotations;
@@ -28,10 +42,10 @@ public class JavaCoder {
 	
 	public JavaCoder(String classPath) {
 		this.classPath = classPath;
-		init();
+		readCodes();
 	}
 
-	private void init() {
+	private void readCodes() {
 		File javaFile = new File(classPath);
 		
 		JavaFileUtil.readLine(javaFile, new LineReader() {
@@ -44,6 +58,9 @@ public class JavaCoder {
 			
 			@Override
 			public String readLine(List<String> oldLines, String lineContent, int lineNo) {
+				
+				// 统一制表符
+				lineContent = lineContent.replace("\t", CodeConst.TAB);
 
 				if (inComments || Comment.isCommentStart(lineContent)) {
 					if (!inComments) {
@@ -131,20 +148,38 @@ public class JavaCoder {
 	
 	/**
 	 * 创建一个方法
-	 * @param name
+	 * @param methodStart
 	 * @return
 	 */
-	public Method createMethod(String name) {
-		return null;
+	public Method createMethod(String methodName, Return ret, List<Parameter> parameters, ExceptionType exceptionType) throws EntityException{
+		if (this.getMethod(methodName) != null) {
+			throw new EntityException("方法已存在");
+		}
+		
+		Method method = new Method(methodName, ret, parameters, exceptionType);
+		this.methods.add(method);
+		
+		return method;
 	}
-	
+
 	/**
 	 * 根据方法名，查询一个方法
 	 * @param name
 	 * @return
 	 */
 	public Method getMethod(String name) {
-		return null;
+		Method result = null;
+		
+		if (!CollectionUtils.isEmpty(methods)) {
+			for (Method method : methods) {
+				if (method.methodName.equals(name)) {
+					result = method;
+					break;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -152,8 +187,15 @@ public class JavaCoder {
 	 * @param name
 	 * @return
 	 */
-	public Attribute createAttribute(String name) {
-		return null;
+	public Attribute createAttribute(String type, String name) throws EntityException {
+		if (this.getAttribute(name) != null) {
+			throw new EntityException("属性已存在");
+		}
+		
+		Attribute attribute = new Attribute(type, name);
+		this.attributes.add(attribute);
+		
+		return attribute;
 	}
 	
 	/**
@@ -162,7 +204,18 @@ public class JavaCoder {
 	 * @return
 	 */
 	public Attribute getAttribute(String name) {
-		return null;
+		Attribute result = null;
+		
+		if (!CollectionUtils.isEmpty(attributes)) {
+			for (Attribute attribute : attributes) {
+				if (attribute.name.equals(name)) {
+					result = attribute;
+					break;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -207,7 +260,7 @@ public class JavaCoder {
 	 * @param lineContent
 	 * @return
 	 */
-	private boolean isMethodStart(String lineContent) {
+	protected boolean isMethodStart(String lineContent) {
 		boolean result = false;
 		
 		if (lineStartTabCount(lineContent) == 1 ) {
@@ -224,7 +277,7 @@ public class JavaCoder {
 	 * @param lineContent
 	 * @return
 	 */
-	private boolean isAttribute(String lineContent) {
+	protected boolean isAttribute(String lineContent) {
 		boolean result = false;
 		
 		if (lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0 && lineContent.trim().endsWith(";")) {
@@ -269,7 +322,7 @@ public class JavaCoder {
 	 * @param lineContent
 	 * @return
 	 */
-	private int lineStartTabCount(String lineContent) {
+	protected int lineStartTabCount(String lineContent) {
 		int count = 0;
 		lineContent = lineContent.replace("\t", "    ");
 		while (lineContent.startsWith("    ")) {	// 4个空格开始
