@@ -8,7 +8,7 @@ import org.springframework.util.CollectionUtils;
 class Comment {
 	
 	/**
-	 * isCommentStart
+	 * 判断是否是注释开始标志
 	 * @param lineContent
 	 * @return
 	 */
@@ -17,27 +17,45 @@ class Comment {
 	}
 	
 	/**
-	 * isCommentEnd
+	 * 判断是否是注释结束标志
 	 */
 	static boolean isCommentEnd(String lineContent) {
 		return lineContent.trim().equals("*/");
 	}
 	
-	List<String> comment;
+	String commentStrat;
+	List<String> comment = new ArrayList<String>();
+	String commentEnd;
 	
-	Comment (List<String> comment) {
-		this.comment = comment;
+	Comment (String commentStrat) {
+		this.commentStrat = commentStrat;
+	}
+	
+	void end(String commentEnd) {
+		this.commentEnd = commentEnd;
+	}
+	
+	
+	/**
+	 * 添加一行注释
+	 * @param lineContent
+	 */
+	void addLine(String lineContent) {
+		comment.add(lineContent);
 	}
 
 	/**
-	 * write codes
+	 * 获得注释的代码形式
+	 * 如果注释为空，返回长度为0的list
 	 * @return
 	 */
 	List<String> write() {
 		List<String> result = new ArrayList<String>();
 		
 		if (!CollectionUtils.isEmpty(comment)) {
-			result.addAll(result);
+			result.add(commentStrat);
+			result.addAll(comment);
+			result.add(commentEnd);
 		}
 		
 		return result;

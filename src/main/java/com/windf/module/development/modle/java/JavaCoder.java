@@ -19,7 +19,7 @@ public class JavaCoder extends AbstractType{
 		JavaCoder j = new JavaCoder("F:/temp/UrlControler.java");
 		try {
 			List<Parameter> p = new ArrayList<Parameter>();
-			p.add(new Parameter("String", "userId"));
+			p.add(new Parameter("java.lang.String", "userId"));
 			p.add(new Parameter("String", "username"));
 			j.createMethod("test", new Return("String"), p, new ExceptionType("EntityException"));
 			
@@ -33,7 +33,7 @@ public class JavaCoder extends AbstractType{
 	
 	private String classPath;
 	private String packageInfo;
-	private List<String> imports = new ArrayList<String>();
+	private Imports imports = new Imports();
 	private String className;
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 	private List<Method> methods = new ArrayList<Method>();
@@ -51,88 +51,64 @@ public class JavaCoder extends AbstractType{
 			
 			List<String> annotations = new ArrayList<String>();
 			boolean isInMethod = false;
-			List<String> methodLines = new ArrayList<String>();
+			Method method = null;
 			boolean inComments = false;
-			List<String> commentLines = new ArrayList<String>();
+			Comment comment = null;
 			
 			@Override
 			public String readLine(List<String> oldLines, String lineContent, int lineNo) {
 				
 				// 统一制表符
 				lineContent = lineContent.replace("\t", CodeConst.TAB);
-
-				if (inComments || Comment.isCommentStart(lineContent)) {
-					if (!inComments) {
-						inComments = true;
-					}
-					commentLines.add(lineContent);
-					
-					if (Comment.isCommentEnd(lineContent)) {
-						inComments = false;
-					}
-					return lineContent;
-				}
-				
-				if (isInMethod || isMethodStart(lineContent)) {
-					if (!isInMethod) {
-						isInMethod = true;
-					}
-					methodLines.add(lineContent);
-					
-					if (isMethodEnd(lineContent)) {
-						isInMethod = false;
-						Method method = new Method(methodLines, new Comment(commentLines));
-						methodLines = new ArrayList<String>();
-						methods.add(method);
-						commentLines = new ArrayList<String>();
-						if (!CollectionUtils.isEmpty(annotations)) {
-							method.setAnnotations(annotations);
-							annotations = new ArrayList<String>();
-						}
-					}
-					return lineContent;
-				}
 				
 				if (lineContent.startsWith("package ")) {
 					packageInfo = lineContent;
-					return lineContent;
-				}
-				
-				if (lineContent.startsWith("import ")) {
-					imports.add(lineContent);
-					return lineContent;
-				}
-				
-				if (lineContent.startsWith("public class ")) {
-					if (annotations.size() > 0) {
-						setAnnotations(annotations);
-						annotations = new ArrayList<String>();
-					}
+				} else if (lineContent.startsWith("import ")) {
+					imports.addLine(lineContent);
+				} else if (lineContent.startsWith("public class ")) {
 					className = lineContent;
-					return lineContent;
-				}
-				
-				if (lineContent.trim().startsWith("@")) {
+					setComment(comment);
+					setAnnotations(annotations);
+					reset();
+				} else if (Method.isMethodEnd(lineContent)) {
+					isInMethod = false;
+					
+					method.setComment(comment);
+					method.setAnnotations(annotations);
+					method.initCodeBlocks();
+					reset();
+				} else if (isInMethod) {
+					method.addLine(lineContent);
+				} else if (Comment.isCommentEnd(lineContent)) {
+					inComments = false;
+					comment.end(lineContent);
+				} else if (inComments) {
+					comment.addLine(lineContent);
+				} else if (Comment.isCommentStart(lineContent)) {
+					inComments = true;
+					comment = new Comment(lineContent);
+				} else if (Annotation.isAnnotationLine(lineContent)) {
 					annotations.add(lineContent);
-					return lineContent;
-				}
-				
-				if (isAttribute(lineContent)) {
-					Attribute attribute = new Attribute(lineContent, new Comment(commentLines));
+				} else if (Method.isMethodStart(lineContent)) {
+					isInMethod = true;
+					method = new Method(lineContent);
+					methods.add(method);
+				} else if (Attribute.isAttributeLine(lineContent)) {
+					Attribute attribute = new Attribute(lineContent);
 					attributes.add(attribute);
-					commentLines = new ArrayList<String>();
-					if (!CollectionUtils.isEmpty(annotations)) {
-						attribute.setAnnotations(annotations);
-						annotations = new ArrayList<String>();
-					}
-					return lineContent;
-				}
-				
-				if (isClassEnd(lineContent)) {
+					attribute.setAnnotations(annotations);
+					attribute.setComment(comment);
+					reset();
+				} else if (isClassEnd(lineContent)) {
 					classEnd = lineContent;
 				}
 				
 				return null;
+			}
+			
+			private void reset() {
+				annotations = new ArrayList<String>();
+				comment = null;
 			}
 		}, true);
 	}
@@ -220,15 +196,16 @@ public class JavaCoder extends AbstractType{
 	/**
 	 * 写类
 	 */
-	public void write() {
+	public List<String> write() {
 		List<String> result = new ArrayList<String>();
 		
 		result.add(packageInfo);
 		result.add("");
 		
-		result.addAll(imports);
+		result.addAll(imports.write());
 		result.add("");
 		
+		result.addAll(getComment());
 		result.addAll(getAnnotations(0));
 		result.add(className);
 		result.add("");
@@ -250,51 +227,6 @@ public class JavaCoder extends AbstractType{
 		for (int i = 0; i < result.size(); i++) {
 			System.out.println(result.get(i));
 		}
-	}
-	
-	/**
-	 * 判断这一行是否是方法声明
-	 * @param lineContent
-	 * @return
-	 */
-	protected boolean isMethodStart(String lineContent) {
-		boolean result = false;
-		
-		if (lineStartTabCount(lineContent) == 1 ) {
-			if (lineContent.contains("abstract") || lineContent.trim().endsWith("{")) {
-				result = true; 
-			}
-		}
-		
-		return result;
-	}
-
-	/**
-	 * 判断是否是属性，所有属性都是一行
-	 * @param lineContent
-	 * @return
-	 */
-	protected boolean isAttribute(String lineContent) {
-		boolean result = false;
-		
-		if (lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0 && lineContent.trim().endsWith(";")) {
-			result = true; 
-		}
-		
-		return result;
-	}
-
-	/**
-	 * 是否是方法的结尾
-	 * @param lineContent
-	 * @return
-	 */
-	protected boolean isMethodEnd(String lineContent) {
-		boolean result = false;
-		
-		if (lineStartTabCount(lineContent) == 1 && lineContent.trim().equals("}")) {
-			result = true; 
-		}
 		
 		return result;
 	}
@@ -307,26 +239,11 @@ public class JavaCoder extends AbstractType{
 	protected boolean isClassEnd(String lineContent) {
 		boolean result = false;
 		
-		if (lineStartTabCount(lineContent) == 0 && lineContent.equals("}")) {
+		if (CodeConst.lineStartTabCount(lineContent) == 0 && lineContent.equals("}")) {
 			result = true; 
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * 开始时空格的数量
-	 * @param lineContent
-	 * @return
-	 */
-	protected int lineStartTabCount(String lineContent) {
-		int count = 0;
-		lineContent = lineContent.replace("\t", "    ");
-		while (lineContent.startsWith("    ")) {	// 4个空格开始
-			count ++;
-			lineContent = lineContent.substring(4);
-		}
-		return count;
 	}
 	
 }

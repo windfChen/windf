@@ -3,14 +3,12 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-class CodeBlock {
+class CodeBlock extends AbstractType {
 
-	Comment comment;
 	List<String> codes;
 	
-	CodeBlock (List<String> codes, Comment comment) {
+	CodeBlock (List<String> codes) {
 		this.codes = codes;
-		this.comment = comment;
 	}
 
 	/**
@@ -20,7 +18,9 @@ class CodeBlock {
 	List<String> write() {
 		List<String> result = new ArrayList<String>();
 		
-		result.addAll(comment.write());
+		if (comment != null) {
+			result.addAll(comment.write());
+		}
 		result.addAll(codes);
 		
 		return result;

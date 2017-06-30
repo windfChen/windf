@@ -11,12 +11,47 @@ import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
 class Method extends AbstractType{
+	
+
+	/**
+	 * 判断这一行是否是方法声明
+	 * @param lineContent
+	 * @return
+	 */
+	static boolean isMethodStart(String lineContent) {
+		boolean result = false;
+		
+		if (CodeConst.lineStartTabCount(lineContent) == 1 ) {
+			if (lineContent.contains("abstract") || lineContent.trim().endsWith("{")) {
+				result = true; 
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 是否是方法的结尾
+	 * @param lineContent
+	 * @return
+	 */
+	static boolean isMethodEnd(String lineContent) {
+		boolean result = false;
+		
+		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().equals("}")) {
+			result = true; 
+		}
+		
+		return result;
+	}
+	
 	/*
 	 * 代码
 	 */
 	String methodStart;
-	List<CodeBlock> codeBlocks;
-	String methodEnd;
+	List<CodeBlock> codeBlocks = new ArrayList<CodeBlock>();
+	List<String> codes = new ArrayList<String>();
+	String methodEnd = CodeConst.TAB + "}";
 	
 	/*
 	 * 方法信息
@@ -31,12 +66,11 @@ class Method extends AbstractType{
 	 * @param lines
 	 * @param comment
 	 */
-	Method (List<String> lines, Comment comment) {
+	Method (String methodStart) {
+		this.methodStart = methodStart;
 		this.codeBlocks = new ArrayList<CodeBlock>();
-		this.comment = comment;
 		
-		initFromCodes(lines);
-		initFromNameCodes();
+		initInfoFromMethodStart();
 	}
 	
 	/**
@@ -52,61 +86,80 @@ class Method extends AbstractType{
 		this.parameters = parameters;
 		this.exceptionType = exception;
 		
-		initFromParams();
+		initMethodStartFromInfo();
+	}
+	
+	/**
+	 * 向方法中添加一行
+	 * @param lineContent
+	 */
+	void addLine(String lineContent) {
+		codes.add(lineContent);
 	}
 
 	/**
 	 * 解析方法，代码，解析方法块
 	 * @param lines
 	 */
-	private void initFromCodes(List<String> lines) {
+	void initCodeBlocks() {
+		List<String> lines = codes;
 
 		if (!CollectionUtils.isEmpty(lines)) {
 			boolean inComments = false;
-			
-			methodStart = lines.get(0);
-
-			List<String> commentLines = new ArrayList<String>();
+			Comment comment = null;
 			List<String> coderLines = new ArrayList<String>();
-			for (int no = 1; no < lines.size() - 1; no ++) {
-				String line = lines.get(no);
+			for (int no = 0; no < lines.size() - 1; no ++) {
+				String lineContent = lines.get(no);
 				
-				if (Comment.isCommentStart(line)) {
-					inComments = true;
-					
+				if (Comment.isCommentEnd(lineContent)) {
+					inComments = false;
+					comment.end(lineContent);
+				} else if (inComments) {
+					comment.addLine(lineContent);
+				} else if (Comment.isCommentStart(lineContent)) {
 					if (!CollectionUtils.isEmpty(coderLines)) {
-						Comment comment = new Comment(commentLines);
-						CodeBlock codeBlock = new CodeBlock(coderLines, comment);
+						CodeBlock codeBlock = new CodeBlock(coderLines);
+						codeBlock.setComment(comment);
 						codeBlocks.add(codeBlock);
 					}
-				}
-				
-				if (inComments) {
-					commentLines.add(line);
+
+					inComments = true;
+					comment = new Comment(lineContent);
 				} else {
-					coderLines.add(line);
+					coderLines.add(lineContent);
 				}
-				
-				if (Comment.isCommentEnd(line)) {
-					inComments = false;
-				}
-				
 			}
 			
 			if (!CollectionUtils.isEmpty(coderLines)) {
-				Comment comment = new Comment(commentLines);
-				CodeBlock codeBlock = new CodeBlock(coderLines, comment);
+				CodeBlock codeBlock = new CodeBlock(coderLines);
+				codeBlock.setComment(comment);
 				codeBlocks.add(codeBlock);
 			}
 			
-			this.methodEnd = CodeConst.TAB + "}";
 		}
 	}
 	
-	/**
+	@Override
+	List<String> write() {
+		List<String> result = new ArrayList<String>();
+		
+		result.addAll(this.getComment());
+		result.addAll(this.getAnnotations(1));
+		
+		result.add(methodStart);
+		for (int i = 0; i < codeBlocks.size(); i++) {
+			CodeBlock codeBlock = codeBlocks.get(i);
+			result.addAll(codeBlock.write());
+		}
+		result.add(methodEnd);
+		
+		return result;
+	}
+	
+	/*
 	 * 截取方法申明行代码，获取方法的信息
 	 */
-	private void initFromNameCodes() {
+	private void initInfoFromMethodStart() {
 		String parameterStr = methodStart.substring(methodStart.indexOf("("), methodStart.indexOf(")"));
 		String nameStrs = methodStart.substring(0, methodStart.indexOf("(")) + methodStart.substring(methodStart.indexOf(")"));
 		String[] titles = nameStrs.split(CodeConst.WORD_SPLIT);
@@ -127,10 +180,10 @@ class Method extends AbstractType{
 		}
 	}
 
-	/**
+	/*
 	 * 根据方法信息，创建方法代码
 	 */
-	private void initFromParams() {
+	private void initMethodStartFromInfo() {
 		StringBuffer methodCodes = new StringBuffer();
 		methodCodes.append(CodeConst.TAB);
 		methodCodes.append("public");
@@ -154,23 +207,5 @@ class Method extends AbstractType{
 		methodCodes.append(CodeConst.WORD_SPLIT + "{");
 	
 		this.methodStart = methodCodes.toString();
-		this.codeBlocks = new ArrayList<CodeBlock>();
-		this.methodEnd = CodeConst.TAB + "}";
-	}
-
-	List<String> write() {
-		List<String> result = new ArrayList<String>();
-		
-		result.addAll(this.getComment());
-		result.addAll(this.getAnnotations(1));
-		
-		result.add(methodStart);
-		for (int i = 0; i < codeBlocks.size(); i++) {
-			CodeBlock codeBlock = codeBlocks.get(i);
-			result.addAll(codeBlock.write());
-		}
-		result.add(methodEnd);
-		
-		return result;
 	}
 }

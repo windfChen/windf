@@ -4,6 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Attribute extends AbstractType {
+	/**
+	 * 判断是否是属性，所有属性都是一行
+	 * @param lineContent
+	 * @return
+	 */
+	static boolean isAttributeLine(String lineContent) {
+		boolean result = false;
+		
+		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0 && lineContent.trim().endsWith(";")) {
+			result = true; 
+		}
+		
+		return result;
+	}
+	
 	/*
 	 * codes
 	 */
@@ -14,8 +29,7 @@ class Attribute extends AbstractType {
 	String type;
 	String name;
 
-	Attribute(String lineContent, Comment comment) {
-		this.comment = comment;
+	Attribute(String lineContent) {
 		this.codes = lineContent;
 		
 		initInfoByCodes();
