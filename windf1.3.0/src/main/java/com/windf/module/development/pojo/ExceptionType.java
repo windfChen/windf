@@ -3,6 +3,14 @@ package com.windf.module.development.pojo;
 public class ExceptionType {
 	private String type;
 	private String message;
+	
+	public ExceptionType() {
+		
+	}
+	
+	public ExceptionType(String type) {
+		this.type = type;
+	}
 
 	public String getType() {
 		return type;

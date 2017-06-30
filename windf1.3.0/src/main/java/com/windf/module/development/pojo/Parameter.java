@@ -7,6 +7,15 @@ public class Parameter {
 	private String descript;
 	private String type;
 	private Map<String, String> patterns;
+	
+	public Parameter() {
+		
+	}
+	
+	public Parameter(String type, String name) {
+		this.name = name;
+		this.type = type;
+	}
 
 	public String getName() {
 		return name;
