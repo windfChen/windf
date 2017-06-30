@@ -6,8 +6,29 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 
 public abstract class AbstractType {
+	
 	Comment comment;
 	List<Annotation> annotations;
+
+	/**
+	 * 设置注释
+	 * @param comment
+	 */
+	void setComment(Comment comment) {
+		this.comment = comment;
+	}
+
+	/**
+	 *  get comment codes
+	 * @return
+	 */
+	List<String> getComment() {
+		List<String> result = new ArrayList<String>(); 
+		if (comment != null) {
+			result.addAll(comment.write());
+		}
+		return result;
+	}
 
 	/**
 	 * setAnnotations
@@ -42,16 +63,6 @@ public abstract class AbstractType {
 		}
 		return result;
 	}
-	
-	/**
-	 *  get comment codes
-	 * @return
-	 */
-	List<String> getComment() {
-		List<String> result = new ArrayList<String>(); 
-		if (comment != null) {
-			result.addAll(comment.write());
-		}
-		return result;
-	}
+
+	abstract List<String> write();
 }

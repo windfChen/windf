@@ -7,6 +7,10 @@ import java.util.Map;
 class Annotation {
 	private static final String DEFAULT_KEY = "value";
 	
+	static boolean isAnnotationLine(String lineContent) {
+		return lineContent.trim().startsWith("@");
+	}
+	
 	String name;
 	Map<String, String> values;
 	
