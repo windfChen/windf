@@ -7,14 +7,14 @@ import org.springframework.util.CollectionUtils;
 
 public abstract class AbstractType {
 	
-	Comment comment;
-	List<Annotation> annotations;
-
+	protected Comment comment;
+	protected List<Annotation> annotations;
+	
 	/**
 	 * 设置注释
 	 * @param comment
 	 */
-	void setComment(Comment comment) {
+	public void setComment(Comment comment) {
 		this.comment = comment;
 	}
 
@@ -22,7 +22,7 @@ public abstract class AbstractType {
 	 *  get comment codes
 	 * @return
 	 */
-	List<String> getComment() {
+	public List<String> getComment() {
 		List<String> result = new ArrayList<String>(); 
 		if (comment != null) {
 			result.addAll(comment.write());
@@ -30,9 +30,13 @@ public abstract class AbstractType {
 		return result;
 	}
 
+	public Comment getComments() {
+		return this.comment;
+	}
+	
 	/**
-	 * setAnnotations
-	 * @param annotations
+	 * setAnnotation
+	 * @param annotation
 	 */
 	void setAnnotations(List<String> annotationsCodes) {
 		List<Annotation> annotations = null;
@@ -48,13 +52,13 @@ public abstract class AbstractType {
 		
 		this.annotations = annotations;
 	}
-	
+
 	/**
 	 * get annotation codes
 	 * @param tabCount 
 	 * @return
 	 */
-	List<String> getAnnotations(int tabCount) {
+	public List<String> getAnnotationsString(int tabCount) {
 		List<String> result = new ArrayList<String>(); 
 		if (!CollectionUtils.isEmpty(annotations)) {
 			 for (Annotation annotation : annotations) {
@@ -63,6 +67,38 @@ public abstract class AbstractType {
 		}
 		return result;
 	}
+	
+	public List<Annotation> getAnnotations() {
+		return this.annotations;
+	}
+	
+	public Annotation getAnnotationByName(String annotationName) {
+		Annotation result = null;
+		
+		if (this.annotations != null) {
+			for (Annotation annotation : annotations) {
+				if (annotation.getName().equals(annotationName)) {
+					result = annotation;
+					break;
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	public void addAnnotation(Annotation annotation) {
+		if (annotations == null) {
+			annotations = new ArrayList<Annotation>();
+		}
+		annotations.add(annotation);
+	}
+	
+	public void setAnnotation(Annotation annotation) {
+		annotations = new ArrayList<Annotation>();
+		addAnnotation(annotation);
+	}
 
 	abstract List<String> write();
+	
 }

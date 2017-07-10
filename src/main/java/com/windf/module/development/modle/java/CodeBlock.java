@@ -3,12 +3,24 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-class CodeBlock extends AbstractType {
+public class CodeBlock extends AbstractType {
+	public static final int PARAMS_BLOCK_INDEX = Integer.MIN_VALUE;
+	public static final int RETURN_BLOCK_INDEX = Integer.MAX_VALUE;
+	public static final int NORMAL_BLOCK_INDEX = 0;
 
-	List<String> codes;
+	private int serial = 0;
+	private List<String> codes;
 	
-	CodeBlock (List<String> codes) {
+	public CodeBlock (List<String> codes) {
 		this.codes = codes;
+	}
+	
+	public void setSerial(int serial) {
+		this.serial = serial;
+	}
+	
+	public int getSerial() {
+		return this.serial;
 	}
 
 	/**

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.file.FileUtil;
 import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.module.development.file.XmlFileUtil;
@@ -21,7 +21,7 @@ public class ModuleMaster implements Cloneable {
 	
 	private static ModuleMaster moduleMaster = null;
 	
-	public static ModuleMaster getInstance() throws EntityException {
+	public static ModuleMaster getInstance() throws UserException {
 		
 		if (moduleMaster == null) {
 			File moduleMasterFile = FileUtil.getWebappFile(DEFAULT_MASTER_CONFIG_FILE);
@@ -66,6 +66,9 @@ public class ModuleMaster implements Cloneable {
 		return module;
 	}
 	
+	/**
+	 * 把类的内容写入master.xml
+	 */
 	public void write() {
 		/*
 		 * 只保留需要持久化的module属性

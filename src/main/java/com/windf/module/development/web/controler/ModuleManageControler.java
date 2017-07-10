@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.util.Page;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
@@ -43,7 +43,7 @@ public class ModuleManageControler extends BaseControler{
 			try {
 				Module module = moduleManageService.getModule(moduleCode);
 				this.setValue("bean", module);
-			} catch (EntityException e) {
+			} catch (UserException e) {
 				e.printStackTrace();
 			}
 		}
@@ -73,7 +73,7 @@ public class ModuleManageControler extends BaseControler{
 		// 调用服务
 		try {
 			moduleManageService.createModule(moduleDto);
-		} catch (EntityException e) {
+		} catch (UserException e) {
 			return errorMessageMap(e.getMessage());
 		}
 		
@@ -102,14 +102,14 @@ public class ModuleManageControler extends BaseControler{
 		// 调用服务
 		try {
 			moduleManageService.modifyModule(moduleDto);
-		} catch (EntityException e) {
+		} catch (UserException e) {
 			return errorMessageMap(e.getMessage());
 		}
 		
 		return returnMap(true, "修改成功");
 	}
 	
-	@RequestMapping(value = "/index", method = {RequestMethod.GET})
+	@RequestMapping(value = "/", method = {RequestMethod.GET})
 	public String index() {
 		/*
 		 * 获取参数

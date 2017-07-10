@@ -1,6 +1,6 @@
 package com.windf.module.development.service;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.util.Page;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.ModuleDto;
@@ -10,24 +10,24 @@ public interface ModuleManageService {
 	/**
 	 * 创建模块
 	 * @return 
-	 * @throws EntityException 
+	 * @throws UserException 
 	 */
-	Module createModule(ModuleDto moduleDto) throws EntityException;
+	Module createModule(ModuleDto moduleDto) throws UserException;
 
 	/**
 	 * 修改模块
 	 * @param moduleDto
-	 * @throws EntityException
+	 * @throws UserException
 	 */
-	Module modifyModule(ModuleDto moduleDto) throws EntityException;
+	Module modifyModule(ModuleDto moduleDto) throws UserException;
 
 	/**
 	 * 获得模块
 	 * @param code
 	 * @return
-	 * @throws EntityException
+	 * @throws UserException
 	 */
-	Module getModule(String code) throws EntityException;
+	Module getModule(String code) throws UserException;
 
 	/**
 	 * 查询模块

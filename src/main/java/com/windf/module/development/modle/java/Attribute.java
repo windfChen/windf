@@ -62,7 +62,7 @@ class Attribute extends AbstractType {
 		List<String> result = new ArrayList<String>();
 		
 		result.addAll(this.getComment());
-		result.addAll(this.getAnnotations(1));
+		result.addAll(this.getAnnotationsString(1));
 		result.add(codes);
 		
 		return result;

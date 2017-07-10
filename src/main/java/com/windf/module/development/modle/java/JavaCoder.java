@@ -6,31 +6,13 @@ import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
+import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
-import com.windf.module.development.pojo.ExceptionType;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
 
 public class JavaCoder extends AbstractType{
 
-	public static void main(String[] args) {
-		JavaCoder j = new JavaCoder("F:/temp/UrlControler.java");
-		try {
-			List<Parameter> p = new ArrayList<Parameter>();
-			p.add(new Parameter("java.lang.String", "userId"));
-			p.add(new Parameter("String", "username"));
-			j.createMethod("test", new Return("String"), p, new ExceptionType("EntityException"));
-			
-			j.createAttribute("Integer", "bb");
-			
-		} catch (EntityException e) {
-			e.printStackTrace();
-		}
-		 j.write();
-	}
-	
 	private String classPath;
 	private String packageInfo;
 	private Imports imports = new Imports();
@@ -39,13 +21,29 @@ public class JavaCoder extends AbstractType{
 	private List<Method> methods = new ArrayList<Method>();
 	private String classEnd;
 	
-	public JavaCoder(String classPath) {
-		this.classPath = classPath;
-		readCodes();
+	public JavaCoder(String packagePath, String className) {
+		this.classPath = Constant.JAVA_SOURCE_BASE_PATH + packagePath + "/" + className + ".java";
+		
+		File javaFile = new File(this.classPath);
+		
+		/*
+		 * 如果不存在，创建java 
+		 */
+		if (javaFile.exists()) {
+			readCodes(javaFile);
+		} else {
+			String newPackagePath = packagePath.replace("/", ".");
+			if (newPackagePath.startsWith(".")) {
+				newPackagePath = newPackagePath.substring(1);
+			}
+			this.packageInfo = "package" + CodeConst.WORD_SPLIT + newPackagePath;
+			this.className = "public" + CodeConst.WORD_SPLIT + "class" + CodeConst.WORD_SPLIT + className + CodeConst.WORD_SPLIT + "{";
+			this.classEnd = "}";
+			this.write();
+		}
 	}
 
-	private void readCodes() {
-		File javaFile = new File(classPath);
+	private void readCodes(File javaFile) {
 		
 		JavaFileUtil.readLine(javaFile, new LineReader() {
 			
@@ -126,12 +124,11 @@ public class JavaCoder extends AbstractType{
 	 * @param methodStart
 	 * @return
 	 */
-	public Method createMethod(String methodName, Return ret, List<Parameter> parameters, ExceptionType exceptionType) throws EntityException{
-		if (this.getMethod(methodName) != null) {
-			throw new EntityException("方法已存在");
+	public Method createMethod(Method method) throws UserException{
+		if (this.getMethod(method.methodName) != null) {
+			throw new UserException("方法已存在");
 		}
 		
-		Method method = new Method(methodName, ret, parameters, exceptionType);
 		this.methods.add(method);
 		
 		return method;
@@ -162,9 +159,9 @@ public class JavaCoder extends AbstractType{
 	 * @param name
 	 * @return
 	 */
-	public Attribute createAttribute(String type, String name) throws EntityException {
+	public Attribute createAttribute(String type, String name) throws UserException {
 		if (this.getAttribute(name) != null) {
-			throw new EntityException("属性已存在");
+			throw new UserException("属性已存在");
 		}
 		
 		Attribute attribute = new Attribute(type, name);
@@ -206,7 +203,7 @@ public class JavaCoder extends AbstractType{
 		result.add("");
 		
 		result.addAll(getComment());
-		result.addAll(getAnnotations(0));
+		result.addAll(getAnnotationsString(0));
 		result.add(className);
 		result.add("");
 		
@@ -224,11 +221,13 @@ public class JavaCoder extends AbstractType{
 		
 		result.add(classEnd);
 		
-		for (int i = 0; i < result.size(); i++) {
-			System.out.println(result.get(i));
-		}
+		JavaFileUtil.writeFile(new File(this.classPath), result);
 		
 		return result;
+	}
+	
+	public List<Method> getAllMethods() {
+		return this.methods;
 	}
 
 	/**

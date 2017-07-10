@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 
 /**
  * 简单的字段控制方法
@@ -26,14 +26,14 @@ public class SimpleField {
 		SimpleField simpleField = null;
 		try {
 			simpleField = new SimpleField(object, fieldName);
-		} catch (EntityException e) {
+		} catch (UserException e) {
 			simpleField = null;
 		}
 		return simpleField;
 	}
 	
 	
-	private SimpleField(Object object, String fieldName) throws EntityException{
+	private SimpleField(Object object, String fieldName) throws UserException{
 		this.object = object;
 		
 		String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
@@ -43,9 +43,9 @@ public class SimpleField {
 			fieldClazz = getter.getReturnType();
 			setter = object.getClass().getMethod(setterName, fieldClazz);
 		} catch (NoSuchMethodException e) {
-			throw new EntityException(e);
+			throw new UserException(e);
 		} catch (SecurityException e) {
-			throw new EntityException(e);
+			throw new UserException(e);
 		}
 	}
 	

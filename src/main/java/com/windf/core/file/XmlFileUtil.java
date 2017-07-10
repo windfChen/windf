@@ -20,7 +20,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
 import com.windf.core.Constant;
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.core.util.reflect.SimpleField;
@@ -31,9 +31,9 @@ public class XmlFileUtil {
 	/**
 	 * 读取xml文档，加载所有xml内容到map里面
 	 * @param xmlFile
-	 * @throws EntityException 
+	 * @throws UserException 
 	 */
-	public static <T> T readXml2Object(File xmlFile, Class<T> clazz) throws EntityException {
+	public static <T> T readXml2Object(File xmlFile, Class<T> clazz) throws UserException {
 		T result = null;
 		SAXReader saxReader = new SAXReader();
 		Document document;
@@ -52,10 +52,10 @@ public class XmlFileUtil {
 	 * @param element	解析的元素节点
 	 * @param clazz	类型
 	 * @param type 如果有泛型，泛型是什么类型（泛型可以嵌套），没有泛型则为null
-	 * @throws EntityException 
+	 * @throws UserException 
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T> T readXml2Object(Element element, Class<T> clazz, Type type) throws EntityException {
+	public static <T> T readXml2Object(Element element, Class<T> clazz, Type type) throws UserException {
 		
 		Object result = null;
 		
@@ -101,7 +101,7 @@ public class XmlFileUtil {
 						if (ReflectUtil.isGeneric(type)) {	// 如果是，获取泛型中的类型
 							 Type keyType = ReflectUtil.getGenericOfMapKey(type);
 							 if (keyType != String.class) {
-								 throw new EntityException("map的key必须是String类型");
+								 throw new UserException("map的key必须是String类型");
 							 }
 							 valueType = ReflectUtil.getGenericOfMapValue(type);
 							 genericClass = ReflectUtil.getRawType(type);

@@ -1,6 +1,6 @@
 package com.windf.module.development.service;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 
 public interface UrlService {
 
@@ -8,5 +8,5 @@ public interface UrlService {
 	 * 创建url
 	 * @param url
 	 */
-	void createUrl(String url) throws EntityException;
+	void createUrl(String url) throws UserException;
 }
