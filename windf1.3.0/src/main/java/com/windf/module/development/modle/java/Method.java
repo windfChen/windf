@@ -1,16 +1,18 @@
 package com.windf.module.development.modle.java;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
-class Method extends AbstractType{
+public class Method extends AbstractType{
 	
 
 	/**
@@ -66,7 +68,7 @@ class Method extends AbstractType{
 	 * @param lines
 	 * @param comment
 	 */
-	Method (String methodStart) {
+	public Method (String methodStart) {
 		this.methodStart = methodStart;
 		this.codeBlocks = new ArrayList<CodeBlock>();
 		
@@ -80,13 +82,17 @@ class Method extends AbstractType{
 	 * @param parameters
 	 * @param exception
 	 */
-	Method(String methodName, Return ret, List<Parameter> parameters, ExceptionType exception) {
+	public Method(String methodName, Return ret, List<Parameter> parameters, ExceptionType exception) {
 		this.methodName = methodName;
 		this.ret = ret;
 		this.parameters = parameters;
 		this.exceptionType = exception;
 		
 		initMethodStartFromInfo();
+	}
+	
+	public void addCodeBlock(CodeBlock codeBlock) {
+		codeBlocks.add(codeBlock);
 	}
 	
 	/**
@@ -144,9 +150,17 @@ class Method extends AbstractType{
 		List<String> result = new ArrayList<String>();
 		
 		result.addAll(this.getComment());
-		result.addAll(this.getAnnotations(1));
+		result.addAll(this.getAnnotationsString(1));
 		
 		result.add(methodStart);
+		Collections.sort(codeBlocks, new Comparator<CodeBlock>() {
+
+			@Override
+			public int compare(CodeBlock c1, CodeBlock c2) {
+				return c1.getSerial() - c2.getSerial();
+			}
+			
+		});
 		for (int i = 0; i < codeBlocks.size(); i++) {
 			CodeBlock codeBlock = codeBlocks.get(i);
 			result.addAll(codeBlock.write());
@@ -160,11 +174,25 @@ class Method extends AbstractType{
 	 * 截取方法申明行代码，获取方法的信息
 	 */
 	private void initInfoFromMethodStart() {
-		String parameterStr = methodStart.substring(methodStart.indexOf("("), methodStart.indexOf(")"));
-		String nameStrs = methodStart.substring(0, methodStart.indexOf("(")) + methodStart.substring(methodStart.indexOf(")"));
-		String[] titles = nameStrs.split(CodeConst.WORD_SPLIT);
-		this.ret = new Return(titles[1]);
-		this.methodName = titles[2];
+		String parameterStr = methodStart.substring(methodStart.indexOf("(") + 1, methodStart.indexOf(")"));
+		String nameStrs = methodStart.substring(0, methodStart.indexOf("(")) + methodStart.substring(methodStart.indexOf(")") + 1);
+		
+		String[] titles = nameStrs.trim().split(CodeConst.WORD_SPLIT);
+		int index = 1;
+		String retStr = titles[index++];
+		if (retStr.contains("<") && !retStr.contains(">")) {
+			do {
+				retStr += CodeConst.WORD_SPLIT + titles[index++];
+			} while (!retStr.contains(">"));
+		}
+		String methodNameStr = titles[index++];
+		String exceptionTypeStr = null;
+		if (titles.length > index + 1) {
+			exceptionTypeStr = titles[index];
+		}
+		
+		this.ret = new Return(retStr);
+		this.methodName = methodNameStr;
 		String[] parameterStrs = parameterStr.split(", ");
 		for (int i = 1; i < parameterStrs.length; i++) {
 			String[] ss = parameterStrs[i].split(CodeConst.WORD_SPLIT);
@@ -174,9 +202,9 @@ class Method extends AbstractType{
 			parameter.setName(ss[1]);
 			parameters.add(parameter);
 		}
-		if (titles.length > 4) {
+		if (exceptionTypeStr != null) {
 			exceptionType = new ExceptionType();
-			exceptionType.setType(titles[4]);
+			exceptionType.setType(exceptionTypeStr);
 		}
 	}
 
@@ -202,10 +230,76 @@ class Method extends AbstractType{
 		}
 		methodCodes.append(")");
 		if (exceptionType != null) {
-			methodCodes.append(CodeConst.WORD_SPLIT + "throws" + CodeConst.WORD_SPLIT + EntityException.class.getSimpleName());
+			methodCodes.append(CodeConst.WORD_SPLIT + "throws" + CodeConst.WORD_SPLIT + UserException.class.getSimpleName());
 		}
 		methodCodes.append(CodeConst.WORD_SPLIT + "{");
 	
 		this.methodStart = methodCodes.toString();
 	}
+
+	public String getMethodStart() {
+		return methodStart;
+	}
+
+	public void setMethodStart(String methodStart) {
+		this.methodStart = methodStart;
+	}
+
+	public List<CodeBlock> getCodeBlocks() {
+		return codeBlocks;
+	}
+
+	public void setCodeBlocks(List<CodeBlock> codeBlocks) {
+		this.codeBlocks = codeBlocks;
+	}
+
+	public List<String> getCodes() {
+		return codes;
+	}
+
+	public void setCodes(List<String> codes) {
+		this.codes = codes;
+	}
+
+	public String getMethodEnd() {
+		return methodEnd;
+	}
+
+	public void setMethodEnd(String methodEnd) {
+		this.methodEnd = methodEnd;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<Parameter> parameters) {
+		this.parameters = parameters;
+	}
+
+	public Return getRet() {
+		return ret;
+	}
+
+	public void setRet(Return ret) {
+		this.ret = ret;
+	}
+
+	public ExceptionType getExceptionType() {
+		return exceptionType;
+	}
+
+	public void setExceptionType(ExceptionType exceptionType) {
+		this.exceptionType = exceptionType;
+	}
+	
+	
 }

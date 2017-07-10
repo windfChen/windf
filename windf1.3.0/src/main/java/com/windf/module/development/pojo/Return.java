@@ -1,6 +1,9 @@
 package com.windf.module.development.pojo;
 
 public class Return {
+	public static final String STRING = "String";
+	public static final String MAP_STRING_OBJECT = "Map<String, Object>";
+	
 	private String type;
 	
 	public Return(String type) {

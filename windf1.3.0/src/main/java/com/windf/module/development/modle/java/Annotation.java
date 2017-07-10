@@ -3,50 +3,69 @@ package com.windf.module.development.modle.java;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
 
-class Annotation {
-	private static final String DEFAULT_KEY = "value";
+import com.sun.xml.internal.rngom.binary.Pattern;
+import com.windf.core.util.RegularUtil;
+
+public class Annotation {
+	private static final String DEFAULT_KEY = "default_value";
 	
 	static boolean isAnnotationLine(String lineContent) {
 		return lineContent.trim().startsWith("@");
 	}
 	
-	String name;
-	Map<String, String> values;
+	private String name;
+	private Map<String, String> values;
 	
-	Annotation(String codes) {
-		String[] ss = codes.trim().split("\\(|\\)");;
-		name = ss[0].substring(1);
-		
-		if (ss.length > 1) {
-			String[] valueStrs = ss[1].split(",");
-			if (valueStrs.length == 1) {
-				values = new HashMap<String, String>();
-				values.put(DEFAULT_KEY, valueStrs[0]);
-			} else if (valueStrs.length > 1) {
-				values = new HashMap<String, String>();
-				for (String valueStr : valueStrs) {
-					String[] keyValue = valueStr.trim().split("=");
-					String key = keyValue[0];
-					String value = keyValue[1];
-					values.put(key, value);
+	/**
+	 * 如果包含括号就是代码行，如果不包含，就是name
+	 * @param codes
+	 */
+	public Annotation(String codes) {
+		if (codes.contains("(")) {
+			String[] ss = codes.trim().split("\\(|\\)");
+				
+			name = ss[0].substring(1);
+			
+			if (ss.length > 1) {
+				String[] valueStrs = ss[1].split(",");
+				if (valueStrs.length == 1) {
+					values = new HashMap<String, String>();
+					values.put(DEFAULT_KEY, valueStrs[0]);
+				} else if (valueStrs.length > 1) {
+					values = new HashMap<String, String>();
+					for (String valueStr : valueStrs) {
+						String[] keyValue = valueStr.trim().split("=");
+						String key = keyValue[0].trim();
+						String value = keyValue[1].trim();
+						values.put(key, value);
+					}
 				}
 			}
+		} else {
+			this.name = codes;
 		}
 		
 	}
 	
-	Annotation(String name, String value) {
-		this.name = name;
+	public Annotation(String name, Object value) {
+		this.name = name.trim();
 		values = new HashMap<String, String>();
-		values.put(DEFAULT_KEY, value);
+		if (value instanceof String) {
+			value = "\"" + value.toString() + "\"";
+		}
+		values.put(DEFAULT_KEY, value.toString());
 	}
 	
-	void addValue(String key, String value) {
-		if (values != null) {
+	public void addValue(String key, Object value) {
+		if (values == null) {
 			values = new HashMap<String, String>();
 		}
-		values.put(key, value);
+		if (value instanceof String) {
+			value = "\"" + value.toString() + "\"";
+		}
+		values.put(key, value.toString());
 	}
 	
 	String write(int tabCount) {
@@ -61,7 +80,7 @@ class Annotation {
 		if (values != null) {
 			result.append("(");
 			
-			if (values.size() == 1) {
+			if (values.size() == 1 && values.containsKey(DEFAULT_KEY)) {
 				result.append(values.get(DEFAULT_KEY));
 			} else {
 				Iterator<String> keyIterator = values.keySet().iterator();
@@ -86,4 +105,22 @@ class Annotation {
 		
 		return result.toString();
 	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public String getValue(String key) {
+		String result = null;
+		
+		if (values != null) {
+			result = values.get(key);
+			if (RegularUtil.match(result, "^\".*\"$")) {
+				result = result.substring(1, result.length() - 1);
+			}
+		}
+		
+		return result;
+	}
+	
 }

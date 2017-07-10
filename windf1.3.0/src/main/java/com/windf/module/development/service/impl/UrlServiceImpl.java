@@ -6,8 +6,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
+import com.windf.module.development.modle.controler.ControlerCoder;
 import com.windf.module.development.pojo.Controler;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.URL;
@@ -21,7 +22,7 @@ public class UrlServiceImpl  implements UrlService {
 	private ModuleManageService moduleManageService ;
 
 	@Override
-	public void createUrl(String url) throws EntityException {
+	public void createUrl(String url) throws UserException {
 		/*
 		 * 验证参数
 		 */
@@ -34,7 +35,7 @@ public class UrlServiceImpl  implements UrlService {
 		 */
 		String[] subUrls = url.split("/");
 		if (subUrls.length < 3) {
-			throw new EntityException("路径段不对");
+			throw new UserException("路径段不对");
 		}
 		String modulePath = subUrls[0];
 		String methodName = subUrls[subUrls.length - 1];
@@ -48,7 +49,7 @@ public class UrlServiceImpl  implements UrlService {
 		 */
 		Module module = moduleManageService.getModuleByPath(modulePath);
 		if (module == null) {
-			throw new EntityException("指定模块不存在");
+			throw new UserException("指定模块不存在");
 		}
 		
 		/*
@@ -56,7 +57,7 @@ public class UrlServiceImpl  implements UrlService {
 		 */
 		URL u = getUrl(module, url);
 		if (u != null) {
-			throw new EntityException("url已存在");
+			throw new UserException("url已存在");
 		}
 		
 		/*
@@ -64,12 +65,13 @@ public class UrlServiceImpl  implements UrlService {
 		 */
 		Controler controler = this.getModuleControlerByPath(module, controlerPath.toString());
 		if (controler == null) {
-			throw new EntityException("控制器不存");
+			throw new UserException("控制器不存");
 		}
 		
 		/*
 		 * 获取指定控制器的代码
 		 */
+		//ControlerCoder controlerCoder = new ControlerCoder(module.getCode(), );
 		
 		
 	}

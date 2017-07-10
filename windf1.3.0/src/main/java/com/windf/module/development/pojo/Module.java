@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.util.CollectionUtils;
 
 import com.windf.core.constant.ModuleConstant;
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.file.FileUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
@@ -18,11 +18,11 @@ import com.windf.module.development.file.JavaFileUtil.LineReader;
 
 public class Module {
 
-	public static Module loadModule(String moduleCode) throws EntityException {
+	public static Module loadModule(String moduleCode) throws UserException {
 		String exampleDescriptPath = ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + moduleCode + ".xml";
 		File exampleDescriptFile = FileUtil.getWebappFile(exampleDescriptPath);
 		if (!exampleDescriptFile.exists()) {
-			throw new EntityException("模板模块：[" + moduleCode + "]的配置文件不存在");
+			throw new UserException("模板模块：[" + moduleCode + "]的配置文件不存在");
 		}
 
 		Module module = XmlFileUtil.readXml2Object(exampleDescriptFile, Module.class);
@@ -41,7 +41,7 @@ public class Module {
 
 	// TODO servicves:List<Service> urls:List<URL>
 
-	public Module clone(String newCode) throws EntityException {
+	public Module clone(String newCode) throws UserException {
 		ModuleMaster moduleMaster = ModuleMaster.getInstance();
 
 		this.cloneSourceDirectorys(moduleMaster, newCode);
@@ -53,7 +53,7 @@ public class Module {
 		return loadModule(newCode);
 	}
 
-	public void write() throws EntityException {
+	public void write() throws UserException {
 		File file = new File(
 				FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
 		XmlFileUtil.writeObject2Xml(this, file);

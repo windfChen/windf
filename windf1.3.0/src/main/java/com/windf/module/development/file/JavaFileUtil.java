@@ -25,32 +25,19 @@ public class JavaFileUtil {
 	 */
 	public static void readLine(File file, LineReader lineReader, boolean readonly) {
 		BufferedReader reader = null;
-		BufferedWriter writer = null;
 		String lineContent = null;
+		List<String> oldLines = null;
 		try {
 			/*
 			 * 读取文件
 			 */
-			List<String> oldLines = new ArrayList<String>();
+			oldLines = new ArrayList<String>();
 			reader = new BufferedReader(new FileReader(file));
 			int line = 1;
 			while ((lineContent = reader.readLine()) != null) {
 				String newlineContent = lineReader.readLine(oldLines, lineContent, line);
 				oldLines.add(newlineContent);
 				line++;
-			}
-			
-			/*
-			 * 重新写入文件
-			 */
-			if (!readonly) {
-				writer = new BufferedWriter(new FileWriter(file));
-				for (int i = 0; i < oldLines.size(); i++) {
-					lineContent = oldLines.get(i);
-					writer.write(lineContent);
-					writer.newLine();
-				}
-				writer.flush();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,6 +48,37 @@ public class JavaFileUtil {
 				} catch (IOException e1) {
 				}
 			}
+		}
+
+		/*
+		 * 重新写入文件
+		 */
+		if (!readonly && oldLines != null) {
+			writeFile(file, oldLines);
+		}
+		
+	}
+	
+	/**
+	 * 将内容写到指定的文件中
+	 * @param file
+	 * @param lines
+	 */
+	public static void writeFile(File file, List<String> lines) {
+		BufferedWriter writer = null;
+		
+		try {
+			String lineContent = null;
+			writer = new BufferedWriter(new FileWriter(file));
+			for (int i = 0; i < lines.size(); i++) {
+				lineContent = lines.get(i);
+				writer.write(lineContent);
+				writer.newLine();
+			}
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
 			if (writer != null) {
 				try {
 					writer.close();
@@ -68,15 +86,8 @@ public class JavaFileUtil {
 				}
 			}
 		}
-		
 	}
 	
-	public static boolean getMethod(String classPath, String methodName) {
-		
-		
-		return false;
-		
-	}
 
 	public interface LineReader {
 		/**

@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
+import com.windf.module.development.modle.controler.ControlerCoder;
 import com.windf.module.development.service.UrlService;
 import com.windf.plugins.web.BaseControler;
 
@@ -41,11 +42,30 @@ public class UrlControler extends BaseControler{
 		// 调用服务
 		try {
 			urlService.createUrl(url);
-		} catch (EntityException e) {
+		} catch (UserException e) {
 			return errorMessageMap(e.getMessage());
 		}
 		
 		return returnMap(true, "创建成功");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/test", method = {RequestMethod.GET})
+	public Map<String, Object> test() {
+		String name = this.getParameter("name");
+		
+		try {
+			ControlerCoder controlerCoder = new ControlerCoder("example", name);
+//			controlerCoder.setWebPath("/test");
+//			controlerCoder.addSubPath("hello", "sayHello", true, false);
+//			controlerCoder.addSubPath("bye", "sayGoodbye", true, false);
+//			controlerCoder.write();
+			return returnMap(true, "test", controlerCoder.listAllSubPath());
+		} catch (UserException e) {
+			return returnMap(false, e.getMessage());
+		}
+		
+//		return returnMap(true, "test");
 	}
 
 }

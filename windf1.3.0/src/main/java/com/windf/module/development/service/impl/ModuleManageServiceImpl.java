@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.util.Page;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
@@ -19,19 +19,19 @@ import com.windf.module.development.service.ModuleManageService;
 public class ModuleManageServiceImpl  implements ModuleManageService {
 
 	@Override
-	public Module createModule(ModuleDto moduleDto) throws EntityException {
+	public Module createModule(ModuleDto moduleDto) throws UserException {
 		/*
 		 * 验证参数
 		 */
 		if (moduleDto == null || StringUtils.isEmpty(moduleDto.getCode())) {
-			throw new EntityException("参数错误");
+			throw new UserException("参数错误");
 		}
 		
 		/*
 		 * 验证前置条件
 		 */
 		if (getModule(moduleDto.getCode()) != null) {
-			throw new EntityException("模块已存在");
+			throw new UserException("模块已存在");
 		}
 
 		/*
@@ -64,12 +64,12 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 	}
 
 	@Override
-	public Module modifyModule(ModuleDto moduleDto) throws EntityException {
+	public Module modifyModule(ModuleDto moduleDto) throws UserException {
 		/*
 		 * 验证参数
 		 */
 		if (moduleDto == null || StringUtils.isEmpty(moduleDto.getCode())) {
-			throw new EntityException("参数错误");
+			throw new UserException("参数错误");
 		}
 		
 		/*
@@ -77,7 +77,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		 */
 		Module module = getModule(moduleDto.getCode());
 		if (module == null) {
-			throw new EntityException("模块不存在");
+			throw new UserException("模块不存在");
 		}
 		
 		/*
@@ -99,12 +99,12 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 	}
 
 	@Override
-	public Module getModule(String code) throws EntityException {
+	public Module getModule(String code) throws UserException {
 		Module result = null;
 		
 		try {
 			result = Module.loadModule(code);
-		} catch (EntityException e) {
+		} catch (UserException e) {
 		}
 		
 		return result;
@@ -120,7 +120,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		try {
 			ModuleMaster moduleMaster = ModuleMaster.getInstance();
 			modules = moduleMaster.getModules();
-		} catch (EntityException e) {
+		} catch (UserException e) {
 			e.printStackTrace();
 		}
 		
