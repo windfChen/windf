@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import com.windf.core.exception.EntityException;
+import com.windf.core.exception.UserException;
 import com.windf.core.file.FileUtil;
 import com.windf.core.file.XmlFileUtil;
 import com.windf.core.util.StringUtil;
@@ -18,7 +18,7 @@ public class Epub {
 		Epub reseult = null;
 		try {
 			reseult = XmlFileUtil.readXml2Object(new File(tocFilePath), Epub.class);
-		} catch (EntityException e) {
+		} catch (UserException e) {
 			e.printStackTrace();
 		}
 
