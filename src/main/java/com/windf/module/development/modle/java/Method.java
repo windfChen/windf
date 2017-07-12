@@ -5,9 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.springframework.util.CollectionUtils;
-
 import com.windf.core.exception.UserException;
+import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
@@ -145,7 +144,7 @@ public class Method extends AbstractType{
 	void initCodeBlocks() {
 		List<String> lines = codes;
 
-		if (!CollectionUtils.isEmpty(lines)) {
+		if (CollectionUtil.isNotEmpty(lines)) {
 			boolean inComments = false;
 			Comment comment = null;
 			List<String> coderLines = new ArrayList<String>();
@@ -158,7 +157,7 @@ public class Method extends AbstractType{
 				} else if (inComments) {
 					comment.addLine(lineContent);
 				} else if (Comment.isCommentStart(lineContent)) {
-					if (!CollectionUtils.isEmpty(coderLines)) {
+					if (CollectionUtil.isNotEmpty(coderLines)) {
 						CodeBlock codeBlock = new CodeBlock(coderLines);
 						codeBlock.setComment(comment);
 						codeBlocks.add(codeBlock);
@@ -171,7 +170,7 @@ public class Method extends AbstractType{
 				}
 			}
 			
-			if (!CollectionUtils.isEmpty(coderLines)) {
+			if (CollectionUtil.isNotEmpty(coderLines)) {
 				CodeBlock codeBlock = new CodeBlock(coderLines);
 				codeBlock.setComment(comment);
 				codeBlocks.add(codeBlock);
@@ -253,7 +252,7 @@ public class Method extends AbstractType{
 		methodCodes.append(CodeConst.WORD_SPLIT + ret.getType());
 		methodCodes.append(CodeConst.WORD_SPLIT + methodName);
 		methodCodes.append("(");
-		if (!CollectionUtils.isEmpty(parameters)) {
+		if (CollectionUtil.isNotEmpty(parameters)) {
 			for (int i = 0; i < parameters.size(); i++) {
 				Parameter parameter = parameters.get(i);
 				if (i != 0) {

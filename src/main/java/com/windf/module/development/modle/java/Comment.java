@@ -3,7 +3,7 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.CollectionUtils;
+import com.windf.core.util.CollectionUtil;
 
 public class Comment {
 	
@@ -60,7 +60,7 @@ public class Comment {
 	List<String> write() {
 		List<String> result = new ArrayList<String>();
 		
-		if (!CollectionUtils.isEmpty(comment)) {
+		if (CollectionUtil.isNotEmpty(comment)) {
 			result.add(commentStrat);
 			result.addAll(comment);
 			result.add(commentEnd);
