@@ -5,16 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.util.CollectionUtils;
-
 import com.windf.core.constant.ModuleConstant;
 import com.windf.core.exception.UserException;
 import com.windf.core.file.FileUtil;
+import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
-import com.windf.module.development.file.XmlFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
+import com.windf.module.development.file.XmlFileUtil;
 
 public class Module {
 
@@ -93,7 +92,7 @@ public class Module {
 	private void copyDirectory(String path, String newPath, String moduleCode) {
 		List<File> list = FileUtil.copyFolder(path, newPath + moduleCode);
 
-		if (!CollectionUtils.isEmpty(list)) {
+		if (CollectionUtil.isNotEmpty(list)) {
 			for (int i = 0; i < list.size(); i++) {
 				File file = list.get(i);
 

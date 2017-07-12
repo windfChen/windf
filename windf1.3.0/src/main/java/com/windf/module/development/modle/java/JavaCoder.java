@@ -4,9 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.util.CollectionUtils;
-
 import com.windf.core.exception.UserException;
+import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
@@ -142,7 +141,7 @@ public class JavaCoder extends AbstractType{
 	public Method getMethod(String name) {
 		Method result = null;
 		
-		if (!CollectionUtils.isEmpty(methods)) {
+		if (CollectionUtil.isNotEmpty(methods)) {
 			for (Method method : methods) {
 				if (method.methodName.equals(name)) {
 					result = method;
@@ -178,7 +177,7 @@ public class JavaCoder extends AbstractType{
 	public Attribute getAttribute(String name) {
 		Attribute result = null;
 		
-		if (!CollectionUtils.isEmpty(attributes)) {
+		if (CollectionUtil.isNotEmpty(attributes)) {
 			for (Attribute attribute : attributes) {
 				if (attribute.name.equals(name)) {
 					result = attribute;

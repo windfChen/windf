@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
+import com.windf.core.util.CollectionUtil;
+
 public abstract class AbstractType {
 	
 	protected Comment comment;
@@ -41,7 +43,7 @@ public abstract class AbstractType {
 	void setAnnotations(List<String> annotationsCodes) {
 		List<Annotation> annotations = null;
 		
-		if (!CollectionUtils.isEmpty(annotationsCodes)) {
+		if (CollectionUtil.isNotEmpty(annotationsCodes)) {
 			 annotations = new ArrayList<Annotation>();
 			 
 			 for (String codes : annotationsCodes) {
