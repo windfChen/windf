@@ -3,9 +3,7 @@ package com.windf.module.development.modle.java;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Matcher;
 
-import com.sun.xml.internal.rngom.binary.Pattern;
 import com.windf.core.util.RegularUtil;
 
 public class Annotation {
@@ -23,7 +21,7 @@ public class Annotation {
 	 * @param codes
 	 */
 	public Annotation(String codes) {
-		if (codes.contains("(")) {
+		if (codes.contains("@")) {
 			String[] ss = codes.trim().split("\\(|\\)");
 				
 			name = ss[0].substring(1);

@@ -1,20 +1,20 @@
 package com.windf.core.exception;
 
-public class UserMessageException extends Exception{
+public class ParameterException extends Exception{
 	private static final long serialVersionUID = 5500814701544832454L;
 	
-	public UserMessageException() {
+	public ParameterException() {
 	}
 	
-	public UserMessageException(String message) {
+	public ParameterException(String message) {
 	    super(message);
 	}
 	
-	public UserMessageException(String message, Throwable cause) {
+	public ParameterException(String message, Throwable cause) {
 	    super(message, cause);
 	}
 	
-	public UserMessageException(Throwable cause) {
+	public ParameterException(Throwable cause) {
 	    super(cause);
 	}
 	

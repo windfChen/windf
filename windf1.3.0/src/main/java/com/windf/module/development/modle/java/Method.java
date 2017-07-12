@@ -91,7 +91,42 @@ public class Method extends AbstractType{
 		initMethodStartFromInfo();
 	}
 	
-	public void addCodeBlock(CodeBlock codeBlock) {
+	/**
+	 * 添加参数
+	 * @param parameter
+	 * @return 如果已存在参数，返回false，表示为添加成功
+	 */
+	public boolean addParameter(Parameter parameter) {
+		Parameter oldParameter = this.getParameter(parameter.getName());
+		
+		if (oldParameter != null) {
+			return false;
+		}
+		
+		this.parameters.add(parameter);
+		return true;
+	}
+	
+	protected Parameter getParameter(String name) {
+		Parameter result = null;
+		
+		for (Parameter parameter : parameters) {
+			if (name.equals(parameter.getName())) {
+				result = parameter;
+			}
+		}
+		
+		return result;
+	}
+	
+	public void addCodeBlock(int index, CodeBlock codeBlock) {
+		if (codeBlocks.size() > index) {
+			codeBlocks.remove(index);
+		}
+		codeBlocks.add(index, codeBlock);
+	}
+	
+	public void appendCodeBlock(CodeBlock codeBlock) {
 		codeBlocks.add(codeBlock);
 	}
 	
