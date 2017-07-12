@@ -1,5 +1,7 @@
 package com.windf.module.development.web.controler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -14,6 +16,7 @@ import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.controler.ControlerCoder;
+import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.service.UrlService;
 import com.windf.plugins.web.BaseControler;
 
@@ -60,12 +63,29 @@ public class UrlControler extends BaseControler{
 //			controlerCoder.addSubPath("hello", "sayHello", true, false);
 //			controlerCoder.addSubPath("bye", "sayGoodbye", true, false);
 //			controlerCoder.write();
-			return returnMap(true, "test", controlerCoder.listAllSubPath());
+//			return returnMap(true, "test", controlerCoder.listAllSubPath());
+			
+			Parameter p = new Parameter();
+			p.setName("name");
+			p.setType("String");
+			p.setDescript("商品名称");
+			p.setNotEmpty(true);
+			p.addParameter("^([0-9]{15})|([0-9]{17}[xX]{1})([0-9]{18})$", "身份证号");
+			Parameter p2 = new Parameter();
+			p2.setName("age");
+			p2.setType("Integer");
+			p2.addParameter("数字", "数字");
+			p2.setNotEmpty(true);
+			List<Parameter> parameters = new ArrayList<Parameter>();
+			parameters.add(p);
+			parameters.add(p2);
+			controlerCoder.addParameterVeriry("hello", parameters);
+			controlerCoder.write();
 		} catch (UserException e) {
 			return returnMap(false, e.getMessage());
 		}
 		
-//		return returnMap(true, "test");
+		return returnMap(true, "test");
 	}
 
 }

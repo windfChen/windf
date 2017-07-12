@@ -4,17 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.windf.core.exception.UserException;
+import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.java.Annotation;
+import com.windf.module.development.modle.java.CodeBlock;
+import com.windf.module.development.modle.java.Comment;
 import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
+import com.windf.module.development.modle.java.ParameterVerifyCoder;
+import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
 public class ControlerCoder {
-	private JavaCoder javaCoder;
 	
+	private JavaCoder javaCoder;
 	public ControlerCoder(String moduleCode, String className) throws UserException {
 		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/controler", className);
+	}
+	
+	public void write() {
+		javaCoder.write();
 	}
 	
 	public void setWebPath(String webPath) {
@@ -56,35 +65,68 @@ public class ControlerCoder {
 		List<Method> methods = javaCoder.getAllMethods();
 		if (methods != null) {
 			for (Method method : methods) {
-				UrlInfo urlInfo = new UrlInfo();
-				
-				urlInfo.setMethodName(method.getMethodName());
-				
-				if (Return.STRING.equals(method.getRet().getType())) {
-					urlInfo.setAjaxReturn(false);
-				} else {
-					urlInfo.setAjaxReturn(true);
+				result.add(changeMethod2UrlInfo(method));
+			}
+		}
+		
+		return result;
+	}
+
+	public void addParameterVeriry(String subPath, List<Parameter> parameters) {
+		Method method = this.getMethodBySubPath(subPath);
+		
+		ParameterVerifyCoder parameterVerifyCoder = new ParameterVerifyCoder(parameters, 2);
+		List<String> codes = parameterVerifyCoder.toCodes();
+		if (CollectionUtil.isNotEmpty(codes)) {
+			CodeBlock codeBlock = new  CodeBlock(codes);
+			Comment comment =  new Comment(2, false);
+			comment.addLine("验证参数");
+			codeBlock.setComment(comment);
+			method.addCodeBlock(0, codeBlock);
+		}
+		
+	}
+	
+	protected Method getMethodBySubPath(String subPath) {
+		Method result = null;
+		
+		List<Method> methods = javaCoder.getAllMethods();
+		if (methods != null) {
+			for (Method method : methods) {
+				UrlInfo urlInfo = this.changeMethod2UrlInfo(method);
+				if (urlInfo.getSubPath().equals(subPath)) {
+					result = method;
+					break;
 				}
-				
-				Annotation  requestMappingAnnotation = method.getAnnotationByName("RequestMapping");
-				if (requestMappingAnnotation != null) {
-					if ("{RequestMethod.GET}".equals(requestMappingAnnotation.getValue("method"))) {
-						urlInfo.setRequestMethod("get");
-					}
-					if ("{RequestMethod.POST}".equals(requestMappingAnnotation.getValue("method"))) {
-						urlInfo.setRequestMethod("post");
-					}
-					urlInfo.setSubPath(requestMappingAnnotation.getValue("value"));
-				}
-				
-				result.add(urlInfo);
 			}
 		}
 		
 		return result;
 	}
 	
-	public void write() {
-		javaCoder.write();
+	private UrlInfo changeMethod2UrlInfo(Method method) {
+		UrlInfo result = new UrlInfo();
+		
+		result.setMethodName(method.getMethodName());
+		
+		if (Return.STRING.equals(method.getRet().getType())) {
+			result.setAjaxReturn(false);
+		} else {
+			result.setAjaxReturn(true);
+		}
+		
+		Annotation  requestMappingAnnotation = method.getAnnotationByName("RequestMapping");
+		if (requestMappingAnnotation != null) {
+			if ("{RequestMethod.GET}".equals(requestMappingAnnotation.getValue("method"))) {
+				result.setRequestMethod("get");
+			}
+			if ("{RequestMethod.POST}".equals(requestMappingAnnotation.getValue("method"))) {
+				result.setRequestMethod("post");
+			}
+			result.setSubPath(requestMappingAnnotation.getValue("value"));
+		}
+		
+		return result;
 	}
+
 }

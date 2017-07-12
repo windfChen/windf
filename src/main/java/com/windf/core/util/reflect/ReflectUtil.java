@@ -1,7 +1,9 @@
 package com.windf.core.util.reflect;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -321,6 +323,28 @@ public class ReflectUtil {
 			
 			return newObject;
 			
+	}
+	
+	/**
+	 * 获得所有常量
+	 * @param clazz
+	 * @return 变量名-value的键值对
+	 */
+	public static Map<String, Object> getAllConstantValue(Class<? extends Object> clazz) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Field[] fields = clazz.getFields();
+		for (Field field : fields) {
+			if ((field.getModifiers() & Modifier.STATIC) == Modifier.STATIC) {
+				if ((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
+					try {
+						result.put(field.getName(), field.get(clazz));
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 }

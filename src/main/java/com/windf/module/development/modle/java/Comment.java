@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
-class Comment {
+public class Comment {
 	
 	/**
 	 * 判断是否是注释开始标志
@@ -27,6 +27,14 @@ class Comment {
 	List<String> comment = new ArrayList<String>();
 	String commentEnd;
 	
+	private int tabCount = 0;
+	
+	public Comment(int tabCount, boolean document) {
+		this.tabCount = tabCount;
+		this.commentStrat = CodeConst.getTabString(tabCount) + (document? "/**": "/*");
+		this.commentEnd = CodeConst.getTabString(tabCount) + " */";
+	}
+	
 	Comment (String commentStrat) {
 		this.commentStrat = commentStrat;
 	}
@@ -40,8 +48,8 @@ class Comment {
 	 * 添加一行注释
 	 * @param lineContent
 	 */
-	void addLine(String lineContent) {
-		comment.add(lineContent);
+	public void addLine(String lineContent) {
+		comment.add( (tabCount > 0?CodeConst.getTabString(tabCount) + " * ": "") + lineContent);
 	}
 
 	/**

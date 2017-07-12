@@ -1,11 +1,13 @@
 package com.windf.module.development.pojo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Parameter {
 	private String name;
 	private String descript;
 	private String type;
+	private boolean notEmpty;
 	private Map<String, String> patterns;
 	
 	public Parameter() {
@@ -15,6 +17,13 @@ public class Parameter {
 	public Parameter(String type, String name) {
 		this.name = name;
 		this.type = type;
+	}
+	
+	public void addParameter(String pattern, String errorMsg) {
+		if (patterns == null) {
+			patterns = new HashMap<String, String>();
+		}
+		patterns.put(pattern, errorMsg);
 	}
 
 	public String getName() {
@@ -47,6 +56,14 @@ public class Parameter {
 
 	public void setPatterns(Map<String, String> patterns) {
 		this.patterns = patterns;
+	}
+
+	public boolean isNotEmpty() {
+		return notEmpty;
+	}
+
+	public void setNotEmpty(boolean notEmpty) {
+		this.notEmpty = notEmpty;
 	}
 
 }

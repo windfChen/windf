@@ -18,4 +18,17 @@ public class CodeConst {
 		}
 		return count;
 	}
+	
+	/**
+	 * 开始时空格的数量
+	 * @param lineContent
+	 * @return
+	 */
+	static String getTabString(int count) {
+		StringBuffer result = new StringBuffer();
+		for (int i = 0; i < count; i++) {
+			result.append("    ");
+		}
+		return result.toString();
+	}
 }
