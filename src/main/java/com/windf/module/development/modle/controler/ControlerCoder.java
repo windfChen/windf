@@ -87,6 +87,12 @@ public class ControlerCoder {
 		
 	}
 	
+	public List<Parameter> getParameterVeriry(String subPath) {
+		Method method = this.getMethodBySubPath(subPath);
+		ParameterVerifyCoder parameterVerifyCoder = new ParameterVerifyCoder();
+		return parameterVerifyCoder.toObject(method.getCodeBlock(0).getCodes());
+	}
+	
 	protected Method getMethodBySubPath(String subPath) {
 		Method result = null;
 		

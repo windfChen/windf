@@ -34,6 +34,6 @@ public class CollectionUtil {
 			result.put(value, key);
 		}
 		
-		return map;
+		return result;
 	}
 }

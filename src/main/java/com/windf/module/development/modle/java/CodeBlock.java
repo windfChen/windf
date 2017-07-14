@@ -22,6 +22,10 @@ public class CodeBlock extends AbstractType {
 	public int getSerial() {
 		return this.serial;
 	}
+	
+	public List<String> getCodes() {
+		return codes;
+	}
 
 	/**
 	 * write code

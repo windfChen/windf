@@ -19,7 +19,7 @@ public class Parameter {
 		this.type = type;
 	}
 	
-	public void addParameter(String pattern, String errorMsg) {
+	public void addPattern(String pattern, String errorMsg) {
 		if (patterns == null) {
 			patterns = new HashMap<String, String>();
 		}

@@ -14,11 +14,12 @@ public interface Codeable<T> {
 	 * 转换代码成对象形式
 	 * @return
 	 */
-	public T toObject();
+	public T toObject(List<String> codes);
 	
 	/**
 	 * 是否能转换成代码
 	 * @return
 	 */
 	public boolean verifyCodes();
+
 }

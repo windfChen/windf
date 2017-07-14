@@ -129,6 +129,14 @@ public class Method extends AbstractType{
 		codeBlocks.add(codeBlock);
 	}
 	
+	public CodeBlock getCodeBlock(int index) {
+		CodeBlock result = null;
+		if (index < codeBlocks.size()) {
+			result = codeBlocks.get(index);
+		}
+		return result;
+	}
+	
 	/**
 	 * 向方法中添加一行
 	 * @param lineContent
