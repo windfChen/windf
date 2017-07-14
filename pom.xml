@@ -41,6 +41,11 @@
 			<artifactId>ant</artifactId>
 			<version>1.6.5</version>
 		</dependency>
+		<dependency>
+			<groupId>jackson</groupId>
+			<artifactId>jackson-all</artifactId>
+			<version>1.6.3</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>com.alibaba</groupId>
