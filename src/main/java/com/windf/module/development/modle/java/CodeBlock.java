@@ -8,7 +8,6 @@ public class CodeBlock<T> extends AbstractType {
 	public static final int RETURN_BLOCK_INDEX = Integer.MAX_VALUE;
 	public static final int NORMAL_BLOCK_INDEX = 0;
 
-	private int serial = 0;
 	private List<String> codes;
 	private Codeable<T> codeable;
 	private int tabCount;
@@ -28,16 +27,12 @@ public class CodeBlock<T> extends AbstractType {
 		this.codeable = codeable;
 	}
 	
-	public void setSerial(int serial) {
-		this.serial = serial;
-	}
-	
-	public int getSerial() {
-		return this.serial;
-	}
-	
 	public List<String> getCodes() {
 		return codes;
+	}
+	
+	public void setTabCount(int tabCount) {
+		this.tabCount = tabCount;
 	}
 
 	/**
@@ -70,6 +65,6 @@ public class CodeBlock<T> extends AbstractType {
 	 * @param object
 	 */
 	public void serialize(T t) {
-		codeable.toCodes(t, tabCount);
+		this.codes = codeable.toCodes(t, tabCount);
 	}
 }

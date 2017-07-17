@@ -76,6 +76,7 @@ public class ControlerCoder {
 		
 		CodeBlock<List<Parameter>> codeBlock = new  CodeBlock<List<Parameter>>();
 		codeBlock.setCodeable(new ParameterVerifyCoder());
+		codeBlock.setTabCount(2);
 		codeBlock.serialize(parameters);
 		Comment comment =  new Comment(2, false);
 		comment.addLine("验证参数");

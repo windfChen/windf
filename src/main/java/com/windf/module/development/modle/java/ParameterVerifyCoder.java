@@ -14,7 +14,7 @@ import com.windf.module.development.pojo.Parameter;
 
 public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 	
-	private ThreadLocal<Integer> tabCount;
+	private ThreadLocal<Integer> tabCount = new ThreadLocal<Integer>();
 	
 	@Override
 	public List<String> toCodes(List<Parameter> parameters, int tabCount) {

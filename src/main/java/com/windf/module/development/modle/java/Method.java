@@ -1,8 +1,6 @@
 package com.windf.module.development.modle.java;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.windf.core.exception.UserException;
@@ -11,9 +9,9 @@ import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Method extends AbstractType{
 	
-
 	/**
 	 * 判断这一行是否是方法声明
 	 * @param lineContent
@@ -195,14 +193,6 @@ public class Method extends AbstractType{
 		result.addAll(this.getAnnotationsString(1));
 		
 		result.add(methodStart);
-		Collections.sort(codeBlocks, new Comparator<CodeBlock>() {
-
-			@Override
-			public int compare(CodeBlock c1, CodeBlock c2) {
-				return c1.getSerial() - c2.getSerial();
-			}
-			
-		});
 		for (int i = 0; i < codeBlocks.size(); i++) {
 			CodeBlock codeBlock = codeBlocks.get(i);
 			result.addAll(codeBlock.write());
