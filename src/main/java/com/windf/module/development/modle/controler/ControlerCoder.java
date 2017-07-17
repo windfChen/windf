@@ -64,7 +64,7 @@ public class ControlerCoder {
 		List<Method> methods = javaCoder.getAllMethods();
 		if (methods != null) {
 			for (Method method : methods) {
-				result.add(changeMethod2UrlInfo(method));
+				result.add(UrlInfo.fromMethod(method));
 			}
 		}
 		
@@ -98,7 +98,7 @@ public class ControlerCoder {
 		List<Method> methods = javaCoder.getAllMethods();
 		if (methods != null) {
 			for (Method method : methods) {
-				UrlInfo urlInfo = this.changeMethod2UrlInfo(method);
+				UrlInfo urlInfo = UrlInfo.fromMethod(method);
 				if (urlInfo.getSubPath().equals(subPath)) {
 					result = method;
 					break;
@@ -109,29 +109,5 @@ public class ControlerCoder {
 		return result;
 	}
 	
-	private UrlInfo changeMethod2UrlInfo(Method method) {
-		UrlInfo result = new UrlInfo();
-		
-		result.setMethodName(method.getMethodName());
-		
-		if (Return.STRING.equals(method.getRet().getType())) {
-			result.setAjaxReturn(false);
-		} else {
-			result.setAjaxReturn(true);
-		}
-		
-		Annotation  requestMappingAnnotation = method.getAnnotationByName("RequestMapping");
-		if (requestMappingAnnotation != null) {
-			if ("{RequestMethod.GET}".equals(requestMappingAnnotation.getValue("method"))) {
-				result.setRequestMethod("get");
-			}
-			if ("{RequestMethod.POST}".equals(requestMappingAnnotation.getValue("method"))) {
-				result.setRequestMethod("post");
-			}
-			result.setSubPath(requestMappingAnnotation.getValue("value"));
-		}
-		
-		return result;
-	}
 
 }
