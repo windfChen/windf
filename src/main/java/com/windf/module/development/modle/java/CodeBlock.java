@@ -3,16 +3,29 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodeBlock extends AbstractType {
+public class CodeBlock<T> extends AbstractType {
 	public static final int PARAMS_BLOCK_INDEX = Integer.MIN_VALUE;
 	public static final int RETURN_BLOCK_INDEX = Integer.MAX_VALUE;
 	public static final int NORMAL_BLOCK_INDEX = 0;
 
 	private int serial = 0;
 	private List<String> codes;
+	private Codeable<T> codeable;
+	private int tabCount;
 	
-	public CodeBlock (List<String> codes) {
+	public CodeBlock () {
+	}
+	
+	/**
+	 * 根据代码创建
+	 * @param coderLines
+	 */
+	public CodeBlock(List<String> codes) {
 		this.codes = codes;
+	}
+
+	public void setCodeable(Codeable<T> codeable) {
+		this.codeable = codeable;
 	}
 	
 	public void setSerial(int serial) {
@@ -28,10 +41,10 @@ public class CodeBlock extends AbstractType {
 	}
 
 	/**
-	 * write code
+	 * 输出代码
 	 * @return
 	 */
-	List<String> write() {
+	public List<String> write() {
 		List<String> result = new ArrayList<String>();
 		
 		if (comment != null) {
@@ -40,5 +53,23 @@ public class CodeBlock extends AbstractType {
 		result.addAll(codes);
 		
 		return result;
+	}
+	
+	/**
+	 * 根据代码，构建对应类型的对象出来
+	 * 与注释无关
+	 * @return
+	 */
+	public T build() {
+		return codeable.toObject(codes);
+	}
+	
+	/**
+	 * 根据对象，重新修改对象
+	 * 与注释无关
+	 * @param object
+	 */
+	public void serialize(T t) {
+		codeable.toCodes(t, tabCount);
 	}
 }

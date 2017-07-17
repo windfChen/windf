@@ -60,27 +60,27 @@ public class UrlControler extends BaseControler{
 		try {
 			ControlerCoder controlerCoder = new ControlerCoder("example", name);
 			
-			controlerCoder.setWebPath("/test");
-			controlerCoder.addSubPath("hello", "sayHello", true, false);
-			controlerCoder.addSubPath("bye", "sayGoodbye", true, false);
-			controlerCoder.write();
-			
-			Parameter p = new Parameter();
-			p.setName("name");
-			p.setType("String");
-			p.setDescript("商品名称");
-			p.setNotEmpty(true);
-			p.addPattern("^([0-9]{15})|([0-9]{17}[xX]{1})([0-9]{18})$", "身份证号");
-			Parameter p2 = new Parameter();
-			p2.setName("age");
-			p2.setType("Integer");
-			p2.addPattern("数字", "数字");
-			p2.setNotEmpty(true);
-			List<Parameter> parameters = new ArrayList<Parameter>();
-			parameters.add(p);
-			parameters.add(p2);
-			controlerCoder.addParameterVeriry("hello", parameters);
-			controlerCoder.write();
+//			controlerCoder.setWebPath("/test");
+//			controlerCoder.addSubPath("hello", "sayHello", true, false);
+//			controlerCoder.addSubPath("bye", "sayGoodbye", true, false);
+//			controlerCoder.write();
+//			
+//			Parameter p = new Parameter();
+//			p.setName("name");
+//			p.setType("String");
+//			p.setDescript("商品名称");
+//			p.setNotEmpty(true);
+//			p.addPattern("^([0-9]{15})|([0-9]{17}[xX]{1})([0-9]{18})$", "身份证号");
+//			Parameter p2 = new Parameter();
+//			p2.setName("age");
+//			p2.setType("Integer");
+//			p2.addPattern("数字", "数字");
+//			p2.setNotEmpty(true);
+//			List<Parameter> parameters = new ArrayList<Parameter>();
+//			parameters.add(p);
+//			parameters.add(p2);
+//			controlerCoder.addParameterVeriry("hello", parameters);
+//			controlerCoder.write();
 			
 			List<Parameter> l = controlerCoder.getParameterVeriry("hello");
 			return returnMap(true, "test", l);

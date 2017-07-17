@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.windf.core.exception.UserException;
-import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.CodeBlock;
@@ -75,22 +74,22 @@ public class ControlerCoder {
 	public void addParameterVeriry(String subPath, List<Parameter> parameters) {
 		Method method = this.getMethodBySubPath(subPath);
 		
-		ParameterVerifyCoder parameterVerifyCoder = new ParameterVerifyCoder(parameters, 2);
-		List<String> codes = parameterVerifyCoder.toCodes();
-		if (CollectionUtil.isNotEmpty(codes)) {
-			CodeBlock codeBlock = new  CodeBlock(codes);
-			Comment comment =  new Comment(2, false);
-			comment.addLine("验证参数");
-			codeBlock.setComment(comment);
-			method.addCodeBlock(0, codeBlock);
-		}
+		CodeBlock<List<Parameter>> codeBlock = new  CodeBlock<List<Parameter>>();
+		codeBlock.setCodeable(new ParameterVerifyCoder());
+		codeBlock.serialize(parameters);
+		Comment comment =  new Comment(2, false);
+		comment.addLine("验证参数");
+		codeBlock.setComment(comment);
+		method.addCodeBlock(0, codeBlock);
 		
 	}
 	
 	public List<Parameter> getParameterVeriry(String subPath) {
 		Method method = this.getMethodBySubPath(subPath);
-		ParameterVerifyCoder parameterVerifyCoder = new ParameterVerifyCoder();
-		return parameterVerifyCoder.toObject(method.getCodeBlock(0).getCodes());
+		@SuppressWarnings("unchecked")
+		CodeBlock<List<Parameter>> codeBlock = method.getCodeBlock(0);
+		codeBlock.setCodeable(new ParameterVerifyCoder());
+		return codeBlock.build();
 	}
 	
 	protected Method getMethodBySubPath(String subPath) {

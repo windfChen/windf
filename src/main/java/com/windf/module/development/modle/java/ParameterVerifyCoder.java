@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.jasper.tagplugins.jstl.core.Set;
-
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
@@ -16,21 +14,12 @@ import com.windf.module.development.pojo.Parameter;
 
 public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 	
-	private List<Parameter> parameters;
-	private int tabCount;
-
-	public ParameterVerifyCoder() {
-		
-	}
-	
-	public ParameterVerifyCoder(List<Parameter> parameters, int tabCount) {
-		this.parameters = parameters;
-		this.tabCount = tabCount;
-	}
+	private ThreadLocal<Integer> tabCount;
 	
 	@Override
-	public List<String> toCodes() {
+	public List<String> toCodes(List<Parameter> parameters, int tabCount) {
 		List<String> result = new ArrayList<String>();
+		this.tabCount.set(tabCount);
 		
 		if (CollectionUtil.isNotEmpty(parameters)) {
 			for (Parameter parameter : parameters) {
@@ -142,7 +131,7 @@ public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 	}
 	
 	private String tab(int tempCount) {
-		return CodeConst.getTabString(tabCount + tempCount);
+		return CodeConst.getTabString(tabCount.get() + tempCount);
 	}
 	
 	private void newEmptyLine(List<String> lines) {
@@ -250,11 +239,4 @@ public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 		result.addAll(new HashSet<Parameter>(strNameParameterMap.values()));
 		return result;
 	}
-
-	@Override
-	public boolean verifyCodes() {
-		// TODO 
-		return false;
-	}
-
 }

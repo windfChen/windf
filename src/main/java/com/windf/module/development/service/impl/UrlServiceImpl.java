@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
-import com.windf.module.development.modle.controler.ControlerCoder;
 import com.windf.module.development.pojo.Controler;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.URL;
@@ -38,6 +37,7 @@ public class UrlServiceImpl  implements UrlService {
 			throw new UserException("路径段不对");
 		}
 		String modulePath = subUrls[0];
+		@SuppressWarnings("unused")
 		String methodName = subUrls[subUrls.length - 1];
 		StringBuffer controlerPath = new StringBuffer();
 		for (int i = 1; i < subUrls.length - 1; i++) {
