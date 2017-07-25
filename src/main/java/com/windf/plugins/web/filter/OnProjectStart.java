@@ -1,7 +1,7 @@
 package com.windf.plugins.web.filter;
 
-import com.windf.core.exception.SystemException;
+import com.windf.core.exception.CodeException;
 
 public interface OnProjectStart {
-	void whenStart() throws SystemException;
+	void whenStart() throws CodeException;
 }

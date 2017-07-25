@@ -1,25 +1,29 @@
 package com.windf.core.exception;
 
-public class ParameterException extends Exception{
-	private static final long serialVersionUID = 5500814701544832454L;
+public class ParameterException extends UserException{
+	private static final long serialVersionUID = 1;
 	
 	public ParameterException() {
 	}
-	
+
 	public ParameterException(String message) {
-	    super(message);
+		super(message);
 	}
 	
-	public ParameterException(String message, Throwable cause) {
-	    super(message, cause);
+	public ParameterException(String type, String message) {
+		super(type, message);
 	}
-	
+
 	public ParameterException(Throwable cause) {
-	    super(cause);
+		super(cause);
+	}
+
+	public ParameterException(String message, Throwable cause) {
+		super(message, cause);
 	}
 	
-	public boolean matchMessage(String message) {
-		return message.equals(this.getMessage());
+	public ParameterException(String type, String message, Throwable cause) {
+		super(type, message, cause);
 	}
 	
 }
