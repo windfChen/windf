@@ -74,7 +74,7 @@ public class ModuleManageControler extends BaseControler{
 		try {
 			moduleManageService.createModule(moduleDto);
 		} catch (UserException e) {
-			return jsonReturn.errorMessageMap(e.getMessage());
+			return jsonReturn.errorMap(e.getMessage());
 		}
 		
 		return jsonReturn.returnMap(true, "创建成功");
@@ -103,7 +103,7 @@ public class ModuleManageControler extends BaseControler{
 		try {
 			moduleManageService.modifyModule(moduleDto);
 		} catch (UserException e) {
-			return jsonReturn.errorMessageMap(e.getMessage());
+			return jsonReturn.errorMap(e.getMessage());
 		}
 		
 		return jsonReturn.returnMap(true, "修改成功");

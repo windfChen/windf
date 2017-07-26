@@ -3,6 +3,9 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.windf.core.exception.UserException;
+import com.windf.module.development.modle.java.code.Codeable;
+
 public class CodeBlock<T> extends AbstractType {
 	public static final int PARAMS_BLOCK_INDEX = Integer.MIN_VALUE;
 	public static final int RETURN_BLOCK_INDEX = Integer.MAX_VALUE;
@@ -63,8 +66,9 @@ public class CodeBlock<T> extends AbstractType {
 	 * 根据对象，重新修改对象
 	 * 与注释无关
 	 * @param object
+	 * @throws UserException 
 	 */
-	public void serialize(T t) {
+	public void serialize(T t) throws UserException {
 		this.codes = codeable.toCodes(t, tabCount);
 	}
 }

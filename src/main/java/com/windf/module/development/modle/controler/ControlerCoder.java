@@ -3,6 +3,7 @@ package com.windf.module.development.modle.controler;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.java.Annotation;
@@ -10,11 +11,14 @@ import com.windf.module.development.modle.java.CodeBlock;
 import com.windf.module.development.modle.java.Comment;
 import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
-import com.windf.module.development.modle.java.ParameterVerifyCoder;
+import com.windf.module.development.modle.java.code.ControlerReturnCoder;
+import com.windf.module.development.modle.java.code.ParameterVerifyCoder;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
 public class ControlerCoder {
+	public static final String RETURN_AJAX = "ajax";
+	public static final String RETURN_PAGE = "page";
 	
 	private JavaCoder javaCoder;
 	public ControlerCoder(String moduleCode, String className) throws UserException {
@@ -71,7 +75,7 @@ public class ControlerCoder {
 		return result;
 	}
 
-	public void addParameterVeriry(String subPath, List<Parameter> parameters) {
+	public void addParameterVeriry(String subPath, List<Parameter> parameters) throws UserException {
 		Method method = this.getMethodBySubPath(subPath);
 		
 		CodeBlock<List<Parameter>> codeBlock = new  CodeBlock<List<Parameter>>();
@@ -82,7 +86,6 @@ public class ControlerCoder {
 		comment.addLine("验证参数");
 		codeBlock.setComment(comment);
 		method.addCodeBlock(0, codeBlock);
-		
 	}
 	
 	public List<Parameter> getParameterVeriry(String subPath) {
@@ -108,6 +111,35 @@ public class ControlerCoder {
 		}
 		
 		return result;
+	}
+
+	/**
+	 * 为方法设置返回类型
+	 * @param subPath
+	 * @param returnType
+	 * @throws CodeException 
+	 * @throws UserException 
+	 */
+	public void setReturn(String subPath, String returnType) throws CodeException, UserException {
+		Method method = this.getMethodBySubPath(subPath);
+		
+		Return ret = null;
+		if (RETURN_AJAX.equals(returnType)) {
+			ret = new Return(Return.MAP_STRING_OBJECT);
+		} else if (RETURN_PAGE.equals(returnType)) {
+			ret = new Return(Return.STRING);
+		} else {
+			throw new CodeException();
+		}
+		
+		CodeBlock<Return> codeBlock = new  CodeBlock<Return>();
+		codeBlock.setCodeable(new ControlerReturnCoder(false, "参数错误", "whaty"));
+		codeBlock.setTabCount(2);
+		codeBlock.serialize(ret);
+		Comment comment =  new Comment(2, false);
+		comment.addLine("返回参数");
+		codeBlock.setComment(comment);
+		method.addCodeBlock(100, codeBlock);
 	}
 	
 

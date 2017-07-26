@@ -1,4 +1,4 @@
-package com.windf.module.development.modle.java;
+package com.windf.module.development.modle.java.code;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,18 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.windf.core.util.CollectionUtil;
-import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
+import com.windf.module.development.modle.java.CodeConst;
 import com.windf.module.development.pojo.Parameter;
 
-public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
-	
-	private ThreadLocal<Integer> tabCount = new ThreadLocal<Integer>();
+public class ParameterVerifyCoder extends AbstractCodeable<List<Parameter>> {
 	
 	@Override
 	public List<String> toCodes(List<Parameter> parameters, int tabCount) {
 		List<String> result = new ArrayList<String>();
-		this.tabCount.set(tabCount);
+		this.tabCount = tabCount;
 		
 		if (CollectionUtil.isNotEmpty(parameters)) {
 			for (Parameter parameter : parameters) {
@@ -38,7 +36,7 @@ public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 			this.newEmptyLine(result);
 			
 			result.add(tab() + "try {");
-			tabCount ++;
+			this.tabCount ++;
 			/*
 			 * 验证是否为空 
 			 */
@@ -117,7 +115,7 @@ public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 				}
 			}
 			
-			tabCount --;
+			this.tabCount --;
 			result.add(tab() + "} catch(Exception e) {");
 			result.add(tab() + "");
 			result.add(tab() + "}");
@@ -126,23 +124,6 @@ public class ParameterVerifyCoder implements Codeable<List<Parameter>> {
 		return result;
 	}
 	
-	private String tab() {
-		return tab(0);
-	}
-	
-	private String tab(int tempCount) {
-		return CodeConst.getTabString(tabCount.get() + tempCount);
-	}
-	
-	private void newEmptyLine(List<String> lines) {
-		if (lines.size() > 1) {
-			if (!StringUtil.isEmpty(lines.get(lines.size() - 1))) {
-				lines.add("");
-			}
-		}
-		
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Parameter> toObject(List<String> codes) {

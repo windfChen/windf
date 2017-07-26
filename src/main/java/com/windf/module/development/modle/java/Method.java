@@ -120,6 +120,9 @@ public class Method extends AbstractType{
 		if (codeBlocks.size() > index) {
 			codeBlocks.remove(index);
 		}
+		if (index > codeBlocks.size()) {
+			index = codeBlocks.size();
+		}
 		codeBlocks.add(index, codeBlock);
 	}
 	

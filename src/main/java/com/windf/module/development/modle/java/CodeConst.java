@@ -14,7 +14,7 @@ public class CodeConst {
 	 * @param lineContent
 	 * @return
 	 */
-	static int lineStartTabCount(String lineContent) {
+	public static int lineStartTabCount(String lineContent) {
 		int count = 0;
 		lineContent = lineContent.replace("\t", "    ");
 		while (lineContent.startsWith("    ")) {	// 4个空格开始
@@ -29,7 +29,7 @@ public class CodeConst {
 	 * @param lineContent
 	 * @return
 	 */
-	static String getTabString(int count) {
+	public static String getTabString(int count) {
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < count; i++) {
 			result.append("    ");
@@ -45,17 +45,8 @@ public class CodeConst {
 	 * @param line
 	 * @return
 	 */
-	static String[] getInnerString(String line, String patternStr) {
+	public static String[] getInnerString(String line, String patternStr) {
 		List<String> result = new ArrayList<String>();
-		
-//		Pattern pattern = Pattern.compile("String (.*) = this\\.getParameter\\(\"(.*)\"\\);");
-//		Matcher matcher = pattern.matcher("String name = this.getParameter(\"name\");");
-//		while(matcher.find()) {
-//			System.out.println(matcher.groupCount());
-//			System.out.println(matcher.group());
-//			System.out.println(matcher.group(1));
-//			System.out.println(matcher.group(2));
-//		}
 		
 		Pattern pattern = Pattern.compile(patternStr);
 		Matcher matcher = pattern.matcher(line);
@@ -65,18 +56,7 @@ public class CodeConst {
 			}
 		}
 		
-//		String[] ss = template.split("\\*");
-//		
-//		if (ss.length > 0) {
-//			line = line.substring(line.indexOf(ss[0]) + ss[0].length());
-//			for (int i = 1; i < ss.length; i++) {
-//				String end = ss[i];
-//				
-//				result.add(line.substring(0, line.indexOf(end)));
-//				line = line.substring(line.indexOf(end) + end.length());
-//			}
-//		}
-		
 		return result.toArray(new String[result.size()]);
 	}
+	
 }

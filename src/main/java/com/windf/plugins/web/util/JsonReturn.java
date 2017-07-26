@@ -3,8 +3,6 @@ package com.windf.plugins.web.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.windf.core.util.JSONUtil;
-
 public class JsonReturn {
 	
 	public JsonReturn() {
@@ -16,24 +14,9 @@ public class JsonReturn {
 	 * @return
 	 */
 	public Map<String, Object> paramErrorMap() {
-		return errorMessageMap("parameter error");
+		return errorMap("parameter error");
 	}
-	/**
-	 * 返回错误信息
-	 * @return
-	 */
-	public String paramErrorJson() {
-		return JSONUtil.toJSONStr(paramErrorMap());
-	}
-	/**
-	 * 返回错误信息
-	 * @param Message
-	 * @return
-	 */
-	public Map<String, Object> errorMessageMap(String message) {
-		return returnMap(false, message);
-	}
-	
+
 	/**
 	 * 返回成功提示
 	 * @return
@@ -43,12 +26,38 @@ public class JsonReturn {
 	}
 	
 	/**
+	 * 返回错误信息
+	 * @param Message
+	 * @return
+	 */
+	public Map<String, Object> errorMap(String tip) {
+		return returnMap(false, tip);
+	}
+	
+	/**
+	 * 返回成功提示
+	 * @return
+	 */
+	public Map<String, Object> successMap(String tip) {
+		return returnMap(true, tip);
+	}
+	
+	/**
 	 * 返回带数据的成功信息
 	 * @param data
 	 * @return
 	 */
 	public Map<String, Object> successMap(Object data) {
 		return returnMap(true, "success", data);
+	}
+
+	/**
+	 * 返回带数据的错误信息
+	 * @param data
+	 * @return
+	 */
+	public Map<String, Object> errorMap(Object data) {
+		return returnMap(true, "error", data);
 	}
 	
 	/**

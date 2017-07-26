@@ -15,6 +15,24 @@ public class StringUtil {
 		return org.apache.commons.lang.StringUtils.isEmpty(str);
 	}
 	
+	/**
+	 * 判断字符串是否不为空
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNotEmpty(String str) {
+		return org.apache.commons.lang.StringUtils.isNotEmpty(str);
+	}
+	
+	/**
+	 * 如果字符串为null返回空字符串，否则返回该字符串
+	 * @param str
+	 * @return
+	 */
+	public static String fixNull(String str) {
+		return str == null? "": str;
+	}
+	
    /**
      * 将以长串压缩
      *
@@ -39,5 +57,6 @@ public class StringUtil {
 			return str.substring(0, 1).toUpperCase() + str.substring(1); 
 		}
     }
+    
     
 }

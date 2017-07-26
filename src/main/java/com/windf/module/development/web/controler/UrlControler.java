@@ -47,7 +47,7 @@ public class UrlControler extends BaseControler{
 		try {
 			urlService.createUrl(url);
 		} catch (UserException e) {
-			return jsonReturn.errorMessageMap(e.getMessage());
+			return jsonReturn.errorMap(e.getMessage());
 		}
 		
 		return jsonReturn.returnMap(true, "创建成功");

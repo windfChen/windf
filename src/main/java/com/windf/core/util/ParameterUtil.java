@@ -73,4 +73,31 @@ public class ParameterUtil {
 		}
 		return result;
 	}
+	
+	/**
+	 * 判断字符串中是否全部不为空
+	 * @param obj
+	 * @return
+	 */
+	public static boolean hasNotEmpty(Object... obj) {
+		return !hasEmpty(obj);
+	}
+	
+	/**
+	 * 判断字符串中是否全部为空
+	 * @param obj
+	 * @return
+	 */
+	public static boolean allEmpty(Object... obj) {
+		boolean result = true;
+		if (obj.length > 0) {
+			for (int i = 0; i < obj.length; i++) {
+				if (obj[i] != null && StringUtil.isNotEmpty(obj[i].toString())) {
+					result = false;
+					break;
+				}
+			}
+		}
+		return result;
+	}
 }
