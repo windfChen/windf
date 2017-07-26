@@ -60,7 +60,7 @@ public class ModuleManageControler extends BaseControler{
 		String moduleInfo = this.getParameter("info");
 		String moduleBasePath = this.getParameter("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
-			return paramErrorMap();
+			return jsonReturn.paramErrorMap();
 		}
 		
 		// 构建参数
@@ -74,10 +74,10 @@ public class ModuleManageControler extends BaseControler{
 		try {
 			moduleManageService.createModule(moduleDto);
 		} catch (UserException e) {
-			return errorMessageMap(e.getMessage());
+			return jsonReturn.errorMessageMap(e.getMessage());
 		}
 		
-		return returnMap(true, "创建成功");
+		return jsonReturn.returnMap(true, "创建成功");
 	}
 	
 	@ResponseBody
@@ -89,7 +89,7 @@ public class ModuleManageControler extends BaseControler{
 		String moduleInfo = this.getParameter("info");
 		String moduleBasePath = this.getParameter("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
-			return paramErrorMap();
+			return jsonReturn.paramErrorMap();
 		}
 		
 		// 构建参数
@@ -103,10 +103,10 @@ public class ModuleManageControler extends BaseControler{
 		try {
 			moduleManageService.modifyModule(moduleDto);
 		} catch (UserException e) {
-			return errorMessageMap(e.getMessage());
+			return jsonReturn.errorMessageMap(e.getMessage());
 		}
 		
-		return returnMap(true, "修改成功");
+		return jsonReturn.returnMap(true, "修改成功");
 	}
 	
 	@RequestMapping(value = "/", method = {RequestMethod.GET})
@@ -123,7 +123,7 @@ public class ModuleManageControler extends BaseControler{
 		Integer pageIndex = ParameterUtil.getInteger(pageIndexStr);
 		Integer pageSize = ParameterUtil.getInteger(pageSizeStr);
 		if (ParameterUtil.hasEmpty(pageIndex, pageSize)) {
-			return PARAMETER_ERROR_PAGE;
+			return pageReturn.returnParameterErrorPage();
 		}
 		
 		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);

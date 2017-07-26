@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
@@ -39,17 +40,17 @@ public class UrlControler extends BaseControler{
 		// 验证参数
 		String url = this.getParameter("url");
 		if (ParameterUtil.hasEmpty(url)) {
-			return paramErrorMap();
+			return jsonReturn.paramErrorMap();
 		}
 		
 		// 调用服务
 		try {
 			urlService.createUrl(url);
 		} catch (UserException e) {
-			return errorMessageMap(e.getMessage());
+			return jsonReturn.errorMessageMap(e.getMessage());
 		}
 		
-		return returnMap(true, "创建成功");
+		return jsonReturn.returnMap(true, "创建成功");
 	}
 	
 	@ResponseBody
@@ -80,12 +81,17 @@ public class UrlControler extends BaseControler{
 			parameters.add(p);
 			parameters.add(p2);
 			controlerCoder.addParameterVeriry("hello", parameters);
+			try {
+				controlerCoder.setReturn("hello", ControlerCoder.RETURN_AJAX);
+			} catch (CodeException e) {
+				e.printStackTrace();
+			}
 			controlerCoder.write();
 			
 			List<Parameter> l = controlerCoder.getParameterVeriry("hello");
-			return returnMap(true, "test", l);
+			return jsonReturn.returnMap(true, "test", l);
 		} catch (UserException e) {
-			return returnMap(false, e.getMessage());
+			return jsonReturn.returnMap(false, e.getMessage());
 		}
 		
 	}
