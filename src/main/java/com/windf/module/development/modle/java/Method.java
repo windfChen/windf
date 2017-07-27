@@ -157,7 +157,7 @@ public class Method extends AbstractType{
 			boolean inComments = false;
 			Comment comment = null;
 			List<String> coderLines = new ArrayList<String>();
-			for (int no = 0; no < lines.size() - 1; no ++) {
+			for (int no = 0; no < lines.size(); no ++) {
 				String lineContent = lines.get(no);
 				
 				if (Comment.isCommentEnd(lineContent)) {
@@ -170,6 +170,8 @@ public class Method extends AbstractType{
 						CodeBlock codeBlock = new CodeBlock(coderLines);
 						codeBlock.setComment(comment);
 						codeBlocks.add(codeBlock);
+						
+						coderLines = new ArrayList<String>();
 					}
 
 					inComments = true;
@@ -199,6 +201,7 @@ public class Method extends AbstractType{
 		for (int i = 0; i < codeBlocks.size(); i++) {
 			CodeBlock codeBlock = codeBlocks.get(i);
 			result.addAll(codeBlock.write());
+			result.add("");
 		}
 		result.add(methodEnd);
 		

@@ -96,6 +96,11 @@ public class ControlerCoder {
 		return codeBlock.build();
 	}
 	
+	/**
+	 * 根据访问路径获得方法
+	 * @param subPath
+	 * @return
+	 */
 	protected Method getMethodBySubPath(String subPath) {
 		Method result = null;
 		
@@ -120,26 +125,30 @@ public class ControlerCoder {
 	 * @throws CodeException 
 	 * @throws UserException 
 	 */
-	public void setReturn(String subPath, String returnType) throws CodeException, UserException {
+	public void setReturn(String subPath, ControlerReturn ret) throws CodeException, UserException {
 		Method method = this.getMethodBySubPath(subPath);
 		
-		Return ret = null;
-		if (RETURN_AJAX.equals(returnType)) {
-			ret = new Return(Return.MAP_STRING_OBJECT);
-		} else if (RETURN_PAGE.equals(returnType)) {
-			ret = new Return(Return.STRING);
-		} else {
-			throw new CodeException();
-		}
-		
-		CodeBlock<Return> codeBlock = new  CodeBlock<Return>();
-		codeBlock.setCodeable(new ControlerReturnCoder(false, "参数错误", "whaty"));
+		CodeBlock<ControlerReturn> codeBlock = new  CodeBlock<ControlerReturn>();
+		codeBlock.setCodeable(new ControlerReturnCoder());
 		codeBlock.setTabCount(2);
 		codeBlock.serialize(ret);
 		Comment comment =  new Comment(2, false);
 		comment.addLine("返回参数");
 		codeBlock.setComment(comment);
 		method.addCodeBlock(100, codeBlock);
+	}
+	
+	/**
+	 * 获得返回值
+	 * @param subPath
+	 * @return
+	 */
+	public ControlerReturn getRetrun(String subPath) {
+		Method method = this.getMethodBySubPath(subPath);
+		@SuppressWarnings("unchecked")
+		CodeBlock<ControlerReturn> codeBlock = method.getCodeBlock(1);
+		codeBlock.setCodeable(new ControlerReturnCoder());
+		return codeBlock.build();
 	}
 	
 
