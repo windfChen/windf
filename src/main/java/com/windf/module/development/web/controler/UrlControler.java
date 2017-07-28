@@ -17,6 +17,7 @@ import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.controler.ControlerCoder;
+import com.windf.module.development.modle.controler.ControlerReturn;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.service.UrlService;
 import com.windf.plugins.web.BaseControler;
@@ -61,35 +62,54 @@ public class UrlControler extends BaseControler{
 		try {
 			ControlerCoder controlerCoder = new ControlerCoder("example", name);
 			
-			controlerCoder.setWebPath("/test");
-			controlerCoder.addSubPath("hello", "sayHello", true, false);
-			controlerCoder.addSubPath("bye", "sayGoodbye", true, false);
-			controlerCoder.write();
+//			controlerCoder.setWebPath("/test");
+//			controlerCoder.addSubPath("hello", "sayHello", true, false);
+//			controlerCoder.addSubPath("bye", "sayGoodbye", true, false);
+//			controlerCoder.write();
+//			
+//			Parameter p = new Parameter();
+//			p.setName("name");
+//			p.setType("String");
+//			p.setDescript("商品名称");
+//			p.setNotEmpty(true);
+//			p.addPattern("^([0-9]{15})|([0-9]{17}[xX]{1})([0-9]{18})$", "身份证号");
+//			Parameter p2 = new Parameter();
+//			p2.setName("age");
+//			p2.setType("Integer");
+//			p2.addPattern("数字", "数字");
+//			p2.setNotEmpty(true);
+//			List<Parameter> parameters = new ArrayList<Parameter>();
+//			parameters.add(p);
+//			parameters.add(p2);
+//			controlerCoder.addParameterVeriry("hello", parameters);
+//			try {
+//
+////				ControlerReturn ret = new ControlerReturn(ControlerReturn.MAP_STRING_OBJECT);
+////				ret.setSuccess(true);
+////				ret.setDataName("whaty");
+////				ret.setMessage("");
+//				
+//				ControlerReturn ret = new ControlerReturn(ControlerReturn.STRING);
+//				ret.setSuccess(false);
+////				ret.setViewPath("/dev/create");
+//				ret.setMessage("创建成功");
+////				ret.setSureButtonWord("现在登录");
+////				ret.setSureHref("http://www.baidu.com");
+//				
+//				controlerCoder.setReturn("hello", ret);
+//			} catch (CodeException e) {
+//				e.printStackTrace();
+//			}
+//			controlerCoder.write();
 			
-			Parameter p = new Parameter();
-			p.setName("name");
-			p.setType("String");
-			p.setDescript("商品名称");
-			p.setNotEmpty(true);
-			p.addPattern("^([0-9]{15})|([0-9]{17}[xX]{1})([0-9]{18})$", "身份证号");
-			Parameter p2 = new Parameter();
-			p2.setName("age");
-			p2.setType("Integer");
-			p2.addPattern("数字", "数字");
-			p2.setNotEmpty(true);
-			List<Parameter> parameters = new ArrayList<Parameter>();
-			parameters.add(p);
-			parameters.add(p2);
-			controlerCoder.addParameterVeriry("hello", parameters);
-			try {
-				controlerCoder.setReturn("hello", ControlerCoder.RETURN_AJAX);
-			} catch (CodeException e) {
-				e.printStackTrace();
-			}
-			controlerCoder.write();
+//			List<Parameter> l = controlerCoder.getParameterVeriry("hello");
+//			return jsonReturn.returnMap(true, "test", l);
 			
-			List<Parameter> l = controlerCoder.getParameterVeriry("hello");
-			return jsonReturn.returnMap(true, "test", l);
+//			ControlerReturn l2 = controlerCoder.getRetrun("hello");
+//			return jsonReturn.returnMap(true, "test", l2);
+			
+			ControlerReturn l3 = controlerCoder.getRetrun("hello");
+			return jsonReturn.returnMap(true, "test", l3);
 		} catch (UserException e) {
 			return jsonReturn.returnMap(false, e.getMessage());
 		}

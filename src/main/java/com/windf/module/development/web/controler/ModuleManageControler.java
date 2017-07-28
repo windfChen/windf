@@ -48,7 +48,7 @@ public class ModuleManageControler extends BaseControler{
 			}
 		}
 		
-		return Constant.WEB_BASE_VIEW + "create" ;
+		return Constant.WEB_BASE_VIEW + "create";
 	}
 	
 	@ResponseBody
@@ -123,7 +123,7 @@ public class ModuleManageControler extends BaseControler{
 		Integer pageIndex = ParameterUtil.getInteger(pageIndexStr);
 		Integer pageSize = ParameterUtil.getInteger(pageSizeStr);
 		if (ParameterUtil.hasEmpty(pageIndex, pageSize)) {
-			return pageReturn.returnParameterErrorPage();
+			return pageReturn.parameterError();
 		}
 		
 		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);

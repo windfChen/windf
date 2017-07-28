@@ -59,4 +59,19 @@ public class CodeConst {
 		return result.toArray(new String[result.size()]);
 	}
 	
+
+	/**
+	 * 获得字符串内容中的字符串
+	 * eg: "hello world" --> hello world
+	 * @param str
+	 * @return
+	 */
+	public static String getStringContent(String str) {
+		String result = null;
+		if (str.startsWith("\"") && str.endsWith("\"")) {
+			result = str.substring(1, str.length() - 1);
+		}
+		return result;
+	}
+	
 }
