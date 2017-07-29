@@ -127,7 +127,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		/*
 		 * 遍历模块，获得符合条件的数据
 		 */
-		List<Module> resultList = new ArrayList<>();
+		List<Module> resultList = new ArrayList<Module>();
 		if (modules != null) {
 			
 			for (Module module : modules) {
