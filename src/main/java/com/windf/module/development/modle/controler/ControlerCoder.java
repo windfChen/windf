@@ -21,6 +21,7 @@ public class ControlerCoder {
 	public static final String RETURN_PAGE = "page";
 	
 	private JavaCoder javaCoder;
+	
 	public ControlerCoder(String moduleCode, String className) throws UserException {
 		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/controler", className);
 	}

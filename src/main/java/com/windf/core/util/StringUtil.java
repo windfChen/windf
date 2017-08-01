@@ -1,7 +1,10 @@
 package com.windf.core.util;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 public class StringUtil {
     public static final String UTF8 = "UTF-8";
@@ -56,6 +59,16 @@ public class StringUtil {
 		} else {
 			return str.substring(0, 1).toUpperCase() + str.substring(1); 
 		}
+    }
+    
+    /**
+     * 将集合转换为字符串，中间用指定字符隔开
+     * @param collection
+     * @param separator
+     * @return
+     */
+    public static String join(Collection<? extends Object> collection, String separator) {
+    	return StringUtils.join(collection, separator);
     }
     
     

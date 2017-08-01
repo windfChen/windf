@@ -3,7 +3,6 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
@@ -41,6 +40,17 @@ public class Method extends AbstractType{
 			result = true; 
 		}
 		
+		return result;
+	}
+	
+	/**
+	 * 是否是接口中的方法
+	 * @param lineContent
+	 * @return
+	 */
+	static boolean isInterfaceMethod(String lineContent) {
+		boolean result = false;
+		// TODO
 		return result;
 	}
 	
@@ -241,8 +251,7 @@ public class Method extends AbstractType{
 			parameters.add(parameter);
 		}
 		if (exceptionTypeStr != null) {
-			exceptionType = new ExceptionType();
-			exceptionType.setType(exceptionTypeStr);
+			exceptionType = new ExceptionType(exceptionTypeStr);
 		}
 	}
 
@@ -268,7 +277,7 @@ public class Method extends AbstractType{
 		}
 		methodCodes.append(")");
 		if (exceptionType != null) {
-			methodCodes.append(CodeConst.WORD_SPLIT + "throws" + CodeConst.WORD_SPLIT + UserException.class.getSimpleName());
+			methodCodes.append(CodeConst.WORD_SPLIT + exceptionType.write());
 		}
 		methodCodes.append(CodeConst.WORD_SPLIT + "{");
 	
