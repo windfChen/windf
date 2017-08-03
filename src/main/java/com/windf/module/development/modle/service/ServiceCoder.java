@@ -68,12 +68,14 @@ public class ServiceCoder {
 	public ServiceMethod createMethod(Return ret, String name, List<Parameter> parameters, ExceptionType exceptionType) throws UserException {
 		ServiceMethod result = null;
 		
-		Method method = new Method(name, ret, parameters, exceptionType);
+		Method javaCoderMethod = new Method(name, ret, parameters, exceptionType, true);
+		Method javaImplCoderMethod = new Method(name, ret, parameters, exceptionType, false);
 		
-		method = javaCoder.createMethod(method);
-		method = javaImplCoder.createMethod(method);
-		if (method != null) {
-			result = ServiceMethod.fromMethod(method);
+		javaCoderMethod = javaCoder.createMethod(javaCoderMethod);
+		javaImplCoderMethod = javaImplCoder.createMethod(javaImplCoderMethod);
+		
+		if (javaImplCoderMethod != null) {
+			result = ServiceMethod.fromMethod(javaImplCoderMethod);
 		}
 		return result;
 	}

@@ -50,7 +50,7 @@ public class ControlerCoder {
 			ret = new Return(Return.STRING);
 		}
 		
-		Method method = new Method(methodName, ret, null, null);
+		Method method = new Method(methodName, ret, null, null, false);
 		Annotation requestMappingAnnotation = new Annotation("RequestMapping");
 		requestMappingAnnotation.addValue("value", subPath);
 		if (get) {
