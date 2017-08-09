@@ -3,6 +3,7 @@ package com.windf.module.development.modle.service;
 import java.util.List;
 
 import com.windf.module.development.modle.java.Method;
+import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
@@ -19,13 +20,15 @@ public class ServiceMethod {
 		result.setName(method.getMethodName());
 		result.setParameters(method.getParameters());
 		result.setRet(method.getRet());
+		result.setExceptionType(method.getExceptionType());
 
-		return null;
+		return result;
 	}
 
 	private String name;
 	private List<Parameter> parameters;
 	private Return ret;
+	private ExceptionType exceptionType;
 
 	public String getName() {
 		return name;
@@ -50,4 +53,13 @@ public class ServiceMethod {
 	public void setRet(Return ret) {
 		this.ret = ret;
 	}
+
+	public ExceptionType getExceptionType() {
+		return exceptionType;
+	}
+
+	public void setExceptionType(ExceptionType exceptionType) {
+		this.exceptionType = exceptionType;
+	}
+	
 }

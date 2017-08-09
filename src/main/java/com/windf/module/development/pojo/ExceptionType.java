@@ -60,4 +60,13 @@ public class ExceptionType {
 		}
 		return "throws " + StringUtil.join(this.types, ", ");
 	}
+
+	public List<String> getTypes() {
+		return types;
+	}
+
+	public void setTypes(List<String> types) {
+		this.types = types;
+	}
+	
 }
