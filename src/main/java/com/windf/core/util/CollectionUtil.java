@@ -24,7 +24,7 @@ public class CollectionUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Map reversalMap(Map map) {
-		Map<Object, Object> result = new HashMap<>();
+		Map<Object, Object> result = new HashMap<Object, Object>();
 		
 		Iterator iterator = map.keySet().iterator();
 		while (iterator.hasNext()) {

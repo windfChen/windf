@@ -338,7 +338,9 @@ public class ReflectUtil {
 				if ((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) {
 					try {
 						result.put(field.getName(), field.get(clazz));
-					} catch (IllegalArgumentException | IllegalAccessException e) {
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					}
 				}

@@ -1,4 +1,6 @@
 /target/
-
 /.settings/
 .project
+src/main/webapp/WEB-INF/classes/*
+.DS_Store
+target/*

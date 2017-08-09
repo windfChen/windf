@@ -42,9 +42,9 @@
 			<version>1.6.5</version>
 		</dependency>
 		<dependency>
-			<groupId>jackson</groupId>
-			<artifactId>jackson-all</artifactId>
-			<version>1.6.3</version>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-core-asl</artifactId>
+		    <version>1.9.13</version>
 		</dependency>
 		
 		<dependency>
@@ -122,15 +122,15 @@
 		</dependency>
 
 		<dependency>
-		  <groupId>com.logicalcobwebs</groupId>
+		  <groupId>com.cloudhopper.proxool</groupId>
 		  <artifactId>proxool</artifactId>
 		  <version>0.9.1</version>
 		</dependency>
-
+		
 		<dependency>
-		  <groupId>com.logicalcobwebs</groupId>
-		  <artifactId>proxool-cglib</artifactId>
-		  <version>1.0.0</version>
+		    <groupId>com.cloudhopper.proxool</groupId>
+		    <artifactId>proxool-cglib</artifactId>
+		    <version>0.9.1</version>
 		</dependency>
 		
 		<dependency>
@@ -152,11 +152,6 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 			<version>3.20.0-GA</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>ejb3-persistence</artifactId>
-			<version>3.3.2.Beta1</version>
 		</dependency>
 		<dependency>  
             <groupId>org.mybatis</groupId>  
@@ -222,24 +217,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>Whaty Public Repositories</id>
-			<url>http://192.168.20.31/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<id>nexus-releases</id>
-			<name>Nexus Release Repository</name>
-			<url>http://192.168.20.31/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<name>Nexus Snapshot Repository</name>
-			<url>http://192.168.20.31/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>
