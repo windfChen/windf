@@ -1,6 +1,7 @@
-src/main/webapp/WEB-INF/classes/*
 src/main/webapp/WEB-INF/lib/*
+/target/
+/.settings/
+.project
+src/main/webapp/WEB-INF/classes/*
 .DS_Store
 target/*
-src/main/resources/plugins/mybatis/applicationContext_dataSource.xml
-src/main/resources/jdbc.properties

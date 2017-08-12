@@ -3,14 +3,13 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.pojo.ExceptionType;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class Method extends AbstractType{
+public class Method extends AbstractType {
 	
 	/**
 	 * 判断这一行是否是方法声明
@@ -21,7 +20,7 @@ public class Method extends AbstractType{
 		boolean result = false;
 		
 		if (CodeConst.lineStartTabCount(lineContent) == 1 ) {
-			if (lineContent.contains("abstract") || lineContent.trim().endsWith("{")) {
+			if (lineContent.trim().endsWith("{")) {
 				result = true; 
 			}
 		}
@@ -44,6 +43,15 @@ public class Method extends AbstractType{
 		return result;
 	}
 	
+	/**
+	 * 是否是接口中的方法或者抽象方法
+	 * @param lineContent
+	 * @return    public String getNameById(String name, Integer age) throws UserException, CodeException;"
+	 */
+	public static boolean isInterfaceMethod(String lineContent) {
+		return CodeConst.getInnerString(lineContent.trim(), "(public )?(abstract )?(\\w*) (\\w*)\\((\\w* \\w*(, )?)*\\)( throws (\\w*(, )?)*)?;").length > 0;
+	}
+	
 	/*
 	 * 代码
 	 */
@@ -59,6 +67,7 @@ public class Method extends AbstractType{
 	List<Parameter> parameters = new ArrayList<Parameter>();
 	Return ret;
 	ExceptionType exceptionType;
+	boolean unImplement;
 
 	/**
 	 * 由代码构造方法
@@ -78,12 +87,14 @@ public class Method extends AbstractType{
 	 * @param ret
 	 * @param parameters
 	 * @param exception
+	 * @param b 
 	 */
-	public Method(String methodName, Return ret, List<Parameter> parameters, ExceptionType exception) {
+	public Method(String methodName, Return ret, List<Parameter> parameters, ExceptionType exception, boolean unImplement) {
 		this.methodName = methodName;
 		this.ret = ret;
 		this.parameters = parameters;
 		this.exceptionType = exception;
+		this.unImplement = unImplement;
 		
 		initMethodStartFromInfo();
 	}
@@ -198,12 +209,16 @@ public class Method extends AbstractType{
 		result.addAll(this.getAnnotationsString(1));
 		
 		result.add(methodStart);
-		for (int i = 0; i < codeBlocks.size(); i++) {
-			CodeBlock codeBlock = codeBlocks.get(i);
-			result.addAll(codeBlock.write());
-			result.add("");
+		
+		if (!unImplement) {
+			for (int i = 0; i < codeBlocks.size(); i++) {
+				CodeBlock codeBlock = codeBlocks.get(i);
+				result.addAll(codeBlock.write());
+				result.add("");
+			}
+			
+			result.add(methodEnd);
 		}
-		result.add(methodEnd);
 		
 		return result;
 	}
@@ -212,6 +227,11 @@ public class Method extends AbstractType{
 	 * 截取方法申明行代码，获取方法的信息
 	 */
 	private void initInfoFromMethodStart() {
+
+		if (methodStart.trim().endsWith(";")) {
+			unImplement = true;
+		}
+		
 		String parameterStr = methodStart.substring(methodStart.indexOf("(") + 1, methodStart.indexOf(")"));
 		String nameStrs = methodStart.substring(0, methodStart.indexOf("(")) + methodStart.substring(methodStart.indexOf(")") + 1);
 		
@@ -241,8 +261,7 @@ public class Method extends AbstractType{
 			parameters.add(parameter);
 		}
 		if (exceptionTypeStr != null) {
-			exceptionType = new ExceptionType();
-			exceptionType.setType(exceptionTypeStr);
+			exceptionType = new ExceptionType(exceptionTypeStr);
 		}
 	}
 
@@ -268,9 +287,13 @@ public class Method extends AbstractType{
 		}
 		methodCodes.append(")");
 		if (exceptionType != null) {
-			methodCodes.append(CodeConst.WORD_SPLIT + "throws" + CodeConst.WORD_SPLIT + UserException.class.getSimpleName());
+			methodCodes.append(CodeConst.WORD_SPLIT + exceptionType.write());
 		}
-		methodCodes.append(CodeConst.WORD_SPLIT + "{");
+		if (unImplement) {
+			methodCodes.append(";");
+		} else {
+			methodCodes.append(CodeConst.WORD_SPLIT + "{");
+		}
 	
 		this.methodStart = methodCodes.toString();
 	}
@@ -337,6 +360,14 @@ public class Method extends AbstractType{
 
 	public void setExceptionType(ExceptionType exceptionType) {
 		this.exceptionType = exceptionType;
+	}
+
+	public boolean isUnImplement() {
+		return unImplement;
+	}
+
+	public void setUnImplement(boolean unImplement) {
+		this.unImplement = unImplement;
 	}
 	
 	

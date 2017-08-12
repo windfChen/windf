@@ -90,6 +90,13 @@ public class JavaCoder extends AbstractType{
 					isInMethod = true;
 					method = new Method(lineContent);
 					methods.add(method);
+				} else if (Method.isInterfaceMethod(lineContent)) {
+					method = new Method(lineContent);
+					methods.add(method);
+					method.setComment(comment);
+					method.setAnnotations(annotations);
+					method.initCodeBlocks();
+					reset();
 				} else if (Attribute.isAttributeLine(lineContent)) {
 					Attribute attribute = new Attribute(lineContent);
 					attributes.add(attribute);
