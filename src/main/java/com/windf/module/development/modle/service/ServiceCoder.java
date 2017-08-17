@@ -20,7 +20,6 @@ public class ServiceCoder {
 	private JavaCoder javaCoder;
 	private JavaCoder javaImplCoder;
 	private Service service;
-	private String moduleCode;
 	private Module module;
 	
 	/**
