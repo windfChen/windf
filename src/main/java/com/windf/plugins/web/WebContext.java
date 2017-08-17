@@ -120,7 +120,7 @@ public class WebContext {
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
-        if (ip == null && !ip.isEmpty() && ip.indexOf(",") > 0) {
+        if (ip != null && !ip.isEmpty() && ip.indexOf(",") > 0) {
             ip = ip.split(",")[0];
         }
         return ip;

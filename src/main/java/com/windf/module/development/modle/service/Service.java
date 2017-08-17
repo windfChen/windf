@@ -3,8 +3,6 @@ package com.windf.module.development.modle.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.windf.module.development.pojo.Module;
-
 public class Service {
 
 	private String serviceName;
