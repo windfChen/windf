@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
+import com.windf.module.development.modle.controler.UrlInfo;
 import com.windf.module.development.pojo.Controler;
 import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.URL;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.module.development.service.UrlService;
 
@@ -55,7 +55,7 @@ public class UrlServiceImpl  implements UrlService {
 		/*
 		 * 查询模块url
 		 */
-		URL u = getUrl(module, url);
+		UrlInfo u = getUrl(module, url);
 		if (u != null) {
 			throw new UserException("url已存在");
 		}
@@ -104,14 +104,14 @@ public class UrlServiceImpl  implements UrlService {
 	 * @param module
 	 * @param url
 	 */
-	private URL getUrl(Module module, String url) {
-		URL result = null;
+	private UrlInfo getUrl(Module module, String url) {
+		UrlInfo result = null;
 		
-		List<URL> urls = module.getUrls();
+		List<UrlInfo> urls = module.getUrls();
 		
 		if (urls != null) {
-			for (URL u : urls) {
-				if (u != null && u.getName().equals(url)) {
+			for (UrlInfo u : urls) {
+				if (u != null && u.getSubPath().equals(url)) {
 					result = u;
 					break;
 				}

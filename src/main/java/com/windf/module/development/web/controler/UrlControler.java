@@ -17,11 +17,11 @@ import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.controler.ControlerCoder;
 import com.windf.module.development.modle.controler.ControlerReturn;
-import com.windf.module.development.modle.java.CodeConst;
-import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.modle.service.ServiceCoder;
 import com.windf.module.development.modle.service.ServiceMethod;
 import com.windf.module.development.pojo.ExceptionType;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.ModuleMaster;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 import com.windf.module.development.service.UrlService;
@@ -62,32 +62,14 @@ public class UrlControler extends BaseControler{
 	@ResponseBody
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public Map<String, Object> test()  {
-		
+		Module m = null;
 		try {
-			ServiceCoder serviceCoder = new ServiceCoder("example", "test", null);
-			
-			Return ret = new Return(Return.STRING);
-			Parameter p = new Parameter();
-			p.setName("name");
-			p.setType("String");
-			Parameter p2 = new Parameter();
-			p2.setName("age");
-			p2.setType("Integer");
-			List<Parameter> parameters = new ArrayList<Parameter>();
-			parameters.add(p);
-			parameters.add(p2);
-			ExceptionType exceptionType = new ExceptionType("UserException, CodeException");
-			serviceCoder.createMethod(ret, "getNameById", parameters, exceptionType);
-			
-			serviceCoder.write();
-			List<ServiceMethod> list = serviceCoder.listAllMethod();
-			
-			return jsonReturn.returnMap(true, "test", list);
-		} catch (Exception e) {
+			m = ModuleMaster.getInstance().findModuleByCode("example");
+		} catch (UserException e) {
 			e.printStackTrace();
-			return jsonReturn.errorMap(e.getMessage());
 		}
-	
+		
+		return jsonReturn.returnMap(true, "test", m);
 	}
 	
 	@ResponseBody

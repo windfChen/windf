@@ -119,7 +119,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		List<Module> modules = null;
 		try {
 			ModuleMaster moduleMaster = ModuleMaster.getInstance();
-			modules = moduleMaster.getModules();
+			modules = moduleMaster.listAllModules();
 		} catch (UserException e) {
 			e.printStackTrace();
 		}

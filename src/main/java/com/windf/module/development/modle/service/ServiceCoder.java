@@ -10,6 +10,8 @@ import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.pojo.ExceptionType;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.ModuleMaster;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
@@ -17,6 +19,9 @@ public class ServiceCoder {
 	
 	private JavaCoder javaCoder;
 	private JavaCoder javaImplCoder;
+	private Service service;
+	private String moduleCode;
+	private Module module;
 	
 	/**
 	 * 创建service，和实现类
@@ -27,16 +32,24 @@ public class ServiceCoder {
 	 * @throws UserException
 	 */
 	public ServiceCoder(String moduleCode, String className, String implId) throws UserException {
-		className = StringUtil.firstLetterUppercase(className) + "Service";
+		String serviceName = StringUtil.firstLetterUppercase(className) + "Service";
 		
-		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/service", className);
+		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/service", serviceName);
 		javaImplCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/service/impl", 
-				className + StringUtil.firstLetterUppercase(StringUtil.fixNull(implId)) + "Impl");
+				serviceName + StringUtil.firstLetterUppercase(StringUtil.fixNull(implId)) + "Impl");
 		
 		Annotation serviceAnnotation = javaImplCoder.getAnnotationByName("Service");
 		if (serviceAnnotation == null) {
 			serviceAnnotation = new Annotation("Service");
 			javaImplCoder.setAnnotation(serviceAnnotation);
+		}
+		
+		module = ModuleMaster.getInstance().findModuleByCode(moduleCode);
+		service = module.getServiceByName(serviceName);
+		if (service == null) {
+			service = new Service();
+			service.setServiceName(serviceName);
+			module.addService(service);
 		}
 	}
 	
@@ -65,8 +78,13 @@ public class ServiceCoder {
 	 * @return
 	 * @throws UserException 
 	 */
-	public ServiceMethod createMethod(Return ret, String name, List<Parameter> parameters, ExceptionType exceptionType) throws UserException {
+	public ServiceMethod createMethod(ServiceMethod serviceMethod) throws UserException {
 		ServiceMethod result = null;
+		
+		Return ret = serviceMethod.getRet();
+		String name = serviceMethod.getName();
+		List<Parameter> parameters = serviceMethod.getParameters();
+		ExceptionType exceptionType = serviceMethod.getExceptionType();
 		
 		Method javaCoderMethod = new Method(name, ret, parameters, exceptionType, true);
 		Method javaImplCoderMethod = new Method(name, ret, parameters, exceptionType, false);
@@ -76,7 +94,10 @@ public class ServiceCoder {
 		
 		if (javaImplCoderMethod != null) {
 			result = ServiceMethod.fromMethod(javaImplCoderMethod);
+			service.addServiceMethod(result);
+			module.write();
 		}
+		
 		return result;
 	}
 	

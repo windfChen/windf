@@ -1,6 +1,7 @@
 package com.windf.module.development.pojo;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
 import com.windf.module.development.file.XmlFileUtil;
+import com.windf.module.development.modle.controler.UrlInfo;
+import com.windf.module.development.modle.service.Service;
 
 public class Module {
 
@@ -35,10 +38,10 @@ public class Module {
 	private String info;
 	private Map<String, String> path;
 	private List<String> dependent;
-	private List<URL> urls;
-	private List<Controler> controlers;
+	private List<UrlInfo> urls = new ArrayList<UrlInfo>();
+	private List<Controler> controlers = new ArrayList<Controler>();
+	private List<Service> services = new ArrayList<Service>();
 
-	// TODO servicves:List<Service> urls:List<URL>
 
 	public Module clone(String newCode) throws UserException {
 		ModuleMaster moduleMaster = ModuleMaster.getInstance();
@@ -51,7 +54,7 @@ public class Module {
 
 		return loadModule(newCode);
 	}
-
+	
 	public void write() throws UserException {
 		File file = new File(
 				FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
@@ -123,6 +126,33 @@ public class Module {
 			}
 		});
 	}
+	
+	/**
+	 * 根据service名获得service
+	 * @param serviceName
+	 * @return
+	 */
+	public Service getServiceByName(String serviceName) {
+		Service result = null;
+		
+		for (Service service : services) {
+			if (service.getServiceName().equals(serviceName)) {
+				result = service;
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 添加一个Service
+	 * @param service
+	 * @throws UserException 
+	 */
+	public void addService(Service service) throws UserException {
+		services.add(service);
+		this.write();
+	}
 
 	public String getCode() {
 		return code;
@@ -172,11 +202,11 @@ public class Module {
 		this.dependent = dependent;
 	}
 
-	public List<URL> getUrls() {
+	public List<UrlInfo> getUrls() {
 		return urls;
 	}
 
-	public void setUrls(List<URL> urls) {
+	public void setUrls(List<UrlInfo> urls) {
 		this.urls = urls;
 	}
 
@@ -187,5 +217,14 @@ public class Module {
 	public void setControlers(List<Controler> controlers) {
 		this.controlers = controlers;
 	}
+
+	public List<Service> getServices() {
+		return services;
+	}
+
+	public void setServices(List<Service> services) {
+		this.services = services;
+	}
+
 
 }

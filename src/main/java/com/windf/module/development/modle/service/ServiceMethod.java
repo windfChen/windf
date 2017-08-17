@@ -61,5 +61,5 @@ public class ServiceMethod {
 	public void setExceptionType(ExceptionType exceptionType) {
 		this.exceptionType = exceptionType;
 	}
-	
+
 }
