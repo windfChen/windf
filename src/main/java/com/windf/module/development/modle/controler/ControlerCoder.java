@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
+import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.CodeBlock;
@@ -23,6 +24,7 @@ public class ControlerCoder {
 	private JavaCoder javaCoder;
 	
 	public ControlerCoder(String moduleCode, String className) throws UserException {
+		className = StringUtil.firstLetterUppercase(className);
 		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/controler", className);
 	}
 	

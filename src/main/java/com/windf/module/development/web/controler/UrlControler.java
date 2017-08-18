@@ -34,17 +34,20 @@ public class UrlControler extends BaseControler{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/create", method = {RequestMethod.POST})
+	@RequestMapping(value = "/create", method = {RequestMethod.GET})
 	public Map<String, Object> create() {
 		// 验证参数
 		String url = this.getParameter("url");
-		if (ParameterUtil.hasEmpty(url)) {
+		String moduleCode = this.getParameter("module");
+		String getStr = this.getParameter("get");
+		if (ParameterUtil.hasEmpty(moduleCode, url)) {
 			return jsonReturn.paramErrorMap();
 		}
+		boolean get = Boolean.parseBoolean(getStr);
 		
 		// 调用服务
 		try {
-			urlService.createUrl(url);
+			urlService.createUrl(moduleCode, url, get);
 		} catch (UserException e) {
 			return jsonReturn.errorMap(e.getMessage());
 		}

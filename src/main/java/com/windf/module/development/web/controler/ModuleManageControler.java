@@ -41,7 +41,7 @@ public class ModuleManageControler extends BaseControler{
 
 			// 调用服务
 			try {
-				Module module = moduleManageService.getModule(moduleCode);
+				Module module = moduleManageService.getModuleByCode(moduleCode);
 				this.setValue("bean", module);
 			} catch (UserException e) {
 				e.printStackTrace();
