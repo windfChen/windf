@@ -1,6 +1,9 @@
-<module>
-	<code>example</code>
-	<name>例子</name>
-	<info>用于展示，和作为其他新建模块的模板</info>
-	<basePath>/example</basePath>
-</module>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<example>
+  <basePath>/example</basePath>
+  <urls/>
+  <name>例子</name>
+  <code>example</code>
+  <info>用于展示，和作为其他新建模块的模板</info>
+</example>
