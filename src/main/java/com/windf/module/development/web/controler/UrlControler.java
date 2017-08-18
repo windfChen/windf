@@ -40,6 +40,31 @@ public class UrlControler extends BaseControler{
 		return Constant.WEB_BASE_PATH;
 	}
 	
+	@RequestMapping(value = "/list", method = {RequestMethod.POST})
+	public String list() {
+		// 验证参数
+		String code = this.getParameter("code");
+		if (ParameterUtil.hasEmpty(code)) {
+			return pageReturn.parameterError();
+		}
+		
+		// TODO 查询模块下的所有url和control
+		
+		return "url_list";
+	}
+	
+
+	@RequestMapping(value = "/create", method = {RequestMethod.POST})
+	public String createPage() {
+		// 验证参数
+		String code = this.getParameter("code");
+		if (ParameterUtil.hasEmpty(code)) {
+			return pageReturn.parameterError();
+		}
+		
+		return "url_add";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
 	public Map<String, Object> create() {
