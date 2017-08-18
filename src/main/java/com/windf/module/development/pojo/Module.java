@@ -15,6 +15,7 @@ import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
 import com.windf.module.development.file.XmlFileUtil;
+import com.windf.module.development.modle.controler.Controler;
 import com.windf.module.development.modle.controler.UrlInfo;
 import com.windf.module.development.modle.service.Service;
 
@@ -151,6 +152,33 @@ public class Module {
 	 */
 	public void addService(Service service) throws UserException {
 		services.add(service);
+		this.write();
+	}
+	
+	/**
+	 * 根据名称获得控制器
+	 * @param controlerName
+	 * @return
+	 */
+	public Controler getControler(String controlerName) {
+		Controler result = null;
+		
+		for (Controler controler : controlers) {
+			if (controler.getName().equals(controlerName)) {
+				result = controler;
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 添加一个Controler
+	 * @param controler
+	 * @throws UserException 
+	 */
+	public void addControler(Controler controler) throws UserException {
+		controlers.add(controler);
 		this.write();
 	}
 

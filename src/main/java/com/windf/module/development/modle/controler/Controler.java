@@ -1,9 +1,12 @@
-package com.windf.module.development.pojo;
+package com.windf.module.development.modle.controler;
+
+import java.util.List;
 
 public class Controler {
 	private String name;
 	private String urlPath;
 	private String classPath;
+	private List<UrlInfo> urlInfos;
 
 	public String getName() {
 		return name;
@@ -27,6 +30,14 @@ public class Controler {
 
 	public void setClassPath(String classPath) {
 		this.classPath = classPath;
+	}
+
+	public List<UrlInfo> getUrlInfos() {
+		return urlInfos;
+	}
+
+	public void setUrlInfos(List<UrlInfo> urlInfos) {
+		this.urlInfos = urlInfos;
 	}
 
 }
