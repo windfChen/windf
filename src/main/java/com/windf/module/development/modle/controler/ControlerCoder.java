@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
+import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.CodeBlock;
@@ -13,6 +14,8 @@ import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.modle.java.code.ControlerReturnCoder;
 import com.windf.module.development.modle.java.code.ParameterVerifyCoder;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.ModuleMaster;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
@@ -21,9 +24,20 @@ public class ControlerCoder {
 	public static final String RETURN_PAGE = "page";
 	
 	private JavaCoder javaCoder;
+	private Module module;
+	private Controler controler;
 	
 	public ControlerCoder(String moduleCode, String className) throws UserException {
+		className = StringUtil.firstLetterUppercase(className) + "Controler";
 		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/controler", className);
+		
+		module = ModuleMaster.getInstance().findModuleByCode(moduleCode);
+		controler = module.getControler(className);
+		if (controler == null) {
+			controler = new Controler();
+			controler.setName(className);
+			module.addControler(controler);
+		}
 	}
 	
 	public void write() {
@@ -61,6 +75,8 @@ public class ControlerCoder {
 		method.setAnnotation(requestMappingAnnotation);
 		
 		javaCoder.createMethod(method);
+		
+		module.write();
 	}
 	
 	public List<UrlInfo> listAllSubPath() {
@@ -76,6 +92,12 @@ public class ControlerCoder {
 		return result;
 	}
 
+	/**
+	 * 添加参数验证
+	 * @param subPath
+	 * @param parameters
+	 * @throws UserException
+	 */
 	public void addParameterVeriry(String subPath, List<Parameter> parameters) throws UserException {
 		Method method = this.getMethodBySubPath(subPath);
 		
@@ -89,6 +111,11 @@ public class ControlerCoder {
 		method.addCodeBlock(0, codeBlock);
 	}
 	
+	/**
+	 * 获得参数验证
+	 * @param subPath
+	 * @return
+	 */
 	public List<Parameter> getParameterVeriry(String subPath) {
 		Method method = this.getMethodBySubPath(subPath);
 		@SuppressWarnings("unchecked")

@@ -6,7 +6,10 @@ public interface UrlService {
 
 	/**
 	 * 创建url
+	 * @param moduleCode
 	 * @param url
+	 * @param get
+	 * @throws UserException
 	 */
-	void createUrl(String url) throws UserException;
+	void createUrl(String moduleCode, String url, boolean get) throws UserException;
 }

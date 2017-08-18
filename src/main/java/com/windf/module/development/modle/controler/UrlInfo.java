@@ -1,7 +1,10 @@
 package com.windf.module.development.modle.controler;
 
+import java.util.List;
+
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.Method;
+import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
 public class UrlInfo {
@@ -40,6 +43,9 @@ public class UrlInfo {
 	private String methodName;
 	private boolean ajaxReturn;
 	private String requestMethod;
+	
+	private ControlerReturn controlerReturn;
+	private List<Parameter> parameters;
 
 	public String getSubPath() {
 		return subPath;
@@ -71,6 +77,22 @@ public class UrlInfo {
 
 	public void setRequestMethod(String requestMethod) {
 		this.requestMethod = requestMethod;
+	}
+
+	public ControlerReturn getControlerReturn() {
+		return controlerReturn;
+	}
+
+	public void setControlerReturn(ControlerReturn controlerReturn) {
+		this.controlerReturn = controlerReturn;
+	}
+
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<Parameter> parameters) {
+		this.parameters = parameters;
 	}
 
 }

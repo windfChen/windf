@@ -6,10 +6,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.windf.core.exception.ParameterException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
+import com.windf.core.util.StringUtil;
+import com.windf.module.development.modle.controler.ControlerCoder;
 import com.windf.module.development.modle.controler.UrlInfo;
-import com.windf.module.development.pojo.Controler;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.module.development.service.UrlService;
@@ -21,82 +23,57 @@ public class UrlServiceImpl  implements UrlService {
 	private ModuleManageService moduleManageService ;
 
 	@Override
-	public void createUrl(String url) throws UserException {
+	public void createUrl(String moduleCode, String url, boolean get) throws UserException {
 		/*
 		 * 验证参数
 		 */
-		if (ParameterUtil.hasEmpty(url)) {
-			return;
+		if (ParameterUtil.hasEmpty(moduleCode, url)) {
+			throw new ParameterException();
 		}
 		
 		/*
-		 * 解析地址
+		 * 获得模块
 		 */
-		String[] subUrls = url.split("/");
-		if (subUrls.length < 3) {
-			throw new UserException("路径段不对");
-		}
-		String modulePath = subUrls[0];
-		@SuppressWarnings("unused")
-		String methodName = subUrls[subUrls.length - 1];
-		StringBuffer controlerPath = new StringBuffer();
-		for (int i = 1; i < subUrls.length - 1; i++) {
-			controlerPath.append(subUrls[i] + "/");
-		}
-		
-		/*
-		 * 获取模块
-		 */
-		Module module = moduleManageService.getModuleByPath(modulePath);
+		Module module = moduleManageService.getModuleByCode(moduleCode);
 		if (module == null) {
 			throw new UserException("指定模块不存在");
 		}
 		
 		/*
-		 * 查询模块url
+		 * 解析地址
 		 */
-		UrlInfo u = getUrl(module, url);
-		if (u != null) {
-			throw new UserException("url已存在");
+		if (!url.startsWith("/")) {
+			url = "/" + url;
 		}
+		url = url.substring(module.getBasePath().length());
+		String methodName = url.substring(url.lastIndexOf("/"));
+		String controlerPath = url.substring(0, url.lastIndexOf("/"));
+		if (StringUtil.isEmpty(controlerPath)) {
+			throw new ParameterException();
+		}
+		String[] subControlerPaths = controlerPath.split("/");
+		StringBuffer controlerNameBuff = new StringBuffer();
+		for (int i = 0; i < subControlerPaths.length; i++) {
+			controlerNameBuff.append(StringUtil.firstLetterUppercase(subControlerPaths[i]));
+		}
+		String controlerName = controlerNameBuff.toString();
 		
 		/*
-		 * 查询控制器
+		 * 查询模块url
 		 */
-		Controler controler = this.getModuleControlerByPath(module, controlerPath.toString());
-		if (controler == null) {
-			throw new UserException("控制器不存");
+		UrlInfo urlInfo = getUrl(module, url);
+		if (urlInfo != null) {
+			throw new UserException("url已存在");
 		}
 		
 		/*
 		 * 获取指定控制器的代码
 		 */
-		//ControlerCoder controlerCoder = new ControlerCoder(module.getCode(), );
+		ControlerCoder controlerCoder = new ControlerCoder(module.getCode(), controlerName);
+		controlerCoder.setWebPath(controlerPath.toString());
+		controlerCoder.addSubPath(methodName, methodName, true, get);
+		controlerCoder.write();
 		
-		
-	}
-
-	/**
-	 * 根据路径查询指定模块的控制器
-	 * @param module
-	 * @param string
-	 * @return
-	 */
-	private Controler getModuleControlerByPath(Module module, String path) {
-		Controler result = null;
-		
-		List<Controler> controlers = module.getControlers();
-		
-		if (controlers != null) {
-			for (Controler c : controlers) {
-				if (c != null && c.getUrlPath().equals(path)) {
-					result = c;
-					break;
-				}
-			}
-		}
-		
-		return result;
 	}
 
 	/**

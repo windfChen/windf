@@ -6,6 +6,10 @@ public class Return {
 	
 	private String type;
 	
+	public Return() {
+		
+	}
+	
 	public Return(String type) {
 		this.type = type;
 	}
