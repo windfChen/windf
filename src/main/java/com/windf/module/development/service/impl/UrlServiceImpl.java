@@ -1,5 +1,6 @@
 package com.windf.module.development.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,6 +11,7 @@ import com.windf.core.exception.ParameterException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.core.util.StringUtil;
+import com.windf.module.development.modle.controler.Controler;
 import com.windf.module.development.modle.controler.ControlerCoder;
 import com.windf.module.development.modle.controler.UrlInfo;
 import com.windf.module.development.pojo.Module;
@@ -61,7 +63,7 @@ public class UrlServiceImpl  implements UrlService {
 		/*
 		 * 查询模块url
 		 */
-		UrlInfo urlInfo = getUrl(module, url);
+		UrlInfo urlInfo = getUrl(module.getCode(), url);
 		if (urlInfo != null) {
 			throw new UserException("url已存在");
 		}
@@ -89,21 +91,34 @@ public class UrlServiceImpl  implements UrlService {
 		
 	}
 
+	@Override
+	public List<UrlInfo> listUrls(String moudleCode) throws UserException {
+		Module module = moduleManageService.getModuleByCode(moudleCode);
+		List<UrlInfo> urlInfos = new ArrayList<UrlInfo>();
+		for (Controler controler : module.getControlers()) {
+			urlInfos.addAll(controler.getUrlInfos());
+		}
+		return urlInfos;
+	}
+
 	/**
 	 * 查询模块的url
 	 * @param module
 	 * @param url
+	 * @throws UserException 
 	 */
-	private UrlInfo getUrl(Module module, String url) {
+	public UrlInfo getUrl(String moduleCode, String url) throws UserException {
 		UrlInfo result = null;
 		
-		List<UrlInfo> urls = module.getUrls();
-		
-		if (urls != null) {
-			for (UrlInfo u : urls) {
-				if (u != null && u.getSubPath().equals(url)) {
-					result = u;
-					break;
+		if (StringUtil.isNotEmpty(url)) {
+			Module module = moduleManageService.getModuleByCode(moduleCode);
+			for (Controler controler : module.getControlers()) {
+				for (UrlInfo urlInfo : controler.getUrlInfos()) {
+					String url2 = module.getBasePath() + controler.getUrlPath() + urlInfo.getSubPath();
+					if (urlInfo != null && url2.equals(url)) {
+						result = urlInfo;
+						break;
+					}
 				}
 			}
 		}
@@ -111,5 +126,6 @@ public class UrlServiceImpl  implements UrlService {
 		return result;
 		
 	}
+
 
 }

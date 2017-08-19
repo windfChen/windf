@@ -39,7 +39,6 @@ public class Module {
 	private String info;
 	private Map<String, String> path;
 	private List<String> dependent;
-	private List<UrlInfo> urls = new ArrayList<UrlInfo>();
 	private List<Controler> controlers = new ArrayList<Controler>();
 	private List<Service> services = new ArrayList<Service>();
 
@@ -228,14 +227,6 @@ public class Module {
 
 	public void setDependent(List<String> dependent) {
 		this.dependent = dependent;
-	}
-
-	public List<UrlInfo> getUrls() {
-		return urls;
-	}
-
-	public void setUrls(List<UrlInfo> urls) {
-		this.urls = urls;
 	}
 
 	public List<Controler> getControlers() {
