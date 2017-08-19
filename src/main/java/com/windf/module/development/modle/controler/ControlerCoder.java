@@ -44,7 +44,12 @@ public class ControlerCoder {
 		javaCoder.write();
 	}
 	
-	public void setWebPath(String webPath) {
+	/**
+	 * 设置path
+	 * @param webPath
+	 * @throws UserException
+	 */
+	public void setWebPath(String webPath) throws UserException {
 		Annotation controllerAnnotation = new Annotation("Controller");
 		javaCoder.setAnnotation(controllerAnnotation);
 		
@@ -54,9 +59,28 @@ public class ControlerCoder {
 		Annotation requestMappingAnnotation = new Annotation("RequestMapping");
 		requestMappingAnnotation.addValue("value", webPath);
 		javaCoder.addAnnotation(requestMappingAnnotation);
+		
+		controler.setUrlPath(webPath);
+		module.write();
 	}
 	
-	public void addSubPath(String subPath, String methodName, boolean ajaxReturn, boolean get) throws UserException {
+	/**
+	 * 添加urlInfo
+	 * @param subPath
+	 * @param methodName
+	 * @param ajaxReturn
+	 * @param get
+	 * @throws UserException
+	 */
+	public void addSubPath(UrlInfo urlInfo) throws UserException {
+		String subPath = urlInfo.getSubPath();
+		String methodName = urlInfo.getMethodName();
+		boolean ajaxReturn = urlInfo.isAjaxReturn();
+		String requestMethod = urlInfo.getRequestMethod();
+		
+		/*
+		 * 写代码
+		 */
 		Return ret =  null;
 		if (ajaxReturn) {
 			ret = new Return(Return.MAP_STRING_OBJECT);
@@ -65,20 +89,32 @@ public class ControlerCoder {
 		}
 		
 		Method method = new Method(methodName, ret, null, null, false);
+		if (ajaxReturn) {
+			Annotation responseBodyAnnotation = new Annotation("ResponseBody");
+			method.addAnnotation(responseBodyAnnotation);
+		}
 		Annotation requestMappingAnnotation = new Annotation("RequestMapping");
 		requestMappingAnnotation.addValue("value", subPath);
-		if (get) {
+		if ("get".equals(requestMethod)) {
 			requestMappingAnnotation.addValue("method", "{RequestMethod.GET}");
 		} else {
 			requestMappingAnnotation.addValue("method", "{RequestMethod.POST}");
 		}
-		method.setAnnotation(requestMappingAnnotation);
+		method.addAnnotation(requestMappingAnnotation);
 		
 		javaCoder.createMethod(method);
 		
+		/*
+		 * 更行controler
+		 */
+		controler.addUrlInfo(urlInfo);
 		module.write();
 	}
 	
+	/**
+	 * 获得所有url信息
+	 * @return
+	 */
 	public List<UrlInfo> listAllSubPath() {
 		List<UrlInfo> result = new ArrayList<UrlInfo>();
 		
@@ -101,6 +137,9 @@ public class ControlerCoder {
 	public void addParameterVeriry(String subPath, List<Parameter> parameters) throws UserException {
 		Method method = this.getMethodBySubPath(subPath);
 		
+		/*
+		 * 更新代码
+		 */
 		CodeBlock<List<Parameter>> codeBlock = new  CodeBlock<List<Parameter>>();
 		codeBlock.setCodeable(new ParameterVerifyCoder());
 		codeBlock.setTabCount(2);
@@ -109,6 +148,13 @@ public class ControlerCoder {
 		comment.addLine("验证参数");
 		codeBlock.setComment(comment);
 		method.addCodeBlock(0, codeBlock);
+		
+		/*
+		 * 更新control
+		 */
+		UrlInfo urlInfo = controler.findUrlInfo(method.getMethodName());
+		urlInfo.setParameters(parameters);
+		controler.addUrlInfo(urlInfo);
 	}
 	
 	/**
@@ -156,14 +202,24 @@ public class ControlerCoder {
 	public void setReturn(String subPath, ControlerReturn ret) throws CodeException, UserException {
 		Method method = this.getMethodBySubPath(subPath);
 		
+		/*
+		 * 更新代码
+		 */
 		CodeBlock<ControlerReturn> codeBlock = new  CodeBlock<ControlerReturn>();
 		codeBlock.setCodeable(new ControlerReturnCoder());
 		codeBlock.setTabCount(2);
 		codeBlock.serialize(ret);
-		Comment comment =  new Comment(2, false);
+		Comment comment = new Comment(2, false);
 		comment.addLine("返回参数");
 		codeBlock.setComment(comment);
 		method.addCodeBlock(100, codeBlock);
+		
+		/*
+		 * 更新control
+		 */
+		UrlInfo urlInfo = controler.findUrlInfo(method.getMethodName());
+		urlInfo.setControlerReturn(ret);
+		controler.addUrlInfo(urlInfo);
 	}
 	
 	/**

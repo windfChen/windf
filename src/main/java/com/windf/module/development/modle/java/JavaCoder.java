@@ -217,7 +217,9 @@ public class JavaCoder extends AbstractType{
 			Attribute attribute = attributes.get(i);
 			result.addAll(attribute.write());
 		}
-		result.add("");
+		if (attributes.size() > 0) {
+			result.add("");
+		}
 		
 		for (int i = 0; i < methods.size(); i++) {
 			Method method = methods.get(i);

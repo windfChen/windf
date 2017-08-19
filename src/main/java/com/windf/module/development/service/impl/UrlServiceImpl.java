@@ -46,7 +46,7 @@ public class UrlServiceImpl  implements UrlService {
 			url = "/" + url;
 		}
 		url = url.substring(module.getBasePath().length());
-		String methodName = url.substring(url.lastIndexOf("/"));
+		String methodPath = url.substring(url.lastIndexOf("/"));
 		String controlerPath = url.substring(0, url.lastIndexOf("/"));
 		if (StringUtil.isEmpty(controlerPath)) {
 			throw new ParameterException();
@@ -71,7 +71,20 @@ public class UrlServiceImpl  implements UrlService {
 		 */
 		ControlerCoder controlerCoder = new ControlerCoder(module.getCode(), controlerName);
 		controlerCoder.setWebPath(controlerPath.toString());
-		controlerCoder.addSubPath(methodName, methodName, true, get);
+		urlInfo = new UrlInfo();
+		urlInfo.setAjaxReturn(true);
+		String methodName = methodPath;
+		if (methodName.startsWith("/")) {
+			methodName = methodName.substring(1);
+		}
+		urlInfo.setMethodName(methodName);
+		urlInfo.setSubPath(methodPath);
+		if (get) {
+			urlInfo.setRequestMethod("GET");
+		} else {
+			urlInfo.setRequestMethod("POST");
+		}
+		controlerCoder.addSubPath(urlInfo);
 		controlerCoder.write();
 		
 	}
