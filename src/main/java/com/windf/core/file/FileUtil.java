@@ -53,9 +53,32 @@ public class FileUtil {
 		return classPath.substring(0, classPath.lastIndexOf("WEB-INF"));
 	}
 	
-	public static File getWebappFile(String webPath) {
-		File exampleDescriptFile = new File(getWebappPath() + webPath);
-		return exampleDescriptFile;
+	/**
+	 * 获得文件的真实路径
+	 * 
+	 * @param filePath
+	 * @return
+	 */
+	public static String getFileRealPath(String filePath) {
+		String result = filePath;
+		
+		String realPath = getWebappPath();
+		if (!filePath.startsWith(realPath)) {
+			result = realPath + filePath;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 获得文件
+	 * @param filePath
+	 * @return
+	 */
+	public static File getFile(String filePath) {
+		String realPath = FileUtil.getFileRealPath(filePath);
+		File file = new File(realPath);
+		return file;
 	}
 
 	/**

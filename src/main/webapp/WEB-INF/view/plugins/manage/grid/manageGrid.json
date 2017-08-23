@@ -1,0 +1,60 @@
+{
+	"title": "17088",
+	"columns": [{
+		"name" : "id",
+		"dataIndex" : "id",
+		"type" : "TextField",
+		"canList" : false,
+		"canSearch" : false,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 2
+	},{
+		"name" : "名称",
+		"dataIndex" : "name",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 1
+	},{
+		"name" : "年龄",
+		"dataIndex" : "age",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 3
+	}],
+	"meuns" : [{
+		"name" : "生成序号",
+		"canSelect" : true,
+		"isSingleSelect" : true,
+		"checkColumn" : "id",
+		"actionAddress" : true,
+		"isAjaxReturn" : true,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	}],
+	"isPrepared" : true,
+	"canAdd" : true,
+	"canBatchAdd" : true,
+	"canDelete" : true,
+	"canUpdate" : true,
+	"canSearch" : true
+}

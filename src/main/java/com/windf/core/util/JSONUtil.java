@@ -23,4 +23,14 @@ public class JSONUtil {
 		}
 		return result;
 	}
+	
+	/**
+	 * 解析JSON字符串，变成对象
+	 * @param <T>
+	 * @param json
+	 * @return
+	 */
+	public static <T> T pasrseJSONStr(String text, Class<T> clazz) {
+		return JSONObject.parseObject(text, clazz);
+	}
 }

@@ -62,6 +62,31 @@ public class StringUtil {
     }
     
     /**
+     * 将字符中指定字符作为分隔符，分隔符后首字母大写
+     * @param str
+     * @param separator
+     * @return
+     */
+    public static String toCamelCase(String str, String separator) {
+    	if (ParameterUtil.hasEmpty(str, separator)) {
+			return null;
+		}
+    	
+    	StringBuffer result = new StringBuffer();
+
+    	String[] ss = str.split(separator);
+    	for (int i = 0; i < ss.length; i++) {
+    		if (result.length() > 0) {
+    			result.append(firstLetterUppercase(ss[i]));
+			} else {
+				result.append(ss[i]);
+			}
+		}
+    	
+    	return result.toString();
+    }
+    
+    /**
      * 将集合转换为字符串，中间用指定字符隔开
      * @param collection
      * @param separator

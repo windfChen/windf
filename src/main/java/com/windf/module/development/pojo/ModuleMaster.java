@@ -24,7 +24,7 @@ public class ModuleMaster implements Cloneable {
 	public static ModuleMaster getInstance() throws UserException {
 		
 		if (moduleMaster == null) {
-			File moduleMasterFile = FileUtil.getWebappFile(DEFAULT_MASTER_CONFIG_FILE);
+			File moduleMasterFile = FileUtil.getFile(DEFAULT_MASTER_CONFIG_FILE);
 			
 			moduleMaster = XmlFileUtil.readXml2Object(moduleMasterFile, ModuleMaster.class);
 			
