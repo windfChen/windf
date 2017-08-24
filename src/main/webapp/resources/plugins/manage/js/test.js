@@ -386,17 +386,45 @@ function initGrid (gridConfig) {
 
 	/****************列配置*start********************/
 	var listFieldColumn = [
-				new Ext.grid.CheckboxSelectionModel()
+		new Ext.grid.CheckboxSelectionModel()
 	]
 	for (var i = 0; i < gridConfig.columns.length; i++) {
 		var c = gridConfig.columns[i];
 		if (!c.canList) {
 			continue;
 		}
+		
+		function getRendererFunction(c) {	// 闭包传参
+			var rendererFunction = function (value, metadata, record) {
+				var newValue = value + '';
+				var searchValue = Ext.get('_s_' + c.dataIndex).dom.value;
+				if (searchValue != null && searchValue.length > 0 && newValue.indexOf(searchValue) >= 0) {
+					newValue = (newValue).replace(searchValue, '<font color=#FF0000>' + searchValue + '</font>');
+				}
+				var result = newValue;
+				if(c.display != null && c.display.length > 0) {
+					result = c.display;
+					result = result.replace('${value}', newValue);
+					
+					for (var i = 0; i < gridConfig.columns.length; i++) {
+						var c1 = gridConfig.columns[i];
+						result = result.replace('${' + c1.dataIndex + '}', record.data[c1.dataIndex]);
+					}
+					
+					//record.data['name']gridConfig
+				}
+				
+				return result;
+			}
+			return rendererFunction;
+		}
+		
+		
 		var g = {
 			header: c.name,
 			dataIndex: c.dataIndex,
-			width: 100
+			width: 100,
+			renderer: getRendererFunction(c)
 		}
 		listFieldColumn[listFieldColumn.length] = g;
 	}
@@ -569,10 +597,7 @@ function initGrid (gridConfig) {
 				}
 			});
 		} else {
-
-			Ext.MessageBox.alert('错误',
-				'请您选择一条记录');
-
+			Ext.MessageBox.alert('错误', '请您选择一条记录');
 		}
 	}
 

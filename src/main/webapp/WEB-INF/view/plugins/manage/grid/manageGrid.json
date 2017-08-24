@@ -37,7 +37,7 @@
 		"canUpdate" : true,
 		"canReport" : true,
 		"canOrder" : true,
-		"display" : null,
+		"display" : "<a href='http://www.baidu.com?id=${id}'>${name}-${value}</a>",
 		"orderNum" : 3
 	}],
 	"meuns" : [{
