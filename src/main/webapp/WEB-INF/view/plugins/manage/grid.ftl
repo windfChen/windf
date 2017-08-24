@@ -33,7 +33,7 @@
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/examples/Datetime/Datetime.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ext-lang-zh_CN.js"></script> 
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ajax.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/plugins/manage/js/test.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/resources/plugins/manage/js/grid.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/DDView.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/Multiselect.js"></script>
 
