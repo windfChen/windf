@@ -45,8 +45,6 @@ function initGrid (gridConfig) {
 		return searchParams;
 	}
 	
-	//Ext.QuickTips.init();
-	var servletPath = '/manager/basic/peTchCourse';
 	var g_start = 0;
 	var g_limit = 20;
 	var g_page = 1;
@@ -257,31 +255,31 @@ function initGrid (gridConfig) {
 	Ext.reg('paging', Ext.PagingToolbarEx);
 	
 	var pageData = new Ext.data.SimpleStore({
-			fields: ['val', 'type', 'tip'],
-			//data : Ext.exampledata.states // from states.js
-			data: [
-				['20', '20', ''],
-				['50', '50', ''],
-				['100', '100', ''],
-				['200', '200', ''],
-				['500', '500', ''],
-				['1000', '1000', ''],
-				['1000000', '全部', ''],
-				['0', '自定义', '']
-			]
-		});
+		fields: ['val', 'type', 'tip'],
+		//data : Ext.exampledata.states // from states.js
+		data: [
+			['20', '20', ''],
+			['50', '50', ''],
+			['100', '100', ''],
+			['200', '200', ''],
+			['500', '500', ''],
+			['1000', '1000', ''],
+			['1000000', '全部', ''],
+			['0', '自定义', '']
+		]
+	});
 	var pageCombo = new Ext.form.ComboBox({
-			width: 80,
-			store: pageData,
-			valueField: 'val',
-			displayField: 'type',
-			typeAhead: true,
-			mode: 'local',
-			triggerAction: 'all',
-			editable: false,
-			value: g_limit,
-			emptyText: g_limit
-		});
+		width: 80,
+		store: pageData,
+		valueField: 'val',
+		displayField: 'type',
+		typeAhead: true,
+		mode: 'local',
+		triggerAction: 'all',
+		editable: false,
+		value: g_limit,
+		emptyText: g_limit
+	});
 	
 	pageCombo.on("select", function () {
 		//添加自定义显示每页记录数 --yinxu
@@ -440,7 +438,6 @@ function initGrid (gridConfig) {
 	menubar[menubar.length] = {
 		text: '排序',
 		// TODO4 判断是否有默认排序 --yinxu
-
 
 		iconCls: 'selfDef',
 
@@ -866,6 +863,17 @@ function initGrid (gridConfig) {
 
 
 	/****************排序窗口*start********************/
+	var sortFromData = [];
+	for (var i = 0; i < gridConfig.columns.length; i++) {
+		var c = gridConfig.columns[i];
+		if (!c.canSearch) {
+			continue;
+		}
+		var item = [c.dataIndex + '|升序', c.name + '|升序']
+		sortFromData[sortFromData.length] = item;
+		item = [c.dataIndex + '|降序', c.name + '|降序']
+		sortFromData[sortFromData.length] = item;
+	}
 	//加个多列排序   ---zhaochen
 	var moreSort = new Ext.form.FormPanel({
 		labelWidth: 40,
@@ -876,9 +884,7 @@ function initGrid (gridConfig) {
 				name: "moreSort",
 				fieldLabel: "排序",
 				dataFields: ["code", "desc"],
-				fromData: [
-					['name|升序', '课程名称|升序'], ['name|降序', '课程名称|降序'], ['code|升序', '课程编码|升序'], ['code|降序', '课程编码|降序'], ['courseType.name|升序', '课程分类|升序'], ['courseType.name|降序', '课程分类|降序'], ['startDate|升序', '开课日期|升序'], ['startDate|降序', '开课日期|降序'], ['endDate|升序', '结课日期|升序'], ['endDate|降序', '结课日期|降序'], ['author|升序', '作者|升序'], ['author|降序', '作者|降序'], ['bal|升序', '装帧|升序'], ['bal|降序', '装帧|降序'], ['publishDate|升序', '出版时间|升序'], ['publishDate|降序', '出版时间|降序'], ['respEdit|升序', '责任编辑|升序'], ['respEdit|降序', '责任编辑|降序'], ['digitalEdit|升序', '数字编辑|升序'], ['digitalEdit|降序', '数字编辑|降序'], ['isbn|升序', 'ISBN|升序'], ['isbn|降序', 'ISBN|降序'], ['collection|升序', '所在丛书|升序'], ['collection|降序', '所在丛书|降序'], ['bookPrice|升序', '纸质书价格|升序'], ['bookPrice|降序', '纸质书价格|降序'], ['bookBuyLink|升序', '纸质书购买链接|升序'], ['bookBuyLink|降序', '纸质书购买链接|降序'], ['payPrice|升序', '电子书价格|升序'], ['payPrice|降序', '电子书价格|降序'], ['peSchool.name|升序', '所属学校|升序'], ['peSchool.name|降序', '所属学校|降序']
-				],
+				fromData: sortFromData,
 				toData: [
 
 				], //初始化选择的列
@@ -916,7 +922,6 @@ function initGrid (gridConfig) {
 		buttons: [{
 				text: '确认',
 				handler: function () {
-					//saveSort();
 					store.load({
 						params: getSearchParams()
 					});
@@ -933,23 +938,641 @@ function initGrid (gridConfig) {
 	//初始化  窗口 ---zhaochen
 	sortWin.show();
 	sortWin.hide();
-	function saveSort() {
-		//alert(moreSort.form.findField('moreSort').getValue());
-		//alert("");
-	}
 	function sort() {
 		sortWin.show();
 	}
 	/****************排序窗口*end********************/
 
+	/****************和添加、修改、删除有关的定义和方法*start********************/
+	//以下为和添加、修改、删除有关的定义和方法---------------
+	//批量添加界面
+	function openBatchAddModelWin(btn, pressed) {
+		var downloadexcel = new Ext.Action({
+				text: '下载标准格式',
+				handler: function () {
+					window.open('/manager/basic/peTchCourse_batchAddExcel.action');
+				},
+				iconCls: 'excelModel'
+			});
+		var excelUpload = new Ext.form.TextField({
+				fieldLabel: '上载文件*',
+				name: '_upload',
+				allowBlank: false,
+				regex: new RegExp(/^(.*)(\.xls)$/),
+				regexText: '文件格式错误!',
+				inputType: 'file',
+				anchor: '90%'
+			});
+		var formPanel = new Ext.form.FormPanel({
+				frame: true,
+				labelWidth: 100,
+				defaultType: 'textfield',
+				autoScroll: true,
+				fileUpload: true,
+				items: [new Ext.Button(downloadexcel), excelUpload]
+
+			});
+		var batchAddModelWin = new Ext.Window({
+				title: 'Excel导入',
+				width: 525,
+				height: 250,
+				minWidth: 300,
+				minHeight: 250,
+				layout: 'fit',
+				plain: true,
+				bodyStyle: 'padding:5px;',
+				buttonAlign: 'center',
+				items: formPanel,
+
+				buttons: [{
+						text: '保存',
+						handler: function () {
+							// check form value
+							if (formPanel.form.isValid()) {
+								formPanel.form.submit({
+									url: '/manager/basic/peTchCourse_batchAddExcelUpload.action',
+									waitMsg: '处理中，请稍候...',
+
+									success: function (form, action) {
+										var responseArray = action.result;
+										if (responseArray.success == 'true') {
+											Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+											store.load({
+												params: getSearchParams()
+											});
+											batchAddModelWin.close();
+										} else {
+											Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+										}
+									}
+								});
+							} else {
+								Ext.MessageBox.alert('错误', '输入错误，请先修正提示的错误');
+							}
+						}
+					}, {
+						text: '取消',
+						handler: function () {
+							batchAddModelWin.close();
+						}
+					}
+				]
+
+			});
+		batchAddModelWin.show();
+
+	}
+
+	function getFormPanelItems(isUpdate) {
+		var formPanelItems = [];
+		for (var i = 0; i < gridConfig.columns.length; i++) {
+			var c = gridConfig.columns[i];
+			if(!isUpdate) {
+				if (!c.canAdd) {
+					continue;
+				}
+			} else {
+				if (!c.canUpdate) {
+					continue;
+				}
+			}
+			
+			var item = {};
+			if (c.type == 'TextField') {
+				item = new Ext.form.TextField({
+					name: c.dataIndex,
+					fieldLabel: c.name + '*',
+					allowBlank: false,
+					maxLength: 50,
+					regex: new RegExp(/^(\S|\S.*\S)$/),
+					regexText: '输入格式：不能以空格开头和结尾',
+					anchor: '90%'
+				});
+			} else if (c.type == 'ComboBox') {
+				/*
+				var courseType_name = new Ext.form.WhatyComboBoxForAdd({
+					store: courseType_nameStore,
+					listeners: {
+						'blur': function () {
+							if (this.getRawValue() == '' || this.getValue() == '') {
+								this.setRawValue('');
+								this.setValue('');
+							}
+						}
+					},
+					valueField: 'id',
+					displayField: 'name',
+					selectOnFocus: true,
+					forceSelection: true,
+					allowBlank: true,
+					typeAhead: true,
+					fieldLabel: '课程分类',
+					name: 'bean.courseType.name',
+					id: '_bean.courseType.name',
+					triggerAction: 'all',
+					editable: true,
+					mode: 'local',
+					emptyText: '',
+					anchor: '90%',
+					blankText: ''
+				});
+				*/
+			} else if (c.type == 'DateField') {
+				/*
+				var startDate = new Ext.form.DateField({
+						fieldLabel: '开课日期*',
+						allowBlank: false,
+						name: 'bean.startDate',
+						anchor: '60%',
+						format: 'Y-m-d',
+						readOnly: false
+					});
+					*/
+			}
+			
+			formPanelItems[formPanelItems.length] = item;
+		}
+		
+		return formPanelItems;
+	}
+	
+	//打开添加界面
+	function openAddModelWin(btn, pressed) {
+
+				
+		var formPanel = new Ext.form.FormPanel({
+				frame: true,
+				labelWidth: 100,
+				defaultType: 'textfield',
+				autoScroll: true,
+				items: getFormPanelItems()
+			});
+
+		var addModelWin = new Ext.Window({
+				title: '添加新条目',
+				width: 525,
+				height: 325,
+				minWidth: 300,
+				minHeight: 250,
+				layout: 'fit',
+				plain: true,
+				bodyStyle: 'padding:5px;',
+				buttonAlign: 'center',
+				items: formPanel,
+				buttons: [{
+						text: '保存',
+						handler: function () {
+
+							if (formPanel.form.isValid()) {
+								formPanel.form.submit({
+									url: 'add',
+									waitMsg: '处理中，请稍候...',
+									success: function (form, action) {
+										var responseArray = action.result;
+										if (responseArray.success == 'true') {
+											Ext.MessageBox.alert('提示', '添加成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+											store.load({
+												params: getSearchParams()
+											});
+											addModelWin.close();
+										} else {
+											Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+										}
+									}
+								});
+							} else {
+								Ext.MessageBox.alert('错误', '输入错误，请先修正提示的错误');
+							}
+						}
+					}, {
+						text: '取消',
+						handler: function () {
+							addModelWin.close();
+						}
+					}
+				]
+
+			});
+		addModelWin.show();
+
+	}
+
+	//打开修改界面
+	var formPanelReaderData = [];
+	for (var i = 0; i < gridConfig.columns.length; i++) {
+		var c = gridConfig.columns[i];
+		if (!c.canUpdate) {
+			continue;
+		}
+		formPanelReaderData[formPanelReaderData.length] = c.dataIndex;
+	}
+	function openUpdateModelWin(selectedId) {
+		var formPanel = new Ext.form.FormPanel({
+			labelWidth: 100,
+			bodyStyle: 'padding:5px',
+			autoScroll: true,
+
+			frame: true,
+			reader: new Ext.data.JsonReader({
+				root: 'models'
+			}, formPanelReaderData),
+			items: getFormPanelItems(true)
+		});
+
+		formPanel.form.load({
+			url: 'detail.action?menuId=1001&menuName=%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8&bean.id=' + selectedId,
+			waitMsg: 'Loading'
+		});
+
+		var updateModelWin = new Ext.Window({
+			title: '编辑条目',
+
+			width: 525,
+			height: 325,
+
+			minWidth: 300,
+			minHeight: 250,
+			layout: 'fit',
+			plain: true,
+			bodyStyle: 'padding:5px;',
+			buttonAlign: 'center',
+			items: formPanel,
+
+			buttons: [{
+					text: '保存',
+					handler: function () {
+
+						// check form value
+						if (formPanel.form.isValid()) {
+							formPanel.form.submit({
+								url: '/manager/basic/peTchCourse_abstractUpdate.action?',
+								params: {
+									'bean.id': selectedId
+								},
+								method: 'post',
+								waitMsg: '处理中，请稍候...',
+
+								success: function (form, action) {
+									var responseArray = action.result;
+									if (responseArray.success == 'true') {
+										Ext.MessageBox.alert('提示', '保存成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+										//更新后停留在当前页 --yinxu
+										store.load({
+											params: getSearchParams(pageCursor(), g_limit)
+										});
+										updateModelWin.close();
+									} else {
+										Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+									}
+								}
+							});
+						} else {
+							Ext.MessageBox.alert('错误', '输入错误，请先修正提示的错误');
+						}
+					}
+				}, {
+					text: '取消',
+					handler: function () {
+						updateModelWin.close();
+					}
+				}
+			]
+		});
+		updateModelWin.show();
+	}
+
+	//删除
+	function deleteModels() {
+		var m = grid.getSelectionModel().getSelections();
+		if (m.length > 0) {
+			Ext.MessageBox.confirm('确认',
+				'您确认要删除选中的条目吗？',
+				function (btn) {
+				if (btn == 'yes') {
+					Ext.MessageBox.show({
+						title: '提示',
+						closable: false,
+						msg: '处理中，请稍候...'
+					});
+					var jsonData = "";
+					for (var i = 0, len = m.length; i < len; i++) {
+						var ss = m[i].get("id");
+						if (i == 0)
+							jsonData = jsonData + ss;
+						else
+							jsonData = jsonData + "," + ss;
+						store.remove(m[i]);
+					}
+					jsonData = jsonData + ",";
+					Ext.Ajax.request({
+						timeout: 100000000,
+						url: 'delete.action',
+						params: {
+							ids: jsonData
+						},
+						method: 'post',
+						waitMsg: '处理中，请稍候...',
+						success: function (response, options) {
+							var responseArray = Ext.util.JSON.decode(response.responseText);
+							if (responseArray.success == 'true') {
+								Ext.MessageBox.alert('提示', '删除成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+							} else {
+								Ext.MessageBox.alert('错误', responseArray.info + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+							}
+							//删除后页面停留在当前页面 --yinxu
+							store.load({
+								params: getSearchParams(pageCursor(), g_limit)
+							});
+						}
+					});
+
+				}
+			});
+		} else {
+			Ext.MessageBox.alert('错误',
+				'请至少先选中一个条目再执行操作');
+		}
+	}
+	/****************和添加、修改、删除有关的定义和方法*end********************/
+
+	/****************进度条*start********************/
+	//进度条的一些属性和方法 --zhaochen
+	var pbar2;
+	var nowItems; // 初始化
+	var allItems; //总数
+	var progressWin; //进度条窗口
+	var task = { // 定义一个任务
+		run: function () {
+			Ext.Ajax.request({
+				url: 'progress.action?' + Math.random(),
+				method: 'POST',
+				success: function (response, options) {
+					if (Ext.util.JSON.decode(response.responseText).nowItems != null) {
+						nowItems = Ext.util.JSON.decode(response.responseText).nowItems;
+						allItems = Ext.util.JSON.decode(response.responseText).allItems;
+					}
+				}
+			});
+			if (nowItems != null) {
+				pbar2.updateProgress(nowItems / allItems); // 让进度条更新到指定的进度。这个值是0-1之间的数，我让i/100.0,以让它的结果是一个小数
+				pbar2.updateText(nowItems + "/" + allItems); // 进度条显示的文本
+			}
+		},
+		interval: 500 // 定时访问更新一次
+	}
+	function progressStart() { //进度条开始
+		progressWin = new Ext.Window({
+				title: '当前执行进度',
+				width: 300,
+				height: 52,
+				layout: 'fit',
+				closable: false,
+				resizable: false,
+				plain: true,
+				modal: true,
+				items: [{
+						xtype: 'panel',
+						width: 300,
+						html: '<div id="progress1"></div>'
+					}
+				]
+			});
+		progressWin.show();
+		pbar2 = new Ext.ProgressBar({
+				renderTo: "progress1",
+				width: 300
+				//,text : "单击按钮开始..."
+			});
+		Ext.TaskMgr.start(task);
+	}
+	function progressStop() { //进度条结束
+		nowItems = null;
+		allItems = null;
+		progressWin.close();
+		Ext.TaskMgr.stop(task);
+		Ext.Ajax.request({
+			url: '/manager/basic/peTchCourse_stopProgress.action',
+			method: 'POST',
+			success: function (response, options) {}
+		});
+	}
+	/****************进度条*end********************/
+
 	/****************搜索*start********************/
+	function createSearchForm(oldFormPanel) {
+		
+		var searchItems = [];
+		for (var i = 0; i < gridConfig.columns.length; i++) {
+			var c = gridConfig.columns[i];
+			if (!c.canSearch) {
+				continue;
+			}
+			
+			var oldInput = document.getElementById('_s_' + c.dataIndex);
+			var oldValue = '';
+			if (oldInput != undefined) {
+				oldValue = oldInput.value;
+			}
+			
+			var _s_textField = new Ext.form.TextField({
+				fieldLabel: c.name,
+				value: oldValue,
+				name: '_s_' + c.dataIndex,
+				id: '_s_' + c.dataIndex
+			});
+			_s_textField.on('render', function () {
+				this.getEl().on('dblclick', function () {
+					search('_s_' + c.dataIndex, null, c.type);
+				});
+			});
+			
+			var item = {
+				columnWidth: 280 / panelW,
+				layout: 'form',
+				items: [_s_textField]
+			}
+			searchItems[searchItems.length] = item;
+		}
+		
+		//搜索
+		/*
+		var _s_courseType_name = new Ext.form.WhatyComboBox({
+				store: courseType_nameStore,
+				editable: true,
+				listeners: {
+					'blur': function () {
+						if (this.getRawValue() == '' || this.getValue() == '') {
+							this.setRawValue('');
+							this.setValue('');
+						}
+					}
+				},
+				valueField: 'id',
+				displayField: 'name',
+				value: '',
+				selectOnFocus: true,
+				allowBlank: true,
+				fieldLabel: '课程分类',
+				name: '_s_courseType_name',
+				id: '_s_courseType_name',
+				triggerAction: 'all',
+				emptyText: '',
+				anchor: '90%',
+				blankText: ''
+			});
+		_s_courseType_name.on('render', function () {
+			_s_courseType_name.getEl().on('dblclick', function () {
+				search('_s_courseType_name', courseType_nameStore, 'ComboBox1');
+			});
+		});
+		*/
+		var _s_search = new Ext.Button({
+			type: 'submit',
+			text: '搜索',
+			handler: function () {
+				store.load({
+					params: getSearchParams(0, g_limit)
+				});
+			}
+		});
+		var _s_searchItem = {
+			columnWidth: .1,
+			layout: 'form',
+			items: [_s_search]
+		}
+		searchItems[searchItems.length] = _s_searchItem;
+		var _s_clean = new Ext.Button({
+			type: 'button',
+			text: '清空',
+			handler: function () {
+				cleanForm();
+			}
+		});
+		var _s_cleanItem = {
+			columnWidth: .1,
+			layout: 'form',
+			items: [_s_clean]
+		}
+		searchItems[searchItems.length] = _s_cleanItem;
+		
+		if (oldFormPanel != undefined) {
+			oldFormPanel.destroy();
+		}
+		var s_formPanel = new Ext.FormPanel({
+			buttonAlign: 'right',
+			width: panelW,
+			labelAlign: 'left',
+			labelWidth: 100,
+			frame: true,
+			title: gridConfig.title,
+
+			collapsible: true,
+			//监听搜索框关闭打开改变grid高度
+			listeners: {
+				'collapse': function (e) {
+					grid.render();
+					grid.setHeight(panelH);
+					grid.setWidth(panelW);
+
+				},
+				'expand': function (e) {
+
+					grid.setWidth(panelW);
+					grid.setHeight(window.document.body.clientHeight - 35 - e.getInnerHeight());
+
+				}
+			},
+
+			collapsed: false, //默认展开
+			animCollapse: false, //动画效果关闭
+			items: [{
+					layout: 'column',
+					items: searchItems
+			}]
+		});
+		
+		return s_formPanel;
+	}
+	
+	var s_formPanel = createSearchForm();
+	
+	//来进行设置列是否显示的情况
+	HiddenMyColumn(grid, varHiddenColumn);
+
+	//判断是否需要预搜索
+	//TODO5 预搜索
+
+	s_formPanel.render("searchtool");
+	grid.render();
+	grid.setHeight(window.document.body.clientHeight - 35 - s_formPanel.getInnerHeight()); //第一次搜索展开高度不准需要重新设置高度
+
+	//s_formPanel.collapse(); //搜索框收缩
+	s_formPanel.expand(); //搜索框展开
+
+	store.load({
+		params: getSearchParams()
+	});
+
+	//根据参数改变grid,s_formPanel的大小
+	function resizeWin(panelW, panelH) {
+		if (document.getElementById('searchtool').innerHTML == "") {
+			return;
+		}
+		grid.setWidth(panelW);
+		grid.setHeight(panelH);
+		var is_collapsed = s_formPanel.collapsed;;
+		
+		s_formPanel = createSearchForm(s_formPanel);
+		
+		s_formPanel.render("searchtool");
+		s_formPanel.collapse();
+		if (!is_collapsed) {
+			s_formPanel.expand();
+			grid.setHeight(window.document.body.clientHeight - 35 - s_formPanel.getInnerHeight());
+		}
+	}
+	window.onresize = function () {
+		var Sys = {};
+		var ua = navigator.userAgent.toLowerCase();
+		if (window.ActiveXObject) {
+			Sys.ie = ua.match(/msie ([\d.]+)/)[1];
+		} else if (window.MessageEvent && !document.getBoxObjectFor) {
+			Sys.chrome = ua.match(/chrome\/([\d.]+)/)[1]
+			if (Sys.ie) {
+				resizeWin(window.document.body.offsetWidth - 4, window.document.body.offsetHeight - 40);
+			}
+			if (Sys.chrome) {
+				resizeWin(window.document.body.offsetWidth - 4, window.document.body.clientHeight - 40);
+			}
+		}
+					
+	}
+	// 搜索框框提示信息
+	for (var i = 0; i < gridConfig.columns.length; i++) {
+		var c = gridConfig.columns[i];
+		if (!c.canSearch) {
+			continue;
+		}
+		new Ext.ToolTip({
+			target: '_s_' + c.dataIndex,
+			title: '双击搜索',
+			width: 200,
+			html: '双击输入框设置更多条件',
+			mouseOffset: [15, 18],
+			showDelay: 300
+		});
+	}
 	//清除搜索条件的方法   by czc 2010-10-18
 	function cleanForm() {
-		Ext.get('_s_name').dom.value = '';
-		Ext.get('_s_code').dom.value = '';
-		Ext.get('_s_courseType_name').dom.value = '';
-		Ext.get('_s_peSchool_name').dom.value = '';
+		for (var i = 0; i < gridConfig.columns.length; i++) {
+			var c = gridConfig.columns[i];
+			if (!c.canSearch) {
+				continue;
+			}
+			Ext.get('_s_' + c.dataIndex).dom.value = '';
+		}
 	}
+	
 	//高级搜索的方法--zhaochen
 	search = function (id, store, type) {
 		var advancedSearch;
@@ -1198,1165 +1821,11 @@ function initGrid (gridConfig) {
 			});
 		advancedSearchWin.show();
 	}
-	/****************搜索*start********************/
+	/****************搜索*end********************/
 
-	/****************和添加、修改、删除有关的定义和方法*start********************/
-	//以下为和添加、修改、删除有关的定义和方法---------------
-	//批量添加界面
-	function openBatchAddModelWin(btn, pressed) {
-		var downloadexcel = new Ext.Action({
-				text: '下载标准格式',
-				handler: function () {
-					window.open('/manager/basic/peTchCourse_batchAddExcel.action');
-				},
-				iconCls: 'excelModel'
-			});
-		var excelUpload = new Ext.form.TextField({
-				fieldLabel: '上载文件*',
-				name: '_upload',
-				allowBlank: false,
-				regex: new RegExp(/^(.*)(\.xls)$/),
-				regexText: '文件格式错误!',
-				inputType: 'file',
-				anchor: '90%'
-			});
-		var formPanel = new Ext.form.FormPanel({
-				frame: true,
-				labelWidth: 100,
-				defaultType: 'textfield',
-				autoScroll: true,
-				fileUpload: true,
-				items: [new Ext.Button(downloadexcel), excelUpload]
-
-			});
-		var batchAddModelWin = new Ext.Window({
-				title: 'Excel导入',
-				width: 525,
-				height: 250,
-				minWidth: 300,
-				minHeight: 250,
-				layout: 'fit',
-				plain: true,
-				bodyStyle: 'padding:5px;',
-				buttonAlign: 'center',
-				items: formPanel,
-
-				buttons: [{
-						text: '保存',
-						handler: function () {
-							// check form value
-							if (formPanel.form.isValid()) {
-								formPanel.form.submit({
-									url: '/manager/basic/peTchCourse_batchAddExcelUpload.action',
-									waitMsg: '处理中，请稍候...',
-
-									success: function (form, action) {
-										var responseArray = action.result;
-										if (responseArray.success == 'true') {
-											Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-											store.load({
-												params: getSearchParams()
-											});
-											batchAddModelWin.close();
-										} else {
-											Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-										}
-									}
-								});
-							} else {
-								Ext.MessageBox.alert('错误', '输入错误，请先修正提示的错误');
-							}
-						}
-					}, {
-						text: '取消',
-						handler: function () {
-							batchAddModelWin.close();
-						}
-					}
-				]
-
-			});
-		batchAddModelWin.show();
-
-	}
-
-	
-	//打开添加界面
-	function openAddModelWin(btn, pressed) {
-
-		var id = new Ext.form.TextField({
-				name: 'bean.id',
-				fieldLabel: 'ID*',
-				allowBlank: false,
-				maxLength: 50,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var name = new Ext.form.TextField({
-				name: 'bean.name',
-				fieldLabel: '课程名称*',
-				allowBlank: false,
-				maxLength: 500,
-				regex: new RegExp(/^([^\s()]|[^\s()][^()]*[^\s()])$/),
-				regexText: '输入格式：名称字段不能以空格开头和结尾、不能包含半角括号',
-				anchor: '90%'
-			});
-		var code = new Ext.form.TextField({
-				name: 'bean.code',
-				fieldLabel: '课程编码*',
-				allowBlank: false,
-				maxLength: 50,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var courseType_name = new Ext.form.WhatyComboBoxForAdd({
-				store: courseType_nameStore,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				selectOnFocus: true,
-				forceSelection: true,
-				allowBlank: true,
-				typeAhead: true,
-				fieldLabel: '课程分类',
-				name: 'bean.courseType.name',
-				id: '_bean.courseType.name',
-				triggerAction: 'all',
-				editable: true,
-				mode: 'local',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		var startDate = new Ext.form.DateField({
-				fieldLabel: '开课日期*',
-				allowBlank: false,
-				name: 'bean.startDate',
-				anchor: '60%',
-				format: 'Y-m-d',
-				readOnly: false
-			});
-		var endDate = new Ext.form.DateField({
-				fieldLabel: '结课日期*',
-				allowBlank: false,
-				name: 'bean.endDate',
-				anchor: '60%',
-				format: 'Y-m-d',
-				readOnly: false
-			});
-		var author = new Ext.form.TextField({
-				name: 'bean.author',
-				fieldLabel: '作者',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var bal = new Ext.form.TextField({
-				name: 'bean.bal',
-				fieldLabel: '装帧',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var publishDate = new Ext.form.DateField({
-				fieldLabel: '出版时间',
-				allowBlank: true,
-				name: 'bean.publishDate',
-				anchor: '60%',
-				format: 'Y-m-d',
-				readOnly: false
-			});
-		var respEdit = new Ext.form.TextField({
-				name: 'bean.respEdit',
-				fieldLabel: '责任编辑',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var digitalEdit = new Ext.form.TextField({
-				name: 'bean.digitalEdit',
-				fieldLabel: '数字编辑',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var isbn = new Ext.form.TextField({
-				name: 'bean.isbn',
-				fieldLabel: 'ISBN',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var collection = new Ext.form.TextField({
-				name: 'bean.collection',
-				fieldLabel: '所在丛书',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var bookPrice = new Ext.form.TextField({
-				name: 'bean.bookPrice',
-				fieldLabel: '纸质书价格',
-				allowBlank: true,
-				maxLength: 15,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var bookBuyLink = new Ext.form.TextField({
-				name: 'bean.bookBuyLink',
-				fieldLabel: '纸质书购买链接',
-				allowBlank: true,
-				maxLength: 300,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var payPrice = new Ext.form.TextField({
-				name: 'bean.payPrice',
-				fieldLabel: '电子书价格',
-				allowBlank: true,
-				maxLength: 15,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var peSchool_name = new Ext.form.WhatyComboBoxForAdd({
-				store: peSchool_nameStore,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				selectOnFocus: true,
-				forceSelection: true,
-				allowBlank: true,
-				typeAhead: true,
-				fieldLabel: '所属学校',
-				name: 'bean.peSchool.name',
-				id: '_bean.peSchool.name',
-				triggerAction: 'all',
-				editable: true,
-				mode: 'local',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		var flagUpMarket = new Ext.form.TextField({
-				name: 'bean.flagUpMarket',
-				fieldLabel: '上/下架状态*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var tnum = new Ext.form.TextField({
-				name: 'bean.tnum',
-				fieldLabel: '引用次数*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var status = new Ext.form.TextField({
-				name: 'bean.status',
-				fieldLabel: '是否出版社课程*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var isTop = new Ext.form.TextField({
-				name: 'bean.isTop',
-				fieldLabel: '是否置顶*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-
-		var formPanel = new Ext.form.FormPanel({
-				frame: true,
-				labelWidth: 100,
-				defaultType: 'textfield',
-				autoScroll: true,
-
-				items: [
-					name, code, courseType_name, startDate, endDate, author, bal, publishDate, respEdit, digitalEdit, isbn, collection, bookPrice, bookBuyLink, payPrice, peSchool_name
-				]
-			});
-
-		var addModelWin = new Ext.Window({
-				title: '添加新条目',
-
-				width: 525,
-				height: 325,
-
-				minWidth: 300,
-				minHeight: 250,
-				layout: 'fit',
-				plain: true,
-				bodyStyle: 'padding:5px;',
-				buttonAlign: 'center',
-				items: formPanel,
-				buttons: [{
-						text: '保存',
-						handler: function () {
-
-							// check form value
-							if (formPanel.form.isValid()) {
-								formPanel.form.submit({
-									url: '/manager/basic/peTchCourse_abstractAdd.action?menuId=1001&menuName=%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8',
-									waitMsg: '处理中，请稍候...',
-
-									success: function (form, action) {
-										var responseArray = action.result;
-										if (responseArray.success == 'true') {
-											Ext.MessageBox.alert('提示', '添加成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-											store.load({
-												params: getSearchParams()
-											});
-											addModelWin.close();
-										} else {
-											Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-										}
-									}
-								});
-							} else {
-								Ext.MessageBox.alert('错误', '输入错误，请先修正提示的错误');
-							}
-						}
-					}, {
-						text: '取消',
-						handler: function () {
-							addModelWin.close();
-						}
-					}
-				]
-
-			});
-		addModelWin.show();
-
-	}
-
-	//打开修改界面
-	function openUpdateModelWin(selectedId) {
-
-		var id = new Ext.form.TextField({
-				name: 'bean.id',
-				fieldLabel: 'ID*',
-				allowBlank: false,
-				maxLength: 50,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var name = new Ext.form.TextField({
-				name: 'bean.name',
-				fieldLabel: '课程名称*',
-				allowBlank: false,
-				maxLength: 500,
-				regex: new RegExp(/^([^\s()]|[^\s()][^()]*[^\s()])$/),
-				regexText: '输入格式：名称字段不能以空格开头和结尾、不能包含半角括号',
-				anchor: '90%'
-			});
-		var code = new Ext.form.TextField({
-				name: 'bean.code',
-				fieldLabel: '课程编码*',
-				allowBlank: false,
-				maxLength: 50,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var courseType_name = new Ext.form.WhatyComboBoxForAdd({
-				store: courseType_nameStore,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				selectOnFocus: true,
-				forceSelection: true,
-				allowBlank: true,
-				typeAhead: true,
-				fieldLabel: '课程分类',
-				name: 'bean.courseType.name',
-				id: '_bean.courseType.name',
-				triggerAction: 'all',
-				editable: true,
-				mode: 'local',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		var startDate = new Ext.form.DateField({
-				fieldLabel: '开课日期*',
-				allowBlank: false,
-				name: 'bean.startDate',
-				anchor: '60%',
-				format: 'Y-m-d',
-				readOnly: false
-			});
-		var endDate = new Ext.form.DateField({
-				fieldLabel: '结课日期*',
-				allowBlank: false,
-				name: 'bean.endDate',
-				anchor: '60%',
-				format: 'Y-m-d',
-				readOnly: false
-			});
-		var author = new Ext.form.TextField({
-				name: 'bean.author',
-				fieldLabel: '作者',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var bal = new Ext.form.TextField({
-				name: 'bean.bal',
-				fieldLabel: '装帧',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var publishDate = new Ext.form.DateField({
-				fieldLabel: '出版时间',
-				allowBlank: true,
-				name: 'bean.publishDate',
-				anchor: '60%',
-				format: 'Y-m-d',
-				readOnly: false
-			});
-		var respEdit = new Ext.form.TextField({
-				name: 'bean.respEdit',
-				fieldLabel: '责任编辑',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var digitalEdit = new Ext.form.TextField({
-				name: 'bean.digitalEdit',
-				fieldLabel: '数字编辑',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var isbn = new Ext.form.TextField({
-				name: 'bean.isbn',
-				fieldLabel: 'ISBN',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var collection = new Ext.form.TextField({
-				name: 'bean.collection',
-				fieldLabel: '所在丛书',
-				allowBlank: true,
-				maxLength: 20,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var bookPrice = new Ext.form.TextField({
-				name: 'bean.bookPrice',
-				fieldLabel: '纸质书价格',
-				allowBlank: true,
-				maxLength: 15,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var bookBuyLink = new Ext.form.TextField({
-				name: 'bean.bookBuyLink',
-				fieldLabel: '纸质书购买链接',
-				allowBlank: true,
-				maxLength: 300,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var payPrice = new Ext.form.TextField({
-				name: 'bean.payPrice',
-				fieldLabel: '电子书价格',
-				allowBlank: true,
-				maxLength: 15,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var peSchool_name = new Ext.form.WhatyComboBoxForAdd({
-				store: peSchool_nameStore,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				selectOnFocus: true,
-				forceSelection: true,
-				allowBlank: true,
-				typeAhead: true,
-				fieldLabel: '所属学校',
-				name: 'bean.peSchool.name',
-				id: '_bean.peSchool.name',
-				triggerAction: 'all',
-				editable: true,
-				mode: 'local',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		var flagUpMarket = new Ext.form.TextField({
-				name: 'bean.flagUpMarket',
-				fieldLabel: '上/下架状态*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var tnum = new Ext.form.TextField({
-				name: 'bean.tnum',
-				fieldLabel: '引用次数*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var status = new Ext.form.TextField({
-				name: 'bean.status',
-				fieldLabel: '是否出版社课程*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-		var isTop = new Ext.form.TextField({
-				name: 'bean.isTop',
-				fieldLabel: '是否置顶*',
-				allowBlank: false,
-				regex: new RegExp(/^(\S|\S.*\S)$/),
-				regexText: '输入格式：不能以空格开头和结尾',
-				anchor: '90%'
-			});
-
-		var formPanel = new Ext.form.FormPanel({
-
-				labelWidth: 100,
-				bodyStyle: 'padding:5px',
-				autoScroll: true,
-
-				frame: true,
-				reader: new Ext.data.JsonReader({
-					root: 'models'
-				}, ['bean.id', 'bean.name', 'bean.code', 'bean.courseType.name', 'bean.startDate', 'bean.endDate', 'bean.author', 'bean.bal', 'bean.publishDate', 'bean.respEdit', 'bean.digitalEdit', 'bean.isbn', 'bean.collection', 'bean.bookPrice', 'bean.bookBuyLink', 'bean.payPrice', 'bean.peSchool.name', 'bean.flagUpMarket', 'bean.tnum', 'bean.status', 'bean.isTop']),
-				items: [
-					name, code, courseType_name, startDate, endDate, author, bal, publishDate, respEdit, digitalEdit, isbn, collection, bookPrice, bookBuyLink, payPrice, peSchool_name
-				]
-			});
-
-		formPanel.form.load({
-			url: '/manager/basic/peTchCourse_abstractDetail.action?menuId=1001&menuName=%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8&bean.id=' + selectedId,
-			waitMsg: 'Loading'
-		});
-
-		var updateModelWin = new Ext.Window({
-				title: '编辑条目',
-
-				width: 525,
-				height: 325,
-
-				minWidth: 300,
-				minHeight: 250,
-				layout: 'fit',
-				plain: true,
-				bodyStyle: 'padding:5px;',
-				buttonAlign: 'center',
-				items: formPanel,
-
-				buttons: [{
-						text: '保存',
-						handler: function () {
-
-							// check form value
-							if (formPanel.form.isValid()) {
-								formPanel.form.submit({
-									url: '/manager/basic/peTchCourse_abstractUpdate.action?',
-									params: {
-										'bean.id': selectedId
-									},
-									method: 'post',
-									waitMsg: '处理中，请稍候...',
-
-									success: function (form, action) {
-										var responseArray = action.result;
-										if (responseArray.success == 'true') {
-											Ext.MessageBox.alert('提示', '保存成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-											//更新后停留在当前页 --yinxu
-											store.load({
-												params: getSearchParams(pageCursor(), g_limit)
-											});
-											updateModelWin.close();
-										} else {
-											Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-										}
-									}
-								});
-							} else {
-								Ext.MessageBox.alert('错误', '输入错误，请先修正提示的错误');
-							}
-						}
-					}, {
-						text: '取消',
-						handler: function () {
-							updateModelWin.close();
-						}
-					}
-				]
-			});
-
-		updateModelWin.show();
-
-	}
-
-	//excel更新
-
-
-	//删除
-	function deleteModels() {
-		var m = grid.getSelectionModel().getSelections();
-		//var m = grid.getSelections();
-		if (m.length > 0) {
-			Ext.MessageBox.confirm('确认',
-				'您确认要删除选中的条目吗？',
-				function (btn) {
-				if (btn == 'yes') {
-					Ext.MessageBox.show({
-						title: '提示',
-						closable: false,
-						msg: '处理中，请稍候...'
-					});
-					var jsonData = "";
-					for (var i = 0, len = m.length; i < len; i++) {
-						var ss = m[i].get("id");
-						if (i == 0)
-							jsonData = jsonData + ss;
-						else
-							jsonData = jsonData + "," + ss;
-						store.remove(m[i]);
-					}
-					jsonData = jsonData + ",";
-					Ext.Ajax.request({
-						timeout: 100000000,
-						url: '/manager/basic/peTchCourse_abstractDelete.action',
-						params: {
-							ids: jsonData
-						},
-						method: 'post',
-						waitMsg: '处理中，请稍候...',
-						success: function (response, options) {
-							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'true') {
-								Ext.MessageBox.alert('提示', '删除成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-							} else {
-								Ext.MessageBox.alert('错误', responseArray.info + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
-							}
-							//删除后页面停留在当前页面 --yinxu
-							store.load({
-								params: getSearchParams(pageCursor(), g_limit)
-							});
-						}
-					});
-
-				}
-			});
-		} else {
-			Ext.MessageBox.alert('错误',
-				'请至少先选中一个条目再执行操作');
-		}
-	}
-	/****************和添加、修改、删除有关的定义和方法*end********************/
-
-	/****************进度条*start********************/
-	//进度条的一些属性和方法 --zhaochen
-	var pbar2;
-	var nowItems; // 初始化
-	var allItems; //总数
-	var progressWin; //进度条窗口
-	var task = { // 定义一个任务
-		run: function () {
-			Ext.Ajax.request({
-				url: '/manager/basic/peTchCourse_abstractProgress.action?' + Math.random(),
-				method: 'POST',
-				success: function (response, options) {
-					if (Ext.util.JSON.decode(response.responseText).nowItems != null) {
-						nowItems = Ext.util.JSON.decode(response.responseText).nowItems;
-						allItems = Ext.util.JSON.decode(response.responseText).allItems;
-					}
-				}
-			});
-			if (nowItems != null) {
-				pbar2.updateProgress(nowItems / allItems); // 让进度条更新到指定的进度。这个值是0-1之间的数，我让i/100.0,以让它的结果是一个小数
-				pbar2.updateText(nowItems + "/" + allItems); // 进度条显示的文本
-			}
-		},
-		interval: 500 // 定时访问更新一次
-	}
-	function progressStart() { //进度条开始
-		progressWin = new Ext.Window({
-				title: '当前执行进度',
-				width: 300,
-				height: 52,
-				layout: 'fit',
-				closable: false,
-				resizable: false,
-				plain: true,
-				modal: true,
-				items: [{
-						xtype: 'panel',
-						width: 300,
-						html: '<div id="progress1"></div>'
-					}
-				]
-			});
-		progressWin.show();
-		pbar2 = new Ext.ProgressBar({
-				renderTo: "progress1",
-				width: 300
-				//,text : "单击按钮开始..."
-			});
-		Ext.TaskMgr.start(task);
-	}
-	function progressStop() { //进度条结束
-		nowItems = null;
-		allItems = null;
-		progressWin.close();
-		Ext.TaskMgr.stop(task);
-		Ext.Ajax.request({
-			url: '/manager/basic/peTchCourse_stopProgress.action',
-			method: 'POST',
-			success: function (response, options) {}
-		});
-	}
-	/****************进度条*end********************/
-
-	/****************搜索*start********************/
-	var searchItems = [];
-	for (var i = 0; i < gridConfig.columns.length; i++) {
-		var c = gridConfig.columns[i];
-		if (!c.canSearch) {
-			continue;
-		}
-		
-		var _s_textField = new Ext.form.TextField({
-			fieldLabel: c.name,
-			value: '',
-			name: '_s_' + c.dataIndex,
-			id: '_s_' + c.dataIndex
-		});
-		_s_textField.on('render', function () {
-			this.getEl().on('dblclick', function () {
-				search('_s_' + c.dataIndex, null, c.type);
-			});
-		});
-		var item = {
-			columnWidth: 280 / panelW,
-			layout: 'form',
-			items: [_s_textField]
-		}
-		searchItems[searchItems.length] = item;
-	}
-	//搜索
-	/*
-	var _s_courseType_name = new Ext.form.WhatyComboBox({
-			store: courseType_nameStore,
-			editable: true,
-			listeners: {
-				'blur': function () {
-					if (this.getRawValue() == '' || this.getValue() == '') {
-						this.setRawValue('');
-						this.setValue('');
-					}
-				}
-			},
-			valueField: 'id',
-			displayField: 'name',
-			value: '',
-			selectOnFocus: true,
-			allowBlank: true,
-			fieldLabel: '课程分类',
-			name: '_s_courseType_name',
-			id: '_s_courseType_name',
-			triggerAction: 'all',
-			emptyText: '',
-			anchor: '90%',
-			blankText: ''
-		});
-	_s_courseType_name.on('render', function () {
-		_s_courseType_name.getEl().on('dblclick', function () {
-			search('_s_courseType_name', courseType_nameStore, 'ComboBox1');
-		});
-	});
-	*/
-	var _s_search = new Ext.Button({
-		type: 'submit',
-		text: '搜索',
-		handler: function () {
-			store.load({
-				params: getSearchParams(0, g_limit)
-			});
-		}
-	});
-	var _s_searchItem = {
-		columnWidth: .1,
-		layout: 'form',
-		items: [_s_search]
-	}
-	searchItems[searchItems.length] = _s_searchItem;
-	var _s_clean = new Ext.Button({
-		type: 'button',
-		text: '清空',
-		handler: function () {
-			cleanForm();
-		}
-	});
-	var _s_cleanItem = {
-		columnWidth: .1,
-		layout: 'form',
-		items: [_s_clean]
-	}
-	searchItems[searchItems.length] = _s_cleanItem;
-	
-	var s_formPanel = new Ext.FormPanel({
-		buttonAlign: 'right',
-		width: panelW,
-		labelAlign: 'left',
-		labelWidth: 100,
-		frame: true,
-		title: gridConfig.title,
-
-		collapsible: true,
-		//监听搜索框关闭打开改变grid高度
-		listeners: {
-			'collapse': function (e) {
-				grid.render();
-				grid.setHeight(panelH);
-				grid.setWidth(panelW);
-
-			},
-			'expand': function (e) {
-
-				grid.setWidth(panelW);
-				grid.setHeight(window.document.body.clientHeight - 35 - e.getInnerHeight());
-
-			}
-		},
-
-		collapsed: false, //默认展开
-		animCollapse: false, //动画效果关闭
-		items: [{
-				layout: 'column',
-				items: searchItems
-		}]
-	});
-	//来进行设置列是否显示的情况
-	HiddenMyColumn(grid, varHiddenColumn);
-
-	//判断是否需要预搜索
-
-
-	s_formPanel.render("searchtool");
-	grid.render();
-	grid.setHeight(window.document.body.clientHeight - 35 - s_formPanel.getInnerHeight()); //第一次搜索展开高度不准需要重新设置高度
-	//如果存在搜索内容搜索框则默认展开 yinxu
-
-	//s_formPanel.collapse(); //搜索框收缩
-	s_formPanel.expand(); //搜索框展开
-
-
-	store.load({
-		params: getSearchParams()
-	});
-
-	//根据参数改变grid,s_formPanel的大小
-	function resizeWin(panelW, panelH) {
-		if (document.getElementById('searchtool').innerHTML == "") {
-			return;
-		}
-		grid.setWidth(panelW);
-		grid.setHeight(panelH);
-		var is_collapsed = s_formPanel.collapsed;
-
-		var _s_name_value = document.getElementById('_s_name').value;
-		var _s_code_value = document.getElementById('_s_code').value;
-		var _s_courseType_name_value = document.getElementById('_s_courseType_name').value;
-		var _s_peSchool_name_value = document.getElementById('_s_peSchool_name').value;
-
-		s_formPanel.destroy();
-		var _s_name = new Ext.form.TextField({
-				fieldLabel: '课程名称',
-				value: '免疫',
-				name: '_s_name',
-				value: _s_name_value,
-				id: '_s_name'
-			});
-		_s_name.on('render', function () {
-			_s_name.getEl().on('dblclick', function () {
-				search('_s_name', null, 'TextField');
-			});
-		});
-		var _s_code = new Ext.form.TextField({
-				fieldLabel: '课程编码',
-				value: '',
-				name: '_s_code',
-				value: _s_code_value,
-				id: '_s_code'
-			});
-		_s_code.on('render', function () {
-			_s_code.getEl().on('dblclick', function () {
-				search('_s_code', null, 'TextField');
-			});
-		});
-		var _s_courseType_name = new Ext.form.WhatyComboBox({
-				store: courseType_nameStore,
-				editable: true,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				value: '',
-				selectOnFocus: true,
-				allowBlank: true,
-				fieldLabel: '课程分类',
-				name: '_s_courseType_name',
-				value: _s_courseType_name_value,
-				id: '_s_courseType_name',
-				triggerAction: 'all',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		_s_courseType_name.on('render', function () {
-			_s_courseType_name.getEl().on('dblclick', function () {
-				search('_s_courseType_name', courseType_nameStore, 'ComboBox1');
-			});
-		});
-		var _s_peSchool_name = new Ext.form.WhatyComboBox({
-				store: peSchool_nameStore,
-				editable: true,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				value: '',
-				selectOnFocus: true,
-				allowBlank: true,
-				fieldLabel: '所属学校',
-				name: '_s_peSchool_name',
-				value: _s_peSchool_name_value,
-				id: '_s_peSchool_name',
-				triggerAction: 'all',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		_s_peSchool_name.on('render', function () {
-			_s_peSchool_name.getEl().on('dblclick', function () {
-				search('_s_peSchool_name', peSchool_nameStore, 'ComboBox1');
-			});
-		});
-		var _s_search = new Ext.Button({
-				type: 'submit',
-				text: '搜索',
-				handler: function () {
-					store.load({
-						params: getSearchParams(0, g_limit)
-					});
-				}
-			});
-		var _s_clean = new Ext.Button({
-				type: 'button',
-				text: '清空',
-				handler: function () {
-					cleanForm();
-				}
-			});
-
-		s_formPanel = new Ext.FormPanel({
-				buttonAlign: 'right',
-				width: panelW,
-				labelAlign: 'left',
-				labelWidth: 100,
-				frame: true,
-				title: '课程列表',
-
-				collapsible: true,
-				listeners: {
-					'collapse': function (e) {
-
-						grid.render();
-						grid.setHeight(panelH);
-						grid.setWidth(panelW);
-					},
-					'expand': function (e) {
-						grid.setHeight(window.document.body.clientHeight - 35 - s_formPanel.getInnerHeight());
-						grid.setWidth(panelW);
-
-					}
-				},
-
-				collapsed: false,
-				animCollapse: false,
-				items: [{
-						layout: 'column',
-						items: [{
-								columnWidth: 280 / panelW,
-								layout: 'form',
-								items: [_s_name]
-							}, {
-								columnWidth: 280 / panelW,
-								layout: 'form',
-								items: [_s_code]
-							}, {
-								columnWidth: 280 / panelW,
-								layout: 'form',
-								items: [_s_courseType_name]
-							}, {
-								columnWidth: 280 / panelW,
-								layout: 'form',
-								items: [_s_peSchool_name]
-							}, {
-								columnWidth: .1,
-								layout: 'form',
-								items: [_s_search]
-							}, {
-								columnWidth: .1,
-								layout: 'form',
-								items: [_s_clean]
-							}
-
-						]
-					}
-				]
-			});
-		s_formPanel.render("searchtool");
-		s_formPanel.collapse();
-		if (!is_collapsed) {
-			s_formPanel.expand();
-			grid.setHeight(window.document.body.clientHeight - 35 - s_formPanel.getInnerHeight());
-		}
-	}
-	window.onresize = function () {
-		var Sys = {};
-		var ua = navigator.userAgent.toLowerCase();
-		if (window.ActiveXObject) {
-			Sys.ie = ua.match(/msie ([\d.]+)/)[1];
-		} else if (window.MessageEvent && !document.getBoxObjectFor) {
-			Sys.chrome = ua.match(/chrome\/([\d.]+)/)[1]
-			if (Sys.ie) {
-				resizeWin(window.document.body.offsetWidth - 4, window.document.body.offsetHeight - 40);
-			}
-			if (Sys.chrome) {
-				resizeWin(window.document.body.offsetWidth - 4, window.document.body.clientHeight - 40);
-			}
-		}
-					
-	}
-	//提示信息，双击搜索
-	new Ext.ToolTip({
-		target: '_s_name',
-		title: '双击搜索',
-		width: 200,
-		html: '双击输入框设置更多条件',
-		mouseOffset: [15, 18],
-		showDelay: 300
-	});
-	new Ext.ToolTip({
-		target: '_s_code',
-		title: '双击搜索',
-		width: 200,
-		html: '双击输入框设置更多条件',
-		mouseOffset: [15, 18],
-		showDelay: 300
-	});
-	new Ext.ToolTip({
-		target: '_s_courseType_name',
-		title: '双击搜索',
-		width: 200,
-		html: '双击输入框设置更多条件',
-		mouseOffset: [15, 18],
-		showDelay: 300
-	});
-	new Ext.ToolTip({
-		target: '_s_peSchool_name',
-		title: '双击搜索',
-		width: 200,
-		html: '双击输入框设置更多条件',
-		mouseOffset: [15, 18],
-		showDelay: 300
-	});
-	/****************搜索*start********************/
-
-	Ext.QuickTips.init();
 
 	/****************找不到用处*start********************/
+	Ext.QuickTips.init();
 	function toggleDetails(btn, pressed) {
 		var view = grid.getView();
 		view.showPreview = pressed;

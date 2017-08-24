@@ -8,7 +8,7 @@
 		"canSearch" : false,
 		"canAdd" : true,
 		"canBatchAdd" : true,
-		"canUpdate" : true,
+		"canUpdate" : false,
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,

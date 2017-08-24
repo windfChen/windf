@@ -18,6 +18,7 @@
 			if(Sys.ie > '7.0') {
 				document.write("<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE8' >");
 			}
+			var resourceBasePath = '${rc.contextPath}/resources/';
 		</script>
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/plugins/manage/css/admincss.css">
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/ext-all.css" />
