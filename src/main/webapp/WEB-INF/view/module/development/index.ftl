@@ -45,8 +45,8 @@
 							</a>
 						</li>
 						<li class="tabl_op_li">
-							<a href="javascript:void(0);" class="tabl_op_link">
-								<i class="iconfont icon_kzkt-penV-stroke"></i>详细信息
+							<a href="../url?module=${m.code}" class="tabl_op_link">
+								<i class="iconfont icon_kzkt-penV-stroke"></i>管理URL
 							</a>
 						</li>
 					</ul>

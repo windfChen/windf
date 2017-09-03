@@ -2,11 +2,8 @@ package com.windf.module.development.modle.controler;
 
 import java.util.List;
 
-import com.windf.core.exception.ParameterException;
-import com.windf.core.util.StringUtil;
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.Method;
-import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
@@ -49,6 +46,20 @@ public class UrlInfo {
 	
 	private ControlerReturn controlerReturn;
 	private List<Parameter> parameters;
+	
+	private Controler controler;
+	
+	/**
+	 * 获得完成url
+	 * @return
+	 */
+	public String getUrl() {
+		String result = null;
+		if (controler != null && controler.getModule() != null) {
+			result = controler.getModule().getPath() + controler.getUrlPath() + this.subPath;
+		}
+		return result;
+	}
 
 	public String getSubPath() {
 		return subPath;
@@ -96,6 +107,14 @@ public class UrlInfo {
 
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
+	}
+
+	public Controler getControler() {
+		return controler;
+	}
+
+	public void setControler(Controler controler) {
+		this.controler = controler;
 	}
 
 }

@@ -31,6 +31,11 @@ public class UrlControler extends BaseControler{
 		return Constant.WEB_BASE_PATH;
 	}
 	
+	@RequestMapping(value = "", method = {RequestMethod.GET})
+	public String index() {
+		return  Constant.WEB_BASE_VIEW + "/url";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "/create", method = {RequestMethod.GET})
 	public Map<String, Object> create() {

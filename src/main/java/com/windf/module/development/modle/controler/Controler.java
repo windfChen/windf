@@ -5,11 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.windf.module.development.pojo.Module;
+
 public class Controler {
 	private String name;
 	private String urlPath;
 	private String classPath;
+	
 	private Map<String, UrlInfo> urlInfoMap = new HashMap<String, UrlInfo>();
+	
+	private Module module;
 	
 	/**
 	 * 添加url信息
@@ -68,6 +73,22 @@ public class Controler {
 
 	public void setClassPath(String classPath) {
 		this.classPath = classPath;
+	}
+
+	public Map<String, UrlInfo> getUrlInfoMap() {
+		return urlInfoMap;
+	}
+
+	public void setUrlInfoMap(Map<String, UrlInfo> urlInfoMap) {
+		this.urlInfoMap = urlInfoMap;
+	}
+
+	public Module getModule() {
+		return module;
+	}
+
+	public void setModule(Module module) {
+		this.module = module;
 	}
 
 }
