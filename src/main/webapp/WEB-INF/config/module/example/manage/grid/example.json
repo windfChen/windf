@@ -26,12 +26,26 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 1
-	},{
+	},
+	{
 		"name" : "年龄",
 		"dataIndex" : "age",
 		"type" : "TextField",
 		"canList" : true,
 		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 3
+	},{
+		"name" : "自述",
+		"dataIndex" : "age",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : false,
 		"canAdd" : true,
 		"canBatchAdd" : true,
 		"canUpdate" : true,
@@ -56,5 +70,6 @@
 	"canBatchAdd" : true,
 	"canDelete" : true,
 	"canUpdate" : true,
-	"canSearch" : true
+	"canSearch" : true,
+	"dataSource" : "exampleDao"
 }

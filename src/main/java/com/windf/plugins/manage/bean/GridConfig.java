@@ -5,6 +5,7 @@ import java.util.List;
 public class GridConfig {
 
 	private String title; // 表格标题
+	private String dataSource;	// 数据源，对应dao，需要实现ListDao
 	private List<ColumnConfig> columns;
 	private List<MenuConfig> meuns;
 
@@ -95,6 +96,14 @@ public class GridConfig {
 
 	public void setRoleCode(String roleCode) {
 		this.roleCode = roleCode;
+	}
+
+	public String getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(String dataSource) {
+		this.dataSource = dataSource;
 	}
 
 }

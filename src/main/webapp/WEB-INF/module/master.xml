@@ -8,24 +8,14 @@
     <html>/WEB-INF/view/module/</html>
   </webPath>
   <moduleConfigPath>/WEB-INF/classes/module/</moduleConfigPath>
+  <moduleCodes>
+    <item>development</item>
+    <item>example</item>
+  </moduleCodes>
   <sourcePath>
     <resource>/src/main/resources/module/</resource>
     <java>/src/main/java/com/windf/module/</java>
   </sourcePath>
-  <modules>
-    <item>
-      <basePath>/example</basePath>
-      <name>例子</name>
-      <code>example</code>
-      <info>用于展示，和作为其他新建模块的模板</info>
-    </item>
-    <item>
-      <basePath>/dev</basePath>
-      <name>开发人员工具</name>
-      <code>development</code>
-      <info>开发人员用于开发项目</info>
-    </item>
-  </modules>
   <classPath>
     <classes>/WEB-INF/classes/com/whaty/module/</classes>
     <resource>/WEB-INF/classes/module/</resource>

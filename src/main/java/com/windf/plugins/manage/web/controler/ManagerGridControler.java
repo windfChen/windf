@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.windf.core.exception.CodeException;
+import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.Page;
 import com.windf.core.util.StringUtil;
@@ -18,7 +19,7 @@ import com.windf.plugins.manage.bean.GridConfig;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.web.BaseControler;
 
-public class ManagerGridControler extends BaseControler {
+public abstract class ManagerGridControler extends BaseControler {
 	
 	@Resource
 	private ManageGirdService managerGridService;
@@ -31,13 +32,13 @@ public class ManagerGridControler extends BaseControler {
 	@ResponseBody
 	@RequestMapping(value = "/grid", method = {RequestMethod.GET})
 	public Map<String, Object> grid() {
-		String code = getRequestCode();
+		String code = getRequestCode("grid");
 		String roleId = "";
 		Map<String, Object> condition = this.getMapParameter("condition");
 		
 		GridConfig gridConfig = null;
 		try {
-			gridConfig = managerGridService.getGridConfig(code, roleId, condition);
+			gridConfig = managerGridService.getGridConfig(module.getCode(), code, roleId, condition);
 		} catch (UserException e) {
 			e.printStackTrace();
 		} catch (CodeException e) {
@@ -49,7 +50,7 @@ public class ManagerGridControler extends BaseControler {
 	@ResponseBody
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public Map<String, Object> list() {
-		String code = getRequestCode();
+		String code = getRequestCode("list");
 		Map<String, Object> condition = this.getMapParameter("condition");
 		String pageNoStr = this.getParameter("pageNo");
 		String pageSizeStr = this.getParameter("pageSize");
@@ -63,34 +64,40 @@ public class ManagerGridControler extends BaseControler {
 		
 		Map<String, Object> result = null;
 		try {
-			Page<Map<String, Object>> page = managerGridService.list(code, condition, pageNo, pageSize);
+			Page<Map<String, Object>> page = managerGridService.list(module.getCode(), code, condition, pageNo, pageSize);
 			result = new HashMap<String, Object>();
 			result.put("models", page.getData());
 			result.put("totalCount", page.getTotal());
 		} catch (UserException e) {
+			e.printStackTrace();
+		} catch (CodeException e) {
+			e.printStackTrace();
+		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}
 		
 		return result;
 	}
 
-	@Override
-	protected String getModulePath() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	/**
 	 * 获得请求地址，生成的code
 	 * eg：http://localhost/m/test/grid.do?r=1 --> testGrid
 	 * @return
 	 */
-	protected String getRequestCode() {
+	protected String getRequestCode(String methodName) {
 		String requestPath = getRequestPath();
 		int index = requestPath.lastIndexOf('.');
 		if (index > 0) {
 			requestPath = requestPath.substring(0, index);
 		}
-		 return StringUtil.toCamelCase(requestPath, "/");
+		
+		String result = StringUtil.toCamelCase(requestPath, "/");
+		if (StringUtil.isNotEmpty(methodName)) {
+			methodName = StringUtil.firstLetterUppercase(methodName);
+			if (result.endsWith(methodName)) {
+				result = result.substring(0, result.length() - methodName.length());
+			}
+		}
+		return result;
 	}
 }

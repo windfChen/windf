@@ -10,6 +10,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 
+import com.windf.core.spring.SpringUtil;
+import com.windf.module.development.pojo.Module;
+import com.windf.module.development.service.ModuleManageService;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
 import com.windf.plugins.web.util.JsonReturn;
@@ -27,6 +30,7 @@ public abstract class BaseControler {
 	protected HttpServletRequest request;
 	protected JsonReturn jsonReturn;
 	protected PageReturn pageReturn;
+	protected Module module;
 	
 	public BaseControler () {
 		// 日初始化日志
@@ -39,6 +43,9 @@ public abstract class BaseControler {
 		
 		pageReturn = new PageReturn(this);
 		jsonReturn = new JsonReturn();
+		
+		ModuleManageService moduleManageService = (ModuleManageService) SpringUtil.getBean("moduleManageServiceImpl");
+		module = moduleManageService.getModuleByPath(getModulePath());
 	}
 	
 	/**
@@ -58,7 +65,7 @@ public abstract class BaseControler {
 	}
 	
 	/**
-	 * 返回项目的跟路径
+	 * 返回模块的根路径
 	 * @return
 	 */
 	protected abstract String getModulePath();

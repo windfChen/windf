@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.windf.core.exception.UserException;
+import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.Page;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
@@ -135,6 +136,14 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 				 *  条件筛选
 				 */
 				if (moduleSearch != null) {
+					
+					if (moduleSearch.getBasePath() != null) {
+						if (moduleSearch.getBasePath().equals(module.getBasePath())) {
+							resultList.add(module);
+							continue;
+						}
+					}
+					
 					continue;
 				}
 				
@@ -150,7 +159,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		Page<Module> page = new Page<Module>(Long.valueOf(pageIndex) , pageSize);
 		if (resultList.size() > 0) {
 			page.setTotal(Long.valueOf(resultList.size()));
-			page.setData(modules.subList(page.getStartIndex().intValue(), page.getEndIndex().intValue()));
+			page.setData(resultList.subList(page.getStartIndex().intValue(), page.getEndIndex().intValue()));
 		}
 		
 		return page;
@@ -158,12 +167,16 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 
 	@Override
 	public Module getModuleByPath(String basePath) {
-		// TODO
 		ModuleSearch moduleSearch = new ModuleSearch();
 		moduleSearch.setBasePath(basePath);
 		
-		listAllModule(moduleSearch, 1, 1);
-		return null;
+		Page<Module> page = listAllModule(moduleSearch, 1, 1);
+		
+		Module result = null;
+		if (CollectionUtil.isNotEmpty(page.getData())) {
+			result = page.getData().get(0);
+		}
+		return result;
 	}
 
 }
