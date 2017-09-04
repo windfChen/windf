@@ -4,11 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.windf.module.example.dao.ExampleDao">
 
-     <select id="count" parameterType="map" resultType="long" >
+     <select id="count" parameterType="java.util.HashMap" resultType="long" >
        SELECT
 			count(id)
 		FROM 
-			example e
+			example e 
+		WHERE 1=1
+		 <if test="param1 != null and  param1.name != null">    
+	        and name = #{param1.name}    
+	    </if>    
     </select>
     
      <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
@@ -16,6 +20,10 @@
 			id, name, age
 		FROM 
 			example e
+		WHERE 1=1
+		 <if test="param1 != null and param1.name != null">    
+	        and name = #{param1.name}    
+	    </if>    
     </select>
    
 </mapper>

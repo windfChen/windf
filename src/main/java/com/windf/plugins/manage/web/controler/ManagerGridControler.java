@@ -62,6 +62,8 @@ public abstract class ManagerGridControler extends BaseControler {
 		} catch (Exception e) {
 		}
 		
+		condition.put("name", "曹操");
+		
 		Map<String, Object> result = null;
 		try {
 			Page<Map<String, Object>> page = managerGridService.list(module.getCode(), code, condition, pageNo, pageSize);

@@ -42,7 +42,7 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Page<Map<String, Object>> list(String moduleCode, String code, Map<String, Object> condition, Integer pageNo, Integer PageSize)
+	public Page<Map<String, Object>> list(String moduleCode, String code, Map<String, Object> condition, Integer pageNo, Integer pageSize)
 			throws UserException, CodeException, DataAccessException {
 		
 		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
@@ -51,38 +51,8 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 		Page<Map<String, Object>> page = new Page<Map<String, Object>>();
 		
 		page.setTotal(listDao.count(condition));
-		page.setData(listDao.list(condition, pageNo, PageSize));
+		page.setData(listDao.list(condition, pageNo, pageSize));
 		
-		
-//		page.setTotal(5L);
-//		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-//		Map<String, Object> m = new HashMap<String, Object>();
-//		m.put("id", "1");
-//		m.put("name", "华为");
-//		m.put("age", 9);
-//		data.add(m);
-//		m = new HashMap<String, Object>();
-//		m.put("id", "2");
-//		m.put("name", "三心");
-//		m.put("age", 10);
-//		data.add(m);
-//		m = new HashMap<String, Object>();
-//		m.put("id", "3");
-//		m.put("name", "八两");
-//		m.put("age", 6);
-//		data.add(m);
-//		m = new HashMap<String, Object>();
-//		m.put("id", "4");
-//		m.put("name", "六色");
-//		m.put("age", 19);
-//		data.add(m);
-//		m = new HashMap<String, Object>();
-//		m.put("id", "5");
-//		m.put("name", "九九");
-//		m.put("age", 11);
-//		data.add(m);
-//		page.setData(data);
-				
 		return page;
 	}
 	
