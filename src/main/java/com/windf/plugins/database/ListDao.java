@@ -1,7 +1,6 @@
 package com.windf.plugins.database;
 
 import java.util.List;
-import java.util.Map;
 
 import com.windf.core.exception.DataAccessException;
 
@@ -12,7 +11,7 @@ public interface ListDao {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	Long count(Map<String, Object> condition) throws DataAccessException;
+	Long count(Object condition) throws DataAccessException;
 	/**
 	 * 查询符合条件的列表
 	 * @param condition
@@ -22,5 +21,5 @@ public interface ListDao {
 	 * @throws DataAccessException
 	 */
 	@SuppressWarnings("rawtypes")
-	List list(Map<String, Object> condition, Integer pageNo, Integer PageSize) throws DataAccessException;
+	List list(Object condition, Long start, Integer PageSize) throws DataAccessException;
 }

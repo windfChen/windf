@@ -48,10 +48,10 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
 		ListDao listDao = (ListDao) SpringUtil.getBean(gridConfig.getDataSource());
 		
-		Page<Map<String, Object>> page = new Page<Map<String, Object>>();
+		Page<Map<String, Object>> page = new Page<Map<String, Object>>(Long.valueOf(pageNo), pageSize);
 		
 		page.setTotal(listDao.count(condition));
-		page.setData(listDao.list(condition, pageNo, pageSize));
+		page.setData(listDao.list(condition, page.getStartIndex(), page.getPageSize()));
 		
 		return page;
 	}

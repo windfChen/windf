@@ -26,7 +26,7 @@ function initGrid (gridConfig) {
 		var c = gridConfig.columns[i];
 		if (c.canSearch) {
 			var o = {};
-			o.formName = 'search__' + c.dataIndex;
+			o.formName = 'condition.' + c.dataIndex;
 			o.inputName = '_s_' + c.dataIndex;
 			searchFields[searchFields.length] = o;
 		}
@@ -35,11 +35,12 @@ function initGrid (gridConfig) {
 		var searchParams = {}
 		searchParams.start = start? start: g_start;
 		searchParams.limit = limit? limit: g_limit;
+		searchParams.page = searchParams.start / searchParams.limit + 1;
 		searchParams['gridConfig.moreSort'] = moreSort.form.findField('moreSort').getValue();
 		for (var i = 0; i < gridConfig.columns.length; i++) {
 			var c = gridConfig.columns[i];
 			if (c.canSearch) {
-				searchParams['search__' + c.dataIndex] = Ext.get('_s_' + c.dataIndex).dom.value
+				searchParams['condition.' + c.dataIndex] = Ext.get('_s_' + c.dataIndex).dom.value
 			}
 		}
 		return searchParams;
@@ -330,20 +331,6 @@ function initGrid (gridConfig) {
 	});
 	/****************分页配置*start********************/
 	
-
-	/** TODO1.	列的renderer: ValueRender_courseType_name；作用，搜索字标红
-	/****************列函数，搜索字标红*start********************/
-	function ValueRender_code(p_value, metadata, record) {
-		return p_value.replace(Ext.get('_s_code').dom.value, '<font color=#FF0000>' + Ext.get('_s_code').dom.value + '</font>');
-	}
-	function ValueRender_courseType_name(p_value, metadata, record) {
-		return p_value.replace(Ext.get('_s_courseType_name').dom.value, '<font color=#FF0000>' + Ext.get('_s_courseType_name').dom.value + '</font>');
-	}
-	function ValueRender_peSchool_name(p_value, metadata, record) {
-		return p_value.replace(Ext.get('_s_peSchool_name').dom.value, '<font color=#FF0000>' + Ext.get('_s_peSchool_name').dom.value + '</font>');
-	}
-	/****************列函数，搜索字标红*end********************/
-	
 	/****************列函数，用于修改数据*start********************/
 	// TODO3 列的模板
 	function GridConfigRenderFunction_0(p_value, metadata, record) {
@@ -399,7 +386,7 @@ function initGrid (gridConfig) {
 				var newValue = value + '';
 				var searchValue = Ext.get('_s_' + c.dataIndex).dom.value;
 				if (searchValue != null && searchValue.length > 0 && newValue.indexOf(searchValue) >= 0) {
-					newValue = (newValue).replace(searchValue, '<font color=#FF0000>' + searchValue + '</font>');
+					newValue = (newValue).replace(searchValue, '<font color=#FF0000>' + searchValue + '</font>');	// 搜索字标红
 				}
 				var result = newValue;
 				if(c.display != null && c.display.length > 0) {

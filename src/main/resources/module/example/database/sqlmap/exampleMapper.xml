@@ -11,19 +11,28 @@
 			example e 
 		WHERE 1=1
 		 <if test="param1 != null and  param1.name != null">    
-	        and name = #{param1.name}    
+	        and name like CONCAT('%',#{param1.name},'%')
 	    </if>    
     </select>
     
      <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
        SELECT
-			id, name, age
+			id, name, age, nick_name nickName
 		FROM 
 			example e
 		WHERE 1=1
-		 <if test="param1 != null and param1.name != null">    
-	        and name = #{param1.name}    
-	    </if>    
+		<if test="param1 != null and param1.name != null">    
+	        and name like CONCAT('%',#{param1.name},'%')
+	    </if>
+		<if test="param1 != null and param1.nickName != null">    
+	        and nick_name like CONCAT('%',#{param1.nickName},'%')
+	    </if>
+		<if test="param1 != null and param1.age != null">
+	        and age like CONCAT('%',#{param1.age},'%')
+	    </if>
+	    <if test="param2 != null and param3 != null"> 
+	     LIMIT #{param2}, #{param3}
+	    </if>
     </select>
    
 </mapper>

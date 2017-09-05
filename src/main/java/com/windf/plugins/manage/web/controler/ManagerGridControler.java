@@ -52,8 +52,8 @@ public abstract class ManagerGridControler extends BaseControler {
 	public Map<String, Object> list() {
 		String code = getRequestCode("list");
 		Map<String, Object> condition = this.getMapParameter("condition");
-		String pageNoStr = this.getParameter("pageNo");
-		String pageSizeStr = this.getParameter("pageSize");
+		String pageNoStr = this.getParameter("page");
+		String pageSizeStr = this.getParameter("limit");
 		Integer pageNo = 1;
 		Integer pageSize = 10;
 		try {
@@ -61,8 +61,6 @@ public abstract class ManagerGridControler extends BaseControler {
 			pageSize = Integer.parseInt(pageSizeStr);
 		} catch (Exception e) {
 		}
-		
-		condition.put("name", "曹操");
 		
 		Map<String, Object> result = null;
 		try {
@@ -78,6 +76,21 @@ public abstract class ManagerGridControler extends BaseControler {
 			e.printStackTrace();
 		}
 		
+		return result;
+	}
+	
+	public Map<String, Object> detail() {
+		Map<String, Object> result = null;
+		return result;
+	}
+	
+	public Map<String, Object> add() {
+		Map<String, Object> result = null;
+		return result;
+	}
+	
+	public Map<String, Object> update() {
+		Map<String, Object> result = null;
 		return result;
 	}
 

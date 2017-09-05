@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 
 import com.windf.core.spring.SpringUtil;
+import com.windf.core.util.StringUtil;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.plugins.log.LogFactory;
@@ -95,7 +96,10 @@ public abstract class BaseControler {
 			String parameterName = (String) enumeration.nextElement();
 			if (parameterName.startsWith(nameKey)) {
 				String key = parameterName.substring(nameKey.length());
-				result.put(key, this.getParameter(parameterName));
+				String value = this.getParameter(parameterName);
+				if (StringUtil.isNotEmpty(value)) {
+					result.put(key, value);
+				}
 			}
 			
 		}

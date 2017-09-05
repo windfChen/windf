@@ -6,15 +6,15 @@
 		"type" : "TextField",
 		"canList" : false,
 		"canSearch" : false,
-		"canAdd" : true,
-		"canBatchAdd" : true,
+		"canAdd" : false,
+		"canBatchAdd" : false,
 		"canUpdate" : false,
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 2
 	},{
-		"name" : "名称",
+		"name" : "姓名",
 		"dataIndex" : "name",
 		"type" : "TextField",
 		"canList" : true,
@@ -26,6 +26,20 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 1
+	},
+	{
+		"name" : "昵称",
+		"dataIndex" : "nickName",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 4
 	},
 	{
 		"name" : "年龄",
@@ -51,8 +65,8 @@
 		"canUpdate" : true,
 		"canReport" : true,
 		"canOrder" : true,
-		"display" : "<a href='http://www.baidu.com?id=${id}'>${name}-${value}</a>",
-		"orderNum" : 3
+		"display" : "<a href='http://www.baidu.com?id=${id}'>我叫${name}，字${nickName},今年${value}岁</a>",
+		"orderNum" : 6
 	}],
 	"meuns" : [{
 		"name" : "生成序号",
