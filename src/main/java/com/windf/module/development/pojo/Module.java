@@ -16,8 +16,6 @@ import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
 import com.windf.module.development.file.XmlFileUtil;
-import com.windf.module.development.modle.controler.Controler;
-import com.windf.module.development.modle.service.Service;
 
 public class Module {
 
@@ -29,6 +27,7 @@ public class Module {
 		}
 
 		Module module = XmlFileUtil.readXml2Object(exampleDescriptFile, Module.class);
+		//module.init();
 
 		return module;
 	}
@@ -37,12 +36,41 @@ public class Module {
 	private String name;
 	private String basePath;
 	private String info;
-	private Map<String, String> path;
-	private List<String> dependent;
 	
 	private Map<String, Controler> controlerMap = new HashMap<String, Controler>();
 	private Map<String, Service> serviceMap = new HashMap<String, Service>();
+	
+	// 标记变量
+	private boolean initializationed = false;
+	
+	public void init() {
 
+		/*
+		 * 只初始化一次
+		 */
+		if (initializationed) {
+			return;
+		}
+		
+		/*
+		 *  初始化反向调用
+		 */
+		Iterator<Controler> controlerIterator = controlerMap.values().iterator();
+		while (controlerIterator.hasNext()) {
+			Controler controler = (Controler) controlerIterator.next();
+			controler.setModule(this);
+			controler.init();
+		}
+		
+		Iterator<Service> serviceIterator = serviceMap.values().iterator();
+		while (serviceIterator.hasNext()) {
+			Service service = (Service) serviceIterator.next();
+			service.setModule(this);
+			service.init();
+		}
+		
+		initializationed = true;
+	}
 
 	public Module clone(String newCode) throws UserException {
 		ModuleMaster moduleMaster = ModuleMaster.getInstance();
@@ -239,22 +267,6 @@ public class Module {
 
 	public void setInfo(String info) {
 		this.info = info;
-	}
-
-	public Map<String, String> getPath() {
-		return path;
-	}
-
-	public void setPath(Map<String, String> path) {
-		this.path = path;
-	}
-
-	public List<String> getDependent() {
-		return dependent;
-	}
-
-	public void setDependent(List<String> dependent) {
-		this.dependent = dependent;
 	}
 
 }

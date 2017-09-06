@@ -11,10 +11,10 @@ import com.windf.core.exception.ParameterException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.core.util.StringUtil;
-import com.windf.module.development.modle.controler.Controler;
 import com.windf.module.development.modle.controler.ControlerCoder;
-import com.windf.module.development.modle.controler.UrlInfo;
+import com.windf.module.development.pojo.Controler;
 import com.windf.module.development.pojo.Module;
+import com.windf.module.development.pojo.UrlInfo;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.module.development.service.UrlService;
 
@@ -79,7 +79,7 @@ public class UrlServiceImpl  implements UrlService {
 		if (methodName.startsWith("/")) {
 			methodName = methodName.substring(1);
 		}
-		urlInfo.setMethodName(methodName);
+		urlInfo.setName(methodName);
 		urlInfo.setSubPath(methodPath);
 		if (get) {
 			urlInfo.setRequestMethod("GET");

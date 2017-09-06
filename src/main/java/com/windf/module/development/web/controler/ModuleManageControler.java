@@ -15,7 +15,7 @@ import com.windf.core.util.Page;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleDto;
+import com.windf.module.development.pojo.dto.ModuleDto;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.plugins.web.BaseControler;
 

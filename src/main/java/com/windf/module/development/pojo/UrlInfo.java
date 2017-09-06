@@ -1,11 +1,10 @@
-package com.windf.module.development.modle.controler;
+package com.windf.module.development.pojo;
 
 import java.util.List;
 
+import com.windf.module.development.modle.controler.ControlerReturn;
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.Method;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
 
 public class UrlInfo {
 
@@ -17,7 +16,7 @@ public class UrlInfo {
 	public static UrlInfo fromMethod(Method method) {
 		UrlInfo result = new UrlInfo();
 		
-		result.setMethodName(method.getMethodName());
+		result.setName(method.getMethodName());
 		
 		if (Return.STRING.equals(method.getRet().getType())) {
 			result.setAjaxReturn(false);
@@ -39,14 +38,17 @@ public class UrlInfo {
 		return result;
 	}
 	
+	// 基本信息
 	private String subPath;
-	private String methodName;
+	private String name;
 	private boolean ajaxReturn;
 	private String requestMethod;
 	
+	// 引用
 	private ControlerReturn controlerReturn;
 	private List<Parameter> parameters;
 	
+	// 反向引用
 	private Controler controler;
 	
 	/**
@@ -56,7 +58,7 @@ public class UrlInfo {
 	public String getUrl() {
 		String result = null;
 		if (controler != null && controler.getModule() != null) {
-			result = controler.getModule().getPath() + controler.getUrlPath() + this.subPath;
+			result = controler.getModule().getBasePath() + controler.getUrlPath() + this.subPath;
 		}
 		return result;
 	}
@@ -67,14 +69,6 @@ public class UrlInfo {
 
 	public void setSubPath(String subPath) {
 		this.subPath = subPath;
-	}
-
-	public String getMethodName() {
-		return methodName;
-	}
-
-	public void setMethodName(String methodName) {
-		this.methodName = methodName;
 	}
 
 	public boolean isAjaxReturn() {
@@ -115,6 +109,14 @@ public class UrlInfo {
 
 	public void setControler(Controler controler) {
 		this.controler = controler;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

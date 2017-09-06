@@ -2,9 +2,12 @@ package com.windf.core.util;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.windf.core.util.reflect.ReflectUtil;
 
 public class JSONUtil {
 	/**
@@ -22,5 +25,15 @@ public class JSONUtil {
 			result = JSONObject.toJSONString(obj);
 		}
 		return result;
+	}
+	
+	public static void to(Object object) {
+		Map<String, Object> allMethods = ReflectUtil.getAllGetterMethods(object);
+		
+		Iterator<String> allMethodsIterator = allMethods.keySet().iterator();
+		while (allMethodsIterator.hasNext()) {
+			String propertyName = (String) allMethodsIterator.next();
+			// TODO Meth
+		}
 	}
 }

@@ -14,10 +14,12 @@ import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.modle.java.code.ControlerReturnCoder;
 import com.windf.module.development.modle.java.code.ParameterVerifyCoder;
+import com.windf.module.development.pojo.Controler;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.ModuleMaster;
 import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
+import com.windf.module.development.pojo.UrlInfo;
 
 public class ControlerCoder {
 	public static final String RETURN_AJAX = "ajax";
@@ -74,7 +76,7 @@ public class ControlerCoder {
 	 */
 	public void addSubPath(UrlInfo urlInfo) throws UserException {
 		String subPath = urlInfo.getSubPath();
-		String methodName = urlInfo.getMethodName();
+		String methodName = urlInfo.getName();
 		boolean ajaxReturn = urlInfo.isAjaxReturn();
 		String requestMethod = urlInfo.getRequestMethod();
 		

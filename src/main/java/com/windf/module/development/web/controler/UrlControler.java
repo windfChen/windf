@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
-import com.windf.module.development.modle.controler.UrlInfo;
+import com.windf.module.development.pojo.UrlInfo;
 import com.windf.module.development.service.UrlService;
 import com.windf.plugins.web.BaseControler;
 
