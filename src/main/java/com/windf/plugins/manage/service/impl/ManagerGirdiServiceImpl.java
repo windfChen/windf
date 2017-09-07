@@ -1,5 +1,7 @@
 package com.windf.plugins.manage.service.impl;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.windf.core.spring.SpringUtil;
 import com.windf.core.util.JSONUtil;
 import com.windf.core.util.ModuleUtil;
 import com.windf.core.util.Page;
+import com.windf.plugins.database.WritableDao;
 import com.windf.plugins.database.ListDao;
 import com.windf.plugins.manage.Constant;
 import com.windf.plugins.manage.bean.GridConfig;
@@ -73,6 +76,36 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int save(String moduleCode, String code, Object bean) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		
+		return writableDao.insert(bean);
+	}
+
+	@Override
+	public Object detail(String moduleCode, String code, Serializable id) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		return writableDao.find(id);
+	}
+
+	@Override
+	public int update(String moduleCode, String code, Object bean) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		return writableDao.update(bean);
+		
+	}
+
+	@Override
+	public int delete(String moduleCode, String code, List<? extends Serializable> id) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		return writableDao.delete(id);
 	}
 
 }

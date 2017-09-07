@@ -15,6 +15,10 @@ public class CollectionUtil {
 	public static boolean isNotEmpty(Map<? extends Object, ? extends Object> result) {
 		return result != null && result.size() > 0;
 	}
+
+	public static boolean isEmpty(Collection<? extends Object> collection) {
+		return CollectionUtils.isEmpty(collection);
+	}
 	
 	/**
 	 * 将map进行反转，key作为value，value作为key

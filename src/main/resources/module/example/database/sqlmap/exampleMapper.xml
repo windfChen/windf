@@ -10,8 +10,8 @@
 		FROM 
 			example e 
 		WHERE 1=1
-		 <if test="param1 != null and  param1.name != null">    
-	        and name like CONCAT('%',#{param1.name},'%')
+		 <if test="name != null">    
+	        and name like CONCAT('%',#{name},'%')
 	    </if>    
     </select>
     
@@ -34,5 +34,29 @@
 	     LIMIT #{param2}, #{param3}
 	    </if>
     </select>
+    
+    <select id="find" parameterType="string" resultType="java.util.HashMap" >
+     	 select  	id, name, age, nick_name nickName
+     	 from example
+     	 where id = #{param1}
+    </select>
+    
+    <insert id="insert" parameterType="java.util.HashMap" keyProperty="id">
+       INSERT INTO example (id, name, nick_name, age)
+		VALUES
+			(replace(UUID(), '-', '') ,#{name}, #{nickName} ,#{age})
+    </insert>
+    
+    <update id="update" parameterType="java.util.HashMap" >
+        update example set name = #{name}, nick_name = #{nickName} , age = #{age} 
+        where id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="List" >
+        delete from example where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		 </foreach> 
+    </delete>
    
 </mapper>

@@ -569,7 +569,7 @@ function initGrid (gridConfig) {
 						waitMsg: '处理中，请稍候...',
 						success: function (response, options) {
 							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'true') {
+							if (responseArray.success == 'Y') {
 								Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 							} else {
 								Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -622,7 +622,7 @@ function initGrid (gridConfig) {
 						success: function (response, options) {
 							progressStop(); //进度条结束
 							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'true') {
+							if (responseArray.success == 'Y') {
 								Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 							} else {
 								Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -680,7 +680,7 @@ function initGrid (gridConfig) {
 						waitMsg: '处理中，请稍候...',
 						success: function (response, options) {
 							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'true') {
+							if (responseArray.success == 'Y') {
 								Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 							} else {
 								Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -741,7 +741,7 @@ function initGrid (gridConfig) {
 						waitMsg: '处理中，请稍候...',
 						success: function (response, options) {
 							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'true') {
+							if (responseArray.success == 'Y') {
 								Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 							} else {
 								Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
@@ -1007,7 +1007,7 @@ function initGrid (gridConfig) {
 
 									success: function (form, action) {
 										var responseArray = action.result;
-										if (responseArray.success == 'true') {
+										if (responseArray.success == 'Y') {
 											Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 											store.load({
 												params: getSearchParams()
@@ -1052,7 +1052,7 @@ function initGrid (gridConfig) {
 			var item = {};
 			if (c.type == 'TextField') {
 				item = new Ext.form.TextField({
-					name: c.dataIndex,
+					name: 'entity.' + c.dataIndex,
 					fieldLabel: c.name + '*',
 					allowBlank: false,
 					maxLength: 50,
@@ -1137,18 +1137,18 @@ function initGrid (gridConfig) {
 
 							if (formPanel.form.isValid()) {
 								formPanel.form.submit({
-									url: 'add',
+									url: 'save',
 									waitMsg: '处理中，请稍候...',
 									success: function (form, action) {
 										var responseArray = action.result;
-										if (responseArray.success == 'true') {
+										if (responseArray.success == 'Y') {
 											Ext.MessageBox.alert('提示', '添加成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 											store.load({
 												params: getSearchParams()
 											});
 											addModelWin.close();
 										} else {
-											Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+											Ext.MessageBox.alert('错误', responseArray.tip + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 										}
 									}
 								});
@@ -1176,7 +1176,7 @@ function initGrid (gridConfig) {
 		if (!c.canUpdate) {
 			continue;
 		}
-		formPanelReaderData[formPanelReaderData.length] = c.dataIndex;
+		formPanelReaderData[formPanelReaderData.length] = 'entity.' + c.dataIndex;
 	}
 	function openUpdateModelWin(selectedId) {
 		var formPanel = new Ext.form.FormPanel({
@@ -1186,13 +1186,14 @@ function initGrid (gridConfig) {
 
 			frame: true,
 			reader: new Ext.data.JsonReader({
-				root: 'models'
+				root: 'data'
 			}, formPanelReaderData),
 			items: getFormPanelItems(true)
 		});
 
 		formPanel.form.load({
-			url: 'detail.action?menuId=1001&menuName=%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8&bean.id=' + selectedId,
+			url: 'detail?id=' + selectedId,
+			method: 'get',
 			waitMsg: 'Loading'
 		});
 
@@ -1217,16 +1218,16 @@ function initGrid (gridConfig) {
 						// check form value
 						if (formPanel.form.isValid()) {
 							formPanel.form.submit({
-								url: '/manager/basic/peTchCourse_abstractUpdate.action?',
+								url: 'update',
 								params: {
-									'bean.id': selectedId
+									'entity.id': selectedId
 								},
 								method: 'post',
 								waitMsg: '处理中，请稍候...',
 
 								success: function (form, action) {
 									var responseArray = action.result;
-									if (responseArray.success == 'true') {
+									if (responseArray.success == 'Y') {
 										Ext.MessageBox.alert('提示', '保存成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 										//更新后停留在当前页 --yinxu
 										store.load({
@@ -1275,10 +1276,9 @@ function initGrid (gridConfig) {
 							jsonData = jsonData + "," + ss;
 						store.remove(m[i]);
 					}
-					jsonData = jsonData + ",";
 					Ext.Ajax.request({
 						timeout: 100000000,
-						url: 'delete.action',
+						url: 'delete',
 						params: {
 							ids: jsonData
 						},
@@ -1286,7 +1286,7 @@ function initGrid (gridConfig) {
 						waitMsg: '处理中，请稍候...',
 						success: function (response, options) {
 							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'true') {
+							if (responseArray.success == 'Y') {
 								Ext.MessageBox.alert('提示', '删除成功&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 							} else {
 								Ext.MessageBox.alert('错误', responseArray.info + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');

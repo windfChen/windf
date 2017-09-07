@@ -5,6 +5,6 @@ package com.windf.core.general.service;
  * @author huze
  *
  */
-public interface GeneralService {
+public interface BaseService {
 
 }

@@ -1,6 +1,9 @@
 package com.windf.plugins.manage.web.controler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
+import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.Page;
 import com.windf.core.util.StringUtil;
 import com.windf.plugins.manage.Constant;
@@ -42,6 +47,9 @@ public abstract class ManagerGridControler extends BaseControler {
 		} catch (UserException e) {
 			e.printStackTrace();
 		} catch (CodeException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonReturn.successMap(gridConfig);
@@ -74,24 +82,95 @@ public abstract class ManagerGridControler extends BaseControler {
 			e.printStackTrace();
 		} catch (DataAccessException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return result;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/detail", method = {RequestMethod.GET})
 	public Map<String, Object> detail() {
-		Map<String, Object> result = null;
-		return result;
+		String code = getRequestCode("detail");
+		String id = this.getParameter("id");
+		
+		Object data = null;
+		try {
+			Object d = managerGridService.detail(module.getCode(), code, id);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("entity", d);
+			List<Object> list = new ArrayList<Object>();
+			list.add(map);
+			data = list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return jsonReturn.errorMap(e.getMessage());
+		}
+		
+		return jsonReturn.successMap(data);
+		
 	}
 	
-	public Map<String, Object> add() {
-		Map<String, Object> result = null;
-		return result;
+	@ResponseBody
+	@RequestMapping(value = "/save", method = {RequestMethod.POST})
+	public Map<String, Object> save() {
+		String code = getRequestCode("save");
+		Object bean = this.getMapParameter("bean");
+		if (bean == null) {
+			bean = this.getMapParameter("entity");
+		}
+		
+		try {
+			managerGridService.save(module.getCode(), code, bean);
+			return jsonReturn.successMap();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return jsonReturn.errorMap(e.getMessage());
+		}
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/update", method = {RequestMethod.POST})
 	public Map<String, Object> update() {
-		Map<String, Object> result = null;
-		return result;
+		String code = getRequestCode("update");
+		Object bean = this.getMapParameter("bean");
+		if (bean == null) {
+			bean = this.getMapParameter("entity");
+		}
+		
+		try {
+			managerGridService.update(module.getCode(), code, bean);
+			return jsonReturn.successMap();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return jsonReturn.errorMap(e.getMessage());
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/delete", method = {RequestMethod.POST})
+	public Map<String, Object> delete() {
+		String code = getRequestCode("delete");
+		String ids = this.getParameter("ids");
+		
+		List<String> idList = null;
+		if (StringUtil.isNotEmpty(ids)) {
+			idList = Arrays.asList(ids.split(","));
+		}
+		
+		if (CollectionUtil.isEmpty(idList)) {
+			return jsonReturn.paramErrorMap();
+		}
+		
+		try {
+			managerGridService.delete(module.getCode(), code, idList);
+			return jsonReturn.successMap();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return jsonReturn.errorMap(e.getMessage());
+		}
 	}
 
 	/**

@@ -2,9 +2,9 @@ package com.windf.core.general.service.impl;
 
 import org.apache.log4j.Logger;
 
-import com.windf.core.general.service.GeneralService;
+import com.windf.core.general.service.BaseService;
 
-public class GeneralServiceImpl implements GeneralService {
+public class GeneralServiceImpl implements BaseService {
 
 	protected Logger logger = Logger.getLogger(this.getClass());
 	

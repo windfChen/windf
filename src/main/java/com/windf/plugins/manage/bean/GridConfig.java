@@ -3,7 +3,7 @@ package com.windf.plugins.manage.bean;
 import java.util.List;
 
 public class GridConfig {
-
+	
 	private String title; // 表格标题
 	private String dataSource;	// 数据源，对应dao，需要实现ListDao
 	private List<ColumnConfig> columns;

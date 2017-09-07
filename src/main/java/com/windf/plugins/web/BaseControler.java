@@ -104,7 +104,11 @@ public abstract class BaseControler {
 			
 		}
 		
-		return result;
+		if (result.size() > 0) {
+			return result;
+		} else {
+			return null;
+		}
 	}
 	
 	/**
