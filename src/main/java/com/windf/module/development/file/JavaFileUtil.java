@@ -69,6 +69,9 @@ public class JavaFileUtil {
 		
 		try {
 			String lineContent = null;
+			if (!file.getParentFile().exists()) {
+				file.getParentFile().mkdirs();
+			}
 			writer = new BufferedWriter(new FileWriter(file));
 			for (int i = 0; i < lines.size(); i++) {
 				lineContent = lines.get(i);

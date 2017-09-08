@@ -11,9 +11,9 @@ import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.Page;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleDto;
 import com.windf.module.development.pojo.ModuleMaster;
-import com.windf.module.development.pojo.ModuleSearch;
+import com.windf.module.development.pojo.dto.ModuleDto;
+import com.windf.module.development.pojo.dto.ModuleSearch;
 import com.windf.module.development.service.ModuleManageService;
 
 @Service

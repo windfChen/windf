@@ -15,7 +15,7 @@ import com.windf.core.util.Page;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleDto;
+import com.windf.module.development.pojo.dto.ModuleDto;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.plugins.web.BaseControler;
 
@@ -30,6 +30,29 @@ public class ModuleManageControler extends BaseControler{
 	@Override
 	protected String getModulePath() {
 		return Constant.WEB_BASE_PATH;
+	}
+
+	@RequestMapping(value = "/", method = {RequestMethod.GET})
+	public String index() {
+		/*
+		 * 获取参数
+		 */
+		String pageIndexStr = ParameterUtil.defaultValue(this.getParameter("pageIndex"), "1");
+		String pageSizeStr = ParameterUtil.defaultValue(this.getParameter("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
+		
+		/*
+		 * 验证参数
+		 */
+		Integer pageIndex = ParameterUtil.getInteger(pageIndexStr);
+		Integer pageSize = ParameterUtil.getInteger(pageSizeStr);
+		if (ParameterUtil.hasEmpty(pageIndex, pageSize)) {
+			return pageReturn.parameterError();
+		}
+		
+		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);
+		this.setValue("page", page);
+		
+		return Constant.WEB_BASE_VIEW + "index" ;
 	}
 
 	@RequestMapping(value = "/create", method = {RequestMethod.GET})
@@ -107,29 +130,6 @@ public class ModuleManageControler extends BaseControler{
 		}
 		
 		return jsonReturn.returnMap(true, "修改成功");
-	}
-	
-	@RequestMapping(value = "/", method = {RequestMethod.GET})
-	public String index() {
-		/*
-		 * 获取参数
-		 */
-		String pageIndexStr = ParameterUtil.defaultValue(this.getParameter("pageIndex"), "1");
-		String pageSizeStr = ParameterUtil.defaultValue(this.getParameter("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
-		
-		/*
-		 * 验证参数
-		 */
-		Integer pageIndex = ParameterUtil.getInteger(pageIndexStr);
-		Integer pageSize = ParameterUtil.getInteger(pageSizeStr);
-		if (ParameterUtil.hasEmpty(pageIndex, pageSize)) {
-			return pageReturn.parameterError();
-		}
-		
-		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);
-		this.setValue("page", page);
-		
-		return Constant.WEB_BASE_VIEW + "index" ;
 	}
 
 }

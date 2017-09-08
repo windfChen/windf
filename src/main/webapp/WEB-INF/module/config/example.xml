@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <example>
-  <basePath>/example</basePath>
   <urls/>
-  <name>例子</name>
   <code>example</code>
+  <basePath>/example</basePath>
+  <controlers>
+    <item>
+      <urlInfos>
+        <item>
+          <requestMethod>POST</requestMethod>
+          <name>create</name>
+          <subPath>/create</subPath>
+        </item>
+      </urlInfos>
+      <name>Test2AbcControler</name>
+      <urlPath>/test2/abc</urlPath>
+    </item>
+  </controlers>
+  <name>例子</name>
+  <services/>
   <info>用于展示，和作为其他新建模块的模板</info>
 </example>

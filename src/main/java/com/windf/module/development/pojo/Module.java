@@ -2,6 +2,7 @@ package com.windf.module.development.pojo;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +16,6 @@ import com.windf.module.development.Constant;
 import com.windf.module.development.file.JavaFileUtil;
 import com.windf.module.development.file.JavaFileUtil.LineReader;
 import com.windf.module.development.file.XmlFileUtil;
-import com.windf.module.development.modle.controler.Controler;
-import com.windf.module.development.modle.controler.UrlInfo;
-import com.windf.module.development.modle.service.Service;
 
 public class Module {
 
@@ -29,6 +27,7 @@ public class Module {
 		}
 
 		Module module = XmlFileUtil.readXml2Object(exampleDescriptFile, Module.class);
+		//module.init();
 
 		return module;
 	}
@@ -37,12 +36,41 @@ public class Module {
 	private String name;
 	private String basePath;
 	private String info;
-	private Map<String, String> path;
-	private List<String> dependent;
-	private List<UrlInfo> urls = new ArrayList<UrlInfo>();
-	private List<Controler> controlers = new ArrayList<Controler>();
-	private List<Service> services = new ArrayList<Service>();
+	
+	private Map<String, Controler> controlerMap = new HashMap<String, Controler>();
+	private Map<String, Service> serviceMap = new HashMap<String, Service>();
+	
+	// 标记变量
+	private boolean initializationed = false;
+	
+	public void init() {
 
+		/*
+		 * 只初始化一次
+		 */
+		if (initializationed) {
+			return;
+		}
+		
+		/*
+		 *  初始化反向调用
+		 */
+		Iterator<Controler> controlerIterator = controlerMap.values().iterator();
+		while (controlerIterator.hasNext()) {
+			Controler controler = (Controler) controlerIterator.next();
+			controler.setModule(this);
+			controler.init();
+		}
+		
+		Iterator<Service> serviceIterator = serviceMap.values().iterator();
+		while (serviceIterator.hasNext()) {
+			Service service = (Service) serviceIterator.next();
+			service.setModule(this);
+			service.init();
+		}
+		
+		initializationed = true;
+	}
 
 	public Module clone(String newCode) throws UserException {
 		ModuleMaster moduleMaster = ModuleMaster.getInstance();
@@ -129,20 +157,50 @@ public class Module {
 	}
 	
 	/**
+	 * 获取所有controler
+	 * @return
+	 */
+	public List<Controler> getControlers() {
+		return new ArrayList<Controler>(controlerMap.values());
+	}
+
+	/**
+	 * 设置controler
+	 * @param controlers
+	 */
+	public void setControlers(List<Controler> controlers) {
+		for (Controler controler : controlers) {
+			controler.setModule(this);
+			controlerMap.put(controler.getName(), controler);
+		}
+	}
+
+	/**
+	 * 获取所有service
+	 * @return
+	 */
+	public List<Service> getServices() {
+		return new ArrayList<Service>(serviceMap.values());
+	}
+
+	/**
+	 * 设置service
+	 * @param services
+	 */
+	public void setServices(List<Service> services) {
+		for (Service service : services) {
+			serviceMap.put(service.getServiceName(), service);
+		}
+	}
+
+	
+	/**
 	 * 根据service名获得service
 	 * @param serviceName
 	 * @return
 	 */
 	public Service getServiceByName(String serviceName) {
-		Service result = null;
-		
-		for (Service service : services) {
-			if (service.getServiceName().equals(serviceName)) {
-				result = service;
-			}
-		}
-		
-		return result;
+		return serviceMap.get(serviceName);
 	}
 	
 	/**
@@ -151,7 +209,7 @@ public class Module {
 	 * @throws UserException 
 	 */
 	public void addService(Service service) throws UserException {
-		services.add(service);
+		serviceMap.put(service.getServiceName(), service);
 		this.write();
 	}
 	
@@ -161,14 +219,7 @@ public class Module {
 	 * @return
 	 */
 	public Controler getControler(String controlerName) {
-		Controler result = null;
-		
-		for (Controler controler : controlers) {
-			if (controler.getName().equals(controlerName)) {
-				result = controler;
-			}
-		}
-		
+		Controler result = controlerMap.get(controlerName);
 		return result;
 	}
 	
@@ -178,7 +229,11 @@ public class Module {
 	 * @throws UserException 
 	 */
 	public void addControler(Controler controler) throws UserException {
-		controlers.add(controler);
+		// 初始化scotroler的module对象
+		if (controler.getModule() == null) {
+			controler.setModule(this);
+		}
+		controlerMap.put(controler.getName(), controler);
 		this.write();
 	}
 
@@ -213,46 +268,5 @@ public class Module {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-
-	public Map<String, String> getPath() {
-		return path;
-	}
-
-	public void setPath(Map<String, String> path) {
-		this.path = path;
-	}
-
-	public List<String> getDependent() {
-		return dependent;
-	}
-
-	public void setDependent(List<String> dependent) {
-		this.dependent = dependent;
-	}
-
-	public List<UrlInfo> getUrls() {
-		return urls;
-	}
-
-	public void setUrls(List<UrlInfo> urls) {
-		this.urls = urls;
-	}
-
-	public List<Controler> getControlers() {
-		return controlers;
-	}
-
-	public void setControlers(List<Controler> controlers) {
-		this.controlers = controlers;
-	}
-
-	public List<Service> getServices() {
-		return services;
-	}
-
-	public void setServices(List<Service> services) {
-		this.services = services;
-	}
-
 
 }

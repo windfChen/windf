@@ -3,8 +3,8 @@ package com.windf.module.development.service;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.Page;
 import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleDto;
-import com.windf.module.development.pojo.ModuleSearch;
+import com.windf.module.development.pojo.dto.ModuleDto;
+import com.windf.module.development.pojo.dto.ModuleSearch;
 
 public interface ModuleManageService {
 	/**

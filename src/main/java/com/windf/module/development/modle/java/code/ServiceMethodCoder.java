@@ -3,7 +3,7 @@ package com.windf.module.development.modle.java.code;
 import java.util.List;
 
 import com.windf.core.exception.UserException;
-import com.windf.module.development.modle.service.ServiceMethod;
+import com.windf.module.development.pojo.ServiceMethod;
 
 public class ServiceMethodCoder extends AbstractCodeable<ServiceMethod> {
 
