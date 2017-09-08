@@ -7,11 +7,11 @@
     <resource>/resources/module/</resource>
     <html>/WEB-INF/view/module/</html>
   </webPath>
-  <moduleConfigPath>/WEB-INF/classes/module/</moduleConfigPath>
   <moduleCodes>
-    <item>development</item>
     <item>example</item>
+    <item>development</item>
   </moduleCodes>
+  <moduleConfigPath>/WEB-INF/classes/module/</moduleConfigPath>
   <sourcePath>
     <resource>/src/main/resources/module/</resource>
     <java>/src/main/java/com/windf/module/</java>

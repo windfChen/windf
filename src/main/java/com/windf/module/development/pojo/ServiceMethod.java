@@ -1,4 +1,4 @@
-package com.windf.module.development.modle.service;
+package com.windf.module.development.pojo;
 
 import java.util.List;
 
@@ -8,9 +8,10 @@ import com.windf.module.development.pojo.Parameter;
 import com.windf.module.development.pojo.Return;
 
 public class ServiceMethod {
-	
+
 	/**
 	 * 转换Method 为 ServiceMethod
+	 * 
 	 * @param method
 	 * @return
 	 */
@@ -29,6 +30,8 @@ public class ServiceMethod {
 	private List<Parameter> parameters;
 	private Return ret;
 	private ExceptionType exceptionType;
+
+	private Service service;
 
 	public String getName() {
 		return name;
@@ -60,6 +63,14 @@ public class ServiceMethod {
 
 	public void setExceptionType(ExceptionType exceptionType) {
 		this.exceptionType = exceptionType;
+	}
+
+	public Service getService() {
+		return service;
+	}
+
+	public void setService(Service service) {
+		this.service = service;
 	}
 
 }

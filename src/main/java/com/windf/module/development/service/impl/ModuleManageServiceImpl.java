@@ -11,9 +11,9 @@ import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.Page;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleDto;
 import com.windf.module.development.pojo.ModuleMaster;
-import com.windf.module.development.pojo.ModuleSearch;
+import com.windf.module.development.pojo.dto.ModuleDto;
+import com.windf.module.development.pojo.dto.ModuleSearch;
 import com.windf.module.development.service.ModuleManageService;
 
 @Service
@@ -31,7 +31,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		/*
 		 * 验证前置条件
 		 */
-		if (getModule(moduleDto.getCode()) != null) {
+		if (this.getModuleByCode(moduleDto.getCode()) != null) {
 			throw new UserException("模块已存在");
 		}
 
@@ -76,7 +76,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		/*
 		 * 验证前置条件
 		 */
-		Module module = getModule(moduleDto.getCode());
+		Module module = this.getModuleByCode(moduleDto.getCode());
 		if (module == null) {
 			throw new UserException("模块不存在");
 		}
@@ -100,13 +100,11 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 	}
 
 	@Override
-	public Module getModule(String code) throws UserException {
+	public Module getModuleByCode(String code) throws UserException {
 		Module result = null;
 		
-		try {
-			result = Module.loadModule(code);
-		} catch (UserException e) {
-		}
+		ModuleMaster moduleMaster = ModuleMaster.getInstance();
+		result = moduleMaster.findModuleByCode(code);
 		
 		return result;
 	}
@@ -136,15 +134,9 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 				 *  条件筛选
 				 */
 				if (moduleSearch != null) {
-					
-					if (moduleSearch.getBasePath() != null) {
-						if (moduleSearch.getBasePath().equals(module.getBasePath())) {
-							resultList.add(module);
-							continue;
-						}
+					if (StringUtils.isNotEmpty(moduleSearch.getBasePath()) && !moduleSearch.getBasePath().equals(module.getBasePath())) {
+						continue;
 					}
-					
-					continue;
 				}
 				
 				resultList.add(module);
@@ -165,18 +157,18 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		return page;
 	}
 
-	@Override
 	public Module getModuleByPath(String basePath) {
+		Module result = null;
+		
 		ModuleSearch moduleSearch = new ModuleSearch();
 		moduleSearch.setBasePath(basePath);
 		
 		Page<Module> page = listAllModule(moduleSearch, 1, 1);
-		
-		Module result = null;
 		if (CollectionUtil.isNotEmpty(page.getData())) {
 			result = page.getData().get(0);
 		}
 		return result;
 	}
+
 
 }
