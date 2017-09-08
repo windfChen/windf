@@ -45,4 +45,11 @@ public interface ModuleManageService {
 	 */
 	Page<Module> listAllModule(ModuleSearch moduleSearch, Integer pageNum, Integer pageSize);
 
+	/**
+	 * 根据路径获得模块
+	 * @param basePath
+	 * @return
+	 */
+	Module getModuleByPath(String basePath);
+
 }

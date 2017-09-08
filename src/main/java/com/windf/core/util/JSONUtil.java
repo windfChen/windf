@@ -27,13 +27,13 @@ public class JSONUtil {
 		return result;
 	}
 	
-	public static void to(Object object) {
-		Map<String, Object> allMethods = ReflectUtil.getAllGetterMethods(object);
-		
-		Iterator<String> allMethodsIterator = allMethods.keySet().iterator();
-		while (allMethodsIterator.hasNext()) {
-			String propertyName = (String) allMethodsIterator.next();
-			// TODO Meth
-		}
+	/**
+	 * 解析JSON字符串，变成对象
+	 * @param <T>
+	 * @param json
+	 * @return
+	 */
+	public static <T> T pasrseJSONStr(String text, Class<T> clazz) {
+		return JSONObject.parseObject(text, clazz);
 	}
 }

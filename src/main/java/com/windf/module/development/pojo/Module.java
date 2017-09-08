@@ -19,9 +19,15 @@ import com.windf.module.development.file.XmlFileUtil;
 
 public class Module {
 
+	/**
+	 * 加载模块
+	 * @param moduleCode
+	 * @return
+	 * @throws UserException
+	 */
 	public static Module loadModule(String moduleCode) throws UserException {
 		String exampleDescriptPath = ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + moduleCode + ".xml";
-		File exampleDescriptFile = FileUtil.getWebappFile(exampleDescriptPath);
+		File exampleDescriptFile = FileUtil.getFile(exampleDescriptPath);
 		if (!exampleDescriptFile.exists()) {
 			throw new UserException("模板模块：[" + moduleCode + "]的配置文件不存在");
 		}

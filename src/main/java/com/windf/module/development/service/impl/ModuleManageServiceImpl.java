@@ -157,6 +157,7 @@ public class ModuleManageServiceImpl  implements ModuleManageService {
 		return page;
 	}
 
+	@Override
 	public Module getModuleByPath(String basePath) {
 		Module result = null;
 		

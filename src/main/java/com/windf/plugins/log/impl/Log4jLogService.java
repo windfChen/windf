@@ -11,42 +11,42 @@ public class Log4jLogService implements com.windf.plugins.log.Logger{
 	}
 	
 	@Override
-	public void error(String message) {
+	public void error(Object message) {
 		logger.error(message);
 	}
 
 	@Override
-	public void warn(String message) {
+	public void warn(Object message) {
 		logger.warn(message);
 	}
 
 	@Override
-	public void debug(String message) {
+	public void debug(Object message) {
 		logger.debug(message);
 	}
 
 	@Override
-	public void info(String message) {
+	public void info(Object message) {
 		logger.info(message);
 	}
 
 	@Override
-	public void error(String message, Throwable e) {
+	public void error(Object message, Throwable e) {
 		logger.error(message,  e);
 	}
 
 	@Override
-	public void warn(String message, Throwable e) {
+	public void warn(Object message, Throwable e) {
 		logger.warn(message,  e);
 	}
 
 	@Override
-	public void debug(String message, Throwable e) {
+	public void debug(Object message, Throwable e) {
 		logger.debug(message,  e);
 	}
 
 	@Override
-	public void info(String message, Throwable e ){
+	public void info(Object message, Throwable e ){
 		logger.info(message,  e);
 	}
 
