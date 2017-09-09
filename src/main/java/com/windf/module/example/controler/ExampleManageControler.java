@@ -13,19 +13,17 @@ import com.windf.plugins.manage.web.controler.ManagerGridControler;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = Constant.WEB_BASE_PATH)
+@RequestMapping(value = ExampleManageControler.CONTROLER_PATH)
 public class ExampleManageControler extends ManagerGridControler {
+	
+	protected final static String CONTROLER_PATH = Constant.MODULE_WEB_PATH + "";
 
 	@ResponseBody
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
-	public Map<String, Object> test() {
-		logger.info(module);
-		return jsonReturn.successMap(getMapParameter("a"));
+	public Map<String, Object> test() {;
+		
+		return jsonReturn.successMap("哈哈：" + getControlerPath());
 	}
 
-	@Override
-	protected String getModulePath() {
-		return Constant.WEB_BASE_PATH;
-	}
 	
 }

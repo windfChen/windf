@@ -26,11 +26,6 @@ public class UrlControler extends BaseControler{
 	@Resource
 	private UrlService urlService ;
 	
-	@Override
-	protected String getModulePath() {
-		return Constant.WEB_BASE_PATH;
-	}
-	
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
 		return  Constant.WEB_BASE_VIEW + "/url";

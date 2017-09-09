@@ -31,11 +31,6 @@ public class ServiceControler extends BaseControler{
 	@Resource
 	private ServiceService serviceService ;
 	
-	@Override
-	protected String getModulePath() {
-		return Constant.WEB_BASE_PATH;
-	}
-	
 	@ResponseBody
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public Map<String, Object> list() {

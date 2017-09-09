@@ -6,16 +6,16 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.windf.core.bean.Page;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
-import com.windf.core.file.FileReadUtil;
+import com.windf.core.frame.Moudle;
+import com.windf.core.general.dao.ListDao;
+import com.windf.core.general.dao.WritableDao;
 import com.windf.core.spring.SpringUtil;
 import com.windf.core.util.JSONUtil;
-import com.windf.core.util.ModuleUtil;
-import com.windf.core.util.Page;
-import com.windf.plugins.database.WritableDao;
-import com.windf.plugins.database.ListDao;
+import com.windf.core.util.file.FileReadUtil;
 import com.windf.plugins.manage.Constant;
 import com.windf.plugins.manage.bean.GridConfig;
 import com.windf.plugins.manage.service.ManageGirdService;
@@ -24,13 +24,13 @@ import com.windf.plugins.manage.service.ManageGirdService;
 public class ManagerGirdiServiceImpl implements ManageGirdService{
 
 	@Override
-	public GridConfig getGridConfig(String moduleCode, String code, String roleId, Map<String, Object> condition) throws UserException, CodeException {
+	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) throws UserException, CodeException {
 		// TODO Auto-generated method stub
 		
 		/*
 		 * 加载表格结构
 		 */
-		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
+		GridConfig gridConfig = this.loadGridConfigByCode(code);
 		
 		/*
 		 * 根据权限，过滤表格功能
@@ -45,10 +45,10 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Page<Map<String, Object>> list(String moduleCode, String code, Map<String, Object> condition, Integer pageNo, Integer pageSize)
+	public Page<Map<String, Object>> list(String code, Map<String, Object> condition, Integer pageNo, Integer pageSize)
 			throws UserException, CodeException, DataAccessException {
 		
-		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
+		GridConfig gridConfig = this.loadGridConfigByCode(code);
 		ListDao listDao = (ListDao) SpringUtil.getBean(gridConfig.getDataSource());
 		
 		Page<Map<String, Object>> page = new Page<Map<String, Object>>(Long.valueOf(pageNo), pageSize);
@@ -58,17 +58,48 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 		
 		return page;
 	}
-	
+
+	@Override
+	public int save(String code, Object bean) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		
+		return writableDao.insert(bean);
+	}
+
+	@Override
+	public Object detail(String code, Serializable id) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		return writableDao.find(id);
+	}
+
+	@Override
+	public int update(String code, Object bean) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		return writableDao.update(bean);
+		
+	}
+
+	@Override
+	public int delete(String code, List<? extends Serializable> id) throws Exception {
+		GridConfig gridConfig = this.loadGridConfigByCode(code);
+		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
+		return writableDao.delete(id);
+	}
+
 	/**
 	 * 加载GridConfig
 	 * @param code
 	 * @return
 	 * @throws CodeException 
 	 */
-	private GridConfig loadGridConfigByCode(String moduleCode, String code) throws CodeException {
+	protected GridConfig loadGridConfigByCode(String code) throws CodeException {
 		GridConfig result = null;
 		try {
-			String gridConfigFilePath = ModuleUtil.getConfigFilePath(moduleCode, Constant.MANAGE_JSON_CONFIG_PATH + code + ".json");
+			Moudle module = Moudle.getCurrentMoudle(); 
+			String gridConfigFilePath = module.getConfigFilePath() + Constant.MANAGE_JSON_CONFIG_PATH + code + ".json";
 			String gridConfigJsonStr = FileReadUtil.readFileAsString(gridConfigFilePath);
 			result = JSONUtil.pasrseJSONStr(gridConfigJsonStr, GridConfig.class);
 		} catch (Throwable e) {
@@ -77,35 +108,4 @@ public class ManagerGirdiServiceImpl implements ManageGirdService{
 		
 		return result;
 	}
-
-	@Override
-	public int save(String moduleCode, String code, Object bean) throws Exception {
-		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
-		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
-		
-		return writableDao.insert(bean);
-	}
-
-	@Override
-	public Object detail(String moduleCode, String code, Serializable id) throws Exception {
-		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
-		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
-		return writableDao.find(id);
-	}
-
-	@Override
-	public int update(String moduleCode, String code, Object bean) throws Exception {
-		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
-		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
-		return writableDao.update(bean);
-		
-	}
-
-	@Override
-	public int delete(String moduleCode, String code, List<? extends Serializable> id) throws Exception {
-		GridConfig gridConfig = this.loadGridConfigByCode(moduleCode, code);
-		WritableDao writableDao = (WritableDao) SpringUtil.getBean(gridConfig.getDataSource());
-		return writableDao.delete(id);
-	}
-
 }

@@ -1,4 +1,4 @@
-package com.windf.core.file;
+package com.windf.core.util.file;
 
 import java.io.BufferedReader;
 import java.io.File;

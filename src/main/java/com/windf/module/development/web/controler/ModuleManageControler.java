@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.windf.core.bean.Page;
 import com.windf.core.exception.UserException;
-import com.windf.core.util.Page;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
@@ -26,11 +26,6 @@ public class ModuleManageControler extends BaseControler{
 	
 	@Resource
 	private ModuleManageService moduleManageService ;
-	
-	@Override
-	protected String getModulePath() {
-		return Constant.WEB_BASE_PATH;
-	}
 
 	@RequestMapping(value = "/", method = {RequestMethod.GET})
 	public String index() {

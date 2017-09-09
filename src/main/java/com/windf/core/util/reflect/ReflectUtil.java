@@ -1,5 +1,6 @@
 package com.windf.core.util.reflect;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -283,6 +284,11 @@ public class ReflectUtil {
 		return  parameterizedType.getActualTypeArguments()[0];
 	}
 
+	/**
+	 * 只复制基本数据类型
+	 * @param object
+	 * @return
+	 */
 	public static Object cloneOnlyBaseType(Object object) {
 			Class<? extends Object> clazz = object.getClass();
 			Object newObject = null;
@@ -346,6 +352,29 @@ public class ReflectUtil {
 				}
 			}
 		}
+		return result;
+	}
+	
+	/**
+	 * 获取注解
+	 * TODO 等待优化，直接获取值，而不是返回注解基类
+	 * @param obj
+	 * @param annotationClass
+	 * @return
+	 */
+	public static Annotation getAnnotation(Object obj, Class<? extends Object> annotationClass){
+		if (obj == null) {
+			return null;
+		}
+		
+		Annotation result = null;
+		for (Annotation annotation : obj.getClass().getAnnotations()) {
+			if (annotation.annotationType().equals(annotationClass)) {
+				result = annotation;
+				break;
+			}
+		}
+		
 		return result;
 	}
 

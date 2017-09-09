@@ -1,4 +1,4 @@
-package com.windf.plugins.database;
+package com.windf.core.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,8 @@ public class SQLUtil {
 	public static List<String> getSqlSelectNames(String querySql) {
 		querySql = querySql.toLowerCase();
 		String selectStr = querySql.substring(querySql.indexOf("select ") + "select ".length(), querySql.indexOf("from "));
+		
+		// 删除select中的子查询
 		while (selectStr.contains("(")) {
 			selectStr = selectStr.replaceAll("\\([^\\)\\(]*\\)", "");
 		}
