@@ -2,7 +2,6 @@ package com.windf.module.development.web.controler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
@@ -31,9 +29,8 @@ public class ServiceControler extends BaseControler{
 	@Resource
 	private ServiceService serviceService ;
 	
-	@ResponseBody
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
-	public Map<String, Object> list() {
+	public String list() {
 		/*
 		 * 获取参数
 		 */
@@ -43,22 +40,21 @@ public class ServiceControler extends BaseControler{
 		 * 验证参数
 		 */
 		if (ParameterUtil.hasEmpty(moduleCode)) {
-			return jsonReturn.paramErrorMap();
+			return responseReturn.parameterError();
 		}
 		
 		List<Service> data = null;
 		try {
 			data = serviceService.getAllService(moduleCode);
 		} catch (UserException e) {
-			return jsonReturn.errorMap(e.getMessage());
+			return responseReturn.error(e.getMessage());
 		}
 		
-		return jsonReturn.successMap(data);
+		return responseReturn.successData(data);
 	}
 	
-	@ResponseBody
 	@RequestMapping(value = "/create", method = {RequestMethod.GET})
-	public Map<String, Object> create() {
+	public String create() {
 		/*
 		 * 获取参数
 		 */
@@ -73,7 +69,7 @@ public class ServiceControler extends BaseControler{
 		 * 验证参数
 		 */
 		if (ParameterUtil.hasEmpty(moduleCode, serviceName, methodName)) {
-			return jsonReturn.paramErrorMap();
+			return responseReturn.parameterError();
 		}
 		
 		/*
@@ -97,10 +93,10 @@ public class ServiceControler extends BaseControler{
 		try {
 			serviceService.createServiceMethod(moduleCode, serviceName, serviceMethod);
 		} catch (UserException e) {
-			jsonReturn.errorMap(e.getMessage());
+			responseReturn.error(e.getMessage());
 		}
 		
-		return jsonReturn.successMap();
+		return responseReturn.success();
 	}
 	
 		

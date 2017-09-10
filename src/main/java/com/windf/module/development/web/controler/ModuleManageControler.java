@@ -1,14 +1,11 @@
 package com.windf.module.development.web.controler;
 
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.windf.core.bean.Page;
 import com.windf.core.exception.UserException;
@@ -41,7 +38,7 @@ public class ModuleManageControler extends BaseControler{
 		Integer pageIndex = ParameterUtil.getInteger(pageIndexStr);
 		Integer pageSize = ParameterUtil.getInteger(pageSizeStr);
 		if (ParameterUtil.hasEmpty(pageIndex, pageSize)) {
-			return pageReturn.parameterError();
+			return responseReturn.parameterError();
 		}
 		
 		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);
@@ -69,16 +66,15 @@ public class ModuleManageControler extends BaseControler{
 		return Constant.WEB_BASE_VIEW + "create";
 	}
 	
-	@ResponseBody
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
-	public Map<String, Object> create() {
+	public String create() {
 		// 验证参数
 		String moduleCode = this.getParameter("code");
 		String moduleName = this.getParameter("name");
 		String moduleInfo = this.getParameter("info");
 		String moduleBasePath = this.getParameter("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
-			return jsonReturn.paramErrorMap();
+			return responseReturn.parameterError();
 		}
 		
 		// 构建参数
@@ -92,22 +88,21 @@ public class ModuleManageControler extends BaseControler{
 		try {
 			moduleManageService.createModule(moduleDto);
 		} catch (UserException e) {
-			return jsonReturn.errorMap(e.getMessage());
+			return responseReturn.error(e.getMessage());
 		}
 		
-		return jsonReturn.returnMap(true, "创建成功");
+		return responseReturn.returnData(true, "创建成功");
 	}
 	
-	@ResponseBody
 	@RequestMapping(value = "/modify", method = {RequestMethod.POST})
-	public Map<String, Object> modify() {
+	public String modify() {
 		// 验证参数
 		String moduleCode = this.getParameter("code");
 		String moduleName = this.getParameter("name");
 		String moduleInfo = this.getParameter("info");
 		String moduleBasePath = this.getParameter("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
-			return jsonReturn.paramErrorMap();
+			return responseReturn.parameterError();
 		}
 		
 		// 构建参数
@@ -121,10 +116,10 @@ public class ModuleManageControler extends BaseControler{
 		try {
 			moduleManageService.modifyModule(moduleDto);
 		} catch (UserException e) {
-			return jsonReturn.errorMap(e.getMessage());
+			return responseReturn.error(e.getMessage());
 		}
 		
-		return jsonReturn.returnMap(true, "修改成功");
+		return responseReturn.returnData(true, "修改成功");
 	}
 
 }

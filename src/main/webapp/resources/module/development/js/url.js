@@ -1,5 +1,5 @@
 function list(moduleCode) {
-	$.get('url/list?module=' + moduleCode, function(resp){
+	$.getJSON('url/list.json?module=' + moduleCode, function(resp){
 		for (var i = 0; i < resp.data.length; i++) {
 			var d = resp.data[i];
 			var s = '<tr>\

@@ -16,8 +16,8 @@ import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
-import com.windf.plugins.web.util.JsonReturn;
-import com.windf.plugins.web.util.PageReturn;
+import com.windf.plugins.web.response.ResponseReturn;
+import com.windf.plugins.web.response.ResponseReturnFactory;
 
 /**
  * 控制层的父类
@@ -29,22 +29,22 @@ public abstract class BaseControler {
 	protected static Logger logger = null;
 	
 	protected HttpServletRequest request;
-	protected JsonReturn jsonReturn;
-	protected PageReturn pageReturn;
+	protected ResponseReturn responseReturn;
 	
 	public BaseControler () {
 		// 日初始化日志
 		if (logger == null) {
 			logger = LogFactory.getLogger(this.getClass());
 		}
-		
-		request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		
-		pageReturn = new PageReturn(this);
-		jsonReturn = new JsonReturn();
-		
+
 		// 初始化模块
 		Moudle.setCurrentMoudle(this);
+		
+		// 获取请求
+		request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		
+		// 设置返回
+		responseReturn = ResponseReturnFactory.getResponseReturn(this.getRequestSuffix(), this);
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public abstract class BaseControler {
 	 * 获得请求路径
 	 * @return
 	 */
-	protected String getRequestPath() {
+	public String getRequestPath() {
 		return (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 	}
 	
@@ -67,9 +67,18 @@ public abstract class BaseControler {
 	 * 获得控制器的路径
 	 * @return
 	 */
-	protected String getControlerPath() {
+	public String getControlerPath() {
 		RequestMapping a = (RequestMapping) ReflectUtil.getAnnotation(this, RequestMapping.class);
 		return a.value()[0];
+	}
+	
+	public String getRequestSuffix() {
+		String path = request.getRequestURI();
+		String result = "";
+		if (path.lastIndexOf(".") > 0) {
+			result = path.substring(path.lastIndexOf(".") + 1, path.length());
+		}
+		return result;
 	}
 	
 	/**
