@@ -1,0 +1,35 @@
+{
+	"title": [{
+		"width": 100,
+		"text": "姓名"
+	},
+	{
+		"width": 100,
+		"text": "年龄"
+	},
+	{
+		"width": 100,
+		"text": "性别"
+	},
+	{
+		"width": 100,
+		"text": "高度"
+	}],
+	"left": [{
+		"height": 20,
+		"text": "小红"
+	},
+	{
+		"height": 20,
+		"text": "小青"
+	},
+	{
+		"height": 20,
+		"text": "小白"
+	},
+	{
+		"height": 20,
+		"text": "小黑"
+	}],
+	"grids": []
+}

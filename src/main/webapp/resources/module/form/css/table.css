@@ -1,0 +1,19 @@
+.sResultsTb th{ border:1px #ddd solid; border-width:1px 0; bgcolor:#f9f9f9}
+.sResultsTb td{ line-height:45px; text-align:center; border-bottom:1px #eee solid; font-size:'SimSun'; font-size:12px;}
+.ysqT{ color:#8c47c2;}
+.bhT{ color:#ff0000;}
+.sResultsTb tr:hover td { background:#fcfcfc; cursor:pointer;}
+.cp1 { padding: 5px 20px; } 
+.sL5 { border-right: 1px #ddd solid; } 
+.sL4 { text-align: center; display: block; margin: 12px 0; }
+
+.subjT { text-align: center; line-height: 33px; font-size: 24px; color: #222; padding: 20px 0; margin-top: 10px; }
+
+.tabl_op ul { position: relative; }
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.tabl_op_li { float: left; }
+.tabl_op_link { display: inline-block; padding: 3px 8px; font-size: 12px; color: #666; }
+
+.buttons {padding: 15px; text-align: center; position: relative;}
+.buttons .add_button { margin-left: 10px; background-position: 0 -163px; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader (src="../images/icons.png", enabled=true, sizingMethod=scale); border: 0 none; cursor: pointer; height: 40px; width: 150px; background-color: #c10000; border-radius: 6px; }
+.buttons .add_button span { color: #fff; font-size: 16px; }
