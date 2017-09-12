@@ -1,5 +1,5 @@
 {
-	"title": "17088",
+	"title": "标题123",
 	"columns": [{
 		"name" : "id",
 		"dataIndex" : "id",
@@ -65,7 +65,7 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a href='http://www.baidu.com?id=${id}'>我叫${name}，字${nickName},今年${value}岁</a>",
+		"display" : "<a href='http://www.baidu.com?id=${id}'>我叫${name}，字${nickName},今年${value}岁了</a>",
 		"orderNum" : 6
 	}],
 	"meuns" : [{

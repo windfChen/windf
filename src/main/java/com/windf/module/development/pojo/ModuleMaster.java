@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.windf.core.exception.UserException;
-import com.windf.core.file.FileUtil;
+import com.windf.core.util.file.FileUtil;
 import com.windf.module.development.file.XmlFileUtil;
 
 /**

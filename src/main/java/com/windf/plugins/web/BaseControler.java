@@ -6,18 +6,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerMapping;
 
-import com.windf.core.spring.SpringUtil;
+import com.windf.core.frame.Moudle;
 import com.windf.core.util.StringUtil;
-import com.windf.module.development.pojo.Module;
-import com.windf.module.development.service.ModuleManageService;
+import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
-import com.windf.plugins.web.util.JsonReturn;
-import com.windf.plugins.web.util.PageReturn;
+import com.windf.plugins.web.response.ResponseReturn;
+import com.windf.plugins.web.response.ResponseReturnFactory;
 
 /**
  * 控制层的父类
@@ -29,24 +29,22 @@ public abstract class BaseControler {
 	protected static Logger logger = null;
 	
 	protected HttpServletRequest request;
-	protected JsonReturn jsonReturn;
-	protected PageReturn pageReturn;
-	protected Module module;
+	protected ResponseReturn responseReturn;
 	
 	public BaseControler () {
 		// 日初始化日志
 		if (logger == null) {
 			logger = LogFactory.getLogger(this.getClass());
 		}
+
+		// 初始化模块
+		Moudle.setCurrentMoudle(this);
 		
+		// 获取请求
 		request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		request.setAttribute("modulePath", this.getBasePath() + this.getModulePath());
 		
-		pageReturn = new PageReturn(this);
-		jsonReturn = new JsonReturn();
-		
-		ModuleManageService moduleManageService = (ModuleManageService) SpringUtil.getBean("moduleManageServiceImpl");
-		module = moduleManageService.getModuleByPath(getModulePath());
+		// 设置返回
+		responseReturn = ResponseReturnFactory.getResponseReturn(this.getRequestSuffix(), this);
 	}
 	
 	/**
@@ -61,15 +59,27 @@ public abstract class BaseControler {
 	 * 获得请求路径
 	 * @return
 	 */
-	protected String getRequestPath() {
+	public String getRequestPath() {
 		return (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 	}
 	
 	/**
-	 * 返回模块的根路径
+	 * 获得控制器的路径
 	 * @return
 	 */
-	protected abstract String getModulePath();
+	public String getControlerPath() {
+		RequestMapping a = (RequestMapping) ReflectUtil.getAnnotation(this, RequestMapping.class);
+		return a.value()[0];
+	}
+	
+	public String getRequestSuffix() {
+		String path = request.getRequestURI();
+		String result = "";
+		if (path.lastIndexOf(".") > 0) {
+			result = path.substring(path.lastIndexOf(".") + 1, path.length());
+		}
+		return result;
+	}
 	
 	/**
 	 * 获取参数

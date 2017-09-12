@@ -1,4 +1,4 @@
-package com.windf.plugins.database;
+package com.windf.core.general.dao;
 
 import java.io.Serializable;
 import java.util.List;

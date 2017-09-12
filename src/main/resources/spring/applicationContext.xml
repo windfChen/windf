@@ -7,7 +7,7 @@
        "
 	default-autowire="byName">
 
-	<context:property-placeholder location="classpath:*.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties" />
 	<context:annotation-config />
 	
 	<bean id="SpringApplicationContext" class="com.windf.core.spring.SpringUtil"></bean>

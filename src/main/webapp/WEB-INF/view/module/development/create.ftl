@@ -10,7 +10,6 @@
 	
 	<script>
 		var _basePath = "${rc.contextPath}";
-		var _modulePath = "${modulePath}";
 	</script>
 	
 	<script>

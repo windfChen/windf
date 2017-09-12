@@ -6,9 +6,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import com.windf.core.bean.Page;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
-import com.windf.core.util.Page;
 import com.windf.module.development.Constant;
 import com.windf.module.development.pojo.Module;
 import com.windf.module.development.pojo.ModuleMaster;

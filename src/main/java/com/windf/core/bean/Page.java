@@ -1,4 +1,4 @@
-package com.windf.core.util;
+package com.windf.core.bean;
 
 import java.io.Serializable;
 import java.util.List;
