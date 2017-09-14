@@ -8,17 +8,23 @@ table.imagetable {
 	margin: 0 auto;
 }  
 table.imagetable th {  
-    background:#b5cfd2 url('../images/cell-blue.jpg');  
+    background:#b5cfd2 url('../image/cell-blue.jpg') no-repeat;  
     border-width: 1px;  
-    padding: 8px;  
+    padding: 4px;  
     border-style: solid;  
     border-color: #999999;  
 }  
-table.imagetable td {  
-    background:#dcddc0 url('../images/cell-grey.jpg');  
+table.imagetable tbody td {  
+    background:#dcddc0 url('../image/cell-grey.jpg') no-repeat;  
     border-width: 1px;  
-    padding: 8px;  
+    padding: 4px;  
     border-style: solid;  
     border-color: #999999;  
 }
+table.imagetable tfoot td{
+	padding: 5px 50px;
+    font-size: 14px;
+    color: #aaa;
+}
+    
 table.imagetable caption{ text-align: center; line-height: 33px; font-size: 24px; color: #222; padding: 20px 0; margin-top: 10px; }
