@@ -5,129 +5,168 @@
 	},
 	"title" : [{
 		"text" : "", 
-		"rowspan" : 2,
-		"colspan" : 2
+		"rowSpan" : 2,
+		"colSpan" : 2,
+		"subData" : [{
+			"text" : "甲",
+			"colSpan" : 2,
+			"code" : "e3r2"
+		}]
 	},{
 		"text" : "编号", 
 		"code" : "e3g4",
 		"width" : 40,
-		"rowspan" : 2,
-		"colspan" : 1
+		"rowSpan" : 2,
+		"colSpan" : 1,
+		"subData" : [{
+			"text" : "乙",
+			"code" : "e3r3"
+		}]
 	},{
 		"text" : "高校总数", 
-		"code" : "e3t4",
 		"width" : 60,
-		"rowspan" : 2,
-		"colspan" : 1
+		"rowSpan" : 2,
+		"colSpan" : 1,
+		"subData" : [{
+			"text" : "1",
+			"code" : "e3t4"
+		}]
 	},{
 		"text" : "建立党委的高校", 
 		"height" : 40,
-		"subTitle" : [{
+		"subData" : [{
 			"text" : "小计",
-			"code" : "e2g4",
 			"height" : 40, 
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "2",
+				"code" : "e2g4"
+			}]
 		}]
 	},{
 		"text" : "建立总支部的高校", 
 		"height" : 40,
-		"subTitle" : [{
+		"subData" : [{
 			"text" : "小计",
-			"code" : "e2g4",
 			"height" : 40, 
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "3",
+				"code" : "e2g5"
+			}]
 		}]
 	},{
 		"text" : "建立支部的高校", 
 		"height" : 40,
-		"subTitle" : [{
+		"subData" : [{
 			"text" : "小计",
-			"code" : "e2g4",
 			"height" : 40, 
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "4",
+				"code" : "e2g9"
+			}]
 		}]
 	},{
 		"text" : "未建立党组织的高校", 
 		"height" : 40,
-		"subTitle" : [{
+		"subData" : [{
 			"text" : "小计",
-			"code" : "e2g4",
 			"height" : 40, 
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "5",
+				"code" : "e3g9"
+			}]
 		}]
 	},{
 		"text" : "高校基层党组织总数", 
-		"rowspan" : 1,
-		"colspan" : 6,
-		"subTitle" : [{
+		"rowSpan" : 1,
+		"colSpan" : 6,
+		"subData" : [{
 			"text" : "高校党委数", 
-			"code" : "e3w8",
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "6",
+				"code" : "e3w8"
+			}]
 		},{
 			"text" : "院系党员数", 
-			"code" : "e3w5",
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "7",
+				"code" : "e3w5"
+			}]
 		},{
 			"text" : "院系党总支数", 
-			"code" : "e3w6",
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "8",
+				"code" : "e3w6"
+			}]
 		},{
 			"text" : "教职工党总支（党支部）数（含离退休人员党支部数）", 
-			"code" : "e3w4",
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "9",
+				"code" : "e3w4"
+			}]
 		},{
-			"text" : "离退休人员党支部数", 
-			"code" : "e3w2",
-			"width" : 60
+			"text" : "离退休人员党支部数",
+			"width" : 60,
+			"subData" : [{
+				"text" : "10",
+				"code" : "e3w2"
+			}]
 		},{
 			"text" : "学生党支部数", 
-			"code" : "e3y4",
-			"width" : 60
+			"width" : 60,
+			"subData" : [{
+				"text" : "11",
+				"code" : "e3y4"
+			}]
 		}]
 	}],
 	"left": [{
-		"text": "甲",
-		"rowspan" : 1,
-		"colspan" : 2,
-		"subLeft" : [{
-			"text": "乙"
-		}]
-	},{
 		"text": "总计",
-		"rowspan" : 1,
-		"colspan" : 2,
-		"subLeft" : [{
-			"text": "01"
+		"rowSpan" : 1,
+		"colSpan" : 2,
+		"subData" : [{
+			"text": "01",
+			"code" : "t1t1"
 		}]
 	},{
 		"text": "合计",
-		"rowspan" : 3,
-		"colspan" : 1,
+		"rowSpan" : 3,
+		"colSpan" : 1,
 		"width" : 30,
-		"subLeft" : [{
+		"subData" : [{
 			"text": "本科院校",
-			"rowspan" : 1,
-			"colspan" : 1,
+			"rowSpan" : 1,
+			"colSpan" : 1,
 			"height" : 60,
 			"width" : 60,
-			"subLeft" : [{
-				"text": "02"
+			"subData" : [{
+				"text": "02",
+				"code" : "t2t1"
 			}]
 		},{
 			"text": "专科院校（含职业技术学院）",
-			"rowspan" : 1,
-			"colspan" : 1,
+			"rowSpan" : 1,
+			"colSpan" : 1,
 			"height" : 60,
-			"subLeft" : [{
-				"text": "03"
+			"subData" : [{
+				"text": "03",
+				"code" : "t4t1"
 			}]
 		},{
 			"text": "民办高校（含独立学院）",
-			"rowspan" : 1,
-			"colspan" : 1,
+			"rowSpan" : 1,
+			"colSpan" : 1,
 			"height" : 60,
-			"subLeft" : [{
-				"text": "04"
+			"subData" : [{
+				"text": "04",
+				"code" : "t1t7"
 			}]
 		}]
 	}]

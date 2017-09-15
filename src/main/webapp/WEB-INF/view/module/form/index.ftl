@@ -15,20 +15,26 @@
 	
 	<script>
 		$(function(){
-			var table = new Table('table', '${rc.contextPath}/resources/module/form/json/table.json');
-			table.init();
-			table.display();
-			a = table;
-
-
+			var t = new Table('table', '${rc.contextPath}/resources/module/form/json/table.json');
+			t.init();
+			t.display();
+			table = t;
+			
+			$('#submit').click(function(){
+				t.submitData('');
+			});
+			
 		});
 	</script>
 </head>
 <body>
 	
+	
 	<table id="table" width="width: auto;" border="0" cellspacing="0" cellpadding="0" class="imagetable">
 	</table>
 	
+	
+	<div class="btns" ><input type="button" id="submit" class="btn" value="提交" /></div>
 	
 	<script type="text/javascript" src="${rc.contextPath}/resources/common/js/canvas-nest.min.js"></script>
 	<canvas height="926" width="1920" style="position: fixed; top: 0px; left: 0px; z-index: -1; opacity: 0.5;" id="c_n1"></canvas>

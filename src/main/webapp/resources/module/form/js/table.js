@@ -3,12 +3,15 @@ var Table = function (formId, url) {
 	this.url = url;
 	this.tableData = {};	// 接收到的总数据
 	
-	this.headTrs = [];	// 标题行
+	this.headTr = null;	// 标题行
 	this.bodyTrs = [];	// 内容行
 	this.footTr = null;	// 底部行
 	
 	this.colCount = 0;	// 总列数
 	this.rowCount = 0; 	// 总行数
+	
+	this.titleLeafNode = [];	// title的叶子节点
+	this.leftLeafNode = [];		// left的叶子节点
 }
 Table.prototype = {
 		
@@ -23,14 +26,18 @@ Table.prototype = {
 			success: function (data) {
 				obj.tableData = data;
 				
+				// 深度优先，依次获得title和left的叶子节点
+				obj.titleLeafNode = obj.getLeafNodes(obj.tableData.title);
+				obj.leftLeafNode = obj.getLeafNodes(obj.tableData.left);
+				
 				// 广度优先初始化title的tr、th
 				var trs = obj.initTitle();
+				obj.bodyTrs = obj.bodyTrs.concat(trs);
 				obj.colCount = obj.getTrCellCount(trs[0]);
-				obj.headTrs = trs;
 				
 				// 深度优先初始化Left的tr、th、td
 				trs = obj.initLeft();
-				obj.bodyTrs = trs;
+				obj.bodyTrs = obj.bodyTrs.concat(trs);
 				
 				//初始化tfoot
 				obj.footTr = obj.initFoot();
@@ -51,9 +58,7 @@ Table.prototype = {
 		$form.find('caption').text(this.tableData.info.title);
 		
 		// 显示thead
-		for (var i = 0; i < this.headTrs.length; i++) {
-			$form.find('thead').append(this.headTrs[i]);
-		}
+		$form.find('thead').append(this.headTr);
 	 
 		// 显示tbody
 		for (var i = 0; i < this.bodyTrs.length; i++) {
@@ -65,55 +70,84 @@ Table.prototype = {
 			$form.find('tfoot').append(this.footTr);
 		}
 		
+		// 输入框设置宽度
+		$form.find('tbody td input').each(function(){
+			var w = $(this).parent().css('width');
+			w = w.replace('px', '') - 20 + "px";
+			$(this).css('width', w);
+		});
+		
+	},
+	
+	/*
+	 * getUserData
+	 */
+	submitData : function(url) {
+		var $form = $('#' + this.formId);
+		
+		var data = {};
+		$form.find('input').each(function(input) {
+			var name = $(this).attr('name');
+			var value = $(this).val();
+			
+			// 验证空 TODO目前，全部不能为空
+			/*
+			if (value.trim() == '') {
+				alert('存在空数据');
+				$(this).focus();
+				return false;
+			}*/
+			
+			data['data.' + name] = value;
+		});
+		
+		$.ajax({
+			async:false,
+			url: url,
+			data : data,
+			type: "POST",
+			dataType: 'json',
+			success: function (data) {
+				
+			}
+		});
 	},
 	
 	/*
 	 * 初始化title
 	 */
 	initTitle : function () {
-		var allTitle = this.tableData.title;
+		var trs = [];
 		
-		var colCount = 0;
-		var trs = []
-		
-		var titles = [];
-		// 初始化队列
-		titles = titles.concat(allTitle);
-		titles[titles.length - 1].lineEnd = true;
-		
-		var $tr = $('<tr></tr>');	// 当前的遍历行
-		var title = undefined;
-		var isFirstLine = true;
-		while (true) {
-			title = titles.shift();
-			if (title == undefined) {
-				break;
+		var obj = this;
+		/*
+		 * 递归初始化方法
+		 */
+		var _initTitle = function (title, rowNum) {
+					
+			// 添加元素到列中
+			if (trs.length <= rowNum || trs[rowNum] == undefined) {
+				trs[rowNum] = $('<tr></tr>');
 			}
+			trs[rowNum].append(obj.createTH(title, trs[rowNum]));
 			
-			if (isFirstLine) {
-				var colSpan = title.colspan == undefined? 1: title.colspan;
-				colCount += colSpan * 1;
-			}
-		
-			$tr.append(this.createTH(title, $tr));
-			
-			// 子元素入队准备遍历
-			if (title.subTitle && title.subTitle.length > 0) {
-				titles = titles.concat(title.subTitle);
-				if (title.lineEnd) {
-					titles[titles.length - 1].lineEnd = true;
+			// 如果存在子元素，依次遍历
+			if (title.subData && title.subData.length > 0) {
+				// 下一行，为本行加上行合并单元格数
+				rowNum += title.rowSpan == undefined? 1: title.rowSpan;
+				
+				// 依次递归遍历
+				for (var i = 0; i < title.subData.length; i++) {
+					arguments.callee(title.subData[i], rowNum, trs);
 				}
 			}
+		}
 			
-			// 判断是否换行
-			if (title.lineEnd) {
-				// 当前行遍历完毕	
-				trs[trs.length] = $tr;
-				
-				// 下一行
-				var $tr = $('<tr></tr>');
-				isFirstLine = false;
-			}
+		var allTitle = this.tableData.title;
+			
+		// 递归初始化
+		for (var i = 0; i < allTitle.length; i++) {
+			_initTitle(allTitle[i], 0);
 		}
 		
 		return trs;
@@ -124,17 +158,16 @@ Table.prototype = {
 	 */
 	initLeft : function () {
 		var allLeft = this.tableData.left;
-		var colCount = this.colCount;
 		
 		var trs = [];
 		
 		var lefts = [];
 		// 初始化队列
-		lefts = lefts.concat(allLeft.reverse());
+		lefts = lefts.concat(allLeft).reverse();
 		
 		var $tr = $('<tr></tr>');	// 当前的遍历行
 		var left = undefined;
-		var colNum = 0;
+		var dataRowNum = 0;
 		while (true) {
 			left = lefts.pop();
 			if (left == undefined) {
@@ -144,11 +177,13 @@ Table.prototype = {
 			$tr.append(this.createTH(left, $tr));
 			
 			// 判断是否有子元素
-			if (left.subLeft && left.subLeft.length > 0) {	// 子元素入栈准备遍历
-				lefts = lefts.concat(left.subLeft.reverse());
+			if (left.subData && left.subData.length > 0) {	// 子元素入栈准备遍历
+				var subData = [];
+				subData = subData.concat(left.subData);
+				lefts = lefts.concat(subData.reverse());
 			} else {	// 如果没有子元素，则需要换行
 				// 补充行剩下的td
-				this.fullTrs($tr, colCount, colNum);
+				this.fullTrs($tr, dataRowNum++);
 				
 				// 当前行遍历完毕	
 				trs[trs.length] = $tr;
@@ -170,7 +205,7 @@ Table.prototype = {
 		var $tr = null;
 		var footInfo = this.tableData.info.foot;
 		if (footInfo) {
-			$tr = $('<tr><td colspan="' + this.colCount + '">' + footInfo + '</td></tr>');
+			$tr = $('<tr><td colSpan="' + this.colCount + '">' + footInfo + '</td></tr>');
 		}
 		return $tr;
 	},
@@ -193,11 +228,11 @@ Table.prototype = {
 		
 		// 单元格合并
 		var spans = '';
-		if (o.rowspan != undefined && o.rowspan > 1) {
-			spans += ' rowspan=' + o.rowspan;
+		if (o.rowSpan != undefined && o.rowSpan > 1) {
+			spans += ' rowSpan=' + o.rowSpan;
 		}
-		if (o.colspan != undefined && o.colspan > 1) {
-			spans += ' colspan=' + o.colspan;
+		if (o.colSpan != undefined && o.colSpan > 1) {
+			spans += ' colSpan=' + o.colSpan;
 		}
 
 		// 创建单元格
@@ -209,21 +244,58 @@ Table.prototype = {
 	/*
 	 * 用td填充tr
 	 */
-	fullTrs : function ($tr, count) {
+	fullTrs : function ($tr, dataRowNum) {
 		var cellCount = 0;
 		// 第一次填充的数目为准，以后所有的填充都是这个数
 		if (this.cellCount != undefined) {
 			cellCount = this.cellCount;
-		}  else {
+		} else {
 			cellCount = this.getTrCellCount($tr);
 			this.cellCount = cellCount;
-		}			
+		}
 
-		for (var i = cellCount; i < count; i++) {
-			$tr.append('<td></td>');
+		for (var i = cellCount; i < this.colCount; i++) {
+			$tr.append('<td><input name="' + this.leftLeafNode[dataRowNum].code + '-' + this.titleLeafNode[i - 1].code + '" /></td>');
 		}
 	},
 	
+	/*
+	 * 深度优先，依次获得title的叶子节点
+	 */
+	getLeafNodes : function(allDatas) {
+		var leafNodes = [];
+		
+		// 初始化队列
+		var datas = [];
+		var datas = datas.concat(allDatas).reverse();
+		
+		var data = undefined;
+		var colNum = 0;
+		while (true) {
+			data = datas.pop();
+			if (data == undefined) {
+				break;
+			}
+		
+			// 判断是否有子元素
+			if (data.subData && data.subData.length > 0) {	// 子元素入栈准备遍历
+				var subData = [];
+				subData = subData.concat(data.subData);
+				datas = datas.concat(subData.reverse());
+			} else {	// 如果没有子元素，则需要换行
+				var colSpan = data.colSpan == undefined? 1: data.colSpan;
+				for (var i = 0; i < colSpan; i++) {
+					leafNodes[leafNodes.length] = data;
+				}
+			}
+		}
+		
+		return leafNodes;
+	},
+	
+	/*
+	 * 获得tr内的td总数
+	 */
 	getTrCellCount : function ($tr){
 		var count = 0;
 		for (var i = 0; i < $tr[0].cells.length; i++) {
