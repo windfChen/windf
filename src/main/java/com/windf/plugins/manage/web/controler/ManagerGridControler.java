@@ -35,7 +35,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	public Object grid() {
 		String code = getRequestCode();
 		String roleId = "";
-		Map<String, Object> condition = this.getMapParameter("condition");
+		Map<String, Object> condition = paramenter.getMap("condition");
 		
 		GridConfig gridConfig = null;
 		try {
@@ -54,9 +54,9 @@ public abstract class ManagerGridControler extends BaseControler {
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public String list() {
 		String code = getRequestCode();
-		Map<String, Object> condition = this.getMapParameter("condition");
-		String pageNoStr = this.getParameter("page");
-		String pageSizeStr = this.getParameter("limit");
+		Map<String, Object> condition = paramenter.getMap("condition");
+		String pageNoStr = paramenter.getString("page");
+		String pageSizeStr = paramenter.getString("limit");
 		Integer pageNo = 1;
 		Integer pageSize = 10;
 		try {
@@ -83,7 +83,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	@RequestMapping(value = "/detail", method = {RequestMethod.GET})
 	public String detail() {
 		String code = getRequestCode();
-		String id = this.getParameter("id");
+		String id = paramenter.getString("id");
 		
 		Object data = null;
 		try {
@@ -105,9 +105,9 @@ public abstract class ManagerGridControler extends BaseControler {
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
 		String code = getRequestCode();
-		Object bean = this.getMapParameter("bean");
+		Object bean = paramenter.getMap("bean");
 		if (bean == null) {
-			bean = this.getMapParameter("entity");
+			bean = paramenter.getMap("entity");
 		}
 		
 		try {
@@ -122,9 +122,9 @@ public abstract class ManagerGridControler extends BaseControler {
 	@RequestMapping(value = "/update", method = {RequestMethod.POST})
 	public String update() {
 		String code = getRequestCode();
-		Object bean = this.getMapParameter("bean");
+		Object bean = paramenter.getMap("bean");
 		if (bean == null) {
-			bean = this.getMapParameter("entity");
+			bean = paramenter.getMap("entity");
 		}
 		
 		try {
@@ -139,7 +139,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	@RequestMapping(value = "/delete", method = {RequestMethod.POST})
 	public String delete() {
 		String code = getRequestCode();
-		String ids = this.getParameter("ids");
+		String ids = paramenter.getString("ids");
 		
 		List<String> idList = null;
 		if (StringUtil.isNotEmpty(ids)) {
@@ -165,7 +165,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	 * @return
 	 */
 	protected String getRequestCode() {
-		String requestPath = getControlerPath();
+		String requestPath = path.getControlerPath();
 		
 		int index = requestPath.lastIndexOf('.');
 		if (index > 0) {

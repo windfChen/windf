@@ -74,16 +74,17 @@ public class PageReturn extends AbstractResponseRetrun {
 
 	@Override
 	public String returnData(boolean success, String message, Object data) {
-		baseControler.setValue(RESULT_SUCCESS_KEY, success);
+		baseControler.paramenter.setValue(RESULT_SUCCESS_KEY, success);
 		if (data != null) {
-			baseControler.setValue(RESULT_DATA_KEY, data);	
+			baseControler.paramenter.setValue(RESULT_DATA_KEY, data);
 		}
 		if (StringUtil.isNotEmpty(message)) {
-			baseControler.setValue(RESULT_MESSAGE_KEY, message);
+			baseControler.paramenter.setValue(RESULT_MESSAGE_KEY, message);
 		}
 		
 		if (page == null) {
-			page = baseControler.getRequestPath();
+			// TODO 设置默认路径
+//			page = baseControler.getFullPath();
 		}
 		
 		return page;

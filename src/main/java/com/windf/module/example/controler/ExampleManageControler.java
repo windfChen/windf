@@ -18,7 +18,7 @@ public class ExampleManageControler extends ManagerGridControler {
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public String test() {
 		
-		return responseReturn.success("哈哈：" + getControlerPath());
+		return responseReturn.success("哈哈：" + path.getControlerPath());
 	}
 
 	
