@@ -1,19 +1,11 @@
 package com.windf.plugins.web;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.HandlerMapping;
 
 import com.windf.core.frame.Moudle;
-import com.windf.core.util.StringUtil;
-import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
 import com.windf.plugins.web.request.RequestParamenter;

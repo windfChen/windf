@@ -22,6 +22,7 @@ import org.dom4j.io.XMLWriter;
 import com.windf.core.Constant;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.StringUtil;
+import com.windf.core.util.reflect.BeanUtil;
 import com.windf.core.util.reflect.ReflectUtil;
 import com.windf.core.util.reflect.SimpleField;
 
@@ -242,7 +243,7 @@ public class XmlFileUtil {
 			/*
 			 *  获得对象的所有非空属性
 			 */
-			Map<String, Object> getterMethodValueMap = ReflectUtil.getAllGetterMethods(object);
+			Map<String, Object> getterMethodValueMap = BeanUtil.getAllGetterMethods(object);
 			
 			/*
 			 * 遍历对象的getter属性对应的值，把属性名和值放到xml文件里

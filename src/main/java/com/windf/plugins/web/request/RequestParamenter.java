@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.windf.core.util.StringUtil;
+import com.windf.core.util.reflect.BeanUtil;
 
 public class RequestParamenter {
 	
@@ -54,6 +55,17 @@ public class RequestParamenter {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * 获取对象
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getObject(Class<T> clazz) {
+		T result = (T) BeanUtil.getObjectByMap(clazz, request.getParameterMap());
+		return result;
 	}
 	
 	/**

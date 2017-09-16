@@ -2,8 +2,6 @@ package com.windf.core.util.reflect;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -11,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -107,23 +104,6 @@ public class ReflectUtil {
 	}
 
 	/**
-	 * 根据集合类型，创建集合
-	 * 
-	 * @param clazz
-	 * @return
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static Collection<? extends Object> createCollection(Class<? extends Object> clazz) {
-		Collection<? extends Object> result = null;
-		if (clazz.isAssignableFrom(List.class)) {
-			result = new ArrayList();
-		} else if (clazz.isAssignableFrom(Set.class)) {
-			result = new HashSet();
-		}
-		return result;
-	}
-
-	/**
 	 * 判断对象是map
 	 * 
 	 * @param clazz
@@ -150,6 +130,16 @@ public class ReflectUtil {
 	}
 
 	/**
+	 * 判断type是否是泛型
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static boolean isGeneric(Type type) {
+		return type instanceof ParameterizedType;
+	}
+
+	/**
 	 * 根据class，创建一个map
 	 * 
 	 * @param clazz
@@ -158,6 +148,23 @@ public class ReflectUtil {
 	@SuppressWarnings({ "rawtypes" })
 	public static Map createMap(Class clazz) {
 		return new HashMap();
+	}
+
+	/**
+	 * 根据集合类型，创建集合
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static Collection<? extends Object> createCollection(Class<? extends Object> clazz) {
+		Collection<? extends Object> result = null;
+		if (clazz.isAssignableFrom(List.class)) {
+			result = new ArrayList();
+		} else if (clazz.isAssignableFrom(Set.class)) {
+			result = new HashSet();
+		}
+		return result;
 	}
 
 	/**
@@ -178,66 +185,7 @@ public class ReflectUtil {
 
 		return result;
 	}
-
-	/**
-	 * 判断，是否是用户自定义的getter方法
-	 * 
-	 * @param method
-	 * @return
-	 */
-	public static boolean isGetterMethod(Method method) {
-		String methodName = method.getName();
-		return methodName.startsWith("get") && method.getParameterTypes().length == 0 && !"getClass".equals(methodName);
-	}
-
-	/**
-	 * 获得对象的所有非空属性
-	 * 
-	 * @param clazz
-	 * @return 属性名-属性值
-	 */
-	public static Map<String, Object> getAllGetterMethods(Object object) {
-		Class<? extends Object> clazz = object.getClass();
-
-		Map<String, Object> getterMethodValueMap = new HashMap<String, Object>();
-		Method[] methods = clazz.getMethods();
-		if (methods != null) {
-			for (int i = 0; i < methods.length; i++) {
-				Method method = methods[i];
-				String methodName = method.getName();
-
-				if (ReflectUtil.isGetterMethod(method)) {
-					Object result = null;
-					try {
-						result = method.invoke(object);
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
-					}
-					if (result != null) {
-						methodName = methodName.substring(3, 4).toLowerCase() + methodName.substring(4);
-						getterMethodValueMap.put(methodName, result);
-					}
-				}
-			}
-		}
-
-		return getterMethodValueMap;
-	}
-
-	/**
-	 * 判断type是否是泛型
-	 * 
-	 * @param type
-	 * @return
-	 */
-	public static boolean isGeneric(Type type) {
-		return type instanceof ParameterizedType;
-	}
-
+	
 	/**
 	 * 获得map的key的类型
 	 * 
@@ -282,53 +230,6 @@ public class ReflectUtil {
 	public static Type getGenericOfCollection(Type type) {
 		ParameterizedType parameterizedType = (ParameterizedType) type;
 		return  parameterizedType.getActualTypeArguments()[0];
-	}
-
-	/**
-	 * 只复制基本数据类型
-	 * @param object
-	 * @return
-	 */
-	public static Object cloneOnlyBaseType(Object object) {
-			Class<? extends Object> clazz = object.getClass();
-			Object newObject = null;
-			try {
-				newObject = clazz.newInstance();
-			} catch (InstantiationException e1) {
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1) {
-				e1.printStackTrace();
-			}
-			
-			if (newObject != null) {
-				Map<String, Object> getterMethodMap = getAllGetterMethods(object);
-				Iterator<String> iterator = getterMethodMap.keySet().iterator();
-				while (iterator.hasNext()) {
-					String key = (String) iterator.next();
-					Object value = getterMethodMap.get(key);
-					
-					if (ReflectUtil.isBaseType(value.getClass())) {
-						String setterMethodName = "set" + key.substring(0, 1).toUpperCase() + key.substring(1);
-						try {
-							Method setterMethod = clazz.getMethod(setterMethodName, value.getClass());
-							setterMethod.invoke(newObject, value);
-						} catch (NoSuchMethodException e) {
-							e.printStackTrace();
-						} catch (SecurityException e) {
-							e.printStackTrace();
-						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-			
-			return newObject;
-			
 	}
 	
 	/**
