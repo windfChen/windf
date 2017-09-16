@@ -1,17 +1,17 @@
-package com.windf.module.form.bean;
+package com.windf.module.form.pojo.bean;
 
 import java.util.Date;
 
 import com.windf.core.general.bean.AbstractBean;
 
-public class Form extends AbstractBean {
-	private static final long serialVersionUID = 4935401778993342311L;
+public class FormItem  extends AbstractBean {
+	private static final long serialVersionUID = -8776339158900342309L;
 	
 	private String id;
+	private Form form;
 	private String name;
 	private String code;
 	private String note;
-	// TODO 创建人
 	private Date createDate;
 	private Date updateDate;
 
@@ -21,6 +21,14 @@ public class Form extends AbstractBean {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Form getForm() {
+		return form;
+	}
+
+	public void setForm(Form form) {
+		this.form = form;
 	}
 
 	public String getName() {
@@ -62,4 +70,5 @@ public class Form extends AbstractBean {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
+
 }

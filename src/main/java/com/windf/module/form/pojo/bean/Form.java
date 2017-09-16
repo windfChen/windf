@@ -1,16 +1,17 @@
-package com.windf.module.form.bean;
+package com.windf.module.form.pojo.bean;
 
 import java.util.Date;
 
 import com.windf.core.general.bean.AbstractBean;
 
-public class FormItemUserValue extends AbstractBean {
-	private static final long serialVersionUID = 60338476825966995L;
+public class Form extends AbstractBean {
+	private static final long serialVersionUID = 4935401778993342311L;
 	
 	private String id;
-	private String userId;
-	private FormItem formItem;
-	private String value;
+	private String name;
+	private String code;
+	private String note;
+	// TODO 创建人
 	private Date createDate;
 	private Date updateDate;
 
@@ -22,28 +23,28 @@ public class FormItemUserValue extends AbstractBean {
 		this.id = id;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getName() {
+		return name;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public FormItem getFormItem() {
-		return formItem;
+	public String getCode() {
+		return code;
 	}
 
-	public void setFormItem(FormItem formItem) {
-		this.formItem = formItem;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public String getValue() {
-		return value;
+	public String getNote() {
+		return note;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public Date getCreateDate() {
