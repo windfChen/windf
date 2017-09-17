@@ -15,8 +15,8 @@
 	
 	<script>
 		$(function(){
-			var t = new Table('table', '${rc.contextPath}/resources/module/form/json/table.json');
-			t.init();
+			var t = new Table('table', '${data.id}');
+			t.init(${data.gridView});
 			t.display();
 			t.initUserData('user/value.json');
 			table = t;

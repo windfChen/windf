@@ -14,6 +14,7 @@ public class Form extends AbstractBean {
 	// TODO 创建人
 	private Date createDate;
 	private Date updateDate;
+	private String gridView;
 
 	public String getId() {
 		return id;
@@ -61,5 +62,13 @@ public class Form extends AbstractBean {
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public String getGridView() {
+		return gridView;
+	}
+
+	public void setGridView(String gridView) {
+		this.gridView = gridView;
 	}
 }

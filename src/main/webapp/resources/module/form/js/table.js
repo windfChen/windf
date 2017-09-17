@@ -1,6 +1,7 @@
-var Table = function (formId, url) {
+var Table = function (divId, formId) {
+	this.divId = divId;
 	this.formId = formId;
-	this.url = url;
+
 	this.tableData = {};	// 接收到的总数据
 	
 	this.headTr = null;	// 标题行
@@ -15,43 +16,50 @@ var Table = function (formId, url) {
 }
 Table.prototype = {
 		
-	init : function () {
+	initByUrl : function (url) {
 		var obj = this;
 		
 		$.ajax({
 			async:false,
-			url: this.url,
+			url: url,
 			type: "GET",
 			dataType: 'json',
 			success: function (data) {
-				obj.tableData = data;
-				
-				// 深度优先，依次获得title和left的叶子节点
-				obj.titleLeafNode = obj.getLeafNodes(obj.tableData.title);
-				obj.leftLeafNode = obj.getLeafNodes(obj.tableData.left);
-				
-				// 广度优先初始化title的tr、th
-				var trs = obj.initTitle();
-				obj.bodyTrs = obj.bodyTrs.concat(trs);
-				obj.colCount = obj.getTrCellCount(trs[0]);
-				
-				// 深度优先初始化Left的tr、th、td
-				trs = obj.initLeft();
-				obj.bodyTrs = obj.bodyTrs.concat(trs);
-				
-				//初始化tfoot
-				obj.footTr = obj.initFoot();
+				obj.init(data);
 			}
 		});
 		
 		return this;
+	},
+
+	/*
+	 * 初始化
+	 */
+	init : function(data) {
+		this.tableData = data;
+
+		// 深度优先，依次获得title和left的叶子节点
+		this.titleLeafNode = this.getLeafNodes(this.tableData.title);
+		this.leftLeafNode = this.getLeafNodes(this.tableData.left);
+		
+		// 广度优先初始化title的tr、th
+		var trs = this.initTitle();
+		this.bodyTrs = this.bodyTrs.concat(trs);
+		this.colCount = this.getTrCellCount(trs[0]);
+		
+		// 深度优先初始化Left的tr、th、td
+		trs = this.initLeft();
+		this.bodyTrs = this.bodyTrs.concat(trs);
+		
+		//初始化tfoot
+		this.footTr = this.initFoot();
 	},
 	
 	/*
 	 * 显示
 	 */
 	display : function () {
-		var $form = $('#' + this.formId);
+		var $form = $('#' + this.divId);
 		$form.append('<caption></caption><thead></thead><tbody></tbody><tfoot></tfoot>');
 		
 		// 显示title
@@ -83,7 +91,7 @@ Table.prototype = {
 	 * getUserData
 	 */
 	submitData : function(url) {
-		var $form = $('#' + this.formId);
+		var $form = $('#' + this.divId);
 		
 		var data = {};
 		$form.find('input').each(function(input) {
@@ -99,8 +107,8 @@ Table.prototype = {
 			}*/
 			
 			data['data[' + name + ']'] = value;
-			data['formId'] = '1';
 		});
+		data['formId'] = this.formId;
 		
 		$.ajax({
 			async:false,
@@ -109,7 +117,11 @@ Table.prototype = {
 			type: "POST",
 			dataType: 'json',
 			success: function (data) {
-				alert(data)
+				if(data.success == 'Y') {
+					alert('提交成功');
+				} else {
+					alert(data.message);
+				}
 			}
 		});
 	},
@@ -119,7 +131,7 @@ Table.prototype = {
 		$.ajax({
 			async:true,
 			url: url,
-			data : {'formId': '1'},
+			data : {'formId': this.formId},
 			type: "GET",
 			dataType: 'json',
 			success: function (data) {
@@ -129,7 +141,7 @@ Table.prototype = {
 	},
 
 	setDate : function(data) {
-		var $form = $('#' + this.formId);
+		var $form = $('#' + this.divId);
 		for (var i = 0; i < data.length; i++) {
 			var d = data[i];
 

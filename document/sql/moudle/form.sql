@@ -1,10 +1,11 @@
-CREATE TABLE `form` (
+REATE TABLE `form` (
   `id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   `code` varchar(50) NOT NULL,
   `note` varchar(50) DEFAULT NULL,
   `create_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
+  `grid_view` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
