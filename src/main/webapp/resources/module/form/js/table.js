@@ -98,7 +98,8 @@ Table.prototype = {
 				return false;
 			}*/
 			
-			data['data.' + name] = value;
+			data['data[' + name + ']'] = value;
+			data['formId'] = '1';
 		});
 		
 		$.ajax({
@@ -108,9 +109,33 @@ Table.prototype = {
 			type: "POST",
 			dataType: 'json',
 			success: function (data) {
-				
+				alert(data)
 			}
 		});
+	},
+
+	initUserData : function(url) {
+		var obj = this;
+		$.ajax({
+			async:true,
+			url: url,
+			data : {'formId': '1'},
+			type: "GET",
+			dataType: 'json',
+			success: function (data) {
+				obj.setDate(data.data)
+			}
+		});
+	},
+
+	setDate : function(data) {
+		var $form = $('#' + this.formId);
+		for (var i = 0; i < data.length; i++) {
+			var d = data[i];
+
+			$form.find('input[name=' + d.formItem.code + ']').val(d.value);
+
+		}
 	},
 	
 	/*

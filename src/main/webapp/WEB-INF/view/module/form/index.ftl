@@ -18,10 +18,11 @@
 			var t = new Table('table', '${rc.contextPath}/resources/module/form/json/table.json');
 			t.init();
 			t.display();
+			t.initUserData('user/value.json');
 			table = t;
 			
 			$('#submit').click(function(){
-				t.submitData('');
+				t.submitData('saveUserValue.json');
 			});
 			
 		});
