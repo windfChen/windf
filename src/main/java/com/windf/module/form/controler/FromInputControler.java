@@ -1,6 +1,7 @@
 package com.windf.module.form.controler;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -12,9 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.form.Constant;
-import com.windf.module.form.pojo.bean.Form;
-import com.windf.module.form.pojo.bean.FormItemUserValue;
-import com.windf.module.form.pojo.vo.FormItemUserValueVO;
+import com.windf.module.form.entity.Form;
+import com.windf.module.form.entity.FormItemUserValue;
 import com.windf.module.form.service.FormItemUserValueService;
 import com.windf.module.form.service.FormService;
 import com.windf.plugins.web.BaseControler;
@@ -39,12 +39,14 @@ public class FromInputControler extends BaseControler{
 	}
 	
 	@RequestMapping(value = "/saveUserValue", method = {RequestMethod.POST})
-	public String saveUserValue(FormItemUserValueVO vo) {
-		if (ParameterUtil.hasEmpty(vo.getFormId(), vo.getData())) {
+	public String saveUserValue() {
+		String formId =  paramenter.getString("formId");
+		Map<String, Object> data = paramenter.getMap("data");
+		if (ParameterUtil.hasEmpty(formId, data)) {
 			return responseReturn.parameterError();
 		}
 		
-		formItemUserValueService.saveUserValue(vo);
+		formItemUserValueService.saveUserValue(formId, data);
 		
 		return responseReturn.success();
 	}

@@ -1,9 +1,9 @@
 package com.windf.module.form.service;
 
 import java.util.List;
+import java.util.Map;
 
-import com.windf.module.form.pojo.bean.FormItemUserValue;
-import com.windf.module.form.pojo.vo.FormItemUserValueVO;
+import com.windf.module.form.entity.FormItemUserValue;
 
 public interface FormItemUserValueService {
 
@@ -12,7 +12,7 @@ public interface FormItemUserValueService {
 	 * @param vo
 	 * @return
 	 */
-	List<FormItemUserValue> saveUserValue(FormItemUserValueVO vo);
+	List<FormItemUserValue> saveUserValue(String formId, Map<String, Object> data);
 	
 	/**
 	 * 获取用户的填写的信息

@@ -106,7 +106,7 @@ Table.prototype = {
 				return false;
 			}*/
 			
-			data['data[' + name + ']'] = value;
+			data['data.' + name + ''] = value;
 		});
 		data['formId'] = this.formId;
 		

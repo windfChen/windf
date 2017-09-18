@@ -17,7 +17,7 @@
 	   </foreach>
     </insert>
     
-     <select id="getByFormId" parameterType="java.lang.String" resultType="com.windf.module.form.pojo.bean.FormItemUserValue" >
+     <select id="getByFormId" parameterType="java.lang.String" resultType="com.windf.module.form.entity.FormItemUserValue" >
        SELECT
 			t.id, t.fk_user_id as userId, `value`, t.create_date createDate, t.update_date updateDate,
 			t.fk_form_item_id `formItem.id` , i.code as `formItem.code`, i.name as `formItem.name`

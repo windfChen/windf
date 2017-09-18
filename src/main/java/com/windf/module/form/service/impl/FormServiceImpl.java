@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.windf.module.form.dao.FormDao;
-import com.windf.module.form.pojo.bean.Form;
+import com.windf.module.form.entity.Form;
 import com.windf.module.form.service.FormService;
 
 @Service

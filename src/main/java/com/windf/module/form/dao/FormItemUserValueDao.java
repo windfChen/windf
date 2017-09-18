@@ -2,7 +2,7 @@ package com.windf.module.form.dao;
 
 import java.util.List;
 
-import com.windf.module.form.pojo.bean.FormItemUserValue;
+import com.windf.module.form.entity.FormItemUserValue;
 
 public interface FormItemUserValueDao {
 

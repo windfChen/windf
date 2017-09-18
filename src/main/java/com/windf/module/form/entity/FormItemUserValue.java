@@ -1,4 +1,4 @@
-package com.windf.module.form.pojo.bean;
+package com.windf.module.form.entity;
 
 import java.util.Date;
 

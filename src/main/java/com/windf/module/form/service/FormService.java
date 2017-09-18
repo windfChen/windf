@@ -1,6 +1,6 @@
 package com.windf.module.form.service;
 
-import com.windf.module.form.pojo.bean.Form;
+import com.windf.module.form.entity.Form;
 
 public interface FormService {
 
