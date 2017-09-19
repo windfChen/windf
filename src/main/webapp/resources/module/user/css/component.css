@@ -98,6 +98,8 @@
 	padding: 15px;
 	margin-top: 20px;
 	display: block;
+	width: 100%;
+	border: none;
 }
 .act-but{
 	line-height: 20px;

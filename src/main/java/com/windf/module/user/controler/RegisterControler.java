@@ -22,7 +22,7 @@ public class RegisterControler extends BaseControler {
 	@Resource
 	private SsoUserService ssoUserService ;
 	
-	@RequestMapping(value = "", method = {RequestMethod.POST })
+	@RequestMapping(value = "", method = {RequestMethod.GET })
 	public String registerPage() {
 		return responseReturn.page(Constant.WEB_BASE_VIEW + "/register");
 	}
