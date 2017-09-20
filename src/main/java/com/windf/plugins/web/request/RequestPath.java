@@ -6,13 +6,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.HandlerMapping;
 
 import com.windf.core.util.reflect.ReflectUtil;
+import com.windf.plugins.web.BaseControler;
 
 public class RequestPath {
 
 	protected HttpServletRequest request;
+	protected BaseControler controler;
 	
-	public RequestPath(HttpServletRequest request) {
+	
+	public RequestPath(HttpServletRequest request, BaseControler controler) {
 		this.request = request;
+		this.controler = controler;
 	}
 
 	/**
@@ -36,7 +40,7 @@ public class RequestPath {
 	 * @return
 	 */
 	public String getControlerPath() {
-		RequestMapping a = (RequestMapping) ReflectUtil.getAnnotation(this, RequestMapping.class);
+		RequestMapping a = (RequestMapping) ReflectUtil.getAnnotation(controler, RequestMapping.class);
 		return a.value()[0];
 	}
 	

@@ -384,9 +384,12 @@ function initGrid (gridConfig) {
 		function getRendererFunction(c) {	// 闭包传参
 			var rendererFunction = function (value, metadata, record) {
 				var newValue = value + '';
-				var searchValue = Ext.get('_s_' + c.dataIndex).dom.value;
-				if (searchValue != null && searchValue.length > 0 && newValue.indexOf(searchValue) >= 0) {
-					newValue = (newValue).replace(searchValue, '<font color=#FF0000>' + searchValue + '</font>');	// 搜索字标红
+				var searchValueDom = Ext.get('_s_' + c.dataIndex);
+				if (searchValueDom) {
+					var searchValue = Ext.get('_s_' + c.dataIndex).dom.value;
+					if (searchValue != null && searchValue.length > 0 && newValue.indexOf(searchValue) >= 0) {
+						newValue = (newValue).replace(searchValue, '<font color=#FF0000>' + searchValue + '</font>');	// 搜索字标红
+					}
 				}
 				var result = newValue;
 				if(c.display != null && c.display.length > 0) {

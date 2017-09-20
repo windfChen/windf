@@ -1,5 +1,5 @@
 -- 用户
-CREATE TABLE `sso_user` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
   `turename` varchar(50) DEFAULT NULL COMMENT '真实姓名',

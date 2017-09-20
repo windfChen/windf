@@ -43,7 +43,7 @@ public abstract class BaseControler {
 		paramenter = new RequestParamenter(request);
 		
 		// 路径
-		path = new RequestPath(request);
+		path = new RequestPath(request, this);
 		
 		// 设置返回
 		responseReturn = ResponseReturnFactory.getResponseReturn(path.getSuffix(), this);

@@ -1,8 +1,7 @@
 package com.windf.module.example.dao;
 
-import com.windf.core.general.dao.ListDao;
-import com.windf.core.general.dao.WritableDao;
+import com.windf.core.general.dao.GridDao;
 
-public interface ExampleDao extends ListDao, WritableDao {
+public interface ExampleDao extends GridDao {
 
 }

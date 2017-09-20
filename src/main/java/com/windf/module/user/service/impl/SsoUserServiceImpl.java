@@ -5,10 +5,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
+import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
+import com.windf.core.frame.session.SessionContext;
 import com.windf.module.user.Constant;
 import com.windf.module.user.dao.SsoUserDao;
 import com.windf.module.user.entity.SsoUser;
+import com.windf.module.user.modle.LoginSubject;
 import com.windf.module.user.service.SsoUserService;
 import com.windf.plugins.web.WebContext;
 
@@ -36,9 +39,12 @@ public class SsoUserServiceImpl implements SsoUserService {
 		ssoUserDB.setLastLoginIp(loginIp);
 		ssoUserAccess.updateLogin(ssoUserDB);
 		
-		HttpSession session = WebContext.getSession();
-		if (session != null) {
-			session.setAttribute(Constant.SESSION_USER, ssoUserDB);
+		try {
+			SessionContext.set(Constant.SESSION_USER, ssoUserDB);
+			// 登录通知
+			LoginSubject.getInstance().login();
+		} catch (CodeException e) {
+			e.printStackTrace();
 		}
 		
 		return ssoUserDB;
@@ -46,9 +52,13 @@ public class SsoUserServiceImpl implements SsoUserService {
 
 	@Override
 	public void logout() throws UserException {
-		HttpSession session = WebContext.getSession();
-		if (session != null) {
-			session.invalidate();
+		// 退出通知
+		LoginSubject.getInstance().loginOut();
+		
+		try {
+			SessionContext.invalidate();
+		} catch (CodeException e) {
+			e.printStackTrace();
 		}
 	}
 
