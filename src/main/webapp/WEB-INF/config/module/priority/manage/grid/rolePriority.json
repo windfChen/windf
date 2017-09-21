@@ -42,7 +42,7 @@
 		"orderNum" : 4
 	},
 	{
-		"name" : "管理权限",
+		"name" : "管理权限${param.roleId}",
 		"dataIndex" : "id",
 		"type" : "TextField",
 		"canList" : true,
@@ -61,6 +61,5 @@
 	"canBatchAdd" : true,
 	"canDelete" : true,
 	"canUpdate" : true,
-	"canSearch" : true,
-	"dataSource" : "roleDao"
+	"canSearch" : true
 }

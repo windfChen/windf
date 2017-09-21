@@ -33,8 +33,8 @@ public class GridConfig {
 				while (iterator.hasNext()) {
 					String key = (String) iterator.next();
 					Object value = condition.get(key);
-					if (value != null && value instanceof String) {
-						gridConfigJsonStr.replaceAll("${param." + key + "}", value.toString());
+					if (value != null) {
+						gridConfigJsonStr = gridConfigJsonStr.replaceAll("\\$\\{param\\." + key + "\\}", value.toString());
 					}
 				}
 			}

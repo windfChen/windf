@@ -23,14 +23,18 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
-		return responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
+		responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
+		Map<String, Object> data = new HashMap<>();
+		String queryString = request.getQueryString();
+		data.put("queryString", queryString);
+		return responseReturn.successData(data);
 	}
 	
 	@RequestMapping(value = "/grid", method = {RequestMethod.GET})
 	public Object grid() {
 		String code = getRequestCode();
 		String roleId = "";
-		Map<String, Object> condition = paramenter.getMap("condition");
+		Map<String, Object> condition = paramenter.getAll();
 		
 		GridConfig gridConfig = null;
 		try {

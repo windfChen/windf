@@ -58,6 +58,26 @@ public class RequestParamenter {
 	}
 	
 	/**
+	 * 获得所有参数
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getAll() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		Enumeration<String>  enumeration = request.getParameterNames();
+		while (enumeration.hasMoreElements()) {
+			String key = (String) enumeration.nextElement();
+			String value = this.getString(key);
+			if (StringUtil.isNotEmpty(value)) {
+				result.put(key, value);
+			}
+		}
+			
+		return result;
+	}
+	
+	/**
 	 * 获取对象
 	 * @param clazz
 	 * @return

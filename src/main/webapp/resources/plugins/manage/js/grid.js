@@ -6,7 +6,7 @@ var varHiddenColumn = ''; //取得那些需要隐藏的列
 Ext.onReady(function () {
 	Ext.Ajax.timeout = 120000;
 	Ext.Ajax.request({
-		url: 'grid.json',
+		url: 'grid.json' + queryString,
 		method: 'GET',
 		async: false,
 		callback: function (options, success, response) {
@@ -80,7 +80,7 @@ function initGrid (gridConfig) {
 		
 			proxy: new Ext.data.HttpProxy({
 				timeout: 100000000,
-				url: 'list.json',
+				url: 'list.json' + queryString,
 				method: 'GET'
 			}),
 			reader: new Ext.data.JsonReader({
@@ -1140,7 +1140,7 @@ function initGrid (gridConfig) {
 
 							if (formPanel.form.isValid()) {
 								formPanel.form.submit({
-									url: 'save.json',
+									url: 'save.json' + queryString,
 									waitMsg: '处理中，请稍候...',
 									success: function (form, action) {
 										var responseArray = action.result;
@@ -1221,7 +1221,7 @@ function initGrid (gridConfig) {
 						// check form value
 						if (formPanel.form.isValid()) {
 							formPanel.form.submit({
-								url: 'update.json',
+								url: 'update.json' + queryString,
 								params: {
 									'entity.id': selectedId
 								},
@@ -1281,7 +1281,7 @@ function initGrid (gridConfig) {
 					}
 					Ext.Ajax.request({
 						timeout: 100000000,
-						url: 'delete.json',
+						url: 'delete.json' + queryString,
 						params: {
 							ids: jsonData
 						},
