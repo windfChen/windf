@@ -401,7 +401,9 @@ function initGrid (gridConfig) {
 						result = result.replace('${' + c1.dataIndex + '}', record.data[c1.dataIndex]);
 					}
 					
-					//record.data['name']gridConfig
+					if (result.startsWith('function')) {
+						eval('result = ' + result + '().toString();');
+					}
 				}
 				
 				return result;
@@ -442,13 +444,111 @@ function initGrid (gridConfig) {
 			handler: deleteModels
 		};
 	}
-	for (var i = 0; i < gridConfig.meuns.length; i++) {
-		var m = gridConfig.meuns[i];
+	for (var i = 0; i < gridConfig.menus.length; i++) {
+		var menu = gridConfig.menus[i];
 		menubar[menubar.length] = '-';
+		
+		function getMenuOption(menu) {
+			return function () {
+				var m = grid.getSelectionModel().getSelections();
+				
+				// 关于选择的提醒
+				if (menu.canSelect) {
+					if (m.length == 0) {
+						if (menu.isSingleSelect) {
+							Ext.MessageBox.alert('提示', '请选择一条记录');
+							return;
+						} else {
+							Ext.MessageBox.alert('提示', '请至少选择一条记录');
+							return;
+						}
+					}
+					
+					if (m.length != 1 && menu.isSingleSelect) {
+						Ext.MessageBox.alert('提示', '只能选择一条记录');
+						return;
+					}
+				}
+				
+				// TODO 弹窗字段
+				
+				var menuFunciotn = function(){
+					if (menu.actionAddress) {
+						var actionAddress = menu.actionAddress + queryString;
+						if (actionAddress.startsWith("/")) {
+							actionAddress = basePath + actionAddress;
+						}
+						if (menu.checkColumn) {
+							var data = "";
+							for (var i = 0, len = m.length; i < len; i++) {
+								var ss = m[i].get(menu.checkColumn);
+								if (i == 0) {
+									data = data + ss;
+								} else {
+									data = data + "," + ss;
+								}
+							}
+							
+							if (menu.ajaxReturn) {
+								Ext.MessageBox.show({
+									title: '提示',
+									closable: false,
+									msg: '处理中，请稍候...'
+								});
+								Ext.Ajax.request({
+									timeout: 100000000,
+									url: actionAddress,
+									params: {
+										ids: data
+									},
+									method: 'post',
+									waitMsg: '处理中，请稍候...',
+									success: function (response, options) {
+										var responseArray = Ext.util.JSON.decode(response.responseText);
+										
+										// TODO 自定义ajax处理方法
+										
+										if (responseArray.success == 'Y') {
+											Ext.MessageBox.alert('提示', (responseArray.tip && responseArray.tip != 'success'? responseArray.tip: '操作成功！')  + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", function(){
+												store.load({
+													params: getSearchParams(pageCursor(), g_limit)
+												});
+											});
+										} else {
+											Ext.MessageBox.alert('错误', responseArray.tip + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", function(){
+												store.load({
+													params: getSearchParams(pageCursor(), g_limit)
+												});
+											});
+										}
+										
+									}
+								});
+							} else {
+								// TODO 非ajax提交数据
+							}
+						} else {
+							window.location = actionAddress;
+						}
+					}
+				};
+				
+				if(menu.confirm != "false") {
+					var confirmMsg = menu.confirm == true || menu.confirm == '' ?'您确定要执行此操作吗？' : menu.config;
+					Ext.MessageBox.confirm('确认', confirmMsg,function(btn){
+						if (btn == 'yes') {
+							menuFunciotn();
+						}
+					});
+				} else {
+					menuFunciotn();
+				}
+			}
+		}
 		menubar[menubar.length] = {
-			text: m.name,
+			text: menu.name,
 			iconCls: 'selfDef',
-			handler: GridConfigMenuFunction_0
+			handler: getMenuOption(menu)
 		};
 	}
 	//加多列排序按钮 ---zhaochen
@@ -531,64 +631,6 @@ function initGrid (gridConfig) {
 				Ext.Msg.alert('系统提示', '验证出错，请重新操作！')
 			}
 		});
-	}
-	
-	function GridConfigMenuFunction_0() {
-		var m = grid.getSelectionModel().getSelections();
-
-		if (m.length == 1)
-			{
-			Ext.MessageBox.confirm('确认',
-				//根据设置显示操作提示信息--yinxu
-
-
-				'您确定要执行此操作吗？',
-
-				function (btn) {
-				if (btn == 'yes') {
-					var jsonData = "";
-					for (var i = 0, len = m.length; i < len; i++) {
-						var checkColumn = 'id';
-						var ss = m[i].get(checkColumn);
-						if (i == 0)
-							jsonData = jsonData + ss;
-						else
-							jsonData = jsonData + "," + ss;
-					}
-					jsonData = jsonData + ",";
-
-					Ext.MessageBox.show({
-						title: '提示',
-						closable: false,
-						msg: '处理中，请稍候...'
-					});
-					Ext.Ajax.request({
-						timeout: 100000000,
-						url: 'manager/basic/peTchCourse_deepCopyCourse.action',
-						params: {
-							ids: jsonData
-						},
-						method: 'post',
-						waitMsg: '处理中，请稍候...',
-						success: function (response, options) {
-							var responseArray = Ext.util.JSON.decode(response.responseText);
-							if (responseArray.success == 'Y') {
-								Ext.MessageBox.alert('提示', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-							} else {
-								Ext.MessageBox.alert('错误', responseArray.info + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-							}
-							//更新(ajax)后页面停留在当前页面 --yinxu
-							store.load({
-								params: getSearchParams(pageCursor(), g_limit)
-							});
-						}
-					});
-
-				}
-			});
-		} else {
-			Ext.MessageBox.alert('错误', '请您选择一条记录');
-		}
 	}
 
 	function GridConfigMenuFunction_1() {

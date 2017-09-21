@@ -34,7 +34,8 @@ public class GridConfig {
 					String key = (String) iterator.next();
 					Object value = condition.get(key);
 					if (value != null) {
-						gridConfigJsonStr = gridConfigJsonStr.replaceAll("\\$\\{param\\." + key + "\\}", value.toString());
+						gridConfigJsonStr = gridConfigJsonStr.replaceAll("\\$\\{param\\." + key + "\\}",
+								value.toString());
 					}
 				}
 			}
@@ -50,7 +51,7 @@ public class GridConfig {
 	private String title; // 表格标题
 	private String dataSource; // 数据源，对应dao，需要实现ListDao
 	private List<ColumnConfig> columns;
-	private List<MenuConfig> meuns;
+	private List<MenuConfig> menus;
 
 	private boolean isPrepared;
 	private boolean canAdd;
@@ -77,12 +78,12 @@ public class GridConfig {
 		this.columns = columns;
 	}
 
-	public List<MenuConfig> getMeuns() {
-		return meuns;
+	public List<MenuConfig> getMenus() {
+		return menus;
 	}
 
-	public void setMeuns(List<MenuConfig> meuns) {
-		this.meuns = meuns;
+	public void setMenus(List<MenuConfig> menus) {
+		this.menus = menus;
 	}
 
 	public boolean isPrepared() {

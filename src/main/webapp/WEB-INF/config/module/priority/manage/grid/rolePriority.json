@@ -1,5 +1,5 @@
 {
-	"title": "角色管理",
+	"title": "【${param.roleName}】的权限",
 	"columns": [{
 		"name" : "id",
 		"dataIndex" : "id",
@@ -14,7 +14,7 @@
 		"display" : null,
 		"orderNum" : 0
 	},{
-		"name" : "角色名称",
+		"name" : "权限名称",
 		"dataIndex" : "name",
 		"type" : "TextField",
 		"canList" : true,
@@ -26,10 +26,9 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 1
-	},
-	{
-		"name" : "code",
-		"dataIndex" : "code",
+	},{
+		"name" : "地址",
+		"dataIndex" : "url",
 		"type" : "TextField",
 		"canList" : true,
 		"canSearch" : true,
@@ -39,27 +38,37 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
-		"orderNum" : 4
-	},
-	{
-		"name" : "管理权限${param.roleId}",
-		"dataIndex" : "id",
+		"orderNum" : 1
+	},{
+		"name" : "是否有效",
+		"dataIndex" : "flagIsvalid",
 		"type" : "TextField",
 		"canList" : true,
-		"canSearch" : false,
-		"canAdd" : false,
-		"canBatchAdd" : false,
-		"canUpdate" : false,
-		"canReport" : false,
-		"canOrder" : false,
-		"display" : "<a href='http://www.baidu.com?id=${id}'>管理</a>",
-		"orderNum" : 3
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : "function(){return '${flagIsvalid}' == '1'? '是' :'否';}",
+		"orderNum" : 4
 	}],
-	"meuns" : [],
-	"isPrepared" : true,
-	"canAdd" : true,
-	"canBatchAdd" : true,
+	"menus" : [{
+		"name" : "给角色添加权限",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : null,
+		"actionAddress" : '/role/priority/add/',
+		"ajaxReturn" : false,
+		"confirm": false,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	}],
+	"isPrepared" : false,
+	"canAdd" : false,
+	"canBatchAdd" : false,
 	"canDelete" : true,
-	"canUpdate" : true,
+	"canUpdate" : false,
 	"canSearch" : true
 }

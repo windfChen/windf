@@ -55,12 +55,11 @@
 		"display" : null,
 		"orderNum" : 3
 	}],
-	"meuns" : [],
+	"menus" : [],
 	"isPrepared" : true,
 	"canAdd" : true,
 	"canBatchAdd" : true,
 	"canDelete" : true,
 	"canUpdate" : true,
-	"canSearch" : true,
-	"dataSource" : "priorityDao"
+	"canSearch" : true
 }

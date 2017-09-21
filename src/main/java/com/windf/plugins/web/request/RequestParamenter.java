@@ -78,6 +78,28 @@ public class RequestParamenter {
 	}
 	
 	/**
+	 * 获取查询字符串中的参数
+	 * @return
+	 */
+	public Map<String, String> getQueryStringValues() {
+		Map<String, String> result = new HashMap<String, String>();
+		String queryString = request.getQueryString();
+		if (StringUtil.isNotEmpty(queryString)) {
+			String[] parameters = queryString.split("&");
+			for (String parameter : parameters) {
+				String[] parameterStrs = parameter.split("=");
+				if (parameterStrs != null && parameterStrs.length == 2) {
+					String key = parameterStrs[0];
+					String value = this.getString(key);
+					result.put(key, value);
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * 获取对象
 	 * @param clazz
 	 * @return

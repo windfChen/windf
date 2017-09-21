@@ -11,6 +11,7 @@ public class MenuConfig {
 	private String checkColumn = "id"; // 勾选操作functionB，所取的列
 	private String actionAddress;
 	private boolean isAjaxReturn;
+	private String confirm;	// 提示信息
 
 	private String title;
 	private List<FieldConfig> fields; // 如果有弹出框时候，每个列的配置
@@ -87,6 +88,14 @@ public class MenuConfig {
 
 	public void setOrderNum(Integer orderNum) {
 		this.orderNum = orderNum;
+	}
+
+	public String getConfirm() {
+		return confirm;
+	}
+
+	public void setConfirm(String confirm) {
+		this.confirm = confirm;
 	}
 
 }

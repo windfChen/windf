@@ -19,6 +19,7 @@
 				document.write("<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE8' >");
 			}
 			
+			var basePath = '${rc.contextPath}';
 			var resourceBasePath = '${rc.contextPath}/resources/';
 			var queryString = '${data.queryString}';
 			queryString = queryString == ''? '': '?' + queryString;
