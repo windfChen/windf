@@ -48,7 +48,6 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public String list() {
-		String code = getRequestCode();
 		Map<String, Object> condition = paramenter.getMap("condition");
 		String pageNoStr = paramenter.getString("page");
 		String pageSizeStr = paramenter.getString("limit");
@@ -62,7 +61,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 		Map<String, Object> result = null;
 		try {
-			Page<Map<String, Object>> page = this.getManagerGridService().list(code, condition, pageNo, pageSize);
+			Page<Map<String, Object>> page = this.getManagerGridService().list(condition, pageNo, pageSize);
 			result = new HashMap<String, Object>();
 			result.put("models", page.getData());
 			result.put("totalCount", page.getTotal());
@@ -77,12 +76,11 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/detail", method = {RequestMethod.GET})
 	public String detail() {
-		String code = getRequestCode();
 		String id = paramenter.getString("id");
 		
 		Object data = null;
 		try {
-			Object d = this.getManagerGridService().detail(code, id);
+			Object d = this.getManagerGridService().detail(id);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("entity", d);
 			List<Object> list = new ArrayList<Object>();
@@ -99,14 +97,13 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
-		String code = getRequestCode();
 		Object bean = paramenter.getMap("bean");
 		if (bean == null) {
 			bean = paramenter.getMap("entity");
 		}
 		
 		try {
-			this.getManagerGridService().save(code, bean);
+			this.getManagerGridService().save(bean);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,14 +113,13 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/update", method = {RequestMethod.POST})
 	public String update() {
-		String code = getRequestCode();
 		Object bean = paramenter.getMap("bean");
 		if (bean == null) {
 			bean = paramenter.getMap("entity");
 		}
 		
 		try {
-			this.getManagerGridService().update(code, bean);
+			this.getManagerGridService().update(bean);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +129,6 @@ public abstract class ManagerGridControler extends BaseControler {
 
 	@RequestMapping(value = "/delete", method = {RequestMethod.POST})
 	public String delete() {
-		String code = getRequestCode();
 		String ids = paramenter.getString("ids");
 		
 		List<String> idList = null;
@@ -146,7 +141,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		}
 		
 		try {
-			this.getManagerGridService().delete(code, idList);
+			this.getManagerGridService().delete(idList);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -39,7 +39,7 @@ public abstract class ManagerGirdiServiceImpl implements ManageGirdService{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Page<Map<String, Object>> list(String code, Map<String, Object> condition, Integer pageNo, Integer pageSize)
+	public Page<Map<String, Object>> list(Map<String, Object> condition, Integer pageNo, Integer pageSize)
 			throws UserException, CodeException, DataAccessException {
 		
 		Page<Map<String, Object>> page = new Page<Map<String, Object>>(Long.valueOf(pageNo), pageSize);
@@ -51,26 +51,26 @@ public abstract class ManagerGirdiServiceImpl implements ManageGirdService{
 	}
 
 	@Override
-	public int save(String code, Object bean) throws Exception {
+	public int save(Object bean) throws Exception {
 		WritableDao writableDao = this.getGridDao();
 		return writableDao.insert(bean);
 	}
 
 	@Override
-	public Object detail(String code, Serializable id) throws Exception {
+	public Object detail(Serializable id) throws Exception {
 		WritableDao writableDao = this.getGridDao();
 		return writableDao.find(id);
 	}
 
 	@Override
-	public int update(String code, Object bean) throws Exception {
+	public int update(Object bean) throws Exception {
 		WritableDao writableDao = this.getGridDao();
 		return writableDao.update(bean);
 		
 	}
 
 	@Override
-	public int delete(String code, List<? extends Serializable> id) throws Exception {
+	public int delete(List<? extends Serializable> id) throws Exception {
 		WritableDao writableDao = this.getGridDao();
 		return writableDao.delete(id);
 	}
