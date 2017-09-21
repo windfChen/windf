@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -22,10 +20,7 @@ import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.web.BaseControler;
 
 public abstract class ManagerGridControler extends BaseControler {
-	
-	@Resource
-	private ManageGirdService managerGridService;
-	
+		
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
 		return responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
@@ -39,7 +34,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 		GridConfig gridConfig = null;
 		try {
-			gridConfig = managerGridService.getGridConfig(code, roleId, condition);
+			gridConfig = this.getManagerGridService().getGridConfig(code, roleId, condition);
 		} catch (UserException e) {
 			e.printStackTrace();
 		} catch (CodeException e) {
@@ -67,7 +62,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 		Map<String, Object> result = null;
 		try {
-			Page<Map<String, Object>> page = managerGridService.list(code, condition, pageNo, pageSize);
+			Page<Map<String, Object>> page = this.getManagerGridService().list(code, condition, pageNo, pageSize);
 			result = new HashMap<String, Object>();
 			result.put("models", page.getData());
 			result.put("totalCount", page.getTotal());
@@ -87,7 +82,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 		Object data = null;
 		try {
-			Object d = managerGridService.detail(code, id);
+			Object d = this.getManagerGridService().detail(code, id);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("entity", d);
 			List<Object> list = new ArrayList<Object>();
@@ -111,7 +106,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		}
 		
 		try {
-			managerGridService.save(code, bean);
+			this.getManagerGridService().save(code, bean);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,7 +123,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		}
 		
 		try {
-			managerGridService.update(code, bean);
+			this.getManagerGridService().update(code, bean);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -151,13 +146,19 @@ public abstract class ManagerGridControler extends BaseControler {
 		}
 		
 		try {
-			managerGridService.delete(code, idList);
+			this.getManagerGridService().delete(code, idList);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return responseReturn.error(e.getMessage());
 		}
 	}
+	
+	/**
+	 * 获取管理表格服务
+	 * @return
+	 */
+	protected abstract ManageGirdService getManagerGridService();
 
 	/**
 	 * 获得请求地址，生成的code

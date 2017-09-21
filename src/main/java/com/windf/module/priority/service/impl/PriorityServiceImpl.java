@@ -6,9 +6,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.windf.core.general.dao.GridDao;
 import com.windf.module.priority.dao.PriorityDao;
 import com.windf.module.priority.entity.Priority;
 import com.windf.module.priority.service.PriorityService;
+import com.windf.plugins.manage.service.impl.ManagerGirdiServiceImpl;
 
 /**
  * 权限服务
@@ -16,7 +18,7 @@ import com.windf.module.priority.service.PriorityService;
  *
  */
 @Service
-public class PriorityServiceImpl implements PriorityService {
+public class PriorityServiceImpl extends ManagerGirdiServiceImpl implements PriorityService {
 	
 	@Resource
 	private PriorityDao priorityDao;
@@ -24,6 +26,11 @@ public class PriorityServiceImpl implements PriorityService {
 	@Override
 	public List<Priority> getPrioritiesByUser(String userId) {
 		return null;
+	}
+
+	@Override
+	public GridDao getGridDao() {
+		return priorityDao;
 	}
 	
 }
