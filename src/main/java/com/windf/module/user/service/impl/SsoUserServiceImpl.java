@@ -1,7 +1,6 @@
 package com.windf.module.user.service.impl;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,6 @@ import com.windf.module.user.dao.SsoUserDao;
 import com.windf.module.user.entity.SsoUser;
 import com.windf.module.user.modle.LoginSubject;
 import com.windf.module.user.service.SsoUserService;
-import com.windf.plugins.web.WebContext;
 
 @Service
 public class SsoUserServiceImpl implements SsoUserService {
