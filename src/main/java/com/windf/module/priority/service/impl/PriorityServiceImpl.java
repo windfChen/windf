@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.general.dao.GridDao;
+import com.windf.core.general.dao.CrudDao;
 import com.windf.module.priority.dao.PriorityDao;
 import com.windf.module.priority.entity.Priority;
 import com.windf.module.priority.service.PriorityService;
@@ -29,7 +29,7 @@ public class PriorityServiceImpl extends ManagerGirdiServiceImpl implements Prio
 	}
 
 	@Override
-	public GridDao getGridDao() {
+	public CrudDao getGridDao() {
 		return priorityDao;
 	}
 	

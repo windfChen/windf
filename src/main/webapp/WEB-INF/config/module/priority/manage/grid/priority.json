@@ -40,20 +40,6 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 4
-	},
-	{
-		"name" : "访问方式",
-		"dataIndex" : "method",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"orderNum" : 3
 	}],
 	"menus" : [],
 	"isPrepared" : true,

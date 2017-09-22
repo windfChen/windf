@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.windf.core.bean.Page;
-import com.windf.core.general.dao.GridDao;
+import com.windf.core.general.dao.CrudDao;
 import com.windf.module.priority.dao.RolePriorityDao;
 import com.windf.module.priority.service.RolePriorityService;
 import com.windf.plugins.manage.service.impl.ManagerGirdiServiceImpl;
@@ -21,7 +21,7 @@ public class RolePriorityServiceImpl extends ManagerGirdiServiceImpl implements 
 	private RolePriorityDao rolePriorityDao;
 
 	@Override
-	public GridDao getGridDao() {
+	public CrudDao getGridDao() {
 		return rolePriorityDao;
 	}
 

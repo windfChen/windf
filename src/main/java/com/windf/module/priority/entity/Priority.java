@@ -16,7 +16,6 @@ public class Priority extends AbstractBean {
 	private PriorityGroup priorityGroup;
 	private String name;
 	private String url;
-	private String method; // 请求的方法：get、post
 
 	public String getId() {
 		return id;
@@ -48,14 +47,6 @@ public class Priority extends AbstractBean {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getMethod() {
-		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 
 }

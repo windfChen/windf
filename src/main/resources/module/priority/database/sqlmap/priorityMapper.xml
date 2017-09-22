@@ -27,14 +27,11 @@
 		 <if test="url != null">    
 	        and url like CONCAT('%',#{url},'%')
 	    </if>   
-		 <if test="method != null">    
-	        and method like CONCAT('%',#{method},'%')
-	    </if>
     </select>
     
      <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
        SELECT
-			id, name, url, method
+			id, name, url
 		FROM 
 			priority t
 		WHERE 1=1
@@ -45,9 +42,6 @@
 			 <if test="param1.url != null">    
 		        and url like CONCAT('%',#{param1.url},'%')
 		    </if>   
-			 <if test="param1.method != null">    
-		        and method like CONCAT('%',#{param1.method},'%')
-		    </if>     
 		</if>
 	    <if test="param2 != null and param3 != null"> 
 	     LIMIT #{param2}, #{param3}
@@ -56,20 +50,20 @@
     
     <select id="find" parameterType="string" resultType="java.util.HashMap" >
      	 SELECT
-			id, name, url, method
+			id, name, url
 		FROM 
 			priority t
 		WHERE id = #{param1}
     </select>
     
     <insert id="insert" parameterType="java.util.HashMap" keyProperty="id">
-       INSERT INTO priority (name, url, method)
+       INSERT INTO priority (name, url)
 		VALUES
-			(#{name}, #{url}, #{method})
+			(#{name}, #{url})
     </insert>
     
     <update id="update" parameterType="java.util.HashMap" >
-        update priority set name = #{name}, url = #{url}, method = #{method}
+        update priority set name = #{name}, url = #{url}
         where id = #{id}
     </update>
     

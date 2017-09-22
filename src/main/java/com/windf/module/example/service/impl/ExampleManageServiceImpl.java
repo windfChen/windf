@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.general.dao.GridDao;
+import com.windf.core.general.dao.CrudDao;
 import com.windf.module.example.dao.ExampleDao;
 import com.windf.module.example.service.ExampleManageService;
 import com.windf.plugins.manage.service.impl.ManagerGirdiServiceImpl;
@@ -16,7 +16,7 @@ public class ExampleManageServiceImpl extends ManagerGirdiServiceImpl implements
 	private ExampleDao exampleDao;
 
 	@Override
-	public GridDao getGridDao() {
+	public CrudDao getGridDao() {
 		return exampleDao;
 	}
 

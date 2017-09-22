@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.general.dao.GridDao;
+import com.windf.core.general.dao.CrudDao;
 import com.windf.module.priority.dao.RoleDao;
 import com.windf.module.priority.service.RoleService;
 import com.windf.plugins.manage.service.impl.ManagerGirdiServiceImpl;
@@ -21,7 +21,7 @@ public class RoleServiceImpl extends ManagerGirdiServiceImpl implements RoleServ
 	private RoleDao roleDao;
 
 	@Override
-	public GridDao getGridDao() {
+	public CrudDao getGridDao() {
 		return roleDao;
 	}
 	

@@ -8,7 +8,7 @@ import com.windf.core.bean.Page;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
-import com.windf.core.general.dao.GridDao;
+import com.windf.core.general.dao.CrudDao;
 import com.windf.core.general.dao.WritableDao;
 import com.windf.plugins.manage.bean.GridConfig;
 import com.windf.plugins.manage.service.ManageGirdService;
@@ -19,7 +19,7 @@ public abstract class ManagerGirdiServiceImpl implements ManageGirdService{
 	 * 获取gridDao
 	 * @return
 	 */
-	public abstract GridDao getGridDao() ;
+	public abstract CrudDao getGridDao() ;
 
 	@Override
 	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) throws UserException, CodeException {

@@ -3,9 +3,9 @@ package com.windf.module.priority.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.windf.core.general.dao.GridDao;
+import com.windf.core.general.dao.CrudDao;
 
-public interface RolePriorityDao extends GridDao {
+public interface RolePriorityDao extends CrudDao {
 	/**
 	 * 建立角色和权限的关系
 	 * @param roleId 角色id

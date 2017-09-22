@@ -1107,7 +1107,7 @@ function initGrid (gridConfig) {
 					name: 'entity.' + c.dataIndex,
 					fieldLabel: c.name + '*',
 					allowBlank: false,
-					maxLength: 50,
+					maxLength: 500,
 					regex: new RegExp(/^(\S|\S.*\S)$/),
 					regexText: '输入格式：不能以空格开头和结尾',
 					anchor: '90%'
