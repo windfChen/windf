@@ -8,7 +8,7 @@ import com.windf.core.bean.Page;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
-import com.windf.core.general.service.GridService;
+import com.windf.core.general.service.CrudService;
 import com.windf.plugins.manage.bean.GridConfig;
 
 /**
@@ -17,7 +17,7 @@ import com.windf.plugins.manage.bean.GridConfig;
  * @author chenyafeng
  *
  */
-public interface ManageGirdService extends GridService {
+public interface ManageGirdService extends CrudService {
 	/**
 	 * 获得表格配置
 	 * @param code
