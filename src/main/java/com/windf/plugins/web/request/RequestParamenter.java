@@ -10,34 +10,109 @@ import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.BeanUtil;
 
 public class RequestParamenter {
-	
+
 	protected HttpServletRequest request;
-	
+
 	public RequestParamenter(HttpServletRequest request) {
 		this.request = request;
 	}
 
 	/**
 	 * 获取参数
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public String getString(String name) {
 		return request.getParameter(name);
 	}
-	
+
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public Integer getInteger(String name) {
+		return this.getInteger(name, null);
+	}
+
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public Long getLong(String name) {
+		return this.getLong(name, null);
+	}
+
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public Integer getInteger(String name, Integer defaultValue) {
+		Integer result = defaultValue;
+		String strValue = request.getParameter(name);
+		try {
+			result = Integer.parseInt(strValue);
+		} catch (Exception e) {
+		}
+		return result;
+	}
+
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public Long getLong(String name, Long defaultValue) {
+		Long result = defaultValue;
+		String strValue = request.getParameter(name);
+		try {
+			result = Long.parseLong(strValue);
+		} catch (Exception e) {
+		}
+		return result;
+	}
+
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public Double getDouble(String name, Double defaultValue) {
+		Double result = defaultValue;
+		String strValue = request.getParameter(name);
+		try {
+			result = Double.parseDouble(strValue);
+		} catch (Exception e) {
+		}
+		return result;
+	}
+
 	/**
 	 * 获得map形式的parameter
+	 * 
 	 * @param name
 	 * @return
 	 */
 	public Map<String, Object> getMap(String name) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+
 		String nameKey = name + ".";
-		
+
 		@SuppressWarnings("rawtypes")
-		Enumeration  enumeration = request.getParameterNames();
+		Enumeration enumeration = request.getParameterNames();
 		while (enumeration.hasMoreElements()) {
 			String parameterName = (String) enumeration.nextElement();
 			if (parameterName.startsWith(nameKey)) {
@@ -47,25 +122,26 @@ public class RequestParamenter {
 					result.put(key, value);
 				}
 			}
-			
+
 		}
-		
+
 		if (result.size() > 0) {
 			return result;
 		} else {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 获得所有参数
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getAll() {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
-		Enumeration<String>  enumeration = request.getParameterNames();
+
+		Enumeration<String> enumeration = request.getParameterNames();
 		while (enumeration.hasMoreElements()) {
 			String key = (String) enumeration.nextElement();
 			String value = this.getString(key);
@@ -73,12 +149,13 @@ public class RequestParamenter {
 				result.put(key, value);
 			}
 		}
-			
+
 		return result;
 	}
-	
+
 	/**
 	 * 获取查询字符串中的参数
+	 * 
 	 * @return
 	 */
 	public Map<String, String> getQueryStringValues() {
@@ -95,12 +172,13 @@ public class RequestParamenter {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 获取对象
+	 * 
 	 * @param clazz
 	 * @return
 	 */
@@ -109,9 +187,10 @@ public class RequestParamenter {
 		T result = (T) BeanUtil.getObjectByMap(clazz, request.getParameterMap());
 		return result;
 	}
-	
+
 	/**
 	 * 设置值
+	 * 
 	 * @param name
 	 * @param value
 	 */
