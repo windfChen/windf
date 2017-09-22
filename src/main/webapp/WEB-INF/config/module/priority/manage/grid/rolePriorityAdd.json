@@ -1,5 +1,5 @@
 {
-	"title": "标题123",
+	"title": "为角色【${param.roleName}】添加权限",
 	"columns": [{
 		"name" : "id",
 		"dataIndex" : "id",
@@ -14,7 +14,7 @@
 		"display" : null,
 		"orderNum" : 2
 	},{
-		"name" : "姓名",
+		"name" : "名称",
 		"dataIndex" : "name",
 		"type" : "TextField",
 		"canList" : true,
@@ -28,8 +28,8 @@
 		"orderNum" : 1
 	},
 	{
-		"name" : "昵称",
-		"dataIndex" : "nickName",
+		"name" : "URL",
+		"dataIndex" : "url",
 		"type" : "TextField",
 		"canList" : true,
 		"canSearch" : true,
@@ -42,8 +42,8 @@
 		"orderNum" : 4
 	},
 	{
-		"name" : "年龄",
-		"dataIndex" : "age",
+		"name" : "访问方式",
+		"dataIndex" : "method",
 		"type" : "TextField",
 		"canList" : true,
 		"canSearch" : true,
@@ -54,36 +54,34 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 3
-	},{
-		"name" : "自述",
-		"dataIndex" : "age",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : false,
-		"canAdd" : false,
-		"canBatchAdd" : false,
-		"canUpdate" : false,
-		"canReport" : false,
-		"canOrder" : false,
-		"display" : "<a href='http://www.baidu.com?id=${id}'>我叫${name}，字${nickName},今年${value}岁了</a>",
-		"orderNum" : 6
 	}],
 	"menus" : [{
-		"name" : "生成序号",
-		"canSelect" : true,
-		"isSingleSelect" : true,
+		"name" : "添加选中的权限",
+		"canSelect" : false,
+		"isSingleSelect" : false,
 		"checkColumn" : "id",
-		"actionAddress" : true,
-		"isAjaxReturn" : true,
+		"actionAddress" : 'save.json${queryString}',
+		"ajaxReturn" : true,
+		"confirm": '',
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	},{
+		"name" : "返回",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : '',
+		"actionAddress" : '/role/priority/${queryString}',
+		"ajaxReturn" : false,
+		"confirm": false,
 		"title" : null,
 		"fields" : null,
 		"orderNum" : 1
 	}],
-	"isPrepared" : true,
-	"canAdd" : true,
-	"canBatchAdd" : true,
-	"canDelete" : true,
-	"canUpdate" : true,
-	"canSearch" : true,
-	"dataSource" : "exampleDao"
+	"isPrepared" : false,
+	"canAdd" : false,
+	"canBatchAdd" : false,
+	"canDelete" : false,
+	"canUpdate" : false,
+	"canSearch" : true
 }

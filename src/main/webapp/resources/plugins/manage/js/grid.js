@@ -401,6 +401,10 @@ function initGrid (gridConfig) {
 						result = result.replace('${' + c1.dataIndex + '}', record.data[c1.dataIndex]);
 					}
 					
+					if (result.indexOf('href="/') > 0 || result.indexOf('href=\'/') > 0) {
+						result = result.replace('href="/', 'href="' + basePath + '/').replace('href=\'/', 'href=\'' + basePath + '/');
+					}
+					
 					if (result.startsWith('function')) {
 						eval('result = ' + result + '().toString();');
 					}
@@ -474,7 +478,10 @@ function initGrid (gridConfig) {
 				
 				var menuFunciotn = function(){
 					if (menu.actionAddress) {
-						var actionAddress = menu.actionAddress + queryString;
+						var actionAddress = menu.actionAddress;
+						if (actionAddress.indexOf('${queryString}') > 0) {
+							actionAddress = actionAddress.replace('${queryString}', queryString);
+						}
 						if (actionAddress.startsWith("/")) {
 							actionAddress = basePath + actionAddress;
 						}

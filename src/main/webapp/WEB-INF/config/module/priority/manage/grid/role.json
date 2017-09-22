@@ -52,15 +52,14 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a href='http://www.baidu.com?id=${id}'>管理</a>",
+		"display" : "<a href='/role/priority/?roleId=${id}&roleName=${name}'>管理</a>",
 		"orderNum" : 3
 	}],
-	"meuns" : [],
+	"menus" : [],
 	"isPrepared" : true,
 	"canAdd" : true,
 	"canBatchAdd" : true,
 	"canDelete" : true,
 	"canUpdate" : true,
-	"canSearch" : true,
-	"dataSource" : "roleDao"
+	"canSearch" : true
 }
