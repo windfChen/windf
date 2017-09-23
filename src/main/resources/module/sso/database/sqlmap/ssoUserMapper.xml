@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.windf.module.user.dao.SsoUserDao">
+<mapper namespace="com.windf.module.sso.dao.SsoUserDao">
 
-    <insert id="insert" parameterType="com.windf.module.user.entity.SsoUser" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.windf.module.sso.entity.SsoUser" useGeneratedKeys="true" keyProperty="id">
         insert into `user`(username,turename,password, email, phone, lastLoginIp, lastLoginTime) 
         	values(#{username},
         				#{turename},
@@ -15,19 +15,19 @@
         				now()
         				)
     </insert>
-    <select id="getById" parameterType="int" resultType="com.windf.module.user.entity.SsoUser">
+    <select id="getById" parameterType="int" resultType="com.windf.module.sso.entity.SsoUser">
        select * from `user` where id = #{id}
     </select>
-    <select id="getByUsername" parameterType="String" resultType="com.windf.module.user.entity.SsoUser">
+    <select id="getByUsername" parameterType="String" resultType="com.windf.module.sso.entity.SsoUser">
        select * from `user` where username = #{username}
     </select>
-    <update id="updatePhone" parameterType="com.windf.module.user.entity.SsoUser" >
+    <update id="updatePhone" parameterType="com.windf.module.sso.entity.SsoUser" >
         update `user` set phone = #{phone} where id = #{id}
     </update>
-    <update id="updatePassword" parameterType="com.windf.module.user.entity.SsoUser">
+    <update id="updatePassword" parameterType="com.windf.module.sso.entity.SsoUser">
         update `user` set password = #{password} where id = #{id}
     </update>
-    <update id="updateLogin" parameterType="com.windf.module.user.entity.SsoUser">
+    <update id="updateLogin" parameterType="com.windf.module.sso.entity.SsoUser">
         update `user` set lastLoginIp = #{lastLoginIp}, lastLoginTime=now() where id = #{id}
     </update>
     <delete id="deleteById" parameterType="int">

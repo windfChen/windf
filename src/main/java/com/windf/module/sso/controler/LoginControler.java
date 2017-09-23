@@ -1,4 +1,4 @@
-package com.windf.module.user.controler;
+package com.windf.module.sso.controler;
 
 import javax.annotation.Resource;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.core.exception.UserException;
-import com.windf.module.user.Constant;
-import com.windf.module.user.service.SsoUserService;
+import com.windf.module.sso.Constant;
+import com.windf.module.sso.service.SsoUserService;
 import com.windf.plugins.web.BaseControler;
 import com.windf.plugins.web.WebContext;
 

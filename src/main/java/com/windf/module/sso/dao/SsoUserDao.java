@@ -1,6 +1,6 @@
-package com.windf.module.user.dao;
+package com.windf.module.sso.dao;
 
-import com.windf.module.user.entity.SsoUser;
+import com.windf.module.sso.entity.SsoUser;
 
 public interface SsoUserDao  {
 	/**

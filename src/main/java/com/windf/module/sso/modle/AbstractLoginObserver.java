@@ -1,4 +1,4 @@
-package com.windf.module.user.modle;
+package com.windf.module.sso.modle;
 
 /**
  * 注册抽象类

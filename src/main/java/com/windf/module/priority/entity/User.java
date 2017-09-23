@@ -1,6 +1,6 @@
 package com.windf.module.priority.entity;
 
-import com.windf.module.user.entity.SsoUser;
+import com.windf.module.sso.entity.SsoUser;
 
 public class User extends SsoUser {
 

@@ -30,7 +30,7 @@ $(function(){
 				success : function(data){
 					submiting = false;
 					if (data.success == 'Y') {
-						window.location = 'index';
+						window.location = basePath + '/index';
 					} else {
 						alert(data.tip);
 					}

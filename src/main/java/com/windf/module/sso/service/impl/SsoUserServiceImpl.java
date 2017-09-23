@@ -1,4 +1,4 @@
-package com.windf.module.user.service.impl;
+package com.windf.module.sso.service.impl;
 
 import javax.annotation.Resource;
 
@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.frame.session.SessionContext;
-import com.windf.module.user.Constant;
-import com.windf.module.user.dao.SsoUserDao;
-import com.windf.module.user.entity.SsoUser;
-import com.windf.module.user.modle.LoginSubject;
-import com.windf.module.user.service.SsoUserService;
+import com.windf.module.sso.Constant;
+import com.windf.module.sso.dao.SsoUserDao;
+import com.windf.module.sso.entity.SsoUser;
+import com.windf.module.sso.modle.LoginSubject;
+import com.windf.module.sso.service.SsoUserService;
 
 @Service
 public class SsoUserServiceImpl implements SsoUserService {

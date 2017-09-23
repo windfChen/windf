@@ -1,10 +1,10 @@
-package com.windf.module.user;
+package com.windf.module.sso;
 
-import com.windf.module.user.entity.SsoUser;
+import com.windf.module.sso.entity.SsoUser;
 import com.windf.plugins.web.WebContext;
 
 public class Constant {
-	public static final String WEB_BASE_VIEW = "/module/user/";
+	public static final String WEB_BASE_VIEW = "/module/sso/";
 	
 	/**
 	 * 当前 session中当前用户的 key

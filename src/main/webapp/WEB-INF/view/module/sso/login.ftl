@@ -5,10 +5,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 <meta name="viewport" content="width=device-width, initial-scale=1"> 
 <title>login</title>
-<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/user/css/normalize.css" />
-<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/user/css/demo.css" />
+
+<script type="text/javascript">
+	var basePath = '${rc.contextPath}';
+	var resourceBasePath = '${rc.contextPath}/resources/';
+	var queryString = '${data.queryString}';
+	queryString = queryString == ''? '': '?' + queryString;
+</script>
+<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/sso/css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/sso/css/demo.css" />
 <!--必要样式-->
-<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/user/css/component.css" />
+<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/sso/css/component.css" />
 <!--[if IE]>
 <script src="js/html5.js"></script>
 <![endif]-->
@@ -27,7 +34,7 @@ input:-webkit-autofill {
 					<canvas id="demo-canvas"></canvas>
 					<div class="logo_box">
 						<h3>高教社登录</h3>
-						<form action="login.json" name="f" method="post" autocomplete="off">
+						<form action="${rc.contextPath}/login.json" name="f" method="post" autocomplete="off">
 							<div class="input_outer">
 								<span class="u_user"></span>
 								<input name="username" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入用户名" />
@@ -42,13 +49,13 @@ input:-webkit-autofill {
 				</div>
 			</div>
 		</div>
-		<script src="${rc.contextPath}/resources/module/user/js/TweenLite.min.js"></script>
-		<script src="${rc.contextPath}/resources/module/user/js/EasePack.min.js"></script>
-		<script src="${rc.contextPath}/resources/module/user/js/rAF.js"></script>
-		<script src="${rc.contextPath}/resources/module/user/js/demo-1.js"></script>
+		<script src="${rc.contextPath}/resources/module/sso/js/TweenLite.min.js"></script>
+		<script src="${rc.contextPath}/resources/module/sso/js/EasePack.min.js"></script>
+		<script src="${rc.contextPath}/resources/module/sso/js/rAF.js"></script>
+		<script src="${rc.contextPath}/resources/module/sso/js/demo-1.js"></script>
 		<script src="${rc.contextPath}/resources/common/plugins/jquery/jquery.js"></script>
 		<script src="${rc.contextPath}/resources/common/plugins/jquery/jquery.form.js"></script>
 		<script src="${rc.contextPath}/resources/common/js/MD5.js"></script>
-		<script src="${rc.contextPath}/resources/module/user/js/login.js"></script>
+		<script src="${rc.contextPath}/resources/module/sso/js/login.js"></script>
 	</body>
 </html>

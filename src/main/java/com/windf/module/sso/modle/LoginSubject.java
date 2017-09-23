@@ -1,4 +1,4 @@
-package com.windf.module.user.modle;
+package com.windf.module.sso.modle;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.windf.module.user.service;
+package com.windf.module.sso.service;
 
 import com.windf.core.exception.UserException;
-import com.windf.module.user.entity.SsoUser;
+import com.windf.module.sso.entity.SsoUser;
 
 public interface SsoUserService {
 	/**

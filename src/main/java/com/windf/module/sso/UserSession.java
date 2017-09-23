@@ -1,4 +1,4 @@
-package com.windf.module.user;
+package com.windf.module.sso;
 
 import com.windf.core.exception.CodeException;
 import com.windf.core.frame.session.SessionContext;

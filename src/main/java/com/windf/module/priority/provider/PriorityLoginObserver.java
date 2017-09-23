@@ -1,6 +1,6 @@
 package com.windf.module.priority.provider;
 
-import com.windf.module.user.modle.AbstractLoginObserver;
+import com.windf.module.sso.modle.AbstractLoginObserver;
 
 /**
  * 权限

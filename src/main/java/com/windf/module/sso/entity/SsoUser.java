@@ -1,4 +1,4 @@
-package com.windf.module.user.entity;
+package com.windf.module.sso.entity;
 
 import java.util.Date;
 
