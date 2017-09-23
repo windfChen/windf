@@ -1,6 +1,3 @@
-ALTER TABLE `sso_user`
-ADD COLUMN `fk_role_id`  varchar(50) NULL`;
-
 CREATE TABLE `priority_role` (
   `id` int(50) NOT NULL AUTO_INCREMENT,
   `code` varchar(10) DEFAULT NULL COMMENT '编号',

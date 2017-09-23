@@ -2,7 +2,7 @@ package com.windf.module.sso;
 
 import com.windf.core.exception.CodeException;
 import com.windf.core.frame.session.SessionContext;
-import com.windf.module.priority.entity.User;
+import com.windf.module.sso.entity.SsoUser;
 
 public class UserSession {
 
@@ -11,9 +11,9 @@ public class UserSession {
 	 * @return
 	 * @throws CodeException 
 	 */
-	public static User getCurrentUser() throws CodeException {
+	public static SsoUser getCurrentUser() throws CodeException {
 		// TODO 获取当前登录用户
-		return (User) SessionContext.get(Constant.SESSION_USER);
+		return (SsoUser) SessionContext.get(Constant.SESSION_USER);
 	}
 	
 }
