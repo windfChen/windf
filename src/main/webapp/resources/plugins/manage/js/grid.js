@@ -53,20 +53,35 @@ function initGrid (gridConfig) {
 	
 	/****************所有下拉框*start********************/
 	var comboBoxStory = {}
-	function getStory(fieldConfig) {
+	function getStory(c) {
 
-		var myStore = comboBoxStory[fieldConfig.dataIndex];
-		if (!myStore) {
-			myStore = new Ext.data.SimpleStore({
-				proxy: new Ext.data.HttpProxy({
-					url: basePath + fieldConfig.comboUrl
-				}),
-				fields: ['id', 'name'],
-				remoteSort: true
-			});
-			comboBoxStory[fieldConfig.dataIndex] = myStore;
-		}
-		return myStore;
+		return function(fieldConfig) {
+			var myStore = comboBoxStory[fieldConfig.dataIndex];
+			if (!myStore) {
+				if (c.comboUrl) {
+					myStore = new Ext.data.SimpleStore({
+						proxy: new Ext.data.HttpProxy({
+							url: basePath + fieldConfig.comboUrl
+						}),
+						fields: ['id', 'name'],
+						remoteSort: true
+					});
+				} else if (c.comboDataArray) {
+					var data = [];
+					for (var i = 0; i < c.comboDataArray.length; i++) {
+						var d = [c.comboDataArray[i].id, c.comboDataArray[i].name];
+						data[data.length] = d;
+					}
+					myStore = new Ext.data.SimpleStore({
+						data: data,
+						fields: ['id', 'name'],
+						remoteSort: true
+					});
+				}
+				comboBoxStory[fieldConfig.dataIndex] = myStore;
+			}
+			return myStore;
+		}(c);
 
 	}
 	/****************所有下拉框*end********************/

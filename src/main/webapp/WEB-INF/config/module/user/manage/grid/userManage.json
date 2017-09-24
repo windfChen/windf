@@ -39,14 +39,13 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
-		"comboUrl" : "/role/myList.json",
-		"comboDataArray" : [{"F":"女"},{"M":""男}],
+		"comboDataArray" : [{"id":"F","name":"女"},{"id":"M","name":"男"}],
 		"orderNum" : 4
 	},
 	{
 		"name" : "角色",
 		"dataIndex" : "role.name",
-		"type" : "TextField",
+		"type" : "ComboBox",
 		"canList" : true,
 		"canSearch" : true,
 		"canAdd" : true,
@@ -55,12 +54,13 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
+		"comboUrl" : "/role/myList.json",
 		"orderNum" : 4
 	},
 	{
 		"name" : "所属机构",
 		"dataIndex" : "organization.name",
-		"type" : "TextField",
+		"type" : "ComboBox",
 		"canList" : true,
 		"canSearch" : true,
 		"canAdd" : true,
@@ -69,6 +69,7 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
+		"comboUrl" : "/org/myList.json",
 		"orderNum" : 4
 	},
 	{

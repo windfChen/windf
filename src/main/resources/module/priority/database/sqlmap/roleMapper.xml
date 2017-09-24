@@ -70,7 +70,7 @@
     </insert>
     
     <update id="update" parameterType="java.util.HashMap" >
-        update priority_role set name = #{name}, code = #{code}
+        update priority_role set name = #{name}, code = #{code}, update_date = now()
         where id = #{id}
     </update>
     

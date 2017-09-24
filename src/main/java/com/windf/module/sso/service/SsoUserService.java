@@ -9,7 +9,7 @@ public interface SsoUserService {
 	 * @param ssoUser
 	 * @throws UserMessageException
 	 */
-	void addUser(SsoUser ssoUser) throws UserException;
+	int addUser(SsoUser ssoUser) throws UserException;
 	/**
 	 * 用户登录
 	 * @param username

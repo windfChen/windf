@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.frame.session.SessionContext;
+import com.windf.core.util.StringUtil;
 import com.windf.module.sso.Constant;
 import com.windf.module.sso.dao.SsoUserDao;
 import com.windf.module.sso.entity.SsoUser;
@@ -20,8 +21,16 @@ public class SsoUserServiceImpl implements SsoUserService {
 	private SsoUserDao ssoUserAccess;
 
 	@Override
-	public void addUser(SsoUser ssoUser) throws UserException {
-		ssoUserAccess.insert(ssoUser);
+	public int addUser(SsoUser ssoUser) throws UserException {
+		
+		/*
+		 * 设置默认密码
+		 */
+		if(StringUtil.isEmpty(ssoUser.getPassword())) {
+			ssoUser.setPassword(Constant.DEFAULT_USER_PASSWORD);
+		}
+		
+		return ssoUserAccess.insert(ssoUser);
 	}
 
 	@Override

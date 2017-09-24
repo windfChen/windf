@@ -13,6 +13,13 @@
 			parent_ids LIKE CONCAT('%,', #{param1},',%')
     </select>
     
+    <select id="getMyList" resultType="com.windf.core.general.bean.NameBean">
+       SELECT
+			id as id, name
+		FROM
+			organization t
+    </select>
+    
      <select id="findChildren" parameterType="int" resultType="com.windf.module.organization.entity.Organization">
        SELECT
 			t.id, t.fk_parent_id as `parent.id`, t.name, t.sort, t.note
