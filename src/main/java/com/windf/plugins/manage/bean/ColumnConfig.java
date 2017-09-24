@@ -2,7 +2,6 @@ package com.windf.plugins.manage.bean;
 
 public class ColumnConfig extends FieldConfig {
 
-
 	private boolean canList;
 	private boolean canSearch;
 	private boolean canAdd;
@@ -12,8 +11,6 @@ public class ColumnConfig extends FieldConfig {
 	private boolean canOrder;
 	
 	private String display;	// 显示用的模板,eg：<a href="{m.id}">{m,value}</a>
-	
-	private Integer orderNum;	// 用于列之间排序
 
 	public boolean isCanSearch() {
 		return canSearch;
@@ -69,14 +66,6 @@ public class ColumnConfig extends FieldConfig {
 
 	public void setDisplay(String display) {
 		this.display = display;
-	}
-
-	public Integer getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(Integer orderNum) {
-		this.orderNum = orderNum;
 	}
 
 	public boolean isCanList() {

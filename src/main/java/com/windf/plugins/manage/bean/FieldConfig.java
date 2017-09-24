@@ -8,13 +8,15 @@ public class FieldConfig {
 	private String dataIndex;
 	private String name;
 	private String type;
-	
+
 	private String regex;
 	private String regexText;
-	
+
 	private String comboUrl;
-	private List<Map<String, Serializable>> comboDataArray; 
-	
+	private List<Map<String, Serializable>> comboDataArray;
+
+	private Integer orderNum; // 用于列之间排序
+
 	public String getDataIndex() {
 		return dataIndex;
 	}
@@ -69,6 +71,14 @@ public class FieldConfig {
 
 	public void setComboDataArray(List<Map<String, Serializable>> comboDataArray) {
 		this.comboDataArray = comboDataArray;
+	}
+
+	public Integer getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
 	}
 
 }
