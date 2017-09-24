@@ -1,10 +1,7 @@
 package com.windf.plugins.manage.bean;
 
-public class ColumnConfig {
+public class ColumnConfig extends FieldConfig {
 
-	private String name;
-	private String dataIndex;
-	private String type;
 
 	private boolean canList;
 	private boolean canSearch;
@@ -17,30 +14,6 @@ public class ColumnConfig {
 	private String display;	// 显示用的模板,eg：<a href="{m.id}">{m,value}</a>
 	
 	private Integer orderNum;	// 用于列之间排序
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDataIndex() {
-		return dataIndex;
-	}
-
-	public void setDataIndex(String dataIndex) {
-		this.dataIndex = dataIndex;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	public boolean isCanSearch() {
 		return canSearch;
