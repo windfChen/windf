@@ -30,13 +30,10 @@ public class RoleControler extends BaseControler {
 	public String myList() {
 		List<NameBean> data = roleService.getMyList();
 		// TODO 为了ext手动修改key为字符串
-		List<Map<String, String>> result = new ArrayList<Map<String, String>>();
+		List<String[]> result = new ArrayList<String[]>();
 		for (int i = 0; i < data.size(); i++) {
 			NameBean nameBean = data.get(i);
-			Map<String, String> m = new HashMap<String, String>();
-			m.put("id", nameBean.getId() + "");
-			m.put("name", nameBean.getName());
-			result.add(m);
+			result.add(new String[]{nameBean.getId().toString(), nameBean.getName()});
 		}
 		return responseReturn.returnData(result);
 	}
