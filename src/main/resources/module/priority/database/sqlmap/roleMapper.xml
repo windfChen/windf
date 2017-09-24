@@ -14,6 +14,14 @@
 			u.id = #{param1}
     </select>
     
+    <select id="getMyList" resultType="com.windf.core.general.bean.NameBean">
+       SELECT
+			id as id, name
+		FROM
+			priority_role t
+    </select>
+    
+    
      <select id="count" parameterType="java.util.HashMap" resultType="long" >
        SELECT
 			count(id)

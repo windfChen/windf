@@ -52,21 +52,23 @@ function initGrid (gridConfig) {
 	var g_total = 0;
 	
 	/****************所有下拉框*start********************/
-	// TODO2 下拉框设置
-	var courseType_nameStore = new Ext.data.SimpleStore({
-			proxy: new Ext.data.HttpProxy({
-				url: '/manager/basic/peTchCourse_comboDate.action?menuId=1001&menuName=%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8&column=courseType.name'
-			}),
-			fields: ['id', 'name'],
-			remoteSort: true
-		});
-	var peSchool_nameStore = new Ext.data.SimpleStore({
-			proxy: new Ext.data.HttpProxy({
-				url: '/manager/basic/peTchCourse_comboDate.action?menuId=1001&menuName=%E8%AF%BE%E7%A8%8B%E5%88%97%E8%A1%A8&column=peSchool.name'
-			}),
-			fields: ['id', 'name'],
-			remoteSort: true
-		});
+	var comboBoxStory = {}
+	function getStory(fieldConfig) {
+
+		var myStore = comboBoxStory[fieldConfig.dataIndex];
+		if (!myStore) {
+			myStore = new Ext.data.SimpleStore({
+				proxy: new Ext.data.HttpProxy({
+					url: basePath + fieldConfig.comboUrl
+				}),
+				fields: ['id', 'name'],
+				remoteSort: true
+			});
+			comboBoxStory[fieldConfig.dataIndex] = myStore;
+		}
+		return myStore;
+
+	}
 	/****************所有下拉框*end********************/
 
 	/****************数据加载*start********************/
@@ -836,9 +838,8 @@ function initGrid (gridConfig) {
 					anchor: '90%'
 				});
 			} else if (c.type == 'ComboBox') {
-				/*
-				var courseType_name = new Ext.form.WhatyComboBoxForAdd({
-					store: courseType_nameStore,
+				item = new Ext.form.WhatyComboBoxForAdd({
+					store: getStory(c),
 					listeners: {
 						'blur': function () {
 							if (this.getRawValue() == '' || this.getValue() == '') {
@@ -853,9 +854,9 @@ function initGrid (gridConfig) {
 					forceSelection: true,
 					allowBlank: true,
 					typeAhead: true,
-					fieldLabel: '课程分类',
-					name: 'bean.courseType.name',
-					id: '_bean.courseType.name',
+					fieldLabel: c.name,
+					name: 'entity.' + c.dataIndex,
+					id: '_entity.' + c.dataIndex,
 					triggerAction: 'all',
 					editable: true,
 					mode: 'local',
@@ -863,7 +864,6 @@ function initGrid (gridConfig) {
 					anchor: '90%',
 					blankText: ''
 				});
-				*/
 			} else if (c.type == 'DateField') {
 				/*
 				var startDate = new Ext.form.DateField({
@@ -1161,58 +1161,62 @@ function initGrid (gridConfig) {
 				oldValue = oldInput.value;
 			}
 			
-			var _s_textField = new Ext.form.TextField({
-				fieldLabel: c.name,
-				value: oldValue,
-				name: '_s_' + c.dataIndex,
-				id: '_s_' + c.dataIndex
-			});
-			_s_textField.on('render', function () {
-				this.getEl().on('dblclick', function () {
-					search('_s_' + c.dataIndex, null, c.type);
+			var field;
+			if (c.type == "TextField") {
+				field = new Ext.form.TextField({
+					fieldLabel: c.name,
+					value: oldValue,
+					name: '_s_' + c.dataIndex,
+					id: '_s_' + c.dataIndex
 				});
-			});
+				field.on('render', function () {
+					this.getEl().on('dblclick', function () {
+						search('_s_' + c.dataIndex, null, c.type);
+					});
+				});
+			} else if (c.type == "ComboBox") {
+				field = new Ext.form.WhatyComboBox({
+					store: getStory(c),
+					editable: true,
+					listeners: {
+						'blur': function () {
+							if (this.getRawValue() == '' || this.getValue() == '') {
+								this.setRawValue('');
+								this.setValue('');
+							}
+						}
+					},
+					valueField: 'id',
+					displayField: 'name',
+					value: '',
+					selectOnFocus: true,
+					allowBlank: true,
+					fieldLabel: c.name,
+					name: '_s_' + c.dataIndex,
+					id: '_s_' + c.dataIndex,
+					triggerAction: 'all',
+					emptyText: '',
+					anchor: '90%',
+					blankText: ''
+				});
+				field.on('render', function () {
+					this.getEl().on('dblclick', function () {
+						search('_s_', getStory(c), 'ComboBox1');
+					});
+				});
+
+			}
+			
 			
 			var item = {
 				columnWidth: 280 / panelW,
 				layout: 'form',
-				items: [_s_textField]
+				items: [field]
 			}
 			searchItems[searchItems.length] = item;
 		}
 		
 		//搜索
-		/*
-		var _s_courseType_name = new Ext.form.WhatyComboBox({
-				store: courseType_nameStore,
-				editable: true,
-				listeners: {
-					'blur': function () {
-						if (this.getRawValue() == '' || this.getValue() == '') {
-							this.setRawValue('');
-							this.setValue('');
-						}
-					}
-				},
-				valueField: 'id',
-				displayField: 'name',
-				value: '',
-				selectOnFocus: true,
-				allowBlank: true,
-				fieldLabel: '课程分类',
-				name: '_s_courseType_name',
-				id: '_s_courseType_name',
-				triggerAction: 'all',
-				emptyText: '',
-				anchor: '90%',
-				blankText: ''
-			});
-		_s_courseType_name.on('render', function () {
-			_s_courseType_name.getEl().on('dblclick', function () {
-				search('_s_courseType_name', courseType_nameStore, 'ComboBox1');
-			});
-		});
-		*/
 		var _s_search = new Ext.Button({
 			type: 'submit',
 			text: '搜索',

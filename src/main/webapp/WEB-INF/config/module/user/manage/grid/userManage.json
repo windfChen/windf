@@ -30,7 +30,7 @@
 	{
 		"name" : "性别",
 		"dataIndex" : "sex",
-		"type" : "combobox",
+		"type" : "ComboBox",
 		"canList" : true,
 		"canSearch" : true,
 		"canAdd" : true,
@@ -39,6 +39,7 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
+		"comboUrl" : "/role/myList.json",
 		"comboDataArray" : [{"F":"女"},{"M":""男}],
 		"orderNum" : 4
 	},
