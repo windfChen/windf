@@ -22,7 +22,6 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:spring/applicationContext.xml
-			classpath:plugins/mybatis/applicationContext_dataSource.xml
 		</param-value>
 	</context-param>
 
