@@ -6,6 +6,7 @@ import com.windf.plugins.web.BaseControler;
 public class PageReturn extends AbstractResponseRetrun {
 	
 	private BaseControler baseControler;
+	private String redirectUrl;
 	
 	public PageReturn(BaseControler baseControler) {
 		this.baseControler = baseControler;
@@ -86,7 +87,14 @@ public class PageReturn extends AbstractResponseRetrun {
 			// TODO 设置默认路径
 //			page = baseControler.getFullPath();
 		}
+		// TODO 设置跳转的数据
 		
 		return page;
+	}
+
+	@Override
+	public String redirect(String url) {
+		redirectUrl = "redirect:" + url;
+		return redirectUrl;
 	}
 }

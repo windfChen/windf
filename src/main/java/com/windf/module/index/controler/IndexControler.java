@@ -5,7 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.windf.core.exception.CodeException;
 import com.windf.module.index.Constant;
+import com.windf.module.sso.UserSession;
 import com.windf.plugins.web.BaseControler;
 
 @Controller
@@ -20,6 +22,13 @@ public class IndexControler extends BaseControler{
 	 */
 	@RequestMapping(value = {"/", ""}, method = {RequestMethod.GET})
 	public String index() {
+		try {
+			if (!UserSession.isLogined()) {
+				return responseReturn.redirect("/login");
+			}
+		} catch (CodeException e) {
+			e.printStackTrace();
+		}
 		return responseReturn.page(Constant.WEB_BASE_VIEW + "/index");
 	}
 	

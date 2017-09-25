@@ -15,5 +15,14 @@ public class UserSession {
 		// TODO 获取当前登录用户
 		return (SsoUser) SessionContext.get(Constant.SESSION_USER);
 	}
+
+	/**
+	 * 是否已经登录过
+	 * @return
+	 * @throws CodeException 
+	 */
+	public static boolean isLogined() throws CodeException {
+		return getCurrentUser() != null;
+	}
 	
 }
