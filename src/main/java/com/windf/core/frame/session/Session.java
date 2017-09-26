@@ -11,6 +11,9 @@ public interface Session {
 
 	/**
 	 * 设置键值
+	 * @param key
+	 * @param obj
+	 * @return 是否替换
 	 */
 	boolean set(String key, Object obj);
 

@@ -1,6 +1,6 @@
 package com.windf.core.frame.init;
 
-public class InitializationControler implements Initialization {
+public class InitializationControler implements Initializationable {
 
 	@Override
 	public boolean init() {

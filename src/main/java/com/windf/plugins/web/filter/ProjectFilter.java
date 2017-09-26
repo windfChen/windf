@@ -10,27 +10,19 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 public class ProjectFilter implements Filter {
-
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.err.println(333);
-		
+		FilterControler.getInstance().doFilter(request, response, chain);
 	}
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
 	}
-
-
-	
 
 }
