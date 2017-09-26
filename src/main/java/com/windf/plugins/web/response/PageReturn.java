@@ -1,6 +1,7 @@
 package com.windf.plugins.web.response;
 
 import com.windf.core.util.StringUtil;
+import com.windf.module.user.UserSession;
 import com.windf.plugins.web.BaseControler;
 
 public class PageReturn extends AbstractResponseRetrun {
@@ -11,7 +12,7 @@ public class PageReturn extends AbstractResponseRetrun {
 	public PageReturn(BaseControler baseControler) {
 		this.baseControler = baseControler;
 	}
-	
+
 	/**
 	 * 返回错误页面提示
 	 * @return
@@ -82,6 +83,8 @@ public class PageReturn extends AbstractResponseRetrun {
 		if (StringUtil.isNotEmpty(message)) {
 			baseControler.paramenter.setValue(RESULT_MESSAGE_KEY, message);
 		}
+
+		baseControler.paramenter.setValue("user", UserSession.getCurrentUser());
 		
 		if (page == null) {
 			// TODO 设置默认路径
