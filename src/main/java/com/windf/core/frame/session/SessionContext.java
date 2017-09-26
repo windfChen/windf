@@ -4,7 +4,7 @@ import com.windf.core.exception.CodeException;
 
 public class SessionContext {
 
-	private static ThreadLocal<Session> sessionThread = new ThreadLocal<>();
+	private static ThreadLocal<Session> sessionThread = new ThreadLocal<Session>();
 	
 	public static void start(Session session) {
 		sessionThread.set(session);

@@ -25,7 +25,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
 		responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
-		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		String queryString = request.getQueryString();
 		data.put("queryString", queryString);
 		return responseReturn.successData(data);
