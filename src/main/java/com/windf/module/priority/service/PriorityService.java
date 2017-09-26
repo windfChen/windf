@@ -11,5 +11,5 @@ public interface PriorityService extends ManageGirdService{
 	 * @param userId
 	 * @return
 	 */
-	List<Priority> getPrioritiesByUser(String userId);
+	List<Priority> getPrioritiesByRoleId(Integer userId);
 }

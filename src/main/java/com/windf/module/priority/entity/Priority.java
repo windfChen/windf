@@ -12,16 +12,16 @@ public class Priority extends AbstractBean {
 
 	private static final long serialVersionUID = 8417902924316536994L;
 
-	private String id;
+	private Integer id;
 	private PriorityGroup priorityGroup;
 	private String name;
 	private String url;
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -1,5 +1,13 @@
 package com.windf.module.priority;
 
+import java.util.List;
+
+import com.windf.core.exception.CodeException;
+import com.windf.core.frame.session.SessionContext;
+import com.windf.core.util.CollectionUtil;
+import com.windf.core.util.StringUtil;
+import com.windf.module.priority.entity.Priority;
+
 public class PriorityContext {
 		
 		/**
@@ -7,8 +15,21 @@ public class PriorityContext {
 		 * @param path
 		 * @return
 		 */
+		@SuppressWarnings("unchecked")
 		public static boolean verify(String path) {
-			// TODO 权限验证接口
+			List<Priority> prioritys = null;
+			try {
+				prioritys = (List<Priority>) SessionContext.get(Constant.SESSION_PRIORITY);
+			} catch (CodeException e) {
+				e.printStackTrace();
+			}
+			if (StringUtil.isNotEmpty(path) && CollectionUtil.isNotEmpty(prioritys)) {
+				for (Priority priority : prioritys) {
+					if (priority.getUrl().contains(path)) {
+						return true;
+					}
+				}
+			}
 			return false;
 		}
 }

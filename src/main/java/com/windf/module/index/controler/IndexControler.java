@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.core.exception.CodeException;
 import com.windf.module.index.Constant;
-import com.windf.module.sso.UserSession;
+import com.windf.module.sso.SsoUserSession;
 import com.windf.plugins.web.BaseControler;
 
 @Controller
@@ -23,7 +23,7 @@ public class IndexControler extends BaseControler{
 	@RequestMapping(value = {"/", ""}, method = {RequestMethod.GET})
 	public String index() {
 		try {
-			if (!UserSession.isLogined()) {
+			if (!SsoUserSession.isLogined()) {
 				return responseReturn.redirect("/login");
 			}
 		} catch (CodeException e) {

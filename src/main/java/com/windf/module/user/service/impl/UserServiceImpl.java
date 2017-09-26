@@ -12,6 +12,7 @@ import com.windf.core.general.dao.WritableDao;
 import com.windf.module.sso.entity.SsoUser;
 import com.windf.module.sso.service.SsoUserService;
 import com.windf.module.user.dao.UserDao;
+import com.windf.module.user.entity.User;
 import com.windf.module.user.service.UserService;
 import com.windf.plugins.manage.service.impl.ManagerGirdiServiceImpl;
 
@@ -48,6 +49,11 @@ public class UserServiceImpl extends ManagerGirdiServiceImpl implements UserServ
 		map.put("ssoUser.id", id);
 		WritableDao writableDao = this.getGridDao();
 		return writableDao.insert(bean);
+	}
+
+	@Override
+	public User getUserBySsoUserId(int id) {
+		return userDao.getUserBySsoUserId(id);
 	} 
 
 }

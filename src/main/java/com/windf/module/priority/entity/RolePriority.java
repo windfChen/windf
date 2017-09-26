@@ -4,17 +4,17 @@ import com.windf.core.general.bean.AbstractBean;
 
 public class RolePriority extends AbstractBean {
 	private static final long serialVersionUID = 1661437607513229617L;
-	
-	private String id;
+
+	private Integer id;
 	private Role pePriRole;
 	private Priority pePriority;
 	private String flagIsvalid;
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

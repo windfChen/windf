@@ -43,7 +43,7 @@ public class FilterControler {
 		
 		chain.doFilter(request, response);
 		
-		for (int i = filters.size(); i >= 0; i --) {
+		for (int i = filters.size() - 1; i >= 0; i --) {
 			Filter filter = filters.get(i);
 			if (this.verifyUrlPattern(filter.getUrlPattern())) {
 				try {

@@ -26,6 +26,8 @@ public class StartServlet extends HttpServlet {
 		
 		// 其他接口初始化
 		new com.windf.module.sso.Initialization().init();
+		new com.windf.module.user.Initialization().init();
+		new com.windf.module.priority.Initialization().init();
 		
 	}
 	

@@ -47,7 +47,7 @@ public class SsoUserServiceImpl implements SsoUserService {
 		ssoUserAccess.updateLogin(ssoUserDB);
 		
 		try {
-			SessionContext.set(Constant.SESSION_USER, ssoUserDB);
+			SessionContext.set(Constant.SESSION_SSO_USER, ssoUserDB);
 			// 登录通知
 			LoginSubject.getInstance().login();
 		} catch (CodeException e) {
