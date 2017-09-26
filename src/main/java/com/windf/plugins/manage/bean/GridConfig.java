@@ -18,9 +18,8 @@ public class GridConfig {
 	 * @param code
 	 * @param condition
 	 * @return
-	 * @throws CodeException
 	 */
-	public static GridConfig loadGridConfigByCode(String code, Map<String, Object> condition) throws CodeException {
+	public static GridConfig loadGridConfigByCode(String code, Map<String, Object> condition) {
 		GridConfig result = null;
 		try {
 			Moudle module = Moudle.getCurrentMoudle();

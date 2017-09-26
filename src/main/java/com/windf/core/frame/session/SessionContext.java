@@ -14,7 +14,7 @@ public class SessionContext {
 		sessionThread.set(null);
 	}
 	
-	public static Object get(String key) throws CodeException{
+	public static Object get(String key) {
 		Session session = sessionThread.get();
 		if (session == null) {
 			throw new CodeException("没有初始化session");
@@ -22,7 +22,7 @@ public class SessionContext {
 		return session.get(key);
 	}
 	
-	public static void set(String key, Object value) throws CodeException {
+	public static void set(String key, Object value) {
 		Session session = sessionThread.get();
 		if (session == null) {
 			throw new CodeException("没有初始化session");
@@ -30,7 +30,7 @@ public class SessionContext {
 		session.set(key, value);
 	}
 	
-	public static void invalidate() throws CodeException {
+	public static void invalidate() {
 		Session session = sessionThread.get();
 		if (session == null) {
 			throw new CodeException("没有初始化session");

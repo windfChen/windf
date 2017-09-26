@@ -1,6 +1,5 @@
 package com.windf.module.user.provider;
 
-import com.windf.core.exception.CodeException;
 import com.windf.core.frame.session.SessionContext;
 import com.windf.core.spring.SpringUtil;
 import com.windf.module.sso.SsoUserSession;
@@ -20,12 +19,8 @@ public class UserLoginObserver extends AbstractLoginObserver {
 	public void login() {
 		UserService userService = (UserService) SpringUtil.getBean("userService");
 		
-		try {
-			User user = userService.getUserBySsoUserId(SsoUserSession.getCurrentUser().getId());
-			SessionContext.set(Constant.SESSION_USER, user);
-		} catch (CodeException e) {
-			e.printStackTrace();
-		}
+		User user = userService.getUserBySsoUserId(SsoUserSession.getCurrentUser().getId());
+		SessionContext.set(Constant.SESSION_USER, user);
 	}
 
 	@Override

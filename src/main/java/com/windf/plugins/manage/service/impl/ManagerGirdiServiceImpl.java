@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.windf.core.bean.Page;
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
 import com.windf.core.general.dao.CrudDao;
@@ -22,7 +21,7 @@ public abstract class ManagerGirdiServiceImpl implements ManageGirdService{
 	public abstract CrudDao getGridDao() ;
 
 	@Override
-	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) throws UserException, CodeException {
+	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) throws UserException {
 		// TODO Auto-generated method stub
 		
 		/*
@@ -40,7 +39,7 @@ public abstract class ManagerGirdiServiceImpl implements ManageGirdService{
 	@SuppressWarnings("unchecked")
 	@Override
 	public Page<Map<String, Object>> list(Map<String, Object> condition, Integer pageNo, Integer pageSize)
-			throws UserException, CodeException, DataAccessException {
+			throws UserException, DataAccessException {
 		
 		Page<Map<String, Object>> page = new Page<Map<String, Object>>(Long.valueOf(pageNo), pageSize);
 		

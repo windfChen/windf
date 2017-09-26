@@ -2,7 +2,6 @@ package com.windf.module.priority.provider;
 
 import java.util.List;
 
-import com.windf.core.exception.CodeException;
 import com.windf.core.frame.session.SessionContext;
 import com.windf.core.spring.SpringUtil;
 import com.windf.module.priority.Constant;
@@ -21,12 +20,8 @@ public class PriorityLoginObserver extends AbstractLoginObserver {
 	@Override
 	public void login() {
 		PriorityService priorityService = (PriorityService) SpringUtil.getBean("priorityService");
-		try {
-			List<Priority> prioritys = priorityService.getPrioritiesByRoleId(UserSession.getCurrentUser().getRole().getId());
-			SessionContext.set(Constant.SESSION_PRIORITY, prioritys);
-		} catch (CodeException e) {
-			e.printStackTrace();
-		}
+		List<Priority> prioritys = priorityService.getPrioritiesByRoleId(UserSession.getCurrentUser().getRole().getId());
+		SessionContext.set(Constant.SESSION_PRIORITY, prioritys);
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.core.bean.Page;
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
@@ -42,8 +41,6 @@ public abstract class ManagerGridControler extends BaseControler {
 		try {
 			gridConfig = this.getManagerGridService().getGridConfig(code, roleId, condition);
 		} catch (UserException e) {
-			e.printStackTrace();
-		} catch (CodeException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();

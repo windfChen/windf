@@ -4,7 +4,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.frame.session.SessionContext;
 import com.windf.core.util.StringUtil;
@@ -46,13 +45,9 @@ public class SsoUserServiceImpl implements SsoUserService {
 		ssoUserDB.setLastLoginIp(loginIp);
 		ssoUserAccess.updateLogin(ssoUserDB);
 		
-		try {
-			SessionContext.set(Constant.SESSION_SSO_USER, ssoUserDB);
-			// 登录通知
-			LoginSubject.getInstance().login();
-		} catch (CodeException e) {
-			e.printStackTrace();
-		}
+		SessionContext.set(Constant.SESSION_SSO_USER, ssoUserDB);
+		// 登录通知
+		LoginSubject.getInstance().login();
 		
 		return ssoUserDB;
 	}
@@ -62,11 +57,7 @@ public class SsoUserServiceImpl implements SsoUserService {
 		// 退出通知
 		LoginSubject.getInstance().loginOut();
 		
-		try {
-			SessionContext.invalidate();
-		} catch (CodeException e) {
-			e.printStackTrace();
-		}
+		SessionContext.invalidate();
 	}
 
 	@Override

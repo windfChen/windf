@@ -17,12 +17,7 @@ public class PriorityContext {
 		 */
 		@SuppressWarnings("unchecked")
 		public static boolean verify(String path) {
-			List<Priority> prioritys = null;
-			try {
-				prioritys = (List<Priority>) SessionContext.get(Constant.SESSION_PRIORITY);
-			} catch (CodeException e) {
-				e.printStackTrace();
-			}
+			List<Priority> prioritys = (List<Priority>) SessionContext.get(Constant.SESSION_PRIORITY);
 			if (StringUtil.isNotEmpty(path) && CollectionUtil.isNotEmpty(prioritys)) {
 				for (Priority priority : prioritys) {
 					if (priority.getUrl().contains(path)) {

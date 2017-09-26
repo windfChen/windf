@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
-import com.windf.core.exception.CodeException;
 import com.windf.module.sso.SsoUserSession;
 import com.windf.plugins.web.filter.Filter;
 
@@ -35,8 +34,6 @@ public class LoginFilter implements Filter{
 				response.sendRedirect(request.getContextPath() + "/login");
 				return false;
 			}
-		} catch (CodeException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

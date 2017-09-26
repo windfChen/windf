@@ -3,7 +3,6 @@ package com.windf.module.development.modle.controler;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
@@ -198,10 +197,9 @@ public class ControlerCoder {
 	 * 为方法设置返回类型
 	 * @param subPath
 	 * @param returnType
-	 * @throws CodeException 
 	 * @throws UserException 
 	 */
-	public void setReturn(String subPath, ControlerReturn ret) throws CodeException, UserException {
+	public void setReturn(String subPath, ControlerReturn ret) throws UserException {
 		Method method = this.getMethodBySubPath(subPath);
 		
 		/*
