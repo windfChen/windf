@@ -34,7 +34,7 @@ public class ServiceControler extends BaseControler{
 		/*
 		 * 获取参数
 		 */
-		String moduleCode = this.getParameter("moduleCode");
+		String moduleCode = this.paramenter.getString("moduleCode");
 		
 		/*
 		 * 验证参数
@@ -58,12 +58,12 @@ public class ServiceControler extends BaseControler{
 		/*
 		 * 获取参数
 		 */
-		String moduleCode = this.getParameter("moduleCode");
-		String serviceName = this.getParameter("name");
-		String methodName = this.getParameter("mName");
-		String parameterName = this.getParameter("pName");
-		String parameterType = this.getParameter("pType");
-		String returnType = this.getParameter("returnType");
+		String moduleCode = paramenter.getString("moduleCode");
+		String serviceName = paramenter.getString("name");
+		String methodName = paramenter.getString("mName");
+		String parameterName = paramenter.getString("pName");
+		String parameterType = paramenter.getString("pType");
+		String returnType = paramenter.getString("returnType");
 		
 		/*
 		 * 验证参数

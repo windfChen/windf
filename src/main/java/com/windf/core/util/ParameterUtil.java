@@ -1,6 +1,8 @@
 package com.windf.core.util;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 public class ParameterUtil {
 	/**
@@ -61,13 +63,27 @@ public class ParameterUtil {
 	 * @param obj
 	 * @return
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static boolean hasEmpty(Object... obj) {
 		boolean result = false;
 		if (obj.length > 0) {
 			for (int i = 0; i < obj.length; i++) {
-				if (obj[i] == null || StringUtil.isEmpty(obj[i].toString())) {
+				if (obj[i] == null) {
 					result = true;
 					break;
+				} else {
+					if (obj[i] instanceof String && StringUtil.isEmpty(obj[i].toString())) {
+						result = true;
+						break;
+					}
+					if (obj[i] instanceof Collection && CollectionUtil.isEmpty((Collection) obj[i])) {
+						result = true;
+						break;
+					}
+					if (obj[i] instanceof Map && ((Map) obj[i]).isEmpty()) {
+						result = true;
+						break;
+					}
 				}
 			}
 		}

@@ -80,4 +80,11 @@ public interface ResponseReturn {
 	 * @return
 	 */
 	public String returnData(boolean success, String tip, Object data);
+
+	/**
+	 * 重定向到某个页面
+	 * @param string
+	 * @return
+	 */
+	public String redirect(String string);
 }

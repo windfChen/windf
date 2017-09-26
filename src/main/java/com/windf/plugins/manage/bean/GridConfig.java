@@ -1,13 +1,57 @@
 package com.windf.plugins.manage.bean;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import com.windf.core.exception.CodeException;
+import com.windf.core.frame.Moudle;
+import com.windf.core.util.JSONUtil;
+import com.windf.core.util.file.FileReadUtil;
+import com.windf.plugins.manage.Constant;
 
 public class GridConfig {
-	
+
+	/**
+	 * 加载GridConfig
+	 * 
+	 * @param code
+	 * @param condition
+	 * @return
+	 * @throws CodeException
+	 */
+	public static GridConfig loadGridConfigByCode(String code, Map<String, Object> condition) throws CodeException {
+		GridConfig result = null;
+		try {
+			Moudle module = Moudle.getCurrentMoudle();
+			String gridConfigFilePath = module.getConfigFilePath() + Constant.MANAGE_JSON_CONFIG_PATH + code + ".json";
+			String gridConfigJsonStr = FileReadUtil.readFileAsString(gridConfigFilePath);
+
+			// 替换参数
+			if (condition != null) {
+				Iterator<String> iterator = condition.keySet().iterator();
+				while (iterator.hasNext()) {
+					String key = (String) iterator.next();
+					Object value = condition.get(key);
+					if (value != null) {
+						gridConfigJsonStr = gridConfigJsonStr.replaceAll("\\$\\{param\\." + key + "\\}",
+								value.toString());
+					}
+				}
+			}
+
+			result = JSONUtil.pasrseJSONStr(gridConfigJsonStr, GridConfig.class);
+		} catch (Throwable e) {
+			throw new CodeException("json 获取错误");
+		}
+
+		return result;
+	}
+
 	private String title; // 表格标题
-	private String dataSource;	// 数据源，对应dao，需要实现ListDao
+	private String dataSource; // 数据源，对应dao，需要实现ListDao
 	private List<ColumnConfig> columns;
-	private List<MenuConfig> meuns;
+	private List<MenuConfig> menus;
 
 	private boolean isPrepared;
 	private boolean canAdd;
@@ -15,8 +59,8 @@ public class GridConfig {
 	private boolean canDelete;
 	private boolean canUpdate;
 	private boolean canSearch;
-	
-	private String roleCode;	// 列的全选过滤，只有相应角色code的人才能查看
+
+	private String roleCode; // 列的全选过滤，只有相应角色code的人才能查看
 
 	public String getTitle() {
 		return title;
@@ -34,12 +78,12 @@ public class GridConfig {
 		this.columns = columns;
 	}
 
-	public List<MenuConfig> getMeuns() {
-		return meuns;
+	public List<MenuConfig> getMenus() {
+		return menus;
 	}
 
-	public void setMeuns(List<MenuConfig> meuns) {
-		this.meuns = meuns;
+	public void setMenus(List<MenuConfig> menus) {
+		this.menus = menus;
 	}
 
 	public boolean isPrepared() {

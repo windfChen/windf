@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windf.module.priority.dao.RoleDao">
+
+    <select id="getByUserId" parameterType="string" resultType="com.windf.module.priority.entity.Role">
+       SELECT
+			r.*
+		FROM
+			priority_role r
+		INNER JOIN `user` u ON u.fk_role_id = r.id
+		WHERE
+			u.id = #{param1}
+    </select>
+    
+    <select id="getMyList" resultType="com.windf.core.general.bean.NameBean">
+       SELECT
+			id as id, name
+		FROM
+			priority_role t
+    </select>
+    
+    
+     <select id="count" parameterType="java.util.HashMap" resultType="long" >
+       SELECT
+			count(id)
+		FROM 
+			priority_role t
+		WHERE 1=1
+		 <if test="name != null">    
+	        and name like CONCAT('%',#{name},'%')
+	    </if>
+		 <if test="code != null">    
+	        and code like CONCAT('%',#{code},'%')
+	    </if>    
+    </select>
+    
+     <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+       SELECT
+			id, name, code
+		FROM 
+			priority_role t
+		WHERE 1=1
+		<if test="param1 != null">
+			<if test="param1.name != null">    
+		        and name like CONCAT('%',#{param1.name},'%')
+		    </if>
+			 <if test="param1.code != null">    
+		        and code like CONCAT('%',#{param1.code},'%')
+		    </if>    
+		</if>
+	    <if test="param2 != null and param3 != null"> 
+	     LIMIT #{param2}, #{param3}
+	    </if>
+    </select>
+    
+    <select id="find" parameterType="string" resultType="java.util.HashMap" >
+     	 SELECT
+			id, name, code
+		FROM 
+			priority_role t
+		WHERE id = #{param1}
+    </select>
+    
+    <insert id="insert" parameterType="java.util.HashMap" keyProperty="id">
+       INSERT INTO priority_role (name, code)
+		VALUES
+			(#{name}, #{code})
+    </insert>
+    
+    <update id="update" parameterType="java.util.HashMap" >
+        update priority_role set name = #{name}, code = #{code}, update_date = now()
+        where id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="List" >
+        delete from priority_role where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		 </foreach> 
+    </delete>
+   
+</mapper>

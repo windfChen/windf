@@ -32,9 +32,9 @@ public class UrlControler extends BaseControler{
 	@RequestMapping(value = "/create", method = {RequestMethod.GET})
 	public String create() {
 		// 验证参数
-		String url = this.getParameter("url");
-		String moduleCode = this.getParameter("module");
-		String getStr = this.getParameter("get");
+		String url = paramenter.getString("url");
+		String moduleCode = paramenter.getString("module");
+		String getStr = paramenter.getString("get");
 		if (ParameterUtil.hasEmpty(moduleCode, url)) {
 			return responseReturn.parameterError();
 		}
@@ -53,7 +53,7 @@ public class UrlControler extends BaseControler{
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public String list()  {
 		// 验证参数
-		String moduleCode = this.getParameter("module");
+		String moduleCode = paramenter.getString("module");
 		if (ParameterUtil.hasEmpty(moduleCode)) {
 			return responseReturn.parameterError();
 		}

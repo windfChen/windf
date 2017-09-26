@@ -29,8 +29,8 @@ public class ModuleManageControler extends BaseControler{
 		/*
 		 * 获取参数
 		 */
-		String pageIndexStr = ParameterUtil.defaultValue(this.getParameter("pageIndex"), "1");
-		String pageSizeStr = ParameterUtil.defaultValue(this.getParameter("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
+		String pageIndexStr = ParameterUtil.defaultValue(paramenter.getString("pageIndex"), "1");
+		String pageSizeStr = ParameterUtil.defaultValue(paramenter.getString("pageSize"), Page.DEFAULT_PAGE_SIZE.toString());
 		
 		/*
 		 * 验证参数
@@ -42,7 +42,7 @@ public class ModuleManageControler extends BaseControler{
 		}
 		
 		Page<Module> page = moduleManageService.listAllModule(null, pageIndex, pageSize);
-		this.setValue("page", page);
+		this.paramenter.setValue("page", page);
 		
 		return Constant.WEB_BASE_VIEW + "index" ;
 	}
@@ -51,13 +51,13 @@ public class ModuleManageControler extends BaseControler{
 	public String toCreate() {
 		
 		// 验证参数
-		String moduleCode = this.getParameter("code");
+		String moduleCode = paramenter.getString("code");
 		if (!ParameterUtil.hasEmpty(moduleCode)) {
 
 			// 调用服务
 			try {
 				Module module = moduleManageService.getModuleByCode(moduleCode);
-				this.setValue("bean", module);
+				this.paramenter.setValue("bean", module);
 			} catch (UserException e) {
 				e.printStackTrace();
 			}
@@ -69,10 +69,10 @@ public class ModuleManageControler extends BaseControler{
 	@RequestMapping(value = "/create", method = {RequestMethod.POST})
 	public String create() {
 		// 验证参数
-		String moduleCode = this.getParameter("code");
-		String moduleName = this.getParameter("name");
-		String moduleInfo = this.getParameter("info");
-		String moduleBasePath = this.getParameter("basePath");
+		String moduleCode = paramenter.getString("code");
+		String moduleName = paramenter.getString("name");
+		String moduleInfo = paramenter.getString("info");
+		String moduleBasePath = paramenter.getString("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
 			return responseReturn.parameterError();
 		}
@@ -97,10 +97,10 @@ public class ModuleManageControler extends BaseControler{
 	@RequestMapping(value = "/modify", method = {RequestMethod.POST})
 	public String modify() {
 		// 验证参数
-		String moduleCode = this.getParameter("code");
-		String moduleName = this.getParameter("name");
-		String moduleInfo = this.getParameter("info");
-		String moduleBasePath = this.getParameter("basePath");
+		String moduleCode = paramenter.getString("code");
+		String moduleName = paramenter.getString("name");
+		String moduleInfo = paramenter.getString("info");
+		String moduleBasePath = paramenter.getString("basePath");
 		if (ParameterUtil.hasEmpty(moduleCode, moduleName, moduleInfo, moduleBasePath)) {
 			return responseReturn.parameterError();
 		}

@@ -75,8 +75,13 @@ public class JsonReturn extends AbstractResponseRetrun {
 			result = map;
 		}
 		
-		baseControler.setValue(RESULT_KEY, JSONUtil.toJSONStr(result));
+		baseControler.paramenter.setValue(RESULT_KEY, JSONUtil.toJSONStr(result));
 		return JSON_PAGE;
+	}
+
+	@Override
+	public String redirect(String url) {
+		return successData(url);
 	}
 	
 }

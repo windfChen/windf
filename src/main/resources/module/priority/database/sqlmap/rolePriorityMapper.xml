@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windf.module.priority.dao.RolePriorityDao">
+   
+     <select id="count" parameterType="java.util.HashMap" resultType="long" >
+       SELECT
+			count(t.id)
+		FROM 
+			priority t
+		INNER JOIN priority_r_role_priority rp ON rp.fk_priority_id = t.id
+		WHERE  rp.fk_role_id = #{roleId}
+		 <if test="name != null">
+	        and t.name like CONCAT('%',#{name},'%')
+	    </if>
+		 <if test="url != null">
+	        and t.url like CONCAT('%',#{url},'%')
+	    </if>   
+		 <if test="method != null">    
+	        and t.method like CONCAT('%',#{method},'%')
+	    </if>
+    </select>
+    
+     <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+       SELECT
+			rp.id as id, t.name as name, t.url as url, t.method as method, rp.flag_Isvalid as flagIsvalid
+		FROM 
+			priority t
+		INNER JOIN priority_r_role_priority rp ON rp.fk_priority_id = t.id
+		WHERE rp.fk_role_id = #{param1.roleId}
+		<if test="param1 != null">
+			<if test="param1.name != null">    
+		        and name like CONCAT('%',#{param1.name},'%')
+		    </if>
+			 <if test="param1.url != null">
+		        and url like CONCAT('%',#{param1.url},'%')
+		    </if>   
+			 <if test="param1.method != null">
+		        and method like CONCAT('%',#{param1.method},'%')
+		    </if>     
+		</if>
+	    <if test="param2 != null and param3 != null"> 
+	     LIMIT #{param2}, #{param3}
+	    </if>
+    </select>
+    
+    <select id="countOtherPriority" parameterType="java.util.HashMap" resultType="long" >
+       SELECT
+			count(t.id)
+		FROM 
+			priority t
+		WHERE 1=1
+		<if test="name != null">    
+	        and name like CONCAT('%',#{param1.name},'%')
+	    </if>
+		 <if test="url != null">
+	        and url like CONCAT('%',#{param1.url},'%')
+	    </if>   
+		 <if test="method != null">
+	        and method like CONCAT('%',#{param1.method},'%')
+	    </if>     
+		AND not exists (
+			select 1
+			 from priority_r_role_priority rp
+		   where rp.fk_role_id = #{roleId} 
+			   and rp.fk_priority_id = t.id
+		)
+    </select>
+    
+    <select id="listOtherPriority" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+       SELECT
+			t.id as id, t.name as name, t.url as url, t.method as method
+		FROM 
+			priority t
+		WHERE 1=1
+		<if test="param1.name != null">    
+	        and name like CONCAT('%',#{param1.name},'%')
+	    </if>
+		 <if test="param1.url != null">
+	        and url like CONCAT('%',#{param1.url},'%')
+	    </if>   
+		 <if test="param1.method != null">
+	        and method like CONCAT('%',#{param1.method},'%')
+	    </if>     
+		AND not exists (
+			select 1
+			 from priority_r_role_priority rp
+		   where rp.fk_role_id = #{param1.roleId} 
+			   and rp.fk_priority_id = t.id
+		)
+	    <if test="param2 != null and param3 != null"> 
+	     LIMIT #{param2}, #{param3}
+	    </if>
+    </select>
+    
+    <insert id="insert" parameterType="java.util.HashMap" keyProperty="id">
+       INSERT INTO priority_r_role_priority (fk_role_id, fk_priority_id, flag_Isvalid)
+       VALUES
+	   <foreach collection="param2" item="item" index="index" separator=",">
+		     (  #{param1} , 
+		    	#{item},
+		    	'1')
+	   </foreach>
+    </insert>
+    
+    <update id="updateIsvalid" parameterType="java.util.HashMap" >
+        update priority set flag_Isvalid = #{flagIsvalid}
+        where id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="List" >
+        delete from priority_r_role_priority where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  #{item}  
+		 </foreach> 
+    </delete>
+</mapper>

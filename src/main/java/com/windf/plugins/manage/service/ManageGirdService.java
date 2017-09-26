@@ -8,7 +8,7 @@ import com.windf.core.bean.Page;
 import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
-import com.windf.core.general.service.GridService;
+import com.windf.core.general.service.CrudService;
 import com.windf.plugins.manage.bean.GridConfig;
 
 /**
@@ -17,7 +17,7 @@ import com.windf.plugins.manage.bean.GridConfig;
  * @author chenyafeng
  *
  */
-public interface ManageGirdService extends GridService {
+public interface ManageGirdService extends CrudService {
 	/**
 	 * 获得表格配置
 	 * @param code
@@ -31,7 +31,6 @@ public interface ManageGirdService extends GridService {
 
 	/**
 	 * 分页搜索
-	 * @param code
 	 * @param condition
 	 * @param pageNo
 	 * @param PageSize
@@ -40,7 +39,7 @@ public interface ManageGirdService extends GridService {
 	 * @throws CodeException 
 	 * @throws DataAccessException 
 	 */
-	Page<Map<String, Object>> list(String code, Map<String, Object> condition, Integer pageNo, Integer PageSize) throws Exception;
+	Page<Map<String, Object>> list(Map<String, Object> condition, Integer pageNo, Integer PageSize) throws Exception;
 
 	/**
 	 * 添加
@@ -49,7 +48,7 @@ public interface ManageGirdService extends GridService {
 	 * @return
 	 * @throws Exception
 	 */
-	int save(String code, Object bean)  throws Exception;
+	int save(Object bean)  throws Exception;
 
 	/**
 	 * 详情
@@ -58,7 +57,7 @@ public interface ManageGirdService extends GridService {
 	 * @return
 	 * @throws Exception
 	 */
-	Object detail(String code, Serializable id)  throws Exception;
+	Object detail(Serializable id)  throws Exception;
 	
 	/**
 	 * 修改
@@ -67,7 +66,7 @@ public interface ManageGirdService extends GridService {
 	 * @return
 	 * @throws Exception
 	 */
-	int update(String code, Object bean)  throws Exception;
+	int update(Object bean)  throws Exception;
 
 	/**
 	 * 删除
@@ -76,5 +75,5 @@ public interface ManageGirdService extends GridService {
 	 * @return
 	 * @throws Exception
 	 */
-	int delete(String code, List<? extends Serializable> id)  throws Exception;
+	int delete(List<? extends Serializable> id)  throws Exception;
 }

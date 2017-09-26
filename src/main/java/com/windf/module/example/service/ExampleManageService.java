@@ -1,5 +1,7 @@
 package com.windf.module.example.service;
 
-public interface ExampleManageService {
+import com.windf.plugins.manage.service.ManageGirdService;
+
+public interface ExampleManageService extends ManageGirdService{
 
 }

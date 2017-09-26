@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windf.module.form.dao.FormItemUserValueDao">
+    
+    <insert id="saveList" parameterType="List" keyProperty="id">
+       INSERT INTO form_item_user_value (id, fk_user_id, fk_form_item_id, `value`, create_date, update_date)
+       values
+	   <foreach collection="list" item="item" index="index" separator=",">
+		     (replace(UUID(), '-', ''), 
+		    	#{item.userId} , 
+		    	#{item.formItem.id},
+		    	#{item.value},
+		    	now(),
+		    	now())
+	   </foreach>
+    </insert>
+    
+     <select id="getByFormId" parameterType="java.lang.String" resultType="com.windf.module.form.entity.FormItemUserValue" >
+       SELECT
+			t.id, t.fk_user_id as userId, `value`, t.create_date createDate, t.update_date updateDate,
+			t.fk_form_item_id `formItem.id` , i.code as `formItem.code`, i.name as `formItem.name`
+		FROM 
+			form_item_user_value t
+		INNER JOIN form_item i on t.fk_form_item_id = i.id
+		WHERE i.fk_form_id = #{param1}
+    </select>
+    
+    
+    <delete id="deleteByUser" parameterType="java.lang.String" >
+        DELETE t
+		FROM
+			form_item_user_value t
+		INNER JOIN form_item i ON i.id = t.fk_form_item_id
+		WHERE
+			i.fk_form_id = #{param1}
+		AND t.fk_user_id = #{param2}
+    </delete>
+</mapper>

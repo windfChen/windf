@@ -3,10 +3,9 @@ package com.windf.plugins.manage.web.controler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,30 +21,31 @@ import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.web.BaseControler;
 
 public abstract class ManagerGridControler extends BaseControler {
-	
-	@Resource
-	private ManageGirdService managerGridService;
-	
+		
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
-		return responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
+		responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
+		Map<String, Object> data = new HashMap<>();
+		String queryString = request.getQueryString();
+		data.put("queryString", queryString);
+		return responseReturn.successData(data);
 	}
 	
 	@RequestMapping(value = "/grid", method = {RequestMethod.GET})
 	public Object grid() {
 		String code = getRequestCode();
 		String roleId = "";
-		Map<String, Object> condition = this.getMapParameter("condition");
+		Map<String, Object> condition = paramenter.getAll();
+		condition = this.filterMapValue(condition);
 		
 		GridConfig gridConfig = null;
 		try {
-			gridConfig = managerGridService.getGridConfig(code, roleId, condition);
+			gridConfig = this.getManagerGridService().getGridConfig(code, roleId, condition);
 		} catch (UserException e) {
 			e.printStackTrace();
 		} catch (CodeException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return responseReturn.successData(gridConfig);
@@ -53,26 +53,26 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public String list() {
-		String code = getRequestCode();
-		Map<String, Object> condition = this.getMapParameter("condition");
-		String pageNoStr = this.getParameter("page");
-		String pageSizeStr = this.getParameter("limit");
+		Map<String, Object> condition = paramenter.getMap("condition");
+		condition = this.filterMapValue(condition);
+		String pageNoStr = paramenter.getString("page");
+		String pageSizeStr = paramenter.getString("limit");
 		Integer pageNo = 1;
 		Integer pageSize = 10;
 		try {
 			pageNo = Integer.parseInt(pageNoStr);
 			pageSize = Integer.parseInt(pageSizeStr);
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		Map<String, Object> result = null;
 		try {
-			Page<Map<String, Object>> page = managerGridService.list(code, condition, pageNo, pageSize);
+			Page<Map<String, Object>> page = this.getManagerGridService().list(condition, pageNo, pageSize);
 			result = new HashMap<String, Object>();
 			result.put("models", page.getData());
 			result.put("totalCount", page.getTotal());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return responseReturn.error(e.getMessage());
 		}
@@ -82,12 +82,11 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/detail", method = {RequestMethod.GET})
 	public String detail() {
-		String code = getRequestCode();
-		String id = this.getParameter("id");
+		String id = paramenter.getString("id");
 		
 		Object data = null;
 		try {
-			Object d = managerGridService.detail(code, id);
+			Object d = this.getManagerGridService().detail(id);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("entity", d);
 			List<Object> list = new ArrayList<Object>();
@@ -104,14 +103,11 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
-		String code = getRequestCode();
-		Object bean = this.getMapParameter("bean");
-		if (bean == null) {
-			bean = this.getMapParameter("entity");
-		}
+		Map<String, Object> entity = paramenter.getMap("entity");	
+		entity = this.filterMapValue(entity);
 		
 		try {
-			managerGridService.save(code, bean);
+			this.getManagerGridService().save(entity);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,14 +117,11 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/update", method = {RequestMethod.POST})
 	public String update() {
-		String code = getRequestCode();
-		Object bean = this.getMapParameter("bean");
-		if (bean == null) {
-			bean = this.getMapParameter("entity");
-		}
+		Map<String, Object> entity = paramenter.getMap("entity");
+		entity = this.filterMapValue(entity);
 		
 		try {
-			managerGridService.update(code, bean);
+			this.getManagerGridService().update(entity);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -138,8 +131,7 @@ public abstract class ManagerGridControler extends BaseControler {
 
 	@RequestMapping(value = "/delete", method = {RequestMethod.POST})
 	public String delete() {
-		String code = getRequestCode();
-		String ids = this.getParameter("ids");
+		String ids = paramenter.getString("ids");
 		
 		List<String> idList = null;
 		if (StringUtil.isNotEmpty(ids)) {
@@ -151,13 +143,19 @@ public abstract class ManagerGridControler extends BaseControler {
 		}
 		
 		try {
-			managerGridService.delete(code, idList);
+			this.getManagerGridService().delete(idList);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return responseReturn.error(e.getMessage());
 		}
 	}
+	
+	/**
+	 * 获取管理表格服务
+	 * @return
+	 */
+	protected abstract ManageGirdService getManagerGridService();
 
 	/**
 	 * 获得请求地址，生成的code
@@ -165,7 +163,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	 * @return
 	 */
 	protected String getRequestCode() {
-		String requestPath = getControlerPath();
+		String requestPath = path.getControlerPath();
 		
 		int index = requestPath.lastIndexOf('.');
 		if (index > 0) {
@@ -174,5 +172,26 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 		String result = StringUtil.toCamelCase(requestPath, "/");
 		return result;
+	}
+	
+	/**
+	 * 统一添加参数
+	 * @param map
+	 */
+	protected Map<String, Object> filterMapValue(Map<String, Object> map) {
+		if (map == null) {
+			map = new HashMap<String, Object>();
+		}
+		
+		Map<String, String> queryMap = paramenter.getQueryStringValues();
+		Iterator<String> iterator = queryMap.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next();
+			String value = queryMap.get(key);
+			
+			map.put(key, value);
+		}
+		
+		return map;
 	}
 }

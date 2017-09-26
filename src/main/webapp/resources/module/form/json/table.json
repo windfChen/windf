@@ -1,0 +1,173 @@
+{
+	"info" : {
+		"title" : "2017年全国高校基层党组织建设情况统计表（表一）",
+		"foot" : "<pre>说明：1.本表行列关系如下:如，列关系：01=02+03+04，行关系：1=2+3+4+5\r\n      2.统计数据截止至2017年6月30日。</pre>"
+	},
+	"title" : [{
+		"text" : "", 
+		"rowSpan" : 2,
+		"colSpan" : 2,
+		"subData" : [{
+			"text" : "甲",
+			"colSpan" : 2,
+			"code" : "e3r2"
+		}]
+	},{
+		"text" : "编号", 
+		"code" : "e3g4",
+		"width" : 40,
+		"rowSpan" : 2,
+		"colSpan" : 1,
+		"subData" : [{
+			"text" : "乙",
+			"code" : "e3r3"
+		}]
+	},{
+		"text" : "高校总数", 
+		"width" : 60,
+		"rowSpan" : 2,
+		"colSpan" : 1,
+		"subData" : [{
+			"text" : "1",
+			"code" : "e3t4"
+		}]
+	},{
+		"text" : "建立党委的高校", 
+		"height" : 40,
+		"subData" : [{
+			"text" : "小计",
+			"height" : 40, 
+			"width" : 60,
+			"subData" : [{
+				"text" : "2",
+				"code" : "e2g4"
+			}]
+		}]
+	},{
+		"text" : "建立总支部的高校", 
+		"height" : 40,
+		"subData" : [{
+			"text" : "小计",
+			"height" : 40, 
+			"width" : 60,
+			"subData" : [{
+				"text" : "3",
+				"code" : "e2g5"
+			}]
+		}]
+	},{
+		"text" : "建立支部的高校", 
+		"height" : 40,
+		"subData" : [{
+			"text" : "小计",
+			"height" : 40, 
+			"width" : 60,
+			"subData" : [{
+				"text" : "4",
+				"code" : "e2g9"
+			}]
+		}]
+	},{
+		"text" : "未建立党组织的高校", 
+		"height" : 40,
+		"subData" : [{
+			"text" : "小计",
+			"height" : 40, 
+			"width" : 60,
+			"subData" : [{
+				"text" : "5",
+				"code" : "e3g9"
+			}]
+		}]
+	},{
+		"text" : "高校基层党组织总数", 
+		"rowSpan" : 1,
+		"colSpan" : 6,
+		"subData" : [{
+			"text" : "高校党委数", 
+			"width" : 60,
+			"subData" : [{
+				"text" : "6",
+				"code" : "e3w8"
+			}]
+		},{
+			"text" : "院系党员数", 
+			"width" : 60,
+			"subData" : [{
+				"text" : "7",
+				"code" : "e3w5"
+			}]
+		},{
+			"text" : "院系党总支数", 
+			"width" : 60,
+			"subData" : [{
+				"text" : "8",
+				"code" : "e3w6"
+			}]
+		},{
+			"text" : "教职工党总支（党支部）数（含离退休人员党支部数）", 
+			"width" : 60,
+			"subData" : [{
+				"text" : "9",
+				"code" : "e3w4"
+			}]
+		},{
+			"text" : "离退休人员党支部数",
+			"width" : 60,
+			"subData" : [{
+				"text" : "10",
+				"code" : "e3w2"
+			}]
+		},{
+			"text" : "学生党支部数", 
+			"width" : 60,
+			"subData" : [{
+				"text" : "11",
+				"code" : "e3y4"
+			}]
+		}]
+	}],
+	"left": [{
+		"text": "总计",
+		"rowSpan" : 1,
+		"colSpan" : 2,
+		"subData" : [{
+			"text": "01",
+			"code" : "t1t1"
+		}]
+	},{
+		"text": "合计",
+		"rowSpan" : 3,
+		"colSpan" : 1,
+		"width" : 30,
+		"subData" : [{
+			"text": "本科院校",
+			"rowSpan" : 1,
+			"colSpan" : 1,
+			"height" : 60,
+			"width" : 60,
+			"subData" : [{
+				"text": "02",
+				"code" : "t2t1"
+			}]
+		},{
+			"text": "专科院校（含职业技术学院）",
+			"rowSpan" : 1,
+			"colSpan" : 1,
+			"height" : 60,
+			"subData" : [{
+				"text": "03",
+				"code" : "t4t1"
+			}]
+		},{
+			"text": "民办高校（含独立学院）",
+			"rowSpan" : 1,
+			"colSpan" : 1,
+			"height" : 60,
+			"subData" : [{
+				"text": "04",
+				"code" : "t1t7"
+			}]
+		}]
+	}]
+}
