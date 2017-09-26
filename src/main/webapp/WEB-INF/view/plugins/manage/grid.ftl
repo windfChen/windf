@@ -1,60 +1,141 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>管理端表格</title>
-		<meta charset="utf-8" />
+		<title>3</title>
+		<#include "/module/index/include/res.ftl" >
 		
-		<script type="text/javascript">
-			var Sys = {};
-			var ua = navigator.userAgent.toLowerCase();
-			var s;
-			(s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua
-					.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua
-					.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua
-					.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua
-					.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1]
-					: 0;
-			//以下进行测试
-			if(Sys.ie > '7.0') {
-				document.write("<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE8' >");
-			}
+		<script>
+			$(function(){
+				$.getJSON('grid.json' + queryString, function(gridConfig){
+					initGrid(gridConfig.data);
+				})
+				
+			});
 			
-			var basePath = '${rc.contextPath}';
-			var resourceBasePath = '${rc.contextPath}/resources/';
-			var queryString = '${data.queryString}';
-			queryString = queryString == ''? '': '?' + queryString;
+			function initGrid (gridConfig) {
+				// 初始化表头
+				var title = '<li class="col-xs-3">\
+						    				<span class="table">\
+												<label class="label_check">\
+													<div class="btn_check"></div>\
+													<input type="checkbox"/>\
+												</label>全选\
+											</span>\
+						    			</li>';
+				for (var i = 0; i < gridConfig.columns.length; i++) {
+					var c = gridConfig.columns[i];
+					if (c.canList) {
+						title += '<li class="col-xs-3">' + c.name + '</li>';
+					}
+				}
+				$('#grid').append(title);
+			}
 		</script>
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/plugins/manage/css/admincss.css">
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/ext-all.css" />
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/ext-ext.css" />
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/whatyExtjs.css" />
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/examples/Datetime/datetime.css"></link>
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/pub/Multiselect.css" />
-		
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/adapter/ext/ext-base.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ext-all.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/whatyExtjs.js?version=1"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/examples/Datetime/Datetime.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ext-lang-zh_CN.js"></script> 
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ajax.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/plugins/manage/js/grid.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/DDView.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/Multiselect.js"></script>
-		
 	</head>
-	<body id="main_content" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" style="background-color:#ffffff;">
-		<table width="100%" height="100%">
-			<tr>
-				<td width="1%"></td>
-				<td valign="top">
-					<div id="user-defined-content"></div>
-					<div id="searchtool"></div>
-					<div id="model-grid"></div>
-					<div id="note"></div>
-					<div id="exportexcel"></div>
-				</td>
-				<td width="1%"></td>
-			</tr>
-		</table>
+	<body>
+	
+		<#include "/module/index/include/header.ftl" >
+		
+		<!--main start -->
+		<section class="container mt-sm25 mt-xs-15">
+			<div class="row">
+			
+				<#include "/module/index/include/left.ftl" >
+				
+				<div class="te-md-8 mt-xs-10">
+					<div class="center_rigt">
+						<div class="boxClear">
+							<div class="mod_title1">
+								<div class="pull-right work_qxbtn">
+									<a href="javascript:;"><i class="iconfont icon-tianjia"></i>添加</a>
+							       <a href="javascript:;"><i class="iconfont icon-weibiaoti--"></i>删除</a>
+								</div>
+						    	<h3 class="pull-left">用户权限管理</h3>
+						    </div>
+						    <div class="work_qxbox">
+						    	<div class="work_qxlist">
+						    		<ul id="grid" class="clearfix">
+									<!--
+						    			<li class="col-xs-3">
+						    				<span class="table">
+												<label class="label_check">
+													<div class="btn_check"></div>
+													<input type="checkbox"/>
+												</label>全选
+											</span>
+						    			</li>
+						    			<li class="col-xs-3">角色名称</li>
+						    			<li class="col-xs-3">角色类型</li>
+						    			<li class="col-xs-3">用户人数</li>
+						    			
+						    			<li class="col-xs-3">
+						    				<span class="table">
+												<label class="label_check">
+													<div class="btn_check"></div>
+													<input type="checkbox"/>
+												</label>
+											</span>
+						    			</li>
+						    			<li class="col-xs-3">党建</li>
+						    			<li class="col-xs-3">党建</li>
+						    			<li class="col-xs-3">5人</li>
+						    			
+						    			<li class="col-xs-3">
+						    				<span class="table">
+												<label class="label_check">
+													<div class="btn_check"></div>
+													<input type="checkbox"/>
+												</label>
+											</span>
+						    			</li>
+						    			<li class="col-xs-3">学工</li>
+						    			<li class="col-xs-3">学工</li>
+						    			<li class="col-xs-3">5人</li>
+						    			
+						    			<li class="col-xs-3">
+						    				<span class="table">
+												<label class="label_check">
+													<div class="btn_check"></div>
+													<input type="checkbox"/>
+												</label>
+											</span>
+						    			</li>
+						    			<li class="col-xs-3">宣传</li>
+						    			<li class="col-xs-3">宣传</li>
+						    			<li class="col-xs-3">5人</li>
+						    			
+						    			<li class="col-xs-3">
+						    				<span class="table">
+												<label class="label_check">
+													<div class="btn_check"></div>
+													<input type="checkbox"/>
+												</label>
+											</span>
+						    			</li>
+						    			<li class="col-xs-3">统战</li>
+						    			<li class="col-xs-3">统战</li>
+						    			<li class="col-xs-3">5人</li>
+						    			
+						    			<li class="col-xs-3">
+						    				<span class="table">
+												<label class="label_check">
+													<div class="btn_check"></div>
+													<input type="checkbox"/>
+												</label>
+											</span>
+						    			</li>
+						    			<li class="col-xs-3">综合</li>
+						    			<li class="col-xs-3">综合</li>
+						    			<li class="col-xs-3">综合</li>
+						    			-->
+						    		</ul>
+						    	</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	    <!-- main end -->
 	</body>
 </html>
