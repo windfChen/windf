@@ -9,13 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
-import com.alibaba.druid.sql.visitor.functions.Concat;
 import com.windf.core.exception.CodeException;
-import com.windf.core.frame.session.SessionContext;
-import com.windf.module.sso.Constant;
 import com.windf.module.sso.UserSession;
 import com.windf.plugins.web.filter.Filter;
-import com.windf.plugins.web.session.WebSession;
 
 @Component
 public class LoginFilter implements Filter{
