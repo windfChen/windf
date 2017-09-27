@@ -8,6 +8,7 @@ public class MenuVO extends AbstractBean {
 	private static final long serialVersionUID = 8064319048898614343L;
 
 	private String id; // id
+	private String code; 
 	private String text; // 名称
 	private Integer sort; // 排序
 	private String url; // 地址
@@ -72,6 +73,14 @@ public class MenuVO extends AbstractBean {
 
 	public void setLeaf(boolean leaf) {
 		this.leaf = leaf;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

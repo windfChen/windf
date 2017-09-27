@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.windf.core.util.ParameterUtil;
 import com.windf.module.menu.Constant;
 import com.windf.module.menu.entity.vo.MenuVO;
 import com.windf.module.menu.service.MenuService;
@@ -27,12 +26,9 @@ public class MenuViewControler extends BaseControler{
 	 * 获得所有孩子
 	 * @return
 	 */
-	@RequestMapping(value = "/children/g")
+	@RequestMapping(value = "")
 	public String getChildrenTree() {
-		Integer id = paramenter.getInteger("id");
-		if (ParameterUtil.hasEmpty(id)) {
-			return responseReturn.parameterError();
-		}
+		Integer id = paramenter.getInteger("id", 1);
 		
 		List<MenuVO> data = menuService.findChildrenTree(id);
 		

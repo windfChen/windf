@@ -100,10 +100,13 @@
 		    	  //	  
 		    }
 		})(jQuery,window,document);
-alert = function (message, title, btn) {
+alert = function (message, f, title, btn) {
 	title = title? title: "提示";
 	btn = btn? btn: "确定";
 	$.DialogByW.Alert({Title: title, Content: message,BtnL:btn,FunL:function(){
+			if (f) {
+				f();
+			}
        	  $.DialogByW.Close();
 	}});
 }

@@ -128,7 +128,7 @@ Grid.prototype = {
 		}
 		
 		confirm('确定删除？删除后无法恢复！',function (){
-			$.ajax({
+			$.ajax({	
 				async:true,
 				url: 'delete.json' + queryString,
 				type: "POST",

@@ -6,7 +6,7 @@
 
     <select id="findChildrenAndGrandchildren" parameterType="int" resultType="com.windf.module.menu.entity.Menu">
        SELECT
-			t.id, t.fk_parent_id as `parent.id`, t.name, t.sort, t.url
+			t.id, t.fk_parent_id as `parent.id`, t.name, t.sort, t.url, t.code
 		FROM
 			`menu` t
 		WHERE
@@ -15,7 +15,7 @@
     
      <select id="findChildren" parameterType="int" resultType="com.windf.module.menu.entity.Menu">
        SELECT
-			t.id, t.fk_parent_id as `parent.id`, t.name, t.sort, t.url
+			t.id, t.fk_parent_id as `parent.id`, t.name, t.sort, t.url, t.code
 		FROM
 			`menu` t
 		WHERE

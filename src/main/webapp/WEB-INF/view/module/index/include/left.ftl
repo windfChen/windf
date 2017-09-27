@@ -6,11 +6,19 @@
 							<h2 class="center_personal_name"><strong>${user.name}</strong></h2>
 						</div>
 						<div class="center_menu">
-							<ul>
-								<li><a href="#"><i class="iconfont icon-gongzuo"></i>工作区</a></li>
-							    <li><a href="#" class="cur"><i class="iconfont icon-fuwu"></i>服务区</a></li>
-							    <li><a href="#"><i class="iconfont icon-yonghuquanxian"></i>用户权限管理</a></li>
+							<ul id="menu">
 							</ul>
 					    </div>
 					</div>
 				</div>
+				
+				<script>
+					$(function(){
+						$.getJSON(basePath + '/menu.json?id=9', function(data) {
+							for (var i = 0; i < data.length; i++) {
+								var d = data[i];
+								$('#menu').append('<li><a href="' + (d.url? basePath + d.url: 'javascript:void(0)') + '"><i class="iconfont icon-' + d.code + '"></i>' + d.text + '</a></li>');
+							}
+						})
+					})
+				</script>

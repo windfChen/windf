@@ -28,6 +28,7 @@ public class PriorityFilter implements Filter{
 			if (request.getRequestURI().contains("/index") 
 					|| request.getRequestURI().contains("/menu/children/") 
 					|| request.getRequestURI().contains("/login") 
+					|| request.getRequestURI().contains("/menu") 
 					|| request.getRequestURI().contains("/resource")) {
 				return true;
 			}
