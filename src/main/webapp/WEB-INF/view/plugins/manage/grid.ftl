@@ -1,35 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>3</title>
+		<title></title>
 		<#include "/module/index/include/res.ftl" >
 		
 		<script>
 			$(function(){
-				$.getJSON('grid.json' + queryString, function(gridConfig){
-					initGrid(gridConfig.data);
-				})
-				
+				window.grid = new Grid();
+				grid.init();
+				grid.load();
 			});
-			
-			function initGrid (gridConfig) {
-				// 初始化表头
-				var title = '<li class="col-xs-3">\
-						    				<span class="table">\
-												<label class="label_check">\
-													<div class="btn_check"></div>\
-													<input type="checkbox"/>\
-												</label>全选\
-											</span>\
-						    			</li>';
-				for (var i = 0; i < gridConfig.columns.length; i++) {
-					var c = gridConfig.columns[i];
-					if (c.canList) {
-						title += '<li class="col-xs-3">' + c.name + '</li>';
-					}
-				}
-				$('#grid').append(title);
-			}
 		</script>
 	</head>
 	<body>
@@ -47,10 +27,10 @@
 						<div class="boxClear">
 							<div class="mod_title1">
 								<div class="pull-right work_qxbtn">
-									<a href="javascript:;"><i class="iconfont icon-tianjia"></i>添加</a>
-							       <a href="javascript:;"><i class="iconfont icon-weibiaoti--"></i>删除</a>
+									<a href="javascript:;" style="display:none;" id="add_btn"><i class="iconfont icon-tianjia"></i>添加</a>
+									<a href="javascript:;" style="display:none;" id="del_btn"><i class="iconfont icon-weibiaoti--"></i>删除</a>
 								</div>
-						    	<h3 class="pull-left">用户权限管理</h3>
+						    	<h3 class="pull-left" id="title"></h3>
 						    </div>
 						    <div class="work_qxbox">
 						    	<div class="work_qxlist">
@@ -130,6 +110,7 @@
 						    			-->
 						    		</ul>
 						    	</div>
+								<div id="page" ></div>
 						    </div>
 						</div>
 					</div>

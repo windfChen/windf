@@ -7,10 +7,17 @@
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/index/css/public.css" />
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/index/css/grid.subtw.css" />
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/module/index/css/center.css" />
-		<!--必要样式-->
+		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/dialog/css/dialog.css" />
 		<link type="text/css" rel="stylesheet" href="${rc.contextPath}/resources/module/index/css/BreakingNews.css" />
+		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/plugins/manage/css/grid.css" />
+		<!--必要样式-->
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/jquery/jquery.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/resources/common/js/page.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/resources/module/index/js/scripts.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/dialog/js/dialog.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/module/index/js/BreakingNews.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/resources/plugins/manage/js/grid.js"></script>
+
 		<script type="text/javascript">
 			var basePath = '${rc.contextPath}';
 			var resourceBasePath = '${rc.contextPath}/resources/';
@@ -27,7 +34,6 @@
 			});
 		});
 		</script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/module/index/js/scripts.js" ></script>
 	    <!--[if lt IE 9]>
 	      <script src="${rc.contextPath}/resources/module/index/js/html5shiv.min.js"></script>
 	      <script src="${rc.contextPath}/resources/module/index/js/respond.min.js"></script>

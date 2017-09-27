@@ -20,36 +20,7 @@ $(function(){
 		$('.head_dropdown').hide();
 	});
 	
-	// >>>>>>>>>> 单选多选
-	//多选
-	$("input[type='checkbox']").click(function(){ 
-		if($(this).is(':checked')){ 
-			$(this).attr("checked","checked"); 
-			$(this).parent().addClass("c_on"); 
-		}else{ 
-			$(this).removeAttr("checked"); 
-			$(this).parent().removeClass("c_on"); 
-		} 
-	}); 
-	//单选
-    $("input[type='radio']").click(function(){ 
- 		$("input[type='radio']").removeAttr("checked"); 
- 		$(this).attr("checked","checked"); 
- 		$(this).parent().addClass("r_on").siblings().removeClass("r_on"); 
- 	});
-	
-	// >>>>>>>>>> 表格排序
-	$(".tabl_head_rank").click(function(){
-		var classname = $(this).find("i").attr("class");
-		if(classname == "presspc icon-arrDown"){
-			$(this).find("i").removeClass("icon-arrDown");
-			$(this).find("i").addClass("icon-arrUp");
-		}
-		if(classname == "presspc icon-arrUp"){
-			$(this).find("i").removeClass("icon-arrUp");
-			$(this).find("i").addClass("icon-arrDown");
-		}
-	});
+	gridEvent();
 	
 	
 	// >>>>>>>>>> 搜索筛选
@@ -94,6 +65,39 @@ $(function(){
 	
 	
 });
+
+function gridEvent(){
+	// >>>>>>>>>> 单选多选
+	//多选
+	$("input[type='checkbox']").click(function(){ 
+		if($(this).is(':checked')){ 
+			$(this).attr("checked","checked"); 
+			$(this).parent().addClass("c_on"); 
+		}else{ 
+			$(this).removeAttr("checked"); 
+			$(this).parent().removeClass("c_on"); 
+		} 
+	}); 
+	//单选
+    $("input[type='radio']").click(function(){ 
+ 		$("input[type='radio']").removeAttr("checked"); 
+ 		$(this).attr("checked","checked"); 
+ 		$(this).parent().addClass("r_on").siblings().removeClass("r_on"); 
+ 	});
+	
+	// >>>>>>>>>> 表格排序
+	$(".tabl_head_rank").click(function(){
+		var classname = $(this).find("i").attr("class");
+		if(classname == "presspc icon-arrDown"){
+			$(this).find("i").removeClass("icon-arrDown");
+			$(this).find("i").addClass("icon-arrUp");
+		}
+		if(classname == "presspc icon-arrUp"){
+			$(this).find("i").removeClass("icon-arrUp");
+			$(this).find("i").addClass("icon-arrDown");
+		}
+	});
+}
 
 	
 // >>>>>>>>>> 页面滚动
