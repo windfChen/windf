@@ -1,9 +1,9 @@
-package com.windf.module.menu.service;
+package com.windf.module.priority.service;
 
 import java.util.List;
 
 import com.windf.core.general.service.CrudService;
-import com.windf.module.menu.entity.vo.MenuVO;
+import com.windf.module.priority.entity.vo.MenuVO;
 
 public interface MenuService extends CrudService {
 

@@ -1,4 +1,4 @@
-package com.windf.module.menu.entity;
+package com.windf.module.priority.entity;
 
 import com.windf.core.general.bean.TreeEntity;
 

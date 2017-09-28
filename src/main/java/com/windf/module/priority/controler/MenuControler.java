@@ -1,4 +1,4 @@
-package com.windf.module.menu.controler;
+package com.windf.module.priority.controler;
 
 import java.util.List;
 
@@ -8,16 +8,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.windf.module.menu.Constant;
-import com.windf.module.menu.entity.vo.MenuVO;
-import com.windf.module.menu.service.MenuService;
+import com.windf.module.priority.Constant;
+import com.windf.module.priority.entity.vo.MenuVO;
+import com.windf.module.priority.service.MenuService;
 import com.windf.plugins.web.BaseControler;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = MenuViewControler.CONTROLER_PATH)
-public class MenuViewControler extends BaseControler{
-	protected final static String CONTROLER_PATH = Constant.MODULE_WEB_PATH + "";
+@RequestMapping(value = MenuControler.CONTROLER_PATH)
+public class MenuControler extends BaseControler{
+	protected final static String CONTROLER_PATH = "/menu";
 
 	@Resource
 	private MenuService menuService;

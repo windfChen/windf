@@ -1,4 +1,4 @@
-package com.windf.module.menu.entity.vo;
+package com.windf.module.priority.entity.vo;
 
 import java.util.List;
 

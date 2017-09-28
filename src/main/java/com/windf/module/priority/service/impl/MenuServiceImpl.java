@@ -1,4 +1,4 @@
-package com.windf.module.menu.service.impl;
+package com.windf.module.priority.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.windf.core.util.CollectionUtil;
-import com.windf.module.menu.dao.MenuDao;
-import com.windf.module.menu.entity.Menu;
-import com.windf.module.menu.entity.vo.MenuVO;
-import com.windf.module.menu.service.MenuService;
+import com.windf.module.priority.dao.MenuDao;
+import com.windf.module.priority.entity.Menu;
+import com.windf.module.priority.entity.vo.MenuVO;
+import com.windf.module.priority.service.MenuService;
 
 @Service
 public class MenuServiceImpl implements MenuService {
