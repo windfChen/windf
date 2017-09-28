@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.windf.module.priority.Constant;
 import com.windf.module.priority.entity.vo.MenuVO;
 import com.windf.module.priority.service.MenuService;
 import com.windf.plugins.web.BaseControler;
