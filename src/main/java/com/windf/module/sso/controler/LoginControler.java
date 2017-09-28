@@ -44,7 +44,7 @@ public class LoginControler extends BaseControler{
 	public String logout() {
 		try {
 			ssoUserService.logout();
-			return responseReturn.success();
+			return responseReturn.redirect("");
 		} catch (UserException e) {
 			return responseReturn.error(e.getMessage());
 		}

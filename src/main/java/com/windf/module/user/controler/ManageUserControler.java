@@ -9,7 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.windf.module.organization.entity.Organization;
+import com.windf.module.priority.entity.Role;
+import com.windf.module.sso.entity.SsoUser;
 import com.windf.module.user.Constant;
+import com.windf.module.user.entity.User;
 import com.windf.module.user.service.UserService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -31,12 +35,27 @@ public class ManageUserControler extends ManagerGridControler{
 
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
-		Map<String, Object> entity = paramenter.getMap("entity");	
-		entity = this.filterMapValue(entity);
-		entity.put("ip", WebContext.getIpAddr(request));
+		Map<String, Object> map = paramenter.getMap("entity");
+		
+		User user = new User();
+		user.setName((String) map.get("ssoUser.username"));
+		SsoUser ssoUser  = new SsoUser();
+		ssoUser.setUsername((String) map.get("ssoUser.username"));
+		ssoUser.setTurename((String) map.get("ssoUser.truename"));
+		ssoUser.setEmail((String) map.get("ssoUser.email"));
+		ssoUser.setPhone((String) map.get("ssoUser.phone"));
+		ssoUser.setLastLoginIp(WebContext.getIpAddr(request));
+		user.setSsoUser(ssoUser);
+		user.setSex((String) map.get("sex"));
+		Role role = new Role();
+		role.setId(paramenter.getInteger("entity.role.id"));
+		user.setRole(role);
+		Organization org = new Organization();
+		org.setId(paramenter.getInteger("entity.organization.id"));
+		user.setOrganization(org);
 		
 		try {
-			this.getManagerGridService().save(entity);
+			this.getManagerGridService().save(user);
 			return responseReturn.success();
 		} catch (Exception e) {
 			e.printStackTrace();

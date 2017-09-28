@@ -1,15 +1,11 @@
 package com.windf.module.user.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.windf.core.general.dao.CrudDao;
 import com.windf.core.general.dao.WritableDao;
-import com.windf.module.sso.entity.SsoUser;
 import com.windf.module.sso.service.SsoUserService;
 import com.windf.module.user.dao.UserDao;
 import com.windf.module.user.entity.User;
@@ -31,24 +27,17 @@ public class UserServiceImpl extends ManagerGirdiServiceImpl implements UserServ
 	
 	@Override
 	public int save(Object bean) throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();
+		User user = (User) bean;
 		/*
 		 * 先保存一个ssoUser
 		 */
-		SsoUser ssoUser = new SsoUser();
-		ssoUser.setUsername((String) map.get("ssoUser.username"));
-		ssoUser.setPhone((String) map.get("ssoUser.phone"));
-		ssoUser.setEmail((String) map.get("ssoUser.email"));
-		ssoUser.setLastLoginIp((String) map.get("ip"));
-		int id = ssoUserService.addUser(ssoUser);
-		ssoUser.setId(id);
+		ssoUserService.addUser(user.getSsoUser());
 		
 		/**
 		 * 保存用户
 		 */
-		map.put("ssoUser.id", id);
 		WritableDao writableDao = this.getGridDao();
-		return writableDao.insert(bean);
+		return writableDao.insert(user);
 	}
 
 	@Override

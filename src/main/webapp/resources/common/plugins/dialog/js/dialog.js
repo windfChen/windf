@@ -112,7 +112,7 @@ alert = function (message, f, title, btn) {
 }
 
 confirm = function (message, sureFunction, cancelFunction, title) {
-	$.DialogByW.Confirm({Title: title, Content: message,FunL:sureFunction,FunR:function(){
+	$.DialogByW.Confirm({Title: (title? title: ''), Content: message,FunL:sureFunction,FunR:function(){
 	   if (cancelFunction) {
 		   cancelFunction();
 	   }

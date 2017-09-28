@@ -14,8 +14,8 @@
 		"display" : null,
 		"orderNum" : 0
 	},{
-		"name" : "名称",
-		"dataIndex" : "ssoUser.truename",
+		"name" : "登录名",
+		"dataIndex" : "ssoUser.username",
 		"type" : "TextField",
 		"canList" : true,
 		"canSearch" : true,
@@ -26,21 +26,6 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 1
-	},
-	{
-		"name" : "性别",
-		"dataIndex" : "sex",
-		"type" : "ComboBox",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"comboDataArray" : [{"id":"F","name":"女"},{"id":"M","name":"男"}],
-		"orderNum" : 4
 	},
 	{
 		"name" : "角色",
@@ -70,34 +55,6 @@
 		"canOrder" : true,
 		"display" : null,
 		"comboUrl" : "/org/myList.json",
-		"orderNum" : 4
-	},
-	{
-		"name" : "手机号",
-		"dataIndex" : "ssoUser.phone",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"orderNum" : 4
-	},
-	{
-		"name" : "邮箱",
-		"dataIndex" : "ssoUser.email",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
 		"orderNum" : 4
 	}],
 	"menus" : [],

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.frame.session.SessionContext;
+import com.windf.core.util.Encrypt;
 import com.windf.core.util.StringUtil;
 import com.windf.module.sso.Constant;
 import com.windf.module.sso.dao.SsoUserDao;
@@ -26,7 +27,7 @@ public class SsoUserServiceImpl implements SsoUserService {
 		 * 设置默认密码
 		 */
 		if(StringUtil.isEmpty(ssoUser.getPassword())) {
-			ssoUser.setPassword(Constant.DEFAULT_USER_PASSWORD);
+			ssoUser.setPassword(Encrypt.MD5(Constant.DEFAULT_USER_PASSWORD));
 		}
 		
 		return ssoUserAccess.insert(ssoUser);

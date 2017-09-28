@@ -10,8 +10,9 @@
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/dialog/css/dialog.css" />
 		<link type="text/css" rel="stylesheet" href="${rc.contextPath}/resources/module/index/css/BreakingNews.css" />
 		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/plugins/manage/css/grid.css" />
-		<!--必要样式-->
+		
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/jquery/jquery.js"></script>
+		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/jquery/jquery.form.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/js/page.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/module/index/js/scripts.js"></script>
 		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/dialog/js/dialog.js"></script>
