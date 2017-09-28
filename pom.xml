@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.windf</groupId>
 	<artifactId>wall</artifactId>
-	<packaging>war</packaging>
 	<version>0.0.1</version>
 	<name>MyWall</name>
 	<url>http://maven.apache.org</url>
