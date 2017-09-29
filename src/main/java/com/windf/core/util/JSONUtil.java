@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 public class JSONUtil {
 	/**
@@ -17,9 +18,9 @@ public class JSONUtil {
 		if (obj == null) {
 			
 		} else if (obj instanceof Array || obj instanceof Collection) {
-			result = JSONArray.toJSONString(obj);
+			result = JSONArray.toJSONString(obj,SerializerFeature.WriteDateUseDateFormat);
 		} else {
-			result = JSONObject.toJSONString(obj);
+			result = JSONObject.toJSONString(obj,SerializerFeature.WriteDateUseDateFormat);
 		}
 		return result;
 	}
