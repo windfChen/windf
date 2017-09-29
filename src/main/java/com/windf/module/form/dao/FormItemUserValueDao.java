@@ -17,7 +17,7 @@ public interface FormItemUserValueDao {
 	 * @param formId
 	 * @return
 	 */
-	List<FormItemUserValue> getByFormId(String formId);
+	List<FormItemUserValue> getByFormId(Integer formId, Integer userId);
 
 	/**
 	 * 根据用户Id和实体Id批量删除
@@ -25,6 +25,6 @@ public interface FormItemUserValueDao {
 	 * @param string
 	 * @return
 	 */
-	int deleteByUser(String formId, String userId);
+	int deleteByUser(Integer formId, Integer userId);
 
 }

@@ -12,13 +12,13 @@ public interface FormItemUserValueService {
 	 * @param vo
 	 * @return
 	 */
-	List<FormItemUserValue> saveUserValue(String formId, Map<String, Object> data);
+	List<FormItemUserValue> saveUserValue(Integer formId, Map<String, Object> data);
 	
 	/**
 	 * 获取用户的填写的信息
 	 * @param formId
 	 * @return
 	 */
-	List<FormItemUserValue> getUserValue(String formId);
+	List<FormItemUserValue> getUserValue(Integer formId);
 
 }

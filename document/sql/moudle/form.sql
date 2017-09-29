@@ -1,5 +1,5 @@
-REATE TABLE `form` (
-  `id` varchar(50) NOT NULL,
+CREATE TABLE `form` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `code` varchar(50) NOT NULL,
   `note` varchar(50) DEFAULT NULL,
@@ -10,8 +10,8 @@ REATE TABLE `form` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `form_item` (
-  `id` varchar(50) NOT NULL,
-  `fk_form_id` varchar(50) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_form_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `code` varchar(50) NOT NULL,
   `note` varchar(500) DEFAULT NULL,
@@ -23,11 +23,12 @@ CREATE TABLE `form_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `form_item_user_value` (
-  `id` varchar(50) NOT NULL,
-  `fk_user_id` varchar(50) NOT NULL,
-  `fk_form_item_id` varchar(255) NOT NULL,
-  `value` varchar(200) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_user_id` int(11) NOT NULL,
+  `fk_form_item_id` int(11) NOT NULL,
+  `value` varchar(200) ,
   `create_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

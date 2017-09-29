@@ -11,5 +11,5 @@ public interface FormItemDao {
 	 * @param formId
 	 * @return
 	 */
-	public List<FormItem> getByFormId(String formId);
+	public List<FormItem> getByFormId(Integer formId);
 }

@@ -5,11 +5,11 @@
 <mapper namespace="com.windf.module.form.dao.FormItemUserValueDao">
     
     <insert id="saveList" parameterType="List" keyProperty="id">
-       INSERT INTO form_item_user_value (id, fk_user_id, fk_form_item_id, `value`, create_date, update_date)
+       INSERT INTO form_item_user_value (fk_user_id, fk_form_item_id, `value`, create_date, update_date)
        values
 	   <foreach collection="list" item="item" index="index" separator=",">
-		     (replace(UUID(), '-', ''), 
-		    	#{item.userId} , 
+		     (
+		    	#{item.user.id} , 
 		    	#{item.formItem.id},
 		    	#{item.value},
 		    	now(),
@@ -17,18 +17,19 @@
 	   </foreach>
     </insert>
     
-     <select id="getByFormId" parameterType="java.lang.String" resultType="com.windf.module.form.entity.FormItemUserValue" >
+     <select id="getByFormId" parameterType="java.lang.Integer" resultType="com.windf.module.form.entity.FormItemUserValue" >
        SELECT
 			t.id, t.fk_user_id as userId, `value`, t.create_date createDate, t.update_date updateDate,
 			t.fk_form_item_id `formItem.id` , i.code as `formItem.code`, i.name as `formItem.name`
 		FROM 
 			form_item_user_value t
 		INNER JOIN form_item i on t.fk_form_item_id = i.id
-		WHERE i.fk_form_id = #{param1}
+	  WHERE i.fk_form_id = #{param1}
+		    AND t.fk_user_id = #{param2}
     </select>
     
     
-    <delete id="deleteByUser" parameterType="java.lang.String" >
+    <delete id="deleteByUser" parameterType="java.lang.Integer" >
         DELETE t
 		FROM
 			form_item_user_value t

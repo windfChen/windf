@@ -6,8 +6,8 @@ import com.windf.core.general.bean.AbstractBean;
 
 public class Form extends AbstractBean {
 	private static final long serialVersionUID = 4935401778993342311L;
-	
-	private String id;
+
+	private Integer id;
 	private String name;
 	private String code;
 	private String note;
@@ -16,11 +16,11 @@ public class Form extends AbstractBean {
 	private Date updateDate;
 	private String gridView;
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

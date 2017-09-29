@@ -9,6 +9,6 @@ public interface FormService {
 	 * @param formId
 	 * @return
 	 */
-	Form getFormById(String formId);
+	Form getFormById(Integer formId);
 
 }
