@@ -7,6 +7,8 @@ function Grid() {
 	this.pageSize = 10;
 	
 	this.submiting = false;
+	this.dataColumnWidth = 0;
+	this.idColunmWidth = 0;
 	
 	window.load = function (obj) {
 		return function(pageNum){
@@ -45,6 +47,17 @@ Grid.prototype = {
 			});
 		}
 		
+		// 计算宽度
+		var titleCount = 0;
+		for (var i = 0; i < this.gridConfig.columns.length; i++) {
+			var c = this.gridConfig.columns[i];
+			if (c.canList) {
+				titleCount ++;
+			}
+		}
+		this.dataColumnWidth = parseInt((12 - 1) / (titleCount));
+		this.idColunmWidth = (12 - 1) % (titleCount) + 1
+		
 		this.initTitle();
 		this.initMenu();
 	},
@@ -52,14 +65,15 @@ Grid.prototype = {
 	initTitle : function () {
 
 		// 初始化表头
-		var tableTitle = '<li class="col-xs-3"><span class="table"><label class="label_check"><div class="btn_check"></div><input id="select_all_input" type="checkbox"/></label>全选</span></li>';
+		var tableTitle = '<li id="title_li" class="col-xs-' + this.idColunmWidth + '"><span class="table"><label class="label_check"><div class="btn_check"></div><input id="select_all_input" type="checkbox"/></label>全选</span></li>';
 		for (var i = 0; i < this.gridConfig.columns.length; i++) {
 			var c = this.gridConfig.columns[i];
 			
 			if (c.canList) {
-				tableTitle += '<li class="col-xs-3">' + c.name + '</li>';
+				tableTitle += '<li class="col-xs-' + this.dataColumnWidth + '">' + c.name + '</li>';
 			}
 		}
+		
 		
 		$('#grid').html(tableTitle);
 		$('#select_all_input').click(function(){
@@ -92,12 +106,12 @@ Grid.prototype = {
 				obj.initTitle();
 				for (var i = 0; i < data.models.length; i++) {
 					var d = data.models[i];
-					var h = '<li class="col-xs-3"> <span class="table"> <label class="label_check"> <div class="btn_check"></div> \
+					var h = '<li class="col-xs-' + obj.idColunmWidth + '"> <span class="table"> <label class="label_check"> <div class="btn_check"></div> \
 						<input type="checkbox" class="grid_id" data_id="' + d.id + '" name=""/> </label> </span> </li>';
 					for (var j = 0; j < obj.gridConfig.columns.length; j++) {
 						var c = obj.gridConfig.columns[j];
 						if (c.canList) {
-							h += '<li class="col-xs-3">' + obj._getColumnDisplay(d, c) + '</li>';
+							h += '<li class="col-xs-' + obj.dataColumnWidth + '">' + obj._getColumnDisplay(d, c) + '</li>';
 						}
 					}	
 					$('#grid').append(h);

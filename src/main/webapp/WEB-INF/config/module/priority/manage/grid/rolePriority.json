@@ -27,19 +27,6 @@
 		"display" : null,
 		"orderNum" : 1
 	},{
-		"name" : "地址",
-		"dataIndex" : "url",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"orderNum" : 1
-	},{
 		"name" : "是否有效",
 		"dataIndex" : "flagIsvalid",
 		"type" : "TextField",
