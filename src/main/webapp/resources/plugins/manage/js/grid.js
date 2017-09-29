@@ -148,7 +148,7 @@ Grid.prototype = {
 	},
 	
 	del : function() {
-		var ids = getSelections();
+		var ids = this.getSelections();
 		if (ids == '') {
 			alert('至少选择一条记录');
 			return;
