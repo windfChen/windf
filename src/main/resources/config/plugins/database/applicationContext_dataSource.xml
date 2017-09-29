@@ -30,8 +30,8 @@
 	 
 	<bean id="mySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
 		<property name="dataSource" ref="dataSource" />  
-		<property name="configLocation" value="classpath:plugins/mybatis/mybatis-config.xml"></property>
-		<property name="mapperLocations"  value="classpath:module/*/database/sqlmap/*.xml" />  
+		<property name="configLocation" value="classpath:config/plugins/database/mybatis-config.xml"></property>
+		<property name="mapperLocations"  value="classpath:config/module/*/database/sqlmap/*.xml" />  
 	</bean> 
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
        <constructor-arg index="0" ref="mySqlSessionFactory" />

@@ -34,14 +34,13 @@ public class FileUtil {
 	}
 
 	/**
-	 * 获取配置文件路径 e: 项目路径/WEB-INF/config
+	 * 获取配置文件路径 e: 项目路径/WEB-INF/classes/config
 	 * 
 	 * @return 配置文件路径
 	 */
 	public static String getConfigPath() {
 		String classPath = getClassPath();
-		String webinfoPath = classPath.substring(0, classPath.lastIndexOf("classes"));
-		String configPath = webinfoPath + "config";
+		String configPath = classPath + File.separator + "config";
 		return configPath;
 	}
 
