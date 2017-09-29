@@ -23,6 +23,7 @@ Grid.prototype = {
 		$.getJSON('grid.json' + queryString, function(gridConfig){
 			obj.gridConfig = gridConfig.data;
 			obj.initGrid();
+			obj.load();
 		})
 	},
 	

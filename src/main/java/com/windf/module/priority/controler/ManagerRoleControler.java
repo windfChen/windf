@@ -14,7 +14,7 @@ import com.windf.plugins.manage.web.controler.ManagerGridControler;
 @Scope("prototype")
 @RequestMapping(value = ManagerRoleControler.CONTROLER_PATH)
 public class ManagerRoleControler extends ManagerGridControler {
-	protected final static String CONTROLER_PATH = "/role";
+	protected final static String CONTROLER_PATH = MANAGE_PATH + "/role";
 
 	@Resource
 	private RoleService roleService;

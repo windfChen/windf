@@ -23,7 +23,7 @@ import com.windf.plugins.web.WebContext;
 @Scope("prototype")
 @RequestMapping(value = ManageUserControler.CONTROLER_PATH)
 public class ManageUserControler extends ManagerGridControler{
-	protected final static String CONTROLER_PATH = Constant.MODULE_WEB_PATH + "/manage";
+	protected final static String CONTROLER_PATH = MANAGE_PATH + Constant.MODULE_WEB_PATH;
 	
 	@Resource
 	private UserService userService;

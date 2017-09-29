@@ -20,6 +20,7 @@ import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.web.BaseControler;
 
 public abstract class ManagerGridControler extends BaseControler {
+	protected final static String MANAGE_PATH = Constant.WEB_BASE_PATH;
 		
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
@@ -165,6 +166,9 @@ public abstract class ManagerGridControler extends BaseControler {
 		int index = requestPath.lastIndexOf('.');
 		if (index > 0) {
 			requestPath = requestPath.substring(0, index);
+		}
+		if (requestPath.startsWith(MANAGE_PATH)) {
+			requestPath = requestPath.substring(MANAGE_PATH.length());
 		}
 		
 		String result = StringUtil.toCamelCase(requestPath, "/");

@@ -8,7 +8,6 @@
 			$(function(){
 				window.grid = new Grid();
 				grid.init();
-				grid.load();
 			});
 		</script>
 	</head>

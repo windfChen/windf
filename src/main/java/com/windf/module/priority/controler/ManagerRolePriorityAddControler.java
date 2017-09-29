@@ -20,7 +20,7 @@ import com.windf.plugins.manage.web.controler.ManagerGridControler;
 @Scope("prototype")
 @RequestMapping(value = ManagerRolePriorityAddControler.CONTROLER_PATH)
 public class ManagerRolePriorityAddControler extends ManagerGridControler {
-	protected final static String CONTROLER_PATH = "/role/priority/add";
+	protected final static String CONTROLER_PATH = MANAGE_PATH + "/role/priority/add";
 
 	@Resource
 	private RolePriorityService rolePriorityService;

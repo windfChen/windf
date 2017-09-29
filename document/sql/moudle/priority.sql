@@ -1,4 +1,4 @@
-CREATE TABLE `menu` (
+CREATE TABLE `priority_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_parent_id` int(11) DEFAULT NULL,
   `parent_ids` varchar(255) DEFAULT NULL COMMENT '所有父节点的id用处搜索所有子节点',

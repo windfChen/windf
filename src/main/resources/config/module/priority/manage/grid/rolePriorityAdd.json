@@ -43,7 +43,7 @@
 		"canSelect" : false,
 		"isSingleSelect" : false,
 		"checkColumn" : '',
-		"actionAddress" : '/role/priority/${queryString}',
+		"actionAddress" : '/manage/role/priority/${queryString}',
 		"ajaxReturn" : false,
 		"confirm": false,
 		"title" : null,

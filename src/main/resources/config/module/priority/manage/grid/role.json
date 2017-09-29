@@ -52,7 +52,7 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a href='/role/priority/?roleId=${id}&roleName=${name}'>管理</a>",
+		"display" : "<a href='/manage/role/priority/?roleId=${id}&roleName=${name}'>管理</a>",
 		"orderNum" : 3
 	}],
 	"menus" : [],

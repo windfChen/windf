@@ -15,7 +15,7 @@ import com.windf.plugins.manage.web.controler.ManagerGridControler;
 @Scope("prototype")
 @RequestMapping(value = ManagerOrganizationControler.CONTROLER_PATH)
 public class ManagerOrganizationControler extends ManagerGridControler{
-	protected final static String CONTROLER_PATH = Constant.MODULE_WEB_PATH + "/manage";
+	protected final static String CONTROLER_PATH = MANAGE_PATH + Constant.MODULE_WEB_PATH;
 	
 	@Resource
 	private OrganizationService organizationService;
