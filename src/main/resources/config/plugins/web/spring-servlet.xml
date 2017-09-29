@@ -24,6 +24,7 @@
 	<mvc:annotation-driven/>
 	<mvc:resources mapping="/resources/**" location="/resources/" />
     <mvc:resources mapping="/incoming/**" location="/incoming/" />
+    <mvc:resources mapping="/error/**" location="/error/" />
     <mvc:resources mapping="/favicon.ico" location="/favicon.ico" />
 	
 	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 请求映射 -->
@@ -73,7 +74,7 @@
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
-				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">redirect:/error.html</prop>
+				<prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">redirect:/error/500.htm</prop>
 			</props>
 		</property>
 	</bean>
