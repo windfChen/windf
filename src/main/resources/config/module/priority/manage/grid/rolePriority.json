@@ -56,7 +56,7 @@
 		"canSelect" : false,
 		"isSingleSelect" : false,
 		"checkColumn" : '',
-		"actionAddress" : '/role/',
+		"actionAddress" : '/manage/role/',
 		"ajaxReturn" : false,
 		"confirm": false,
 		"title" : null,
