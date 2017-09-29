@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title></title>
-		<#include "/module/index/include/res.ftl" >
+		<#include "/common/include/res.ftl" >
 		
 		<script>
 			$(function(){
@@ -14,13 +14,13 @@
 	</head>
 	<body>
 	
-		<#include "/module/index/include/header.ftl" >
+		<#include "/common/include/header.ftl" >
 		
 		<!--main start -->
 		<section class="container mt-sm25 mt-xs-15">
 			<div class="row">
 			
-				<#include "/module/index/include/left.ftl" >
+				<#include "/common/include/left.ftl" >
 				
 				<div class="te-md-8 mt-xs-10">
 					<div class="center_rigt">
