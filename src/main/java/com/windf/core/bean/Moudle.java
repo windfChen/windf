@@ -1,6 +1,9 @@
 package com.windf.core.bean;
 
+import java.io.File;
+
 import com.windf.core.util.file.FileUtil;
+import com.windf.module.development.Constant;
 
 public class Moudle {
 	
@@ -27,6 +30,16 @@ public class Moudle {
 		result = new Moudle(code);
 		currentMoudle.set(result);
 		return result;
+	}
+	
+	/**
+	 * 获得模块配置文件
+	 * @param code
+	 * @return
+	 */
+	public static File getMoudleConfigFileByCode(String code) {
+		String configFilePath = FileUtil.getConfigPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH + File.separator + code + ".xml";
+		return FileUtil.getFile(configFilePath);
 	}
 	
 	/**

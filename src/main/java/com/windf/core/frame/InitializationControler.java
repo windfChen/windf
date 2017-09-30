@@ -1,5 +1,8 @@
 package com.windf.core.frame;
 
+import com.windf.core.Constant;
+import com.windf.core.util.file.FileUtil;
+
 public class InitializationControler implements Initializationable {
 
 	@Override
@@ -33,6 +36,8 @@ public class InitializationControler implements Initializationable {
 		// 读取各个插件，寻找插件的描述信息
 		
 		
+		String classPath = FileUtil.getClassPath();
+		FileUtil.getFile(classPath + Constant.DEFAULT_MODULE_DESCRIPT_PATH);
 		
 	}
 
