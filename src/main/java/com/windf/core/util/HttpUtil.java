@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -193,5 +196,46 @@ public class HttpUtil {
         } else {
             return 0;
         }
+    }
+    
+    /**
+     * 
+     * @param map
+     * @param isURLEncoder
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public static String mapToFormData(Map map, boolean isURLEncoder) {
+    	String result = null;
+    	
+    	StringBuffer formData = new StringBuffer();
+        if (CollectionUtil.isNotEmpty(map)) {
+        	Iterator<String> iterator = map.keySet().iterator();
+        	while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				String value = String.valueOf(map.get(key));
+				
+				if (StringUtil.isEmpty(key)) {
+					continue;
+				}
+				
+				if (formData.length() > 0) {
+					formData.append("&");
+				}
+				formData.append(key + "=" + TextUtil.fixNull(value));
+			}
+        	
+        	result = formData.toString();
+            if (isURLEncoder) {
+            	try {
+					result = URLEncoder.encode(result, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+            }
+        }
+        
+        return result;
     }
 }

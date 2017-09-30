@@ -1,5 +1,9 @@
 package com.windf.plugins.web.response;
 
+import java.util.Map;
+
+import com.windf.core.frame.Moudle;
+import com.windf.core.util.HttpUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.module.user.UserSession;
 import com.windf.plugins.web.BaseControler;
@@ -73,7 +77,14 @@ public class PageReturn extends AbstractResponseRetrun {
 	public String returnData(boolean success, String message) {
 		return returnData(success, message, null);
 	}
+	
+	@Override
+	public String redirect(String url) {
+		redirectUrl = "redirect:" + url;
+		return success();
+	}
 
+	@SuppressWarnings({"rawtypes" })
 	@Override
 	public String returnData(boolean success, String message, Object data) {
 		baseControler.paramenter.setValue(RESULT_SUCCESS_KEY, success);
@@ -84,20 +95,33 @@ public class PageReturn extends AbstractResponseRetrun {
 			baseControler.paramenter.setValue(RESULT_MESSAGE_KEY, message);
 		}
 
+		/*
+		 * 设置通用变量
+		 */
 		baseControler.paramenter.setValue("user", UserSession.getCurrentUser());
+		baseControler.paramenter.setValue("module", Moudle.getCurrentMoudle());
 		
 		if (page == null) {
 			// TODO 设置默认路径
 //			page = baseControler.getFullPath();
 		}
 		// TODO 设置跳转的数据
+		if (StringUtil.isNotEmpty(redirectUrl)) {
+			page = redirectUrl;
+			if (data != null) {
+				if (!redirectUrl.contains("?")) {
+					redirectUrl += "?";
+				}
+				if (data instanceof Map) {
+					redirectUrl += HttpUtil.mapToFormData((Map) data, true);
+				} else {
+					redirectUrl += "data=" + data;
+				}
+			}
+			
+		}
 		
 		return page;
 	}
 
-	@Override
-	public String redirect(String url) {
-		redirectUrl = "redirect:" + url;
-		return redirectUrl;
-	}
 }
