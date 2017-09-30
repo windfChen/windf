@@ -1,4 +1,4 @@
-package com.windf.core.frame.init;
+package com.windf.core.frame;
 
 public class InitializationControler implements Initializationable {
 
@@ -24,6 +24,16 @@ public class InitializationControler implements Initializationable {
 		// 读取，执行初始化文件（如果有）
 		
 		// 执行各个文件
+		
+		// 判断是否是开发模式（依赖maven结构，寻找classes上面的目录是否存在src）
+		// 读取各个模块，寻找模块的描述信息
+			// 寻找初始化类
+			// 寻找过滤器
+			// session注册
+		// 读取各个插件，寻找插件的描述信息
+		
+		
+		
 	}
 
 

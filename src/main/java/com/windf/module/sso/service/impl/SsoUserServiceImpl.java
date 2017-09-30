@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.windf.core.exception.UserException;
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.core.util.Encrypt;
 import com.windf.core.util.StringUtil;
 import com.windf.module.sso.Constant;

@@ -2,7 +2,7 @@ package com.windf.plugins.web.session;
 
 import javax.servlet.http.HttpSession;
 
-import com.windf.core.frame.session.Session;
+import com.windf.core.frame.Session;
 
 public class WebSession implements Session{
 	

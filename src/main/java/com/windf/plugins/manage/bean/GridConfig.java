@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.windf.core.bean.Moudle;
 import com.windf.core.exception.CodeException;
-import com.windf.core.frame.Moudle;
 import com.windf.core.util.JSONUtil;
 import com.windf.core.util.file.FileReadUtil;
 import com.windf.plugins.manage.Constant;

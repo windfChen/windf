@@ -1,4 +1,4 @@
-package com.windf.core.frame.init;
+package com.windf.core.frame;
 
 public interface Initializationable  {
 

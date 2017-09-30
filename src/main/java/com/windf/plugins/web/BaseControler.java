@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.windf.core.frame.Moudle;
+import com.windf.core.bean.Moudle;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
 import com.windf.plugins.web.request.RequestParamenter;

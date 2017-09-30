@@ -1,6 +1,6 @@
 package com.windf.module.user;
 
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.module.user.entity.User;
 
 public class UserSession {

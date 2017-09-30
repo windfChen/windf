@@ -6,9 +6,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.plugins.web.filter.Filter;
-import com.windf.plugins.web.session.WebSession;
 
 public class SessionFilter implements Filter{
 

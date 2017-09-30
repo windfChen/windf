@@ -1,6 +1,6 @@
 package com.windf.module.sso;
 
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.module.sso.entity.SsoUser;
 
 public class SsoUserSession {

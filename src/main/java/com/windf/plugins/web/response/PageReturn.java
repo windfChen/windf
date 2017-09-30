@@ -2,7 +2,7 @@ package com.windf.plugins.web.response;
 
 import java.util.Map;
 
-import com.windf.core.frame.Moudle;
+import com.windf.core.bean.Moudle;
 import com.windf.core.util.HttpUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.module.user.UserSession;

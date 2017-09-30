@@ -1,4 +1,4 @@
-package com.windf.core.frame;
+package com.windf.core.bean;
 
 import com.windf.core.util.file.FileUtil;
 

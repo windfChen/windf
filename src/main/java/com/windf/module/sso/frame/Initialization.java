@@ -1,7 +1,6 @@
-package com.windf.module.sso;
+package com.windf.module.sso.frame;
 
-import com.windf.core.frame.init.Initializationable;
-import com.windf.module.sso.filter.LoginFilter;
+import com.windf.core.frame.Initializationable;
 import com.windf.plugins.web.filter.FilterControler;
 
 public class Initialization implements Initializationable{

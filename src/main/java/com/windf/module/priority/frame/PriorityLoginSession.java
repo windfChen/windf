@@ -1,8 +1,8 @@
-package com.windf.module.priority.provider;
+package com.windf.module.priority.frame;
 
 import java.util.List;
 
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.core.spring.SpringUtil;
 import com.windf.module.priority.Constant;
 import com.windf.module.priority.entity.Priority;
@@ -15,7 +15,7 @@ import com.windf.module.user.UserSession;
  * @author chenyafeng
  *
  */
-public class PriorityLoginObserver extends AbstractLoginObserver {
+public class PriorityLoginSession extends AbstractLoginObserver {
 
 	@Override
 	public void login() {

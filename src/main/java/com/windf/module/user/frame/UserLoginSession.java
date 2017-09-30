@@ -1,6 +1,6 @@
-package com.windf.module.user.provider;
+package com.windf.module.user.frame;
 
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.core.spring.SpringUtil;
 import com.windf.module.sso.SsoUserSession;
 import com.windf.module.sso.modle.AbstractLoginObserver;
@@ -13,7 +13,7 @@ import com.windf.module.user.service.UserService;
  * @author chenyafeng
  *
  */
-public class UserLoginObserver extends AbstractLoginObserver {
+public class UserLoginSession extends AbstractLoginObserver {
 
 	@Override
 	public void login() {

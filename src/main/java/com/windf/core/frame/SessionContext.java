@@ -1,4 +1,4 @@
-package com.windf.core.frame.session;
+package com.windf.core.frame;
 
 import com.windf.core.exception.CodeException;
 

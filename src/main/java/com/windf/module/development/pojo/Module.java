@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.windf.core.constant.ModuleConstant;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
@@ -26,7 +25,7 @@ public class Module {
 	 * @throws UserException
 	 */
 	public static Module loadModule(String moduleCode) throws UserException {
-		String exampleDescriptPath = ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + moduleCode + ".xml";
+		String exampleDescriptPath = Constant.DEFAULT_MODULE_DESCRIPT_PATH + moduleCode + ".xml";
 		File exampleDescriptFile = FileUtil.getFile(exampleDescriptPath);
 		if (!exampleDescriptFile.exists()) {
 			throw new UserException("模板模块：[" + moduleCode + "]的配置文件不存在");
@@ -92,7 +91,7 @@ public class Module {
 	
 	public void write() throws UserException {
 		File file = new File(
-				FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
+				FileUtil.getWebappPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH + this.getCode() + ".xml");
 		XmlFileUtil.writeObject2Xml(this, file);
 	}
 
@@ -118,9 +117,9 @@ public class Module {
 	}
 
 	private void cloneConfigFile(ModuleMaster moduleMaster, String newCode) {
-		String templateModuleConfigFilePath = FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH
+		String templateModuleConfigFilePath = FileUtil.getWebappPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH
 				+ this.getCode() + ".xml";
-		String newModuleConfigFilePath = FileUtil.getWebappPath() + ModuleConstant.DEFAULT_MODULE_DESCRIPT_PATH
+		String newModuleConfigFilePath = FileUtil.getWebappPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH
 				+ newCode + ".xml";
 		FileUtil.copyFile(templateModuleConfigFilePath, newModuleConfigFilePath);
 

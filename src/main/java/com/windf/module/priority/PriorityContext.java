@@ -2,7 +2,7 @@ package com.windf.module.priority;
 
 import java.util.List;
 
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.module.priority.entity.Priority;
