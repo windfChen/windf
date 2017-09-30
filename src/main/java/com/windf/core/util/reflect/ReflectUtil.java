@@ -93,7 +93,7 @@ public class ReflectUtil {
 				Class<? extends Object>[] interfaces = clazz.getInterfaces();
 				for (int i = 0; i < interfaces.length; i++) {
 					Class<? extends Object> c = interfaces[i];
-					if (c.isAssignableFrom(List.class) || c.isAssignableFrom(Set.class)) {
+					if (List.class.isAssignableFrom(c) || Set.class.isAssignableFrom(c)) {
 						result = true;
 						break;
 					}
@@ -111,7 +111,7 @@ public class ReflectUtil {
 	 */
 	public static boolean isMap(Class<? extends Object> clazz) {
 		boolean result = false;
-		if (clazz.isAssignableFrom(Map.class)) {
+		if (Map.class.isAssignableFrom(clazz)) {
 			result = true;
 		}
 
@@ -119,7 +119,7 @@ public class ReflectUtil {
 			Class<? extends Object>[] interfaces = clazz.getInterfaces();
 			for (int i = 0; i < interfaces.length; i++) {
 				Class<? extends Object> c = interfaces[i];
-				if (c.isAssignableFrom(Map.class)) {
+				if (Map.class.isAssignableFrom(c)) {
 					result = true;
 					break;
 				}

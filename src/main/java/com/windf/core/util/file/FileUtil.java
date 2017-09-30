@@ -216,6 +216,20 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 获取路径中的后缀名
+	 * @param fileName
+	 * @return
+	 */
+	public static String getPrefix (String fileName) {
+		int lastPointIndex = fileName.lastIndexOf(".");
+		String prefix = null;
+		if (lastPointIndex > 0) {
+			prefix = fileName.substring(fileName.lastIndexOf(".")+1);
+		}
+		return prefix;
+	}
+	
+	/**
 	 * 解压缩
 	 * @param zipFile
 	 * @param unzipDir

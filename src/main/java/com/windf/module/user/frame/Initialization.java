@@ -2,14 +2,17 @@ package com.windf.module.user.frame;
 
 import com.windf.core.frame.Initializationable;
 
-public class Initialization implements Initializationable{
+public class Initialization implements Initializationable {
 
 	@Override
-	public boolean init() {
+	public void init() {
 		// 过滤器注册
 		new UserLoginSession();
-		
-		return true;
+	}
+
+	@Override
+	public int getOrder() {
+		return NORMAL;
 	}
 
 }

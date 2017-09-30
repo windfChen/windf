@@ -25,7 +25,7 @@ public class Module {
 	 * @throws UserException
 	 */
 	public static Module loadModule(String moduleCode) throws UserException {
-		File exampleDescriptFile = com.windf.core.bean.Moudle.getMoudleConfigFileByCode(moduleCode);
+		File exampleDescriptFile = com.windf.core.bean.Module.getMoudleConfigFileByCode(moduleCode);
 		if (!exampleDescriptFile.exists()) {
 			throw new UserException("模板模块：[" + moduleCode + "]的配置文件不存在");
 		}
@@ -89,7 +89,7 @@ public class Module {
 	}
 	
 	public void write() throws UserException {
-		File file = com.windf.core.bean.Moudle.getMoudleConfigFileByCode(this.getCode());
+		File file = com.windf.core.bean.Module.getMoudleConfigFileByCode(this.getCode());
 		XmlFileUtil.writeObject2Xml(this, file);
 	}
 
@@ -115,8 +115,8 @@ public class Module {
 	}
 
 	private void cloneConfigFile(ModuleMaster moduleMaster, String newCode) {
-		String templateModuleConfigFilePath =  com.windf.core.bean.Moudle.getMoudleConfigFileByCode(this.getCode()).getAbsolutePath();
-		String newModuleConfigFilePath =com.windf.core.bean.Moudle.getMoudleConfigFileByCode(newCode).getAbsolutePath();
+		String templateModuleConfigFilePath =  com.windf.core.bean.Module.getMoudleConfigFileByCode(this.getCode()).getAbsolutePath();
+		String newModuleConfigFilePath =com.windf.core.bean.Module.getMoudleConfigFileByCode(newCode).getAbsolutePath();
 		FileUtil.copyFile(templateModuleConfigFilePath, newModuleConfigFilePath);
 
 		this.modifyFileContent(new File(newModuleConfigFilePath), newCode);

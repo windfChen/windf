@@ -1,4 +1,4 @@
-package com.windf.plugins.web.filter;
+package com.windf.core.frame;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +10,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.windf.core.frame.Filter;
 
 public class FilterControler {
 	

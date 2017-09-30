@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
+import com.windf.core.frame.Filter;
 import com.windf.module.sso.SsoUserSession;
-import com.windf.plugins.web.filter.Filter;
 
 @Component
 public class LoginFilter implements Filter{

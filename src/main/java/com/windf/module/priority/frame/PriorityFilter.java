@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
+import com.windf.core.frame.Filter;
 import com.windf.module.priority.PriorityContext;
-import com.windf.plugins.web.filter.Filter;
 
 @Component
 public class PriorityFilter implements Filter{

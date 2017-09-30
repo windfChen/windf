@@ -1,6 +1,6 @@
 package com.windf.core.frame;
 
-public interface Session {
+public interface Session extends Orderable{
 	/**
 	 * 根据key获取存储的对象 如果找不到，返回null
 	 * 

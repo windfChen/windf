@@ -36,4 +36,9 @@ public class WebSession implements Session{
 		session.invalidate();
 	}
 
+	@Override
+	public int getOrder() {
+		return NORMAL;
+	}
+
 }

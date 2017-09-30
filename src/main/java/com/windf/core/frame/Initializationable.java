@@ -1,7 +1,7 @@
 package com.windf.core.frame;
 
-public interface Initializationable  {
+public interface Initializationable extends Orderable{
 
-	boolean init();
+	void init();
 	
 }
