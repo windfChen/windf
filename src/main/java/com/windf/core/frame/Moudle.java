@@ -38,6 +38,7 @@ public class Moudle {
 	}
 	
 	private String code;
+	// TODO 设置模块basePath
 	
 	/**
 	 * 获得模块的配置文件路径

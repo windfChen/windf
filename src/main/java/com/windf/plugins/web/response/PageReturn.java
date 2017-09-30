@@ -105,7 +105,10 @@ public class PageReturn extends AbstractResponseRetrun {
 			// TODO 设置默认路径
 //			page = baseControler.getFullPath();
 		}
-		// TODO 设置跳转的数据
+		
+		/*
+		 * 重定向参数
+		 */
 		if (StringUtil.isNotEmpty(redirectUrl)) {
 			page = redirectUrl;
 			if (data != null) {
