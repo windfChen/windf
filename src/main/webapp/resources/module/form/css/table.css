@@ -8,14 +8,14 @@ table.imagetable {
 	margin: 0 auto;
 }  
 table.imagetable tbody th {  
-    background:#b5cfd2 url('../image/cell-blue.jpg') no-repeat;  
+    background:#b5cfd2 url('../images/cell-blue.jpg') no-repeat;  
     border-width: 1px;  
     padding: 4px;  
     border-style: solid;  
     border-color: #999999;  
 }  
 table.imagetable tbody td {  
-    background:#dcddc0 url('../image/cell-grey.jpg') no-repeat;  
+    background:#dcddc0 url('../images/cell-grey.jpg') no-repeat;  
     border-width: 1px;  
     padding: 4px;  
     border-style: solid;  
