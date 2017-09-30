@@ -7,21 +7,12 @@ import com.windf.core.general.bean.AbstractBean;
 public class FormItem extends AbstractBean {
 	private static final long serialVersionUID = -8776339158900342309L;
 
-	private Integer id;
 	private Form form;
 	private String name;
 	private String code;
 	private String note;
 	private Date createDate;
 	private Date updateDate;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Form getForm() {
 		return form;

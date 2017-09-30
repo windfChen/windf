@@ -8,20 +8,11 @@ import com.windf.module.user.entity.User;
 public class FormItemUserValue extends AbstractBean {
 	private static final long serialVersionUID = 60338476825966995L;
 
-	private Integer id;
 	private User user;
 	private FormItem formItem;
 	private String value;
 	private Date createDate;
 	private Date updateDate;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public User getUser() {
 		return user;

@@ -7,7 +7,6 @@ import com.windf.core.general.bean.AbstractBean;
 public class MenuVO extends AbstractBean {
 	private static final long serialVersionUID = 8064319048898614343L;
 
-	private String id; // id
 	private String code; 
 	private String text; // 名称
 	private Integer sort; // 排序
@@ -25,14 +24,6 @@ public class MenuVO extends AbstractBean {
 		} else {
 			return null;
 		}
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getText() {

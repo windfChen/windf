@@ -10,19 +10,10 @@ package com.windf.core.general.bean;
 public class TreeEntity<T> extends AbstractBean {
 	private static final long serialVersionUID = -7400493087521518099L;
 
-	private Integer id; // id
 	private T parent; // 父级id
 	private String parentIds; // 所有父级id
 	private String name; // 名称
 	private Integer sort; // 排序
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public T getParent() {
 		return parent;

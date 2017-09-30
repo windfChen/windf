@@ -5,18 +5,9 @@ import com.windf.core.general.bean.AbstractBean;
 public class RolePriority extends AbstractBean {
 	private static final long serialVersionUID = 1661437607513229617L;
 
-	private Integer id;
 	private Role pePriRole;
 	private Priority pePriority;
 	private String flagIsvalid;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public Role getPePriRole() {
 		return pePriRole;

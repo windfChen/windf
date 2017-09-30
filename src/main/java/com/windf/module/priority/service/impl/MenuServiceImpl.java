@@ -39,7 +39,7 @@ public class MenuServiceImpl implements MenuService {
 		List<MenuVO> result = new ArrayList<MenuVO>();
 		for (Menu m : menuList) {
 			MenuVO menuVO = new MenuVO();
-			menuVO.setId(m.getId().toString());
+			menuVO.setId(m.getId());
 			menuVO.setCode(m.getCode());
 			menuVO.setText(m.getName());
 			menuVO.setSort(m.getSort());
