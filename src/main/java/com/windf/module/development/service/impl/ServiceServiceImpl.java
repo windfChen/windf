@@ -14,20 +14,10 @@ import com.windf.module.development.service.ServiceService;
 @org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService{
 	
-	private ModuleMaster moduleMaster;
-	
-	public ServiceServiceImpl() {
-		try {
-			moduleMaster = ModuleMaster.getInstance();
-		} catch (UserException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	@Override
 	public List<Service> getAllService(String moduleCode) throws UserException {
 		List<Service> result = new ArrayList<Service>();
-		Module module = moduleMaster.findModuleByCode(moduleCode);
+		Module module = ModuleMaster.getInstance().findModuleByCode(moduleCode);
 		if (module != null) {
 			result = module.getServices();
 		} else {

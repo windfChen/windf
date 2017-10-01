@@ -25,7 +25,7 @@ public class PriorityFilter implements Filter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
 		try {
 			
-			if (request.getRequestURI().contains("/index") 
+			if (true || request.getRequestURI().contains("/index") 
 					|| request.getRequestURI().contains("/login") 
 					|| request.getRequestURI().contains("/menu") 
 					|| request.getRequestURI().contains("/error") 

@@ -2,146 +2,59 @@ package com.windf.module.development.entity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.windf.core.exception.UserException;
-import com.windf.core.util.file.FileUtil;
 import com.windf.module.development.util.file.XmlFileUtil;
 
 /**
  * Module Master
+ * 
+ * @author chenyafeng
+ *
+ */
+/**
  * @author chenyafeng
  *
  */
 public class ModuleMaster implements Cloneable {
-	
-	private static final String DEFAULT_MASTER_CONFIG_FILE = "/WEB-INF/module/master.xml";
-	
-	private static ModuleMaster moduleMaster = null;
-	
-	public static ModuleMaster getInstance() throws UserException {
-		
-		if (moduleMaster == null) {
-			File moduleMasterFile = FileUtil.getFile(DEFAULT_MASTER_CONFIG_FILE);
-			
-			moduleMaster = XmlFileUtil.readXml2Object(moduleMasterFile, ModuleMaster.class);
-			
-			moduleMaster.loadAllModule();
-		}
-		
+
+	private static ModuleMaster moduleMaster = new ModuleMaster();
+
+	public static ModuleMaster getInstance() {
 		return moduleMaster;
 	}
-	
-	private String moduleConfigPath;
-	private Map<String, String> sourcePath;
-	private Map<String, String> classPath;
-	private Map<String, String> webPath;
-	private List<String> moduleCodes = new ArrayList<String>();
-	
-	private Map<String, Module> modules = new HashMap<String, Module>();
-	
-	public ModuleMaster() {
-		
-	}
-	
-	public void addModule(Module module) {
-		/*
-		 * 添加code
-		 */
-		if (!moduleCodes.contains(module.getCode())) {
-			moduleCodes.add(module.getCode());
-		}
-		
-		/*
-		 * 添加module 
-		 */
-		modules.put(module.getCode(), module);
-	}
+
+	private List<Module> modules = new ArrayList<Module>();
 	
 	/**
-	 * 根据code获得模块
-	 * @param code
+	 * 加载模块
+	 * @param moduleCode
 	 * @return
-	 * @throws UserException 
-	 */
-	public Module findModuleByCode(String code) throws UserException {
-		Module result = modules.get(code);
-		return result;
-	}
-	
-	/**
-	 * 获得所有模块
-	 * @return
-	 */
-	public List<Module> listAllModules() {
-		return new ArrayList<Module>(modules.values());
-	}
-	
-	/**
-	 * 把类的内容写入master.xml
-	 */
-	public void write() {
-		File file = new File(FileUtil.getWebappPath() + DEFAULT_MASTER_CONFIG_FILE);
-		XmlFileUtil.writeObject2Xml(this, file);
-	}
-	
-	/**
-	 * 加载所有模块
 	 * @throws UserException
 	 */
-	protected void loadAllModule() throws UserException {
-		for (int i = 0; i < moduleCodes.size(); i++) {
-			String code = moduleCodes.get(i);
-			
-			Module module = Module.loadModule(code);
-			modules.put(code, module);
+	public Module loadModule(String moduleCode) {
+		File exampleDescriptFile = com.windf.core.bean.Module.getMoudleConfigFileByCode(moduleCode);
+		if (!exampleDescriptFile.exists()) {
+			// throw new CodeException("模板模块：[" + moduleCode + "]的配置文件不存在");
+			return null;	// TODO 先创建，有了格式再复制到各个模块下修改
 		}
+
+		Module module = XmlFileUtil.readXml2Object(exampleDescriptFile, Module.class);
+		//module.init(); // TODO 好像有用
+
+		return module;
+	}
+
+	public Module findModuleByCode(String moduleCode) {
+		return null;
 	}
 	
-	public String getModuleConfigPath() {
-		return moduleConfigPath;
+	public List<Module> getModules() {
+		return modules;
 	}
 
-	public void setModuleConfigPath(String moduleConfigPath) {
-		this.moduleConfigPath = moduleConfigPath;
+	public void setModules(List<Module> modules) {
+		this.modules = modules;
 	}
 
-	public Map<String, String> getSourcePath() {
-		return sourcePath;
-	}
-
-	public void setSourcePath(Map<String, String> sourcePath) {
-		this.sourcePath = sourcePath;
-	}
-
-	public Map<String, String> getClassPath() {
-		return classPath;
-	}
-
-	public void setClassPath(Map<String, String> classPath) {
-		this.classPath = classPath;
-	}
-
-	public Map<String, String> getWebPath() {
-		return webPath;
-	}
-
-	public void setWebPath(Map<String, String> webPath) {
-		this.webPath = webPath;
-	}
-
-	public static void setModuleMaster(ModuleMaster moduleMaster) {
-		ModuleMaster.moduleMaster = moduleMaster;
-	}
-
-	public List<String> getModuleCodes() {
-		return moduleCodes;
-	}
-
-	public void setModuleCodes(List<String> moduleCodes) {
-		this.moduleCodes = moduleCodes;
-	}
-	
 }

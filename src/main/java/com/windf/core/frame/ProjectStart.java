@@ -10,15 +10,16 @@ import com.windf.core.bean.Module;
 import com.windf.core.exception.CodeException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.file.FileUtil;
+import com.windf.core.util.reflect.Scanner;
+import com.windf.core.util.reflect.ScannerHandler;
 
-public class ProjectStart {
+public class ProjectStart implements ScannerHandler{
 	private static ProjectStart projectStart = new ProjectStart();
 	
 	public static ProjectStart getInstance() {
 		return projectStart;
 	}
 	
-	private String basePackageName;
 	private Map<String, Module> modules = new HashMap<String, Module>(); // 模块
 	private Map<String, Module> plugins = new HashMap<String, Module>(); // 插件
 	
@@ -56,13 +57,8 @@ public class ProjectStart {
 		 * 获取遍历目录
 		 */
 		String classPath = FileUtil.getClassPath();
-		basePackageName = InitializationControler.class.getName().substring(0,InitializationControler.class.getName().indexOf(".core")).replace(".", File.separator);
-		File modulePackage = FileUtil.getFile(classPath + File.separator + basePackageName);
-
-		/*
-		 *  递归目录，初始化模块
-		 */
-		this.filePathIterator(modulePackage);
+		Scanner scanner = new Scanner(classPath, this);
+		scanner.run();
 		
 		/*
 		 * TODO 模块间排序
@@ -85,88 +81,71 @@ public class ProjectStart {
 		}
 	}
 	
-	/**
-	 * 遍历classes目录
-	 * 
-	 * @param file
-	 */
 	@SuppressWarnings("rawtypes")
-	private void filePathIterator(File file) {
+	@Override
+	public void handle(Scanner scanner) {
 
-		if (file.isDirectory()) { // 如果是目录继续遍历
-			File[] subFiles = file.listFiles();
-			for (int i = 0; i < subFiles.length; i++) {
-				filePathIterator(subFiles[i]);
+		String prefix = scanner.getPrefix();
+		if ("class".equals(prefix)) { // 如果是java的解析
+
+			/*
+			 * 解析路径
+			 */
+			String classPath = scanner.getRelativePath().replace(File.separator, ".") + "." + scanner.getFileName();
+			// TODO 现在是写死的，以后需要优化
+			String moduleType = scanner.getCurrentRelativePathByIndex(3);
+			String moduleCode = scanner.getCurrentRelativePathByIndex(4);
+			String packageName = scanner.getCurrentRelativePathByIndex(scanner.getCurrentRelativePaths().length);// 最后一级目录
+			
+			/*
+			 *  初始化模块
+			 */
+			Module currentModule = null;
+			if ("module".equals(moduleType)) {
+				currentModule = modules.get(moduleCode);
+				if (currentModule == null) {
+					currentModule = new Module(moduleCode);
+					modules.put(moduleCode, currentModule);
+				}
+			} else if ("plugins".equals(moduleType)){
+				currentModule = plugins.get(moduleCode);
+				if (currentModule == null) {
+					currentModule = new Module(moduleCode);
+					plugins.put(moduleCode, currentModule);
+				}
+			} else {
+				return;
 			}
-		} else {
-			String prefix = FileUtil.getPrefix(file.getName());
-			if ("class".equals(prefix)) { // 如果是java的解析
 
-				/*
-				 * 解析路径
-				 */
-				String filePath = file.getAbsolutePath();
-				String classPackagePath = filePath.substring(FileUtil.getClassPath().length() + 1).replace(File.separator, "."); // 包全名
-				String classPath = classPackagePath.substring(0, classPackagePath.lastIndexOf(".")); // 类路径
-				String packageName = classPath.substring(0, classPath.lastIndexOf("."));
-				packageName = packageName.substring(packageName.lastIndexOf(".") + 1); // 最后一级目录
+			try {
+				Class clazz = Class.forName(classPath);
 
-				/*
-				 * 获取模块code
-				 */
-				String[] subClassPath = classPackagePath.substring((basePackageName).length() + 1).split("\\.");
-				String moduleType = subClassPath[0];
-				String moduleCode = subClassPath[1];
-				
-				/*
-				 *  初始化模块
-				 */
-				Module currentModule = null;
-				if ("module".equals(moduleType)) {
-					currentModule = modules.get(moduleCode);
-					if (currentModule == null) {
-						currentModule = new Module(moduleCode);
-						modules.put(moduleCode, currentModule);
-					}
-				} else if ("plugins".equals(moduleType)){
-					currentModule = plugins.get(moduleCode);
-					if (currentModule == null) {
-						currentModule = new Module(moduleCode);
-						plugins.put(moduleCode, currentModule);
-					}
-				} else {
-					return;
-				}
-
-				try {
-					Class clazz = Class.forName(classPath);
-
-					if ("frame".equals(packageName)) {
-						if (Initializationable.class.isAssignableFrom(clazz)) { // 添加初始化
-							if (CollectionUtil.isEmpty(currentModule.getInitializationables())) {
-								currentModule.setInitializationables(new ArrayList<Initializationable>());
-							}
-							currentModule.getInitializationables().add((Initializationable) clazz.newInstance());
-						} else if (Filter.class.isAssignableFrom(clazz)) { // 添加拦截器
-							if (CollectionUtil.isEmpty(currentModule.getFilters())) {
-								currentModule.setFilters(new ArrayList<Filter>());
-							}
-							currentModule.getFilters().add((Filter) clazz.newInstance());
-						} else if (Session.class.isAssignableFrom(clazz)) { // 添加会话
-							if (CollectionUtil.isEmpty(currentModule.getSessions())) {
-								currentModule.setSessions(new ArrayList<Session>());
-							}
-							currentModule.getSessions().add((Session) clazz.newInstance());
+				if ("frame".equals(packageName)) {
+					if (Initializationable.class.isAssignableFrom(clazz)) { // 添加初始化
+						if (CollectionUtil.isEmpty(currentModule.getInitializationables())) {
+							currentModule.setInitializationables(new ArrayList<Initializationable>());
 						}
+						currentModule.getInitializationables().add((Initializationable) clazz.newInstance());
+					} else if (Filter.class.isAssignableFrom(clazz)) { // 添加拦截器
+						if (CollectionUtil.isEmpty(currentModule.getFilters())) {
+							currentModule.setFilters(new ArrayList<Filter>());
+						}
+						currentModule.getFilters().add((Filter) clazz.newInstance());
+					} else if (Session.class.isAssignableFrom(clazz)) { // 添加会话
+						if (CollectionUtil.isEmpty(currentModule.getSessions())) {
+							currentModule.setSessions(new ArrayList<Session>());
+						}
+						currentModule.getSessions().add((Session) clazz.newInstance());
 					}
-
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-					throw new CodeException("Initializationable 初始化类启动错误");
 				}
+
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				throw new CodeException("Initializationable 初始化类启动错误", e);
 			}
 		}
-
+	
 	}
+	
 
 	/**
 	 * 模块的各个服务注册
@@ -186,4 +165,5 @@ public class ProjectStart {
 		}
 		
 	}
+
 }

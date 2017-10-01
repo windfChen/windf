@@ -23,8 +23,9 @@ import com.windf.plugins.web.BaseControler;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = Constant.WEB_BASE_PATH + "/service")
+@RequestMapping(value = ServiceControler.CONTROLER_PATH)
 public class ServiceControler extends BaseControler{
+	protected final static String CONTROLER_PATH = Constant.MODULE_WEB_PATH + "/service";
 	
 	@Resource
 	private ServiceService serviceService ;

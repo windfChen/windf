@@ -13,7 +13,7 @@ public class Constant extends com.windf.core.Constant{
 	/*
 	 * web 相关
 	 */
-	public static final String WEB_BASE_PATH = "/dev";
+	public static final String MODULE_WEB_PATH = "/dev";
 	public static final String WEB_BASE_VIEW = "/module/development/";
 	public static final String JAVA_MODULE_BASE_PACKAGE = "/com/windf/module";
 	

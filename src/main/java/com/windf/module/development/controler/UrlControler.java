@@ -18,8 +18,9 @@ import com.windf.plugins.web.BaseControler;
 
 @Controller
 @Scope("prototype")
-@RequestMapping(value = Constant.WEB_BASE_PATH + "/url")
+@RequestMapping(value = UrlControler.CONTROLER_PATH)
 public class UrlControler extends BaseControler{
+	protected final static String CONTROLER_PATH = Constant.MODULE_WEB_PATH + "/url";
 	
 	@Resource
 	private UrlService urlService ;
@@ -40,12 +41,12 @@ public class UrlControler extends BaseControler{
 		}
 		boolean get = Boolean.parseBoolean(getStr);
 		
-		// 调用服务
-		try {
-			urlService.createUrl(moduleCode, url, get);
-		} catch (UserException e) {
-			return responseReturn.error(e.getMessage());
-		}
+//		// 调用服务
+//		try {
+//			urlService.createUrl(moduleCode, url, get);
+//		} catch (UserException e) {
+//			return responseReturn.error(e.getMessage());
+//		}
 		
 		return responseReturn.returnData(true, "创建成功");
 	}
@@ -60,11 +61,11 @@ public class UrlControler extends BaseControler{
 		
 		// 调用服务
 		List<UrlInfo> data = null;
-		try {
-			data = urlService.listUrls(moduleCode);
-		} catch (UserException e) {
-			return responseReturn.error(e.getMessage());
-		}
+//		try {
+//			data = urlService.listUrls(moduleCode);
+//		} catch (UserException e) {
+//			return responseReturn.error(e.getMessage());
+//		}
 		
 		return responseReturn.successData(data);
 	}
