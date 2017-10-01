@@ -1,4 +1,4 @@
-package com.windf.plugins.web.session;
+package com.windf.plugins.web.frame;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.windf.core.frame.Filter;
 import com.windf.core.frame.SessionContext;
+import com.windf.plugins.web.session.WebSession;
 
 public class SessionFilter implements Filter{
 
@@ -32,6 +33,11 @@ public class SessionFilter implements Filter{
 			throws Exception {
 		SessionContext.end(webSession.get());
 		webSession.set(null);
+	}
+
+	@Override
+	public int getOrder() {
+		return EARLIEST;
 	}
 
 }

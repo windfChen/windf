@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.windf.core.Constant;
 import com.windf.core.bean.Module;
 import com.windf.core.exception.CodeException;
 import com.windf.core.util.CollectionUtil;
@@ -57,14 +56,17 @@ public class ProjectStart {
 		 * 获取遍历目录
 		 */
 		String classPath = FileUtil.getClassPath();
-		basePackageName = InitializationControler.class.getName().substring(0,InitializationControler.class.getName().indexOf(".core"));
-		String modulePackagePath = basePackageName.replace(".", File.separator) + Constant.DEFAULT_MODULE_DESCRIPT_PATH;
-		File modulePackage = FileUtil.getFile(classPath + File.separator + modulePackagePath);
+		basePackageName = InitializationControler.class.getName().substring(0,InitializationControler.class.getName().indexOf(".core")).replace(".", File.separator);
+		File modulePackage = FileUtil.getFile(classPath + File.separator + basePackageName);
 
 		/*
 		 *  递归目录，初始化模块
 		 */
 		this.filePathIterator(modulePackage);
+		
+		/*
+		 * TODO 模块间排序
+		 */
 	}
 	
 	private void initRegister() {
@@ -130,7 +132,7 @@ public class ProjectStart {
 					currentModule = plugins.get(moduleCode);
 					if (currentModule == null) {
 						currentModule = new Module(moduleCode);
-						modules.put(moduleCode, currentModule);
+						plugins.put(moduleCode, currentModule);
 					}
 				} else {
 					return;

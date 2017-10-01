@@ -45,4 +45,9 @@ public class LoginFilter implements Filter{
 			throws Exception {
 	}
 
+	@Override
+	public int getOrder() {
+		return EARLY;
+	}
+
 }

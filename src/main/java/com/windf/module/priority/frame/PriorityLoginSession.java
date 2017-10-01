@@ -7,7 +7,7 @@ import com.windf.core.spring.SpringUtil;
 import com.windf.module.priority.Constant;
 import com.windf.module.priority.entity.Priority;
 import com.windf.module.priority.service.PriorityService;
-import com.windf.module.sso.modle.AbstractLoginObserver;
+import com.windf.module.sso.modle.LoginObserver;
 import com.windf.module.user.UserSession;
 
 /**
@@ -15,7 +15,7 @@ import com.windf.module.user.UserSession;
  * @author chenyafeng
  *
  */
-public class PriorityLoginSession extends AbstractLoginObserver {
+public class PriorityLoginSession implements LoginObserver {
 
 	@Override
 	public void login() {
@@ -27,6 +27,11 @@ public class PriorityLoginSession extends AbstractLoginObserver {
 	@Override
 	public void logout() {
 		
+	}
+
+	@Override
+	public int getOrder() {
+		return LATEST;
 	}
 
 }

@@ -28,7 +28,7 @@ public class FilterControler {
 	}
 	
 	public void addFilter(Filter filter) {
-		filters.add(filter);
+		OrderHandler.add(filters, filter);
 	}
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

@@ -58,4 +58,9 @@ public class PriorityFilter implements Filter{
 			throws Exception {
 	}
 
+	@Override
+	public int getOrder() {
+		return EARLY - 1;
+	}
+
 }

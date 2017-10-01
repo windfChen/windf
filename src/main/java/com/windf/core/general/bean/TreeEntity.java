@@ -7,12 +7,11 @@ package com.windf.core.general.bean;
  *
  * @param <T>
  */
-public class TreeEntity<T> extends AbstractBean {
+public class TreeEntity<T> extends NameBean {
 	private static final long serialVersionUID = -7400493087521518099L;
 
 	private T parent; // 父级id
 	private String parentIds; // 所有父级id
-	private String name; // 名称
 	private Integer sort; // 排序
 
 	public T getParent() {
@@ -29,14 +28,6 @@ public class TreeEntity<T> extends AbstractBean {
 
 	public void setParentIds(String parentIds) {
 		this.parentIds = parentIds;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Integer getSort() {

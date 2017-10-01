@@ -1,13 +1,14 @@
 package com.windf.module.user.frame;
 
 import com.windf.core.frame.Initializationable;
+import com.windf.module.sso.modle.LoginSubject;
 
 public class Initialization implements Initializationable {
 
 	@Override
 	public void init() {
-		// 过滤器注册
-		new UserLoginSession();
+		// 注册通知调用
+		LoginSubject.getInstance().attach(new UserLoginSession());
 	}
 
 	@Override

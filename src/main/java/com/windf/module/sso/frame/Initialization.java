@@ -6,7 +6,6 @@ public class Initialization implements Initializationable{
 
 	@Override
 	public void init() {
-		System.out.println(33);
 	}
 
 	@Override
