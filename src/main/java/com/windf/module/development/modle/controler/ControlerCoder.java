@@ -6,6 +6,12 @@ import java.util.List;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.StringUtil;
 import com.windf.module.development.Constant;
+import com.windf.module.development.entity.Controler;
+import com.windf.module.development.entity.Module;
+import com.windf.module.development.entity.ModuleMaster;
+import com.windf.module.development.entity.Parameter;
+import com.windf.module.development.entity.Return;
+import com.windf.module.development.entity.UrlInfo;
 import com.windf.module.development.modle.java.Annotation;
 import com.windf.module.development.modle.java.CodeBlock;
 import com.windf.module.development.modle.java.Comment;
@@ -13,12 +19,6 @@ import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.modle.java.code.ControlerReturnCoder;
 import com.windf.module.development.modle.java.code.ParameterVerifyCoder;
-import com.windf.module.development.pojo.Controler;
-import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleMaster;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
-import com.windf.module.development.pojo.UrlInfo;
 
 public class ControlerCoder {
 	public static final String RETURN_AJAX = "ajax";

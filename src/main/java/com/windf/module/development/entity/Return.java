@@ -1,4 +1,4 @@
-package com.windf.module.development.pojo;
+package com.windf.module.development.entity;
 
 public class Return {
 	public static final String STRING = "String";

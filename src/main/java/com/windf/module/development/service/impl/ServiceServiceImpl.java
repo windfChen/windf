@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.windf.core.exception.UserException;
+import com.windf.module.development.entity.Module;
+import com.windf.module.development.entity.ModuleMaster;
+import com.windf.module.development.entity.Service;
+import com.windf.module.development.entity.ServiceMethod;
 import com.windf.module.development.modle.service.ServiceCoder;
-import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleMaster;
-import com.windf.module.development.pojo.Service;
-import com.windf.module.development.pojo.ServiceMethod;
 import com.windf.module.development.service.ServiceService;
 
 @org.springframework.stereotype.Service

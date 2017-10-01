@@ -1,11 +1,11 @@
-package com.windf.module.development.pojo;
+package com.windf.module.development.entity;
 
 import java.util.List;
 
+import com.windf.module.development.entity.ExceptionType;
+import com.windf.module.development.entity.Parameter;
+import com.windf.module.development.entity.Return;
 import com.windf.module.development.modle.java.Method;
-import com.windf.module.development.pojo.ExceptionType;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
 
 public class ServiceMethod {
 

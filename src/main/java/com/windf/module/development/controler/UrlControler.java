@@ -1,4 +1,4 @@
-package com.windf.module.development.web.controler;
+package com.windf.module.development.controler;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
-import com.windf.module.development.pojo.UrlInfo;
+import com.windf.module.development.entity.UrlInfo;
 import com.windf.module.development.service.UrlService;
 import com.windf.plugins.web.BaseControler;
 

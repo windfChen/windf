@@ -7,8 +7,8 @@ import java.util.List;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.Constant;
-import com.windf.module.development.file.JavaFileUtil;
-import com.windf.module.development.file.JavaFileUtil.LineReader;
+import com.windf.module.development.util.file.JavaFileUtil;
+import com.windf.module.development.util.file.JavaFileUtil.LineReader;
 
 public class JavaCoder extends AbstractType{
 

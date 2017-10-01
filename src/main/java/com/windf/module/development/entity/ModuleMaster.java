@@ -1,4 +1,4 @@
-package com.windf.module.development.pojo;
+package com.windf.module.development.entity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.file.FileUtil;
-import com.windf.module.development.file.XmlFileUtil;
+import com.windf.module.development.util.file.XmlFileUtil;
 
 /**
  * Module Master

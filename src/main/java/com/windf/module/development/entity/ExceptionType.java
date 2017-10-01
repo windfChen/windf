@@ -1,4 +1,4 @@
-package com.windf.module.development.pojo;
+package com.windf.module.development.entity;
 
 import java.util.ArrayList;
 import java.util.List;

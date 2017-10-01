@@ -1,4 +1,4 @@
-package com.windf.module.development.pojo;
+package com.windf.module.development.entity;
 
 import java.util.HashMap;
 import java.util.Map;

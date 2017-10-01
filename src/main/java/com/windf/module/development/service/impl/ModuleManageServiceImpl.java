@@ -10,10 +10,10 @@ import com.windf.core.bean.Page;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.Constant;
-import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.ModuleMaster;
-import com.windf.module.development.pojo.dto.ModuleDto;
-import com.windf.module.development.pojo.dto.ModuleSearch;
+import com.windf.module.development.entity.Module;
+import com.windf.module.development.entity.ModuleMaster;
+import com.windf.module.development.entity.dto.ModuleDto;
+import com.windf.module.development.entity.dto.ModuleSearch;
 import com.windf.module.development.service.ModuleManageService;
 
 @Service

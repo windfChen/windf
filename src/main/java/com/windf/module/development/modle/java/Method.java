@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.windf.core.util.CollectionUtil;
-import com.windf.module.development.pojo.ExceptionType;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
+import com.windf.module.development.entity.ExceptionType;
+import com.windf.module.development.entity.Parameter;
+import com.windf.module.development.entity.Return;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Method extends AbstractType {

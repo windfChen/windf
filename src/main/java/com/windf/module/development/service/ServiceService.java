@@ -3,8 +3,8 @@ package com.windf.module.development.service;
 import java.util.List;
 
 import com.windf.core.exception.UserException;
-import com.windf.module.development.pojo.Service;
-import com.windf.module.development.pojo.ServiceMethod;
+import com.windf.module.development.entity.Service;
+import com.windf.module.development.entity.ServiceMethod;
 
 public interface ServiceService {
 

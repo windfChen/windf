@@ -1,4 +1,4 @@
-package com.windf.module.development.pojo.dto;
+package com.windf.module.development.entity.dto;
 
 public class ModuleSearch {
 	private String basePath;

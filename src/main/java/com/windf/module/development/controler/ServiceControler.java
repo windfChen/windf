@@ -1,4 +1,4 @@
-package com.windf.module.development.web.controler;
+package com.windf.module.development.controler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
-import com.windf.module.development.pojo.ExceptionType;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
-import com.windf.module.development.pojo.Service;
-import com.windf.module.development.pojo.ServiceMethod;
+import com.windf.module.development.entity.ExceptionType;
+import com.windf.module.development.entity.Parameter;
+import com.windf.module.development.entity.Return;
+import com.windf.module.development.entity.Service;
+import com.windf.module.development.entity.ServiceMethod;
 import com.windf.module.development.service.ServiceService;
 import com.windf.plugins.web.BaseControler;
 

@@ -1,4 +1,4 @@
-package com.windf.module.development.web.controler;
+package com.windf.module.development.controler;
 
 import javax.annotation.Resource;
 
@@ -11,8 +11,8 @@ import com.windf.core.bean.Page;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
-import com.windf.module.development.pojo.Module;
-import com.windf.module.development.pojo.dto.ModuleDto;
+import com.windf.module.development.entity.Module;
+import com.windf.module.development.entity.dto.ModuleDto;
 import com.windf.module.development.service.ModuleManageService;
 import com.windf.plugins.web.BaseControler;
 
