@@ -22,7 +22,7 @@ public class IndexControler extends BaseControler{
 	@RequestMapping(value = {"/", ""}, method = {RequestMethod.GET})
 	public String index() {
 		ProjectStart.getInstance().start();
-		return responseReturn.redirect("/dev/");
+		return responseReturn.page(Constant.WEB_BASE_VIEW + "/front");
 	}
 	
 }

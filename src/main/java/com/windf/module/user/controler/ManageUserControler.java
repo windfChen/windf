@@ -36,7 +36,9 @@ public class ManageUserControler extends ManagerGridControler{
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
 		Map<String, Object> map = paramenter.getMap("entity");
+		User obj = paramenter.getObject("entity", User.class);
 		
+		System.out.println(obj);
 		User user = new User();
 		user.setName((String) map.get("ssoUser.username"));
 		SsoUser ssoUser  = new SsoUser();

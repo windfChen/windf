@@ -6,8 +6,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanUtils;
+
 import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.BeanUtil;
+
+import net.sf.cglib.beans.BeanMap;
+
 
 public class RequestParamenter {
 
@@ -130,6 +135,37 @@ public class RequestParamenter {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * 获取类
+	 * @param <T>
+	 * @param name
+	 * @param clazz
+	 * @return
+	 */
+	public <T> T getObject(String name, Class<T> clazz) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (StringUtil.isEmpty(name)) {
+			map = this.getAll();
+		} else {
+			map = this.getMap(name);
+			map.put("id", 123);
+			Map<String, Object> map2 = new HashMap<String, Object>();
+			map2.put("id", 321);
+			map.put("ssoUser", map2);
+		}
+		
+		Object result = null;
+		try {
+			result = clazz.newInstance();
+//			BeanMap beanMap = BeanMap.create(result);
+//			beanMap.putAll(map);
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return (T) result;
 	}
 
 	/**
