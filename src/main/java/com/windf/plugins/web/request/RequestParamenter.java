@@ -2,16 +2,14 @@ package com.windf.plugins.web.request;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.BeanUtils;
-
 import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.BeanUtil;
-
-import net.sf.cglib.beans.BeanMap;
+import com.windf.core.util.reflect.ReflectUtil;
 
 
 public class RequestParamenter {
@@ -122,10 +120,19 @@ public class RequestParamenter {
 			String parameterName = (String) enumeration.nextElement();
 			if (parameterName.startsWith(nameKey)) {
 				String key = parameterName.substring(nameKey.length());
-				String value = this.getString(parameterName);
-				if (StringUtil.isNotEmpty(value)) {
-					result.put(key, value);
+				
+				// 如果key中还有.递归寻找map,否则直接放到value中
+				int pointIndex = key.indexOf(".");
+				if (pointIndex > -1) {
+					key = key.substring(0, pointIndex);
+					result.put(key, getMap(nameKey + key));
+				} else {
+					String value = this.getString(parameterName);
+					if (StringUtil.isNotEmpty(value)) {
+						result.put(key, value);
+					}
 				}
+				
 			}
 
 		}
@@ -150,22 +157,11 @@ public class RequestParamenter {
 			map = this.getAll();
 		} else {
 			map = this.getMap(name);
-			map.put("id", 123);
-			Map<String, Object> map2 = new HashMap<String, Object>();
-			map2.put("id", 321);
-			map.put("ssoUser", map2);
 		}
 		
-		Object result = null;
-		try {
-			result = clazz.newInstance();
-//			BeanMap beanMap = BeanMap.create(result);
-//			beanMap.putAll(map);
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		T result = BeanUtil.getObjectByMap(clazz, map);
 		
-		return (T) result;
+		return result;
 	}
 
 	/**

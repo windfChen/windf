@@ -54,9 +54,9 @@ public class Scanner {
 			String fullPath = absolutePath.substring(startPath.length() + 1); // 相对路径+文件名
 			if (fullPath.lastIndexOf(File.separator) > -1) {
 				relativePath = fullPath.substring(0, fullPath.lastIndexOf(File.separator)); // 相对路径
+				fileName = fullPath.substring(fullPath.lastIndexOf(File.separator) + 1, fullPath.lastIndexOf("."));	// 文件名，不带拓展名
+				paths = relativePath.replace(File.separator, ".").split("\\.");	// 相对路径数组
 			}
-			fileName = fullPath.substring(fullPath.lastIndexOf(File.separator) + 1, fullPath.lastIndexOf("."));	// 文件名，不带拓展名
-			paths = relativePath.replace(File.separator, ".").split("\\.");	// 相对路径数组
 			prefix = FileUtil.getPrefix(file.getName());	// 拓展名
 			this.file = file;
 
