@@ -5,14 +5,9 @@ import java.io.File;
 import com.windf.core.util.file.FileUtil;
 
 public class Scanner {
-	
-	private ScannerHandler handler;
+
 	private String startPath;
-	private String prefix;
-	private String[] paths;
-	private String fileName;
-	private File file;
-	private String relativePath;
+	private ScannerHandler handler;
 	
 	public Scanner(String startPath, ScannerHandler handler) {
 		this.startPath = startPath;
@@ -23,7 +18,7 @@ public class Scanner {
 		/*
 		 * 创建文件
 		 */
-		File file = FileUtil.getFile(startPath);
+		File file = FileUtil.getFile(startPath, true);
 		
 		/*
 		 *  递归目录
@@ -46,52 +41,9 @@ public class Scanner {
 				filePathIterator(subFiles[i]);
 			}
 		} else {
-			
-			/*
-			 * 解析路径 TODO 待优化，这里有点乱
-			 */
-			String absolutePath = file.getAbsolutePath();	// 绝对路径
-			String fullPath = absolutePath.substring(startPath.length() + 1); // 相对路径+文件名
-			if (fullPath.lastIndexOf(File.separator) > -1) {
-				relativePath = fullPath.substring(0, fullPath.lastIndexOf(File.separator)); // 相对路径
-				fileName = fullPath.substring(fullPath.lastIndexOf(File.separator) + 1, fullPath.lastIndexOf("."));	// 文件名，不带拓展名
-				paths = relativePath.replace(File.separator, ".").split("\\.");	// 相对路径数组
-			}
-			prefix = FileUtil.getPrefix(file.getName());	// 拓展名
-			this.file = file;
-
-			handler.handle(this);
+			handler.handle(file);
 		}
 
 	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-	
-	public String getRelativePath() {
-		return relativePath;
-	}
-
-	public String[] getCurrentRelativePaths() {
-		return paths;
-	}
-	
-	public String getCurrentRelativePathByIndex(int index) {
-		if (paths != null && index - 1 < paths.length &&  index - 1 >= 0) {
-			return paths[index - 1];
-		}
-		return null;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public File getCurrentFile() {
-		return file;
-	}
-
-	
 	
 }

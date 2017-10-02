@@ -54,16 +54,8 @@ public abstract class ManagerGridControler extends BaseControler {
 	public String list() {
 		Map<String, Object> condition = paramenter.getMap("condition");
 		condition = this.filterMapValue(condition);
-		String pageNoStr = paramenter.getString("page");
-		String pageSizeStr = paramenter.getString("limit");
-		Integer pageNo = 1;
-		Integer pageSize = 10;
-		try {
-			pageNo = Integer.parseInt(pageNoStr);
-			pageSize = Integer.parseInt(pageSizeStr);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Integer pageNo = paramenter.getInteger("page", 1);
+		Integer pageSize = paramenter.getInteger("limit", 10);
 		
 		Map<String, Object> result = null;
 		try {

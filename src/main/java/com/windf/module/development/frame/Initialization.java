@@ -1,16 +1,17 @@
 package com.windf.module.development.frame;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.windf.core.frame.Initializationable;
-import com.windf.core.util.file.FileUtil;
 import com.windf.core.util.reflect.Scanner;
 import com.windf.core.util.reflect.ScannerHandler;
 import com.windf.module.development.entity.Module;
 import com.windf.module.development.entity.ModuleMaster;
+import com.windf.module.development.util.file.SourceFileUtil;
 
 public class Initialization implements Initializationable, ScannerHandler{
 
@@ -18,8 +19,8 @@ public class Initialization implements Initializationable, ScannerHandler{
 	
 	@Override
 	public void init() {
-		String classPath = FileUtil.getClassPath();
-		Scanner scanner = new Scanner(classPath, this);
+		String javaPath = SourceFileUtil.getJavaPath();
+		Scanner scanner = new Scanner(javaPath, this);
 		scanner.run();
 		
 		// TODO 待排序
@@ -34,9 +35,9 @@ public class Initialization implements Initializationable, ScannerHandler{
 	}
 
 	@Override
-	public void handle(Scanner scanner) {
+	public void handle(File file) {
 		String prefix = scanner.getPrefix();
-		if ("class".equals(prefix)) { // 如果是java的解析
+		if ("java".equals(prefix)) { // 如果是java的解析
 
 			/*
 			 * 解析路径
@@ -44,6 +45,7 @@ public class Initialization implements Initializationable, ScannerHandler{
 			// TODO 现在是写死的，以后需要优化
 			String moduleType = scanner.getCurrentRelativePathByIndex(3);
 			String moduleCode = scanner.getCurrentRelativePathByIndex(4);
+			String packageName = scanner.getCurrentRelativePathByIndex(scanner.getCurrentRelativePaths().length);
 			
 			/*
 			 *  初始化模块 // TODO 先不处理插件
@@ -56,6 +58,9 @@ public class Initialization implements Initializationable, ScannerHandler{
 					modules.put(moduleCode, currentModule);
 				}
 			}
+			
+			// 处理各个类
+			
 		}
 	}
 

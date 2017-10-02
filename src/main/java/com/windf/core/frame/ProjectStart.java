@@ -83,18 +83,14 @@ public class ProjectStart implements ScannerHandler{
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void handle(Scanner scanner) {
-
-		String prefix = scanner.getPrefix();
-		if ("class".equals(prefix)) { // 如果是java的解析
+	public void handle(File file) {
+		if ("class".equals(scanner.getCurrentFile())) { // 如果是java的解析
 
 			/*
 			 * 解析路径
 			 */
 			String classPath = scanner.getRelativePath().replace(File.separator, ".") + "." + scanner.getFileName();
 			// TODO 现在是写死的，以后需要优化
-			String moduleType = scanner.getCurrentRelativePathByIndex(3);
-			String moduleCode = scanner.getCurrentRelativePathByIndex(4);
 			String packageName = scanner.getCurrentRelativePathByIndex(scanner.getCurrentRelativePaths().length);// 最后一级目录
 			
 			/*

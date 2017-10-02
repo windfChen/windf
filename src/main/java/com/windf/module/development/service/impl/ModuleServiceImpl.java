@@ -13,7 +13,7 @@ import com.windf.module.development.service.ModuleService;
 import com.windf.plugins.manage.bean.GridConfig;
 
 @Service
-public class ModuleServiceImpl  implements ModuleService {
+public class ModuleServiceImpl extends BaseManageGridServiceImpl  implements ModuleService {
 
 	@Override
 	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) {
@@ -23,7 +23,7 @@ public class ModuleServiceImpl  implements ModuleService {
 
 	@Override
 	public Page<Module> list(Map<String, Object> condition, Integer pageNo, Integer PageSize) {
-		
+
 		ModuleMaster moduleMaster = ModuleMaster.getInstance();
 		
 		Page<Module> page = new Page<Module>(Long.valueOf(pageNo) , PageSize);

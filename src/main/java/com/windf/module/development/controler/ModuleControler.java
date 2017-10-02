@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.module.development.Constant;
 import com.windf.module.development.entity.Module;
+import com.windf.module.development.frame.Initialization;
 import com.windf.module.development.service.ModuleService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -34,6 +35,8 @@ public class ModuleControler extends ManagerGridControler{
 	
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public String test() {
+		Initialization a = new Initialization(); 
+		a.init();
 		return responseReturn.success();
 	}
 

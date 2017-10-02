@@ -21,8 +21,7 @@ public class Module extends com.windf.core.bean.Module{
 		return FileUtil.getFile(configFilePath, true);
 	}
 	
-	private Map<String, Controler> controlerMap = new HashMap<String, Controler>();
-	private Map<String, Service> serviceMap = new HashMap<String, Service>();
+	private List<Entity> entitys = new ArrayList<Entity>();
 	
 	public Module() {
 		super(null);
@@ -57,7 +56,17 @@ public class Module extends com.windf.core.bean.Module{
 		XmlFileUtil.writeObject2Xml(this, file);
 	}
 	
+	public List<Entity> getEntitys() {
+		return entitys;
+	}
+
+	public void setEntitys(List<Entity> entitys) {
+		this.entitys = entitys;
+	}
+
 	/******************下面的还没用到********************/
+	private Map<String, Controler> controlerMap = new HashMap<String, Controler>();
+	private Map<String, Service> serviceMap = new HashMap<String, Service>();
 	// 标记变量
 	protected boolean initializationed = false;
 	
