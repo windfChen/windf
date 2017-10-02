@@ -21,7 +21,7 @@ import com.windf.plugins.web.BaseControler;
 
 public abstract class ManagerGridControler extends BaseControler {
 	protected final static String MANAGE_PATH = Constant.WEB_BASE_PATH;
-		
+	
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
 		responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
@@ -101,8 +101,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
-		Map<String, Object> entity = paramenter.getMap("entity");	
-		entity = this.filterMapValue(entity);
+		Object entity = this.getParamenterEntity();
 		
 		try {
 			this.getManagerGridService().save(entity);
@@ -115,8 +114,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/update", method = {RequestMethod.POST})
 	public String update() {
-		Map<String, Object> entity = paramenter.getMap("entity");
-		entity = this.filterMapValue(entity);
+		Object entity = this.getParamenterEntity();
 		
 		try {
 			this.getManagerGridService().update(entity);
@@ -150,10 +148,51 @@ public abstract class ManagerGridControler extends BaseControler {
 	}
 	
 	/**
+	 * 获取实体，可能是map，可以是实体类
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected Object getParamenterEntity() {
+		Object entity = paramenter.getMap("param");
+		if (entity != null) {	// 如果是param，则是直接转换为map
+			entity = this.filterMapValue((Map<String, Object>) entity);
+		} else {
+			// 否则可能是entity里传参数
+			Class<? extends Object> clazz = this.getEntity();
+			if (clazz != null) {
+				entity = paramenter.getObject("entity", clazz);
+			} else {
+				entity = paramenter.getMap("entity");
+				entity = this.filterMapValue((Map<String, Object>) entity);
+			}
+			
+			// 如果都没有，直接把属性名作为key或者字段名
+			if (entity == null) {
+				if (clazz != null) {
+					entity = paramenter.getObject("", clazz);
+				} else {
+					entity = paramenter.getAll();
+					entity = this.filterMapValue((Map<String, Object>) entity);
+				}
+			}
+		}
+		
+		return entity;
+	}
+	
+	/**
 	 * 获取管理表格服务
 	 * @return
 	 */
 	protected abstract ManageGirdService getManagerGridService();
+	
+	/**
+	 * 获取实体类，如果不为空，则用实体初始化表格
+	 * @return
+	 */
+	protected Class<? extends Object> getEntity() {
+		return null;
+	}
 
 	/**
 	 * 获得请求地址，生成的code

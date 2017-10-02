@@ -233,6 +233,21 @@ public class ReflectUtil {
 	}
 	
 	/**
+	 * 获得类的所有泛型
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static Class<? extends Object>[]  getGenericOfClass(Class<? extends Object> clazz) {
+		Type[] types = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
+		Class<? extends Object>[] result = new Class[types.length];
+		for (int i = 0; i < types.length; i++) {
+			result[i] = (Class<? extends Object>) types[i];
+		}
+		return result;
+	}
+	
+	/**
 	 * 获得所有常量
 	 * @param clazz
 	 * @return 变量名-value的键值对

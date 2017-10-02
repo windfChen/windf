@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.windf.core.exception.UserException;
 import com.windf.core.util.ParameterUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.entity.UrlInfo;
@@ -35,11 +34,11 @@ public class UrlControler extends BaseControler{
 		// 验证参数
 		String url = paramenter.getString("url");
 		String moduleCode = paramenter.getString("module");
-		String getStr = paramenter.getString("get");
+//		String getStr = paramenter.getString("get");
 		if (ParameterUtil.hasEmpty(moduleCode, url)) {
 			return responseReturn.parameterError();
 		}
-		boolean get = Boolean.parseBoolean(getStr);
+//		boolean get = Boolean.parseBoolean(getStr);
 		
 //		// 调用服务
 //		try {

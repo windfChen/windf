@@ -5,7 +5,6 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.module.user.Constant;
 import com.windf.module.user.entity.User;
@@ -26,17 +25,9 @@ public class ManageUserControler extends ManagerGridControler{
 	protected ManageGirdService getManagerGridService() {
 		return userService;
 	}
-
-	@RequestMapping(value = "/save", method = {RequestMethod.POST})
-	public String save() {
-		User user = paramenter.getObject("entity", User.class);
-		
-		try {
-			this.getManagerGridService().save(user);
-			return responseReturn.success();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return responseReturn.error(e.getMessage());
-		}
+	
+	@Override
+	protected Class<? extends Object> getEntity() {
+		return User.class;
 	}
 }

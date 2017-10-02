@@ -2,14 +2,12 @@ package com.windf.plugins.web.request;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.BeanUtil;
-import com.windf.core.util.reflect.ReflectUtil;
 
 
 public class RequestParamenter {
@@ -98,6 +96,23 @@ public class RequestParamenter {
 		String strValue = request.getParameter(name);
 		try {
 			result = Double.parseDouble(strValue);
+		} catch (Exception e) {
+		}
+		return result;
+	}
+	
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public boolean getBoolean(String name) {
+		boolean result = false;
+		String strValue = request.getParameter(name);
+		try {
+			result = Boolean.parseBoolean(strValue);
 		} catch (Exception e) {
 		}
 		return result;
