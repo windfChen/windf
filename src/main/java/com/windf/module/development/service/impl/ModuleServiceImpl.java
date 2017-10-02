@@ -16,7 +16,7 @@ import com.windf.plugins.manage.bean.GridConfig;
 public class ModuleServiceImpl  implements ModuleService {
 
 	@Override
-	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) throws Exception {
+	public GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) {
 		GridConfig gridConfig = GridConfig.loadGridConfigByCode(code, condition);
 		return gridConfig;
 	}
@@ -36,7 +36,11 @@ public class ModuleServiceImpl  implements ModuleService {
 	}
 
 	@Override
-	public int save(Object bean) throws Exception {
+	public int save(Object entity) throws Exception {
+		Module module = (Module) entity;
+		
+		module.write();
+		
 		return 0;
 	}
 

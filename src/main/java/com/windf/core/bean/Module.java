@@ -8,10 +8,13 @@ import com.windf.core.frame.Filter;
 import com.windf.core.frame.Initializationable;
 import com.windf.core.frame.Session;
 import com.windf.core.util.file.FileUtil;
+import com.windf.module.core.util.reflect.UnSerializable;
 import com.windf.module.development.Constant;
 
 public class Module {
 
+	protected static final String MODULE_XML_FILE_NAME = "moduleInfo.xml";
+	
 	private static ThreadLocal<Module> currentMoudle = new ThreadLocal<Module>();
 
 	public static Module setCurrentMoudle(Object obj) {
@@ -44,7 +47,8 @@ public class Module {
 	 * @return
 	 */
 	public static File getMoudleConfigFileByCode(String code) {
-		String configFilePath = FileUtil.getConfigPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH + File.separator + code + ".xml";
+		String configFilePath = FileUtil.getConfigPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH + File.separator + code
+				 + File.separator + MODULE_XML_FILE_NAME;
 		return FileUtil.getFile(configFilePath);
 	}
 
@@ -58,12 +62,14 @@ public class Module {
 	}
 
 	private String code;
-	// TODO 设置模块basePath
+	private String name;
+	private String basePath;
+	private String info;
 
 	private List<Initializationable> initializationables;
 	private List<Session> sessions;
 	private List<Filter> filters;
-	
+
 	private Map<String, String> dependent;
 
 	/**
@@ -73,13 +79,14 @@ public class Module {
 	 * @param yourPath
 	 * @return
 	 */
+	@UnSerializable
 	public String getConfigFilePath() {
 		String configPath = FileUtil.getConfigPath();
 		String result = configPath + "/module/" + this.getCode();
 		result = result.replace("//", "/");
 		return result;
 	}
-	
+
 	public Module(String code) {
 		this.code = code;
 	}
@@ -122,6 +129,30 @@ public class Module {
 
 	public void setDependent(Map<String, String> dependent) {
 		this.dependent = dependent;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getBasePath() {
+		return basePath;
+	}
+
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 
 }

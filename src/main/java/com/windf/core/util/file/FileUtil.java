@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 
+import com.windf.core.exception.CodeException;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
 
@@ -70,12 +71,24 @@ public class FileUtil {
 	}
 	
 	/**
-	 * 获得文件
+	 * 获得文件,根据是否已webweb路径开头，判断是否是相对路径
 	 * @param filePath
 	 * @return
 	 */
 	public static File getFile(String filePath) {
-		String realPath = FileUtil.getFileRealPath(filePath);
+		return getFile(filePath, false);
+	}
+	
+	/**
+	 * 获得文件
+	 * @param filePath
+	 * @return
+	 */
+	public static File getFile(String filePath, boolean isRealPath) {
+		String realPath = filePath;
+		if (!isRealPath) {
+			realPath = FileUtil.getFileRealPath(filePath);
+		}
 		File file = new File(realPath);
 		return file;
 	}
@@ -275,6 +288,26 @@ public class FileUtil {
 		}
 		zipfile.close();
 		return unzipDir;
+	}
+
+	/**
+	 * 如果文件不存在，创建
+	 * @param file
+	 * @param onlyPath	是否只创建目录
+	 */
+	public static File createIfNotExists(File file, boolean onlyPath) {
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+			if (!onlyPath) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					throw new CodeException(e);
+				}
+			}
+		}
+		
+		return file;
 	}
 
 }

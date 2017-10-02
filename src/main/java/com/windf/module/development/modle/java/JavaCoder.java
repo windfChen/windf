@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
-import com.windf.module.development.Constant;
 import com.windf.module.development.util.file.JavaFileUtil;
 import com.windf.module.development.util.file.JavaFileUtil.LineReader;
+import com.windf.module.development.util.file.SourceFileUtil;
 
 public class JavaCoder extends AbstractType{
 
@@ -21,7 +21,7 @@ public class JavaCoder extends AbstractType{
 	private String classEnd;
 	
 	public JavaCoder(String packagePath, String className) {
-		this.classPath = Constant.JAVA_SOURCE_BASE_PATH + packagePath + "/" + className + ".java";
+		this.classPath = SourceFileUtil.getJavaPath() + packagePath + "/" + className + ".java";
 		
 		File javaFile = new File(this.classPath);
 		

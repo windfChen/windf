@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.module.development.Constant;
+import com.windf.module.development.entity.Module;
 import com.windf.module.development.service.ModuleService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -26,9 +27,13 @@ public class ModuleControler extends ManagerGridControler{
 		return moduleService;
 	}
 	
+	@Override
+	protected Class<? extends Object> getEntity() {
+		return Module.class;
+	}
+	
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public String test() {
-		
 		return responseReturn.success();
 	}
 

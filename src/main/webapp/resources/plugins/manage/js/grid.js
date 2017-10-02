@@ -105,24 +105,28 @@ Grid.prototype = {
 			},
 			success: function (data) {
 				obj.initTitle();
-				for (var i = 0; i < data.models.length; i++) {
-					var d = data.models[i];
-					var h = '<li class="col-xs-' + obj.idColunmWidth + '"> <span class="table"> <label class="label_check"> <div class="btn_check"></div> \
-						<input type="checkbox" class="grid_id" data_id="' + d.id + '" name=""/> </label> </span> </li>';
-					for (var j = 0; j < obj.gridConfig.columns.length; j++) {
-						var c = obj.gridConfig.columns[j];
-						if (c.canList) {
-							h += '<li class="col-xs-' + obj.dataColumnWidth + '">' + obj._getColumnDisplay(d, c) + '</li>';
-						}
-					}	
-					$('#grid').append(h);
+				if (data.models && data.models.length > 0) {	
+					for (var i = 0; i < data.models.length; i++) {
+						var d = data.models[i];
+						var h = '<li class="col-xs-' + obj.idColunmWidth + '"> <span class="table"> <label class="label_check"> <div class="btn_check"></div> \
+							<input type="checkbox" class="grid_id" data_id="' + d.id + '" name=""/> </label> </span> </li>';
+						for (var j = 0; j < obj.gridConfig.columns.length; j++) {
+							var c = obj.gridConfig.columns[j];
+							if (c.canList) {
+								h += '<li class="col-xs-' + obj.dataColumnWidth + '">' + obj._getColumnDisplay(d, c) + '</li>';
+							}
+						}	
+						$('#grid').append(h);
+					}
+					
+					if (data.totalCount > obj.pageSize) {
+						$('#page').html(getPageHtml(pageNum, data.totalCount, obj.pageSize));
+					}
+					
+					gridEvent();
 				}
+					
 				
-				if (data.totalCount > obj.pageSize) {
-					$('#page').html(getPageHtml(pageNum, data.totalCount, obj.pageSize));
-				}
-				
-				gridEvent();
 			},
 			error:function(XHR, textStatus, errorThrown){
 				alert('error: ' + errorThrown);
@@ -222,6 +226,14 @@ Grid.prototype = {
 								<div class="col-md-1 col-xs-2 center_table_t">*' + c.name + ':</div>\
 								<div class="col-md-11 col-xs-10">\
 									<div class="center_table_input"><input type="text" name="entity.' + c.dataIndex + '" placeholder="请输入' + c.name + '" class="work_input"/></div>\
+								</div>\
+							</div>';
+							$('#form_inputs').append(a);
+						} else if (c.type == 'TextArea') {
+							var a = '<div class="clearfix work_table">\
+								<div class="col-md-1 col-xs-2 center_table_t">*' + c.name + ':</div>\
+								<div class="col-md-11 col-xs-10">\
+									<div class="center_table_input"><textarea name="entity.' + c.dataIndex + '" placeholder="请输入' + c.name + '" class="work_input"></textarea></div>\
 								</div>\
 							</div>';
 							$('#form_inputs').append(a);

@@ -2,26 +2,35 @@ package com.windf.core.util.reflect;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import com.windf.module.core.util.reflect.UnSerializable;
 
 public class BeanUtil {
 
 
 	/**
 	 * 判断，是否是用户自定义的getter方法
-	 * 
+	 * 今天方法除外
 	 * @param method
 	 * @return
 	 */
 	public static boolean isGetterMethod(Method method) {
-		String methodName = method.getName();
-		return methodName.startsWith("get") && method.getParameterTypes().length == 0 && !"getClass".equals(methodName);
+		boolean result = false;
+		int  modifiers  = method.getModifiers();
+		if (!Modifier.isStatic(modifiers)) {
+			String methodName = method.getName();
+			result = methodName.startsWith("get") && method.getParameterTypes().length == 0 && !"getClass".equals(methodName);
+		}
+		
+		return result;
 	}
 	
 	/**
-	 * 获得对象的所有非空属性
+	 * 获得对象的所有非空属性，静态方法除外，非序列化方法除外
 	 * 
 	 * @param clazz
 	 * @return 属性名-属性值
@@ -36,20 +45,30 @@ public class BeanUtil {
 				Method method = methods[i];
 				String methodName = method.getName();
 
+				// 是getter方法，而且不是不序列化方法的
 				if (isGetterMethod(method)) {
-					Object result = null;
+					boolean isUnSerializable = false;
 					try {
-						result = method.invoke(object);
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
+						isUnSerializable = method.getAnnotation(UnSerializable.class) != null;
+					} catch (Exception e) {
+						isUnSerializable = false;
 					}
-					if (result != null) {
-						methodName = getNameByGetterOrSetter(methodName);
-						getterMethodValueMap.put(methodName, result);
+					
+					if (!isUnSerializable) {
+						Object result = null;
+						try {
+							result = method.invoke(object);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						}
+						if (result != null) {
+							methodName = getNameByGetterOrSetter(methodName);
+							getterMethodValueMap.put(methodName, result);
+						}
 					}
 				}
 			}

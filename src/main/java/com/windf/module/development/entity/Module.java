@@ -8,18 +8,48 @@ import java.util.List;
 import java.util.Map;
 
 import com.windf.core.exception.UserException;
+import com.windf.core.util.file.FileUtil;
+import com.windf.module.development.Constant;
+import com.windf.module.development.util.file.SourceFileUtil;
 import com.windf.module.development.util.file.XmlFileUtil;
 
-public class Module {
+public class Module extends com.windf.core.bean.Module{
 	
-	private String code;
-	private String name;
-	private String basePath;	// 现在写在配置文件中，以后可以从中读取
-	private String info;
+	public static File getMoudleConfigSourceFileByCode(String code) {
+		String configFilePath = SourceFileUtil.getConfigPath() + Constant.DEFAULT_MODULE_DESCRIPT_PATH + File.separator + code
+				 + File.separator + MODULE_XML_FILE_NAME;
+		return FileUtil.getFile(configFilePath, true);
+	}
 	
 	private Map<String, Controler> controlerMap = new HashMap<String, Controler>();
 	private Map<String, Service> serviceMap = new HashMap<String, Service>();
+
+	public Module() {
+		super(null);
+	}
 	
+	public Module(String code) {
+		super(code);
+	}
+	
+	public void write() throws UserException {
+		/*
+		 * 获取配置文件位置
+		 */
+		File file = getMoudleConfigSourceFileByCode(this.getCode());
+		
+		/*
+		 * 如果不存在，创建文件的目录
+		 */
+		FileUtil.createIfNotExists(file, true);
+		
+		/*
+		 * 写入配置文件
+		 */
+		XmlFileUtil.writeObject2Xml(this, file);
+	}
+	
+	/******************下面的还没用到********************/
 	// 标记变量
 	protected boolean initializationed = false;
 	
@@ -54,11 +84,6 @@ public class Module {
 	
 	public void load(String code) {
 		
-	}
-	
-	public void write() throws UserException {
-		File file = com.windf.core.bean.Module.getMoudleConfigFileByCode(this.getCode());
-		XmlFileUtil.writeObject2Xml(this, file);
 	}
 
 	/**
@@ -139,38 +164,6 @@ public class Module {
 		}
 		controlerMap.put(controler.getName(), controler);
 		this.write();
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getBasePath() {
-		return basePath;
-	}
-
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
-	}
-
-	public String getInfo() {
-		return info;
-	}
-
-	public void setInfo(String info) {
-		this.info = info;
 	}
 
 }
