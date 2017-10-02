@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<moduleInfo>
+  <basePath>/form</basePath>
+  <services/>
+  <name>自定义表单</name>
+  <controlers/>
+  <code>form</code>
+  <info>用户自定义表单绘制、填写、统计</info>
+</moduleInfo>

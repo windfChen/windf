@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<moduleInfo>
+  <basePath>/user</basePath>
+  <id>user</id>
+  <services/>
+  <name>用户</name>
+  <controlers/>
+  <code>user</code>
+  <info>用户管理，获取当前用户</info>
+</moduleInfo>

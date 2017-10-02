@@ -22,7 +22,7 @@ public class ModuleServiceImpl  implements ModuleService {
 	}
 
 	@Override
-	public Page<Map<String, Object>> list(Map<String, Object> condition, Integer pageNo, Integer PageSize) {
+	public Page<Module> list(Map<String, Object> condition, Integer pageNo, Integer PageSize) {
 		
 		ModuleMaster moduleMaster = ModuleMaster.getInstance();
 		
@@ -32,27 +32,49 @@ public class ModuleServiceImpl  implements ModuleService {
 			page.setData(moduleMaster.getModules().subList(page.getStartIndex().intValue(), page.getEndIndex().intValue()));
 		}
 		
-		return null;
+		return page;
 	}
 
 	@Override
 	public int save(Object entity) throws Exception {
+		/*
+		 * 模块实体
+		 */
 		Module module = (Module) entity;
 		
+		/*
+		 * 写入配置文件
+		 */
 		module.write();
+		
+		/*
+		 * 添加模块到模块管理类
+		 */
+		ModuleMaster.getInstance().getModules().add(module);
 		
 		return 0;
 	}
 
 	@Override
 	public Object detail(Serializable id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return ModuleMaster.getInstance().findModuleByCode((String) id);
 	}
 
 	@Override
 	public int update(Object bean) throws Exception {
-		// TODO Auto-generated method stub
+		Module newModule = (Module) bean;
+		Module module = ModuleMaster.getInstance().findModuleByCode(newModule.getCode());
+		
+		module.setCode(newModule.getCode());
+		module.setName(newModule.getName());
+		module.setBasePath(newModule.getBasePath());
+		module.setInfo(newModule.getInfo());
+		
+		/*
+		 * 写入配置文件
+		 */	
+		module.write();
+		
 		return 0;
 	}
 

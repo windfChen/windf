@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<moduleInfo>
+  <basePath>/priority</basePath>
+  <services/>
+  <name>权限</name>
+  <controlers/>
+  <code>priority</code>
+  <info>权限管理，权限拦截</info>
+</moduleInfo>

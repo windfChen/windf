@@ -23,13 +23,21 @@ public class Module extends com.windf.core.bean.Module{
 	
 	private Map<String, Controler> controlerMap = new HashMap<String, Controler>();
 	private Map<String, Service> serviceMap = new HashMap<String, Service>();
-
+	
 	public Module() {
 		super(null);
 	}
 	
 	public Module(String code) {
 		super(code);
+	}
+	
+	public String getId() {
+		return this.getCode();
+	}
+	
+	public void setId(String code) {
+		this.setCode(code);
 	}
 	
 	public void write() throws UserException {

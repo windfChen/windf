@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<moduleInfo>
+  <basePath>/example</basePath>
+  <services/>
+  <name>例子</name>
+  <controlers/>
+  <code>example</code>
+  <info>一个简单的例子</info>
+</moduleInfo>

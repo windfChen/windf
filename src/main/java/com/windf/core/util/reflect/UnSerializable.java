@@ -1,4 +1,4 @@
-package com.windf.module.core.util.reflect;
+package com.windf.core.util.reflect;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

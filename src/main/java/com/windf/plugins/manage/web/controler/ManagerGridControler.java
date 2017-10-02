@@ -49,6 +49,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		return responseReturn.successData(gridConfig);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public String list() {
 		Map<String, Object> condition = paramenter.getMap("condition");
@@ -66,7 +67,7 @@ public abstract class ManagerGridControler extends BaseControler {
 		
 		Map<String, Object> result = null;
 		try {
-			Page<Map<String, Object>> page = this.getManagerGridService().list(condition, pageNo, pageSize);
+			Page page = this.getManagerGridService().list(condition, pageNo, pageSize);
 			result = new HashMap<String, Object>();
 			result.put("models", page.getData());
 			result.put("totalCount", page.getTotal());

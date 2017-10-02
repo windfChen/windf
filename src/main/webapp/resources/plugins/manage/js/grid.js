@@ -124,6 +124,10 @@ Grid.prototype = {
 					}
 					
 					gridEvent();
+					
+					$('.edit_a').click(function () {
+						obj.detail($(this).attr('data-id'))
+					});
 				}
 					
 				
@@ -151,6 +155,10 @@ Grid.prototype = {
 			
 			if (result.startsWith('function')) {
 				eval('result = ' + result + '().toString();');
+			}
+			
+			if (result.indexOf('<a>编辑</a>') > -1) {
+				result = result.replace('<a>编辑</a>', '<a href="javascript:void(0)" class="edit_a" data-id="' + this._getValue(d, 'id') + '">编辑</a>')
 			}
 		}
 		return result == ''? '&nbsp;': result;
@@ -198,7 +206,7 @@ Grid.prototype = {
 		})
 	},
 	
-	initSavePage : function(){
+	initSavePage : function(isUupdate){
 		$('#savePage').html('<div class="mod_title1">\
 						<div class="pull-right work_qxbtn">\
 							<a href="javascript:;" id="return_btn"><i class="iconfont icon-arrLeft"></i>返回</a>\
@@ -206,7 +214,7 @@ Grid.prototype = {
 						<h3 class="pull-left">' + this.gridConfig.title + '-添加</h3>\
 					</div>\
 					<div class="work_fabu">\
-						<form id="form" action="save.json' + queryString + '" method="post">'	+		
+						<form id="form" action="' + (isUupdate? 'update': 'save') + '.json' + queryString + '" method="post">'	+		
 							'<div id="form_inputs"></div>\
 							<div class="clearfix work_table">\
 								<div class="col-md-12 col-xs-12"><button type="submit" class="work_save trans" >保存</button></div>\
@@ -217,7 +225,13 @@ Grid.prototype = {
 					for (var i = 0; i < this.gridConfig.columns.length; i++) {
 						var c = this.gridConfig.columns[i];
 						
-						if (!c.canAdd) {
+						if (!isUupdate && !c.canAdd) {
+							continue;
+						}
+						
+						if (isUupdate && !c.canUpdate) {
+							var a = '<input type="hidden" name="entity.' + c.dataIndex + '" />';
+							$('#form_inputs').append(a);
 							continue;
 						}
 						
@@ -283,7 +297,26 @@ Grid.prototype = {
 		});
 	},
 	
-	showSavePage : function() {
+	detail : function(id) {
+		this.showSavePage(true);
+		var obj = this;
+		var detailUrl = 'detail.json' + queryString;
+		if (detailUrl.indexOf('?') < 0) {
+			detailUrl += '?id=' + id;
+		} else {
+			detailUrl += '&id=' + id;
+		}
+		$.getJSON(detailUrl, function(json){
+			var data = json.data[0].entity;
+			for (var i = 0; i < obj.gridConfig.columns.length; i++) {
+				var g = obj.gridConfig.columns[i];
+				$('#form').find('[name="entity.' + g.dataIndex + '"]').val(data[g.dataIndex]);
+			}
+		})
+	},
+	
+	showSavePage : function(isUpdate) {
+		this.initSavePage(isUpdate);
 		if ($('#listPage').is(":hidden")) {
 			$('#listPage').show();
 			$('#savePage').hide();
@@ -298,12 +331,6 @@ Grid.prototype = {
 		if (!this.submiting) {
 			
 			// 验证
-			if ($('input[name=username]').val() == '') {
-				alert('用户名不能为空');
-				$('input[name=username]').focus();
-				this.submiting = false;
-				return false;
-			}
 			
 			// 提交
 			$('#form').ajaxSubmit({
@@ -315,6 +342,7 @@ Grid.prototype = {
 					$('#form')[0].reset();
 					this.submiting = false;
 					if (data.success == 'Y') {
+						alert('保存成功');
 						obj.showSavePage();
 						obj.load();
 					} else {

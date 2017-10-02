@@ -8,7 +8,7 @@ import com.windf.core.frame.Filter;
 import com.windf.core.frame.Initializationable;
 import com.windf.core.frame.Session;
 import com.windf.core.util.file.FileUtil;
-import com.windf.module.core.util.reflect.UnSerializable;
+import com.windf.core.util.reflect.UnSerializable;
 import com.windf.module.development.Constant;
 
 public class Module {

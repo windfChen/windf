@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.windf.module.core.util.reflect.UnSerializable;
-
 public class BeanUtil {
 
 

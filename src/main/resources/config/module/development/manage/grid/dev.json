@@ -21,7 +21,7 @@
 		"canSearch" : true,
 		"canAdd" : true,
 		"canBatchAdd" : true,
-		"canUpdate" : true,
+		"canUpdate" : false,
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : null,
@@ -80,7 +80,7 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a href='detail?id=${id}'>编辑</a>&nbsp;&nbsp;<a href='detail?id=${id}'>管理</a>",
+		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${code}'>管理</a>",
 		"orderNum" : 6
 	}],
 	"menus" : [],

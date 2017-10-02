@@ -36,12 +36,12 @@ public abstract class ManagerGirdiServiceImpl implements ManageGirdService{
 		return gridConfig;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Page<Map<String, Object>> list(Map<String, Object> condition, Integer pageNo, Integer pageSize)
+	public Page<? extends Object> list(Map<String, Object> condition, Integer pageNo, Integer pageSize)
 			throws UserException, DataAccessException {
 		
-		Page<Map<String, Object>> page = new Page<Map<String, Object>>(Long.valueOf(pageNo), pageSize);
+		Page page = new Page(Long.valueOf(pageNo), pageSize);
 		
 		page.setTotal(this.getGridDao().count(condition));
 		page.setData(this.getGridDao().list(condition, page.getStartIndex(), page.getPageSize()));
