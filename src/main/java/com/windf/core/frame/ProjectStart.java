@@ -10,6 +10,7 @@ import com.windf.core.bean.Module;
 import com.windf.core.exception.CodeException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.file.FileUtil;
+import com.windf.core.util.file.ModuleFile;
 import com.windf.core.util.reflect.Scanner;
 import com.windf.core.util.reflect.ScannerHandler;
 
@@ -56,8 +57,7 @@ public class ProjectStart implements ScannerHandler{
 		/*
 		 * 获取遍历目录
 		 */
-		String classPath = FileUtil.getClassPath();
-		Scanner scanner = new Scanner(classPath, this);
+		Scanner scanner = new Scanner(FileUtil.getClassPath(), this);
 		scanner.run();
 		
 		/*
@@ -84,62 +84,57 @@ public class ProjectStart implements ScannerHandler{
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void handle(File file) {
-		if ("class".equals(scanner.getCurrentFile())) { // 如果是java的解析
-
-			/*
-			 * 解析路径
-			 */
-			String classPath = scanner.getRelativePath().replace(File.separator, ".") + "." + scanner.getFileName();
-			// TODO 现在是写死的，以后需要优化
-			String packageName = scanner.getCurrentRelativePathByIndex(scanner.getCurrentRelativePaths().length);// 最后一级目录
-			
-			/*
-			 *  初始化模块
-			 */
-			Module currentModule = null;
-			if ("module".equals(moduleType)) {
-				currentModule = modules.get(moduleCode);
-				if (currentModule == null) {
-					currentModule = new Module(moduleCode);
-					modules.put(moduleCode, currentModule);
-				}
-			} else if ("plugins".equals(moduleType)){
-				currentModule = plugins.get(moduleCode);
-				if (currentModule == null) {
-					currentModule = new Module(moduleCode);
-					plugins.put(moduleCode, currentModule);
-				}
-			} else {
-				return;
-			}
-
-			try {
-				Class clazz = Class.forName(classPath);
-
-				if ("frame".equals(packageName)) {
-					if (Initializationable.class.isAssignableFrom(clazz)) { // 添加初始化
-						if (CollectionUtil.isEmpty(currentModule.getInitializationables())) {
-							currentModule.setInitializationables(new ArrayList<Initializationable>());
-						}
-						currentModule.getInitializationables().add((Initializationable) clazz.newInstance());
-					} else if (Filter.class.isAssignableFrom(clazz)) { // 添加拦截器
-						if (CollectionUtil.isEmpty(currentModule.getFilters())) {
-							currentModule.setFilters(new ArrayList<Filter>());
-						}
-						currentModule.getFilters().add((Filter) clazz.newInstance());
-					} else if (Session.class.isAssignableFrom(clazz)) { // 添加会话
-						if (CollectionUtil.isEmpty(currentModule.getSessions())) {
-							currentModule.setSessions(new ArrayList<Session>());
-						}
-						currentModule.getSessions().add((Session) clazz.newInstance());
+		ModuleFile moduleFile = new ModuleFile(FileUtil.getClassPath() ,file);
+		if (moduleFile.verifyPath()) {
+			if ("class".equals(moduleFile.getPrefix())) { // 如果是java的解析
+				
+				/*
+				 *  初始化模块
+				 */
+				Module currentModule = null;
+				if ("module".equals(moduleFile.getModuleType())) {
+					currentModule = modules.get(moduleFile.getModuleCode());
+					if (currentModule == null) {
+						currentModule = new Module(moduleFile.getModuleCode());
+						modules.put(moduleFile.getModuleCode(), currentModule);
 					}
+				} else if ("plugins".equals(moduleFile.getModuleType())){
+					currentModule = plugins.get(moduleFile.getModuleCode());
+					if (currentModule == null) {
+						currentModule = new Module(moduleFile.getModuleCode());
+						plugins.put(moduleFile.getModuleCode(), currentModule);
+					}
+				} else {
+					return;
 				}
 
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				throw new CodeException("Initializationable 初始化类启动错误", e);
+				try {
+					Class clazz = moduleFile.getFileClass();
+
+					if ("frame".equals(moduleFile.getPackageName())) {
+						if (Initializationable.class.isAssignableFrom(clazz)) { // 添加初始化
+							if (CollectionUtil.isEmpty(currentModule.getInitializationables())) {
+								currentModule.setInitializationables(new ArrayList<Initializationable>());
+							}
+							currentModule.getInitializationables().add((Initializationable) clazz.newInstance());
+						} else if (Filter.class.isAssignableFrom(clazz)) { // 添加拦截器
+							if (CollectionUtil.isEmpty(currentModule.getFilters())) {
+								currentModule.setFilters(new ArrayList<Filter>());
+							}
+							currentModule.getFilters().add((Filter) clazz.newInstance());
+						} else if (Session.class.isAssignableFrom(clazz)) { // 添加会话
+							if (CollectionUtil.isEmpty(currentModule.getSessions())) {
+								currentModule.setSessions(new ArrayList<Session>());
+							}
+							currentModule.getSessions().add((Session) clazz.newInstance());
+						}
+					}
+
+				} catch (InstantiationException | IllegalAccessException e) {
+					throw new CodeException("Initializationable 初始化类启动错误", e);
+				}
 			}
 		}
-	
 	}
 	
 

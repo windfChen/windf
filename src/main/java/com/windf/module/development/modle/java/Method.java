@@ -43,13 +43,15 @@ public class Method extends AbstractType {
 		return result;
 	}
 	
+	private static final String INTERFACE_METHOD_PATTERN = "(public )?(abstract )?(\\w*) (\\w*)\\((\\w* \\w*(, )?)*\\)( throws (\\w*(, )?)*)?;";
+	
 	/**
 	 * 是否是接口中的方法或者抽象方法
 	 * @param lineContent
 	 * @return    public String getNameById(String name, Integer age) throws UserException, CodeException;"
 	 */
 	public static boolean isInterfaceMethod(String lineContent) {
-		return CodeConst.getInnerString(lineContent.trim(), "(public )?(abstract )?(\\w*) (\\w*)\\((\\w* \\w*(, )?)*\\)( throws (\\w*(, )?)*)?;").length > 0;
+		return CodeConst.verify(lineContent.trim(), INTERFACE_METHOD_PATTERN);
 	}
 	
 	/*
@@ -63,9 +65,15 @@ public class Method extends AbstractType {
 	/*
 	 * 方法信息
 	 */
+	String modifier;
+	boolean isAbstract;
+	boolean isFinal;
+	boolean isStatic;
+	boolean isSynchronized;
+	String t;
+	Return ret;
 	String methodName;
 	List<Parameter> parameters = new ArrayList<Parameter>();
-	Return ret;
 	ExceptionType exceptionType;
 	boolean unImplement;
 
@@ -232,37 +240,106 @@ public class Method extends AbstractType {
 			unImplement = true;
 		}
 		
-		String parameterStr = methodStart.substring(methodStart.indexOf("(") + 1, methodStart.indexOf(")"));
-		String nameStrs = methodStart.substring(0, methodStart.indexOf("(")) + methodStart.substring(methodStart.indexOf(")") + 1);
-		
-		String[] titles = nameStrs.trim().split(CodeConst.WORD_SPLIT);
-		int index = 1;
-		String retStr = titles[index++];
-		if (retStr.contains("<") && !retStr.contains(">")) {
-			do {
-				retStr += CodeConst.WORD_SPLIT + titles[index++];
-			} while (!retStr.contains(">"));
-		}
-		String methodNameStr = titles[index++];
-		String exceptionTypeStr = null;
-		if (titles.length > index + 1) {
-			exceptionTypeStr = titles[index];
+		String methodLinePattern = "(public |private |protected )?([^\\(]*)(\\([^\\)]*\\))(\\s?throws[^\\{;]*)?[\\{;]";
+		String[] ss = CodeConst.getInnerString(this.methodStart, methodLinePattern);
+		modifier = ss[0];
+		if (modifier == null) {
+			modifier = "package";
 		}
 		
-		this.ret = new Return(retStr);
-		this.methodName = methodNameStr;
-		String[] parameterStrs = parameterStr.split(", ");
-		for (int i = 1; i < parameterStrs.length; i++) {
-			String[] ss = parameterStrs[i].split(CodeConst.WORD_SPLIT);
+		String[] names = ss[1].split("\\s");
+		names = mergin(names);
+		for (int i = 0; i < names.length; i++) {
+			String s = names[i].trim();
+			
+			if ("abstract".equals(s)) {
+				isAbstract = true;
+			} else if ("final".equals(s)) {
+				isFinal = true;
+			} else if ("static".equals(s)) {
+				isStatic = true;
+			} else if ("synchronized".equals(s)) {
+				isSynchronized = true;
+			} else {
+				if (s.startsWith("<")) {
+					t = s;
+				} else if (ret == null) {
+					this.ret = new Return(s);
+				} else {
+					methodName = s;
+				}
+			}
+		}
+
+		String parameterStr = ss[2];
+		parameterStr = parameterStr.substring(1, parameterStr.length() - 1);
+		String[] parameterStrs = parameterStr.split(",\\s?");
+		parameterStrs = mergin(parameterStrs);
+		for (int i = 0; i < parameterStrs.length; i++) {
+			String s = parameterStrs[i];
+			String[] ss2 = s.split("\\s");
 			
 			Parameter parameter = new Parameter();
-			parameter.setType(ss[0]);
-			parameter.setName(ss[1]);
+			parameter.setType(ss2[0]);
+			parameter.setName(ss2[1]);
 			parameters.add(parameter);
-		}
+		}	
+		
+		String exceptionTypeStr = ss[3];
 		if (exceptionTypeStr != null) {
-			exceptionType = new ExceptionType(exceptionTypeStr);
+			this.exceptionType = new ExceptionType(exceptionTypeStr);
 		}
+		
+//		System.out.println("modifier-" + modifier);
+//		System.out.println("isAbstract-" + isAbstract);
+//		System.out.println("isFinal-" + isFinal);
+//		System.out.println("isStatic-" + isStatic);
+//		System.out.println("isSynchronized-" + isSynchronized);
+//		System.out.println("t-" + t);
+//		System.out.println("ret-" + ret.getType());
+//		System.out.println("methodName-" + methodName);
+//		System.out.println("parameterStr-" + parameterStr);
+//		for (int i = 0; i < parameters.size(); i++) {
+//			System.out.println("parameters-" + parameters.get(i).getType() + "," + parameters.get(i).getName());
+//		}
+//		System.out.println("exceptionTypeStr-" + exceptionTypeStr);
+		
+	}
+	
+	private String[] mergin(String[] ss) {
+		List<String> list = new ArrayList<String>();
+
+		int leftCount = 0;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < ss.length; i++) {
+			String s = ss[i];
+			
+			boolean left = s.indexOf("<") > -1;
+			boolean right = s.indexOf(">") > -1;
+			
+			if (left && !right) {
+				sb.append(s);
+				leftCount++;
+			} else if (sb.length() > 0 && !right) {
+				sb.append(s);
+			} else if (right) {
+				sb.append(s);
+				if (leftCount > 0) {
+					leftCount--;
+				}
+				
+				if (leftCount == 0) {
+					list.add(sb.toString());
+					sb.setLength(0);
+				}
+			} else {
+				list.add(s);
+			}
+		}	
+		
+		String[] result = new String[list.size()];
+		list.toArray(result);
+		return result;
 	}
 
 	/*

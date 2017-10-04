@@ -25,13 +25,18 @@ import com.windf.plugins.log.Logger;
 public class FileUtil {
 	private static Logger logger = LogFactory.getLogger(FileUtil.class);
 
+	private static String classPath = null;
+	
 	/**
 	 * 获取类文件路径 e: 项目路径/WEB-INF/classes
 	 * 
 	 * @return
 	 */
 	public static String getClassPath() {
-		return new File(FileUtil.class.getClassLoader().getResource("").getPath()).getPath();
+		if (classPath == null) {
+			classPath = new File(FileUtil.class.getClassLoader().getResource("").getPath()).getPath();
+		}
+		return classPath;
 	}
 
 	/**

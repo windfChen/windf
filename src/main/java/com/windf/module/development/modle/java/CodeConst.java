@@ -10,7 +10,7 @@ public class CodeConst {
 	static final String WORD_SPLIT = " ";
 	
 	/**
-	 * 开始时空格的数量
+	 * 获取开始时空格的数量
 	 * @param lineContent
 	 * @return
 	 */
@@ -25,7 +25,7 @@ public class CodeConst {
 	}
 	
 	/**
-	 * 开始时空格的数量
+	 * 设置开始时空格的数量
 	 * @param lineContent
 	 * @return
 	 */
@@ -59,6 +59,17 @@ public class CodeConst {
 		return result.toArray(new String[result.size()]);
 	}
 	
+	/**
+	 * 验证改行是否和表达式相匹配
+	 * @param line
+	 * @param patternStr
+	 * @return
+	 */
+	public static boolean verify(String line, String patternStr) {
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(line);
+		return matcher.matches();
+	}
 
 	/**
 	 * 获得字符串内容中的字符串

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.windf.core.frame.Initializationable;
+import com.windf.core.util.file.ModuleFile;
 import com.windf.core.util.reflect.Scanner;
 import com.windf.core.util.reflect.ScannerHandler;
 import com.windf.module.development.entity.Module;
@@ -19,8 +20,7 @@ public class Initialization implements Initializationable, ScannerHandler{
 	
 	@Override
 	public void init() {
-		String javaPath = SourceFileUtil.getJavaPath();
-		Scanner scanner = new Scanner(javaPath, this);
+		Scanner scanner = new Scanner(SourceFileUtil.getJavaPath(), this);
 		scanner.run();
 		
 		// TODO 待排序
@@ -36,32 +36,29 @@ public class Initialization implements Initializationable, ScannerHandler{
 
 	@Override
 	public void handle(File file) {
-		String prefix = scanner.getPrefix();
-		if ("java".equals(prefix)) { // 如果是java的解析
-
-			/*
-			 * 解析路径
-			 */
-			// TODO 现在是写死的，以后需要优化
-			String moduleType = scanner.getCurrentRelativePathByIndex(3);
-			String moduleCode = scanner.getCurrentRelativePathByIndex(4);
-			String packageName = scanner.getCurrentRelativePathByIndex(scanner.getCurrentRelativePaths().length);
-			
-			/*
-			 *  初始化模块 // TODO 先不处理插件
-			 */
-			Module currentModule = null;
-			if ("module".equals(moduleType)) {
-				currentModule = modules.get(moduleCode);
-				if (currentModule == null) {
-					currentModule = ModuleMaster.getInstance().loadModule(moduleCode);
-					modules.put(moduleCode, currentModule);
+		ModuleFile moduleFile = new ModuleFile(SourceFileUtil.getJavaPath(), file);
+		if (moduleFile.verifyPath()) {
+			if ("java".equals(moduleFile.getPrefix())) { // 如果是java的解析
+				
+				/*
+				 *  初始化模块 // TODO 先不处理插件
+				 */
+				Module currentModule = null;
+				if ("module".equals(moduleFile.getModuleType())) {
+					currentModule = modules.get(moduleFile.getModuleCode());
+					if (currentModule == null) {
+						currentModule = ModuleMaster.getInstance().loadModule(moduleFile.getModuleCode());
+						modules.put(moduleFile.getModuleCode(), currentModule);
+					}
 				}
+				
+				// 处理各个类
+				//JavaCoder javaCode = new JavaCoder(moduleFile.getRelativePath(), moduleFile.getFileName());
+				
+				
 			}
-			
-			// 处理各个类
-			
 		}
+		
 	}
 
 }

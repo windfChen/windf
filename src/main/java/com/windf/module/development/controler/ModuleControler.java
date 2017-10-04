@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.module.development.Constant;
 import com.windf.module.development.entity.Module;
-import com.windf.module.development.frame.Initialization;
 import com.windf.module.development.service.ModuleService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -32,11 +31,14 @@ public class ModuleControler extends ManagerGridControler{
 	protected Class<? extends Object> getEntity() {
 		return Module.class;
 	}
-	
+
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public String test() {
-		Initialization a = new Initialization(); 
-		a.init();
+//		Initialization a = new Initialization(); 
+//		a.init();
+	
+//		Method a = new Method("protected final static abstract <T, E> List<Map<String, String>> getManagerGridService(T a, Set<Object> helloW, Map<String, Object> collecton) throws UserException, CodeException;");
+		
 		return responseReturn.success();
 	}
 

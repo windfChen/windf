@@ -21,7 +21,7 @@ public class JavaCoder extends AbstractType{
 	private String classEnd;
 	
 	public JavaCoder(String packagePath, String className) {
-		this.classPath = SourceFileUtil.getJavaPath() + packagePath + "/" + className + ".java";
+		this.classPath = SourceFileUtil.getJavaPath() + "/" + packagePath + "/" + className + ".java";
 		
 		File javaFile = new File(this.classPath);
 		
@@ -57,7 +57,7 @@ public class JavaCoder extends AbstractType{
 				
 				// 统一制表符
 				lineContent = lineContent.replace("\t", CodeConst.TAB);
-				
+			System.out.println(lineContent);
 				if (lineContent.startsWith("package ")) {
 					packageInfo = lineContent;
 				} else if (lineContent.startsWith("import ")) {

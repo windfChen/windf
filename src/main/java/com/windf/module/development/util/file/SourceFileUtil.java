@@ -14,7 +14,7 @@ public class SourceFileUtil {
 		String basePath = classPath.substring(0, classPath.lastIndexOf("src"));
 		DEVELOPMENT_BASE_PATH = new File(basePath).getPath();
 		
-		JAVA_SOURCE_BASE_PATH =  DEVELOPMENT_BASE_PATH + "/src/main/java/";
+		JAVA_SOURCE_BASE_PATH =  DEVELOPMENT_BASE_PATH + "/src/main/java";
 		CONFIG_SOURCE_BASE_PATH =  DEVELOPMENT_BASE_PATH + "/src/main/resources/config";
 	}
 	
