@@ -7,7 +7,7 @@ import java.util.List;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.util.file.JavaFileUtil;
-import com.windf.module.development.util.file.JavaFileUtil.LineReader;
+import com.windf.module.development.util.file.LineReader;
 import com.windf.module.development.util.file.SourceFileUtil;
 
 public class JavaCoder extends AbstractType{
@@ -16,6 +16,8 @@ public class JavaCoder extends AbstractType{
 	private String packageInfo;
 	private Imports imports = new Imports();
 	private String className;
+	private String extendsStr;
+	private String implementsStr;
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 	private List<Method> methods = new ArrayList<Method>();
 	private String classEnd;
@@ -57,13 +59,17 @@ public class JavaCoder extends AbstractType{
 				
 				// 统一制表符
 				lineContent = lineContent.replace("\t", CodeConst.TAB);
-			System.out.println(lineContent);
+			
 				if (lineContent.startsWith("package ")) {
 					packageInfo = lineContent;
 				} else if (lineContent.startsWith("import ")) {
 					imports.addLine(lineContent);
-				} else if (lineContent.startsWith("public class ")) {
-					className = lineContent;
+				} else if (CodeConst.verify(lineContent, "^\\s*public\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$")) {
+					String[] ss = CodeConst.getInnerString(lineContent, "^\\s*public\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
+					className = ss[1];
+					extendsStr = ss[2];
+					implementsStr = ss[3];
+					
 					setComment(comment);
 					setAnnotations(annotations);
 					reset();
@@ -237,6 +243,10 @@ public class JavaCoder extends AbstractType{
 	public List<Method> getAllMethods() {
 		return this.methods;
 	}
+	
+	public List<Attribute> getAllAttributes() {
+		return this.attributes;
+	}
 
 	/**
 	 * 是否是类的结尾
@@ -251,6 +261,62 @@ public class JavaCoder extends AbstractType{
 		}
 		
 		return result;
+	}
+
+	public String getClassPath() {
+		return classPath;
+	}
+
+	public void setClassPath(String classPath) {
+		this.classPath = classPath;
+	}
+
+	public String getPackageInfo() {
+		return packageInfo;
+	}
+
+	public void setPackageInfo(String packageInfo) {
+		this.packageInfo = packageInfo;
+	}
+
+	public Imports getImports() {
+		return imports;
+	}
+
+	public void setImports(Imports imports) {
+		this.imports = imports;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
+	}
+
+	public List<Method> getMethods() {
+		return methods;
+	}
+
+	public void setMethods(List<Method> methods) {
+		this.methods = methods;
+	}
+
+	public String getClassEnd() {
+		return classEnd;
+	}
+
+	public void setClassEnd(String classEnd) {
+		this.classEnd = classEnd;
 	}
 	
 }

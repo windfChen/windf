@@ -2,8 +2,6 @@ package com.windf.core.util.file;
 
 import java.io.File;
 
-import com.windf.core.exception.CodeException;
-
 public class ModuleFile {
 
 	private String prefix;
@@ -43,15 +41,8 @@ public class ModuleFile {
 		return result;
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public Class getFileClass() {
-		Class result = null;
-		String className = relativePath.replace(File.separator, ".") + "." + fileName;
-		try {
-			result = Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new CodeException(e);
-		}
+	public String getClassName() {
+		String result = relativePath.replace(File.separator, ".") + "." + fileName;
 		return result;
 	}
 	

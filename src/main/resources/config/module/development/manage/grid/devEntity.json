@@ -13,19 +13,6 @@
 		"canOrder" : true,
 		"display" : null,
 		"orderNum" : 2
-	},{
-		"name" : "code",
-		"dataIndex" : "code",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : false,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"orderNum" : 1
 	},
 	{
 		"name" : "名称",
@@ -42,34 +29,6 @@
 		"orderNum" : 4
 	},
 	{
-		"name" : "路径",
-		"dataIndex" : "basePath",
-		"type" : "TextField",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"orderNum" : 3
-	},
-	{
-		"name" : "描述",
-		"dataIndex" : "info",
-		"type" : "TextArea",
-		"canList" : true,
-		"canSearch" : true,
-		"canAdd" : true,
-		"canBatchAdd" : true,
-		"canUpdate" : true,
-		"canReport" : true,
-		"canOrder" : true,
-		"display" : null,
-		"orderNum" : 3
-	},
-	{
 		"name" : "操作",
 		"dataIndex" : "info",
 		"type" : "TextField",
@@ -80,7 +39,7 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${code}'>管理</a>",
+		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${id}'>管理</a>",
 		"orderNum" : 6
 	}],
 	"menus" : [],

@@ -1,7 +1,9 @@
 package com.windf.module.development.modle.java;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.windf.core.util.RegularUtil;
@@ -27,7 +29,8 @@ public class Annotation {
 			name = ss[0].substring(1);
 			
 			if (ss.length > 1) {
-				String[] valueStrs = ss[1].split(",");
+				String[] valueStrs = ss[1].split("\\s?,\\s?");
+				valueStrs = mergin(valueStrs);
 				if (valueStrs.length == 1) {
 					values = new HashMap<String, String>();
 					values.put(DEFAULT_KEY, valueStrs[0]);
@@ -45,6 +48,44 @@ public class Annotation {
 			this.name = codes;
 		}
 		
+	}
+	
+
+	
+	private String[] mergin(String[] ss) {
+		List<String> list = new ArrayList<String>();
+
+		int leftCount = 0;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < ss.length; i++) {
+			String s = ss[i];
+			
+			boolean left = s.indexOf("{") > -1;
+			boolean right = s.indexOf("}") > -1;
+			
+			if (left && !right) {
+				sb.append(s);
+				leftCount++;
+			} else if (sb.length() > 0 && !right) {
+				sb.append(s);
+			} else if (right) {
+				sb.append(s);
+				if (leftCount > 0) {
+					leftCount--;
+				}
+				
+				if (leftCount == 0) {
+					list.add(sb.toString());
+					sb.setLength(0);
+				}
+			} else {
+				list.add(s);
+			}
+		}	
+		
+		String[] result = new String[list.size()];
+		list.toArray(result);
+		return result;
 	}
 	
 	public Annotation(String name, Object value) {

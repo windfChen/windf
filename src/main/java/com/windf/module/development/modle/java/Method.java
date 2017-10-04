@@ -3,6 +3,7 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.windf.core.exception.CodeException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.entity.ExceptionType;
 import com.windf.module.development.entity.Parameter;
@@ -240,54 +241,69 @@ public class Method extends AbstractType {
 			unImplement = true;
 		}
 		
-		String methodLinePattern = "(public |private |protected )?([^\\(]*)(\\([^\\)]*\\))(\\s?throws[^\\{;]*)?[\\{;]";
+		String methodLinePattern = "(public |private |protected )?([^\\(]*)(\\([^\\)]*\\))(\\s?throws[^\\{;]*)?\\s*[\\{;]";
 		String[] ss = CodeConst.getInnerString(this.methodStart, methodLinePattern);
-		modifier = ss[0];
-		if (modifier == null) {
-			modifier = "package";
-		}
 		
-		String[] names = ss[1].split("\\s");
-		names = mergin(names);
-		for (int i = 0; i < names.length; i++) {
-			String s = names[i].trim();
-			
-			if ("abstract".equals(s)) {
-				isAbstract = true;
-			} else if ("final".equals(s)) {
-				isFinal = true;
-			} else if ("static".equals(s)) {
+		/*
+		 * 判断是否是静态块
+		 */
+		if (ss.length == 0) {
+			if (CodeConst.verify(methodStart, "\\s*static\\s*\\{\\s*")) {
 				isStatic = true;
-			} else if ("synchronized".equals(s)) {
-				isSynchronized = true;
 			} else {
-				if (s.startsWith("<")) {
-					t = s;
-				} else if (ret == null) {
-					this.ret = new Return(s);
+				throw new CodeException("方法解析错误");
+			}
+		} else {
+
+			modifier = ss[0];
+			if (modifier == null) {
+				modifier = "package";
+			}
+			
+			String[] names = ss[1].split("\\s");
+			names = mergin(names);
+			for (int i = 0; i < names.length; i++) {
+				String s = names[i].trim();
+				
+				if ("abstract".equals(s)) {
+					isAbstract = true;
+				} else if ("final".equals(s)) {
+					isFinal = true;
+				} else if ("static".equals(s)) {
+					isStatic = true;
+				} else if ("synchronized".equals(s)) {
+					isSynchronized = true;
 				} else {
-					methodName = s;
+					if (s.startsWith("<")) {
+						t = s;
+					} else if (ret == null) {
+						this.ret = new Return(s);
+					} else {
+						methodName = s;
+					}
 				}
 			}
-		}
 
-		String parameterStr = ss[2];
-		parameterStr = parameterStr.substring(1, parameterStr.length() - 1);
-		String[] parameterStrs = parameterStr.split(",\\s?");
-		parameterStrs = mergin(parameterStrs);
-		for (int i = 0; i < parameterStrs.length; i++) {
-			String s = parameterStrs[i];
-			String[] ss2 = s.split("\\s");
-			
-			Parameter parameter = new Parameter();
-			parameter.setType(ss2[0]);
-			parameter.setName(ss2[1]);
-			parameters.add(parameter);
-		}	
-		
-		String exceptionTypeStr = ss[3];
-		if (exceptionTypeStr != null) {
-			this.exceptionType = new ExceptionType(exceptionTypeStr);
+			String parameterStr = ss[2];
+			if (parameterStr.length() > 2) {
+				parameterStr = parameterStr.substring(1, parameterStr.length() - 1);
+				
+				String[] parameterStrs = parameterStr.split(",\\s?");
+				parameterStrs = mergin(parameterStrs);
+				for (int i = 0; i < parameterStrs.length; i++) {
+					String s = parameterStrs[i];
+					String[] ss2 = s.split("\\s");
+					
+					Parameter parameter = new Parameter();
+					parameter.setType(ss2[0]);
+					parameter.setName(ss2[1]);
+					parameters.add(parameter);
+				}	
+				
+				if (ss[3] != null) {
+					this.exceptionType = new ExceptionType(ss[3]);
+				}
+			}
 		}
 		
 //		System.out.println("modifier-" + modifier);
@@ -302,7 +318,7 @@ public class Method extends AbstractType {
 //		for (int i = 0; i < parameters.size(); i++) {
 //			System.out.println("parameters-" + parameters.get(i).getType() + "," + parameters.get(i).getName());
 //		}
-//		System.out.println("exceptionTypeStr-" + exceptionTypeStr);
+//		System.out.println("exceptionType-" + (exceptionType == null? null : exceptionType.getTypes()));
 		
 	}
 	

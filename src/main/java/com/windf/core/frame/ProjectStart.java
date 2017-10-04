@@ -109,7 +109,7 @@ public class ProjectStart implements ScannerHandler{
 				}
 
 				try {
-					Class clazz = moduleFile.getFileClass();
+					Class clazz = Class.forName(moduleFile.getClassName());
 
 					if ("frame".equals(moduleFile.getPackageName())) {
 						if (Initializationable.class.isAssignableFrom(clazz)) { // 添加初始化
@@ -130,7 +130,7 @@ public class ProjectStart implements ScannerHandler{
 						}
 					}
 
-				} catch (InstantiationException | IllegalAccessException e) {
+				} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 					throw new CodeException("Initializationable 初始化类启动错误", e);
 				}
 			}

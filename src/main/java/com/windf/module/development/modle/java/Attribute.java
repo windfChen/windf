@@ -3,7 +3,7 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-class Attribute extends AbstractType {
+public class Attribute extends AbstractType {
 	/**
 	 * 判断是否是属性，所有属性都是一行
 	 * @param lineContent
@@ -67,5 +67,31 @@ class Attribute extends AbstractType {
 		
 		return result;
 	}
+
+	public String getCodes() {
+		return codes;
+	}
+
+	public void setCodes(String codes) {
+		this.codes = codes;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 
 }
