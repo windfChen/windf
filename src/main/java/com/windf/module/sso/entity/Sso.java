@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.windf.core.general.bean.AbstractBean;
 
-public class SsoUser extends AbstractBean {
+public class Sso extends AbstractBean {
 	private static final long serialVersionUID = 4132177381683804504L;
 	
 	private String username;

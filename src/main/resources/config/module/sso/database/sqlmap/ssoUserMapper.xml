@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.windf.module.sso.dao.SsoUserDao">
+<mapper namespace="com.windf.module.sso.dao.SsoDao">
 
-    <insert id="insert" parameterType="com.windf.module.sso.entity.SsoUser" useGeneratedKeys="true" keyProperty="id">
-        insert into `sso_user`(username,turename,password, email, phone, lastLoginIp, lastLoginTime) 
+    <insert id="insert" parameterType="com.windf.module.sso.entity.Sso" useGeneratedKeys="true" keyProperty="id">
+        insert into `sso`(username,turename,password, email, phone, lastLoginIp, lastLoginTime) 
         	values(#{username},
         				#{turename},
         				#{password},
@@ -15,23 +15,23 @@
         				now()
         				)
     </insert>
-    <select id="getById" parameterType="int" resultType="com.windf.module.sso.entity.SsoUser">
-       select * from `sso_user` where id = #{id}
+    <select id="getById" parameterType="int" resultType="com.windf.module.sso.entity.Sso">
+       select * from `sso` where id = #{id}
     </select>
-    <select id="getByUsername" parameterType="String" resultType="com.windf.module.sso.entity.SsoUser">
-       select * from `sso_user` where username = #{username}
+    <select id="getByUsername" parameterType="String" resultType="com.windf.module.sso.entity.Sso">
+       select * from `sso` where username = #{username}
     </select>
-    <update id="updatePhone" parameterType="com.windf.module.sso.entity.SsoUser" >
-        update `sso_user` set phone = #{phone} where id = #{id}
+    <update id="updatePhone" parameterType="com.windf.module.sso.entity.Sso" >
+        update `sso` set phone = #{phone} where id = #{id}
     </update>
-    <update id="updatePassword" parameterType="com.windf.module.sso.entity.SsoUser">
-        update `sso_user` set password = #{password} where id = #{id}
+    <update id="updatePassword" parameterType="com.windf.module.sso.entity.Sso">
+        update `sso` set password = #{password} where id = #{id}
     </update>
-    <update id="updateLogin" parameterType="com.windf.module.sso.entity.SsoUser">
-        update `sso_user` set lastLoginIp = #{lastLoginIp}, lastLoginTime=now() where id = #{id}
+    <update id="updateLogin" parameterType="com.windf.module.sso.entity.Sso">
+        update `sso` set lastLoginIp = #{lastLoginIp}, lastLoginTime=now() where id = #{id}
     </update>
     <delete id="deleteById" parameterType="int">
-       delete from `sso_user` where id = #{id}
+       delete from `sso` where id = #{id}
     </delete>
    
 </mapper>

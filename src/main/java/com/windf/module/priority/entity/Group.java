@@ -8,20 +8,24 @@ import com.windf.core.general.bean.AbstractBean;
  * @author chenyafeng
  *
  */
-public class PriorityGroup extends AbstractBean {
+public class Group extends AbstractBean {
 
 	private static final long serialVersionUID = 4333038898160940125L;
 
-	private PriorityGroup priorityGroup;
+	private Group group;
 	private String name;
 	private Long serialNumber;
 
-	public PriorityGroup getPriorityGroup() {
-		return priorityGroup;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void setPriorityGroup(PriorityGroup priorityGroup) {
-		this.priorityGroup = priorityGroup;
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getName() {

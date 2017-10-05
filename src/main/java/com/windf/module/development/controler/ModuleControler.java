@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.module.development.Constant;
 import com.windf.module.development.entity.Module;
-import com.windf.module.development.modle.java.CodeConst;
+import com.windf.module.development.frame.Initialization;
 import com.windf.module.development.service.ModuleService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -35,17 +35,17 @@ public class ModuleControler extends ManagerGridControler{
 
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public String test() {
-//		Initialization a = new Initialization(); 
-//		a.init();
+		Initialization a = new Initialization(); 
+		a.init();
 	    
 //    	Method a = new Method("protected final static abstract <T, E> List<Map<String, String>> getManagerGridService(T a, Set<Object> helloW, Map<String, Object> collecton) throws UserException, CodeException;");
 //    	Method a = new Method("protected static Module setCurrentMoudle(Object obj) {");
 //		Method a = new Method("public static Module getCurrentMoudle() {");
 //		Method a = new Method("public String list() {");
 		
-		String[] a = CodeConst.getInnerString("public class SsoUser extends AbstractBean implements abc, dbc {", 
-				"^\\s*public\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
-		System.out.println(a.length);
+//		String[] a = CodeConst.getInnerString("public class SsoUser extends AbstractBean implements abc, dbc {", 
+//				"^\\s*public\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
+//		System.out.println(a.length);
 		
 		return responseReturn.success();
 	}

@@ -12,6 +12,11 @@ import com.windf.module.development.util.file.SourceFileUtil;
 
 public class JavaCoder extends AbstractType{
 
+
+	private String modifier;
+	private String classType;
+	private boolean isAbstract;
+	
 	private String classPath;
 	private String packageInfo;
 	private Imports imports = new Imports();
@@ -64,11 +69,16 @@ public class JavaCoder extends AbstractType{
 					packageInfo = lineContent;
 				} else if (lineContent.startsWith("import ")) {
 					imports.addLine(lineContent);
-				} else if (CodeConst.verify(lineContent, "^\\s*public\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$")) {
-					String[] ss = CodeConst.getInnerString(lineContent, "^\\s*public\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
-					className = ss[1];
-					extendsStr = ss[2];
-					implementsStr = ss[3];
+				} else if (CodeConst.verify(lineContent, "^\\s*public\\s*(abstract|static|final)?\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$")) {
+					String[] ss = CodeConst.getInnerString(lineContent, "^\\s*(public|private|protected)?\\s*(abstract)?\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
+					modifier = ss[0];
+					if (ss[1] != null) {
+						isAbstract = true;
+					}
+					classType = ss[2];
+					className = ss[3];
+					extendsStr = ss[4];
+					implementsStr = ss[5];
 					
 					setComment(comment);
 					setAnnotations(annotations);
@@ -317,6 +327,46 @@ public class JavaCoder extends AbstractType{
 
 	public void setClassEnd(String classEnd) {
 		this.classEnd = classEnd;
+	}
+
+	public String getExtendsStr() {
+		return extendsStr;
+	}
+
+	public void setExtendsStr(String extendsStr) {
+		this.extendsStr = extendsStr;
+	}
+
+	public String getImplementsStr() {
+		return implementsStr;
+	}
+
+	public void setImplementsStr(String implementsStr) {
+		this.implementsStr = implementsStr;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+	public String getClassType() {
+		return classType;
+	}
+
+	public void setClassType(String classType) {
+		this.classType = classType;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
 	}
 	
 }

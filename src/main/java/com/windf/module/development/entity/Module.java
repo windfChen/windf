@@ -56,6 +56,18 @@ public class Module extends com.windf.core.bean.Module{
 		XmlFileUtil.writeObject2Xml(this, file);
 	}
 	
+	public Entity getEntityByName(String name) {
+		Entity result = null;
+		for (int i = 0; i < entitys.size(); i++) {
+			if (entitys.get(i).getName().equals(name)) {
+				result = entitys.get(i);
+				break;
+			}
+			
+		}
+		return result;
+	}
+	
 	public List<Entity> getEntitys() {
 		return entitys;
 	}

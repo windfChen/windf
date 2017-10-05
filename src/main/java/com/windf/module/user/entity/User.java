@@ -3,12 +3,12 @@ package com.windf.module.user.entity;
 import com.windf.core.general.bean.BaseEntity;
 import com.windf.module.organization.entity.Organization;
 import com.windf.module.priority.entity.Role;
-import com.windf.module.sso.entity.SsoUser;
+import com.windf.module.sso.entity.Sso;
 
 public class User extends BaseEntity {
 	private static final long serialVersionUID = 6026904399528051304L;
 	
-	private SsoUser ssoUser;
+	private Sso ssoUser;
 	private Role role;
 	private Organization organization; // 所属机构
 	private String sex; // 性别
@@ -37,11 +37,11 @@ public class User extends BaseEntity {
 		this.sex = sex;
 	}
 
-	public SsoUser getSsoUser() {
+	public Sso getSsoUser() {
 		return ssoUser;
 	}
 
-	public void setSsoUser(SsoUser ssoUser) {
+	public void setSsoUser(Sso ssoUser) {
 		this.ssoUser = ssoUser;
 	}
 

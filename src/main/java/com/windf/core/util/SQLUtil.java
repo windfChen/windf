@@ -45,4 +45,19 @@ public class SQLUtil {
 		
 		return selectNames;
 	}
+	
+	public static String tableName2EntityName(String tableName) {
+		if (tableName.contains("_r_")) {
+			tableName = tableName.replace("_r_", "");
+		}
+		
+		if (tableName.contains("_")) {
+			tableName = tableName.substring(tableName.indexOf("_"));
+		}
+
+		String result = StringUtil.toCamelCase(tableName, "_");
+		result = StringUtil.firstLetterUppercase(result);
+		
+		return result;
+	}
 }

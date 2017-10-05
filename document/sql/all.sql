@@ -412,10 +412,10 @@ INSERT INTO `priority_r_role_priority` VALUES ('31', '1', '14', '1');
 INSERT INTO `priority_r_role_priority` VALUES ('32', '2', '13', '1');
 
 -- ----------------------------
--- Table structure for sso_user
+-- Table structure for sso
 -- ----------------------------
-DROP TABLE IF EXISTS `sso_user`;
-CREATE TABLE `sso_user` (
+DROP TABLE IF EXISTS `sso`;
+CREATE TABLE `sso` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
   `turename` varchar(50) DEFAULT NULL COMMENT '真实姓名',
@@ -429,11 +429,11 @@ CREATE TABLE `sso_user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8 COMMENT='用户表存储登录相关信息';
 
 -- ----------------------------
--- Records of sso_user
+-- Records of sso
 -- ----------------------------
-INSERT INTO `sso_user` VALUES ('1', 'admin', '管理员', 'c4ca4238a0b923820dcc509a6f75849b', null, null, '0:0:0:0:0:0:0:1', '2017-09-30 18:26:34');
-INSERT INTO `sso_user` VALUES ('101', 'cx', null, 'c4ca4238a0b923820dcc509a6f75849b', null, null, '0:0:0:0:0:0:0:1', '2017-09-30 17:16:29');
-INSERT INTO `sso_user` VALUES ('102', 'cyf', null, 'c4ca4238a0b923820dcc509a6f75849b', null, null, '0:0:0:0:0:0:0:1', '2017-09-29 12:44:13');
+INSERT INTO `sso` VALUES ('1', 'admin', '管理员', 'c4ca4238a0b923820dcc509a6f75849b', null, null, '0:0:0:0:0:0:0:1', '2017-09-30 18:26:34');
+INSERT INTO `sso` VALUES ('101', 'cx', null, 'c4ca4238a0b923820dcc509a6f75849b', null, null, '0:0:0:0:0:0:0:1', '2017-09-30 17:16:29');
+INSERT INTO `sso` VALUES ('102', 'cyf', null, 'c4ca4238a0b923820dcc509a6f75849b', null, null, '0:0:0:0:0:0:0:1', '2017-09-29 12:44:13');
 
 -- ----------------------------
 -- Table structure for user
@@ -447,14 +447,14 @@ CREATE TABLE `user` (
   `sex` char(1) DEFAULT NULL,
   `fk_org_id` int(11) DEFAULT NULL,
   `fk_role_id` int(11) DEFAULT NULL,
-  `fk_sso_user_id` int(11) DEFAULT NULL,
+  `fk_sso_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_role_id` (`fk_role_id`),
   KEY `fk_org_id` (`fk_org_id`),
-  KEY `fk_sso_user_id` (`fk_sso_user_id`),
+  KEY `fk_sso_id` (`fk_sso_id`),
   CONSTRAINT `user_fk_org_od` FOREIGN KEY (`fk_org_id`) REFERENCES `organization` (`id`),
   CONSTRAINT `user_fk_role_id` FOREIGN KEY (`fk_role_id`) REFERENCES `priority_role` (`id`),
-  CONSTRAINT `user_fk_sso_user_id` FOREIGN KEY (`fk_sso_user_id`) REFERENCES `sso_user` (`id`)
+  CONSTRAINT `user_fk_sso_id` FOREIGN KEY (`fk_sso_id`) REFERENCES `sso` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------

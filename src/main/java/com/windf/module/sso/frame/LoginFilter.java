@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import com.windf.core.frame.Filter;
-import com.windf.module.sso.SsoUserSession;
+import com.windf.module.sso.SsoSession;
 
 @Component
 public class LoginFilter implements Filter{
@@ -29,7 +29,7 @@ public class LoginFilter implements Filter{
 				return true;
 			}
 			
-			if (SsoUserSession.getCurrentUser() == null) {
+			if (SsoSession.getCurrentUser() == null) {
 				// TODO 通用controler跳转
 				response.sendRedirect(request.getContextPath() + "/login");
 				return false;

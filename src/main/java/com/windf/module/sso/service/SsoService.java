@@ -1,16 +1,16 @@
 package com.windf.module.sso.service;
 
 import com.windf.core.exception.UserException;
-import com.windf.module.sso.entity.SsoUser;
+import com.windf.module.sso.entity.Sso;
 
-public interface SsoUserService {
+public interface SsoService {
 	/**
 	 * 新增用户
 	 * 
 	 * @param ssoUser
 	 * @throws UserMessageException
 	 */
-	int addUser(SsoUser ssoUser) throws UserException;
+	int addUser(Sso ssoUser) throws UserException;
 
 	/**
 	 * 用户登录
@@ -21,7 +21,7 @@ public interface SsoUserService {
 	 * @return
 	 * @throws UserMessageException
 	 */
-	SsoUser login(String username, String password, String loginIp) throws UserException;
+	Sso login(String username, String password, String loginIp) throws UserException;
 
 	/**
 	 * 退出登录
@@ -36,5 +36,5 @@ public interface SsoUserService {
 	 * @return
 	 * @throws UserMessageException
 	 */
-	SsoUser loginOrCreatUser(SsoUser ssoUser) throws UserException;
+	Sso loginOrCreatUser(Sso ssoUser) throws UserException;
 }
