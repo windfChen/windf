@@ -46,9 +46,6 @@ public class Attribute extends AbstractType {
 	}
 
 	private void initInfoByCodes() {
-		if (codes.contains("//")) {
-			System.out.println(codes);
-		}
 		String[] ss = CodeConst.getInnerString(codes.split("=")[0], "^\\s*(public|private|protected)?( static)?( final)?\\s+(\\w*)\\s+(\\w*)\\s*;?\\s*(//(.*))?$");
 		if (ss.length > 0) {
 			modifier = ss[0];
@@ -64,8 +61,6 @@ public class Attribute extends AbstractType {
 				name = name.substring(0, name.length() - 1);
 				name = name.trim();
 			}
-		} else {
-			System.out.println(ss);
 		}
 	}
 	

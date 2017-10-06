@@ -306,20 +306,6 @@ public class Method extends AbstractType {
 			}
 		}
 		
-//		System.out.println("modifier-" + modifier);
-//		System.out.println("isAbstract-" + isAbstract);
-//		System.out.println("isFinal-" + isFinal);
-//		System.out.println("isStatic-" + isStatic);
-//		System.out.println("isSynchronized-" + isSynchronized);
-//		System.out.println("t-" + t);
-//		System.out.println("ret-" + ret.getType());
-//		System.out.println("methodName-" + methodName);
-//		System.out.println("parameterStr-" + parameterStr);
-//		for (int i = 0; i < parameters.size(); i++) {
-//			System.out.println("parameters-" + parameters.get(i).getType() + "," + parameters.get(i).getName());
-//		}
-//		System.out.println("exceptionType-" + (exceptionType == null? null : exceptionType.getTypes()));
-		
 	}
 	
 	private String[] mergin(String[] ss) {

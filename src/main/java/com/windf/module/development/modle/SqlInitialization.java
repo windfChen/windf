@@ -60,9 +60,6 @@ public class SqlInitialization implements ScannerHandler{
 					String defaultValue = ss[6];
 					String isAutoIncrement = ss[7];
 					String comment = ss[9];
-					if (comment != null) {
-						System.out.println(comment);
-					}
 
 					Field field = null;
 					String name = databaseName;
@@ -99,8 +96,6 @@ public class SqlInitialization implements ScannerHandler{
 				if (ss.length > 0) {
 					currentEntity.setComment(ss[1]);
 					return null;
-				} else {
-					System.out.println(lineContent);
 				}
 				return null;
 			}

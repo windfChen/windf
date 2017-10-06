@@ -46,9 +46,6 @@ public class TextUtil {
 		}
 		return i;
 	}
-	public static void main(String[] args) {
-		System.out.println(fixNumber("asd"));
-	}
 
 	/**
 	 * 判断是否是数字

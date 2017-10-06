@@ -14,6 +14,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.windf.plugins.log.LogFactory;
+
 public class HttpUtil {
 
     /**
@@ -83,7 +85,6 @@ public class HttpUtil {
         BufferedReader in = null;
         try {
             String urlNameString = StringUtils.isNotBlank(param) ? url + "?" + param : url;
-            System.out.println("urlNameString==" + urlNameString);
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
@@ -100,7 +101,7 @@ public class HttpUtil {
             Map<String, List<String>> map = connection.getHeaderFields();
             // 遍历所有的响应头字段
             for (String key : map.keySet()) {
-                System.out.println(key + "--->" + map.get(key));
+                LogFactory.getLogger(HttpUtil.class).debug(key + "--->" + map.get(key));
             }
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -109,8 +110,7 @@ public class HttpUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+        	LogFactory.getLogger(HttpUtil.class).error("发送GET请求出现异常！" + e, e);
         } finally { // 使用finally块来关闭输入流
             try {
                 if (in != null) {
@@ -161,8 +161,7 @@ public class HttpUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送POST请求出现异常！" + e);
-            e.printStackTrace();
+        	LogFactory.getLogger(HttpUtil.class).error("发送POST请求出现异常！" + e, e);
         } finally {  // 使用finally块来关闭输出流、输入流
             try {
                 if (out != null) {
