@@ -57,9 +57,9 @@
 		"orderNum" : 4
 	},
 	{
-		"name" : "是否可以为空",
+		"name" : "非空",
 		"dataIndex" : "isNotNull",
-		"type" : "TextField",
+		"type" : "ComboBox",
 		"canList" : true,
 		"canSearch" : true,
 		"canAdd" : true,
@@ -67,7 +67,8 @@
 		"canUpdate" : true,
 		"canReport" : true,
 		"canOrder" : true,
-		"display" : null,
+		"display" : "function(){return ${value}?'是':'否'}",
+		"comboDataArray" : [{"id":"Y","name":"是"},{"id":"N","name":"否"}],
 		"orderNum" : 4
 	},
 	{
@@ -87,7 +88,7 @@
 	{
 		"name" : "是否自增",
 		"dataIndex" : "isAutoIncrement",
-		"type" : "TextField",
+		"type" : "ComboBox",
 		"canList" : true,
 		"canSearch" : true,
 		"canAdd" : true,
@@ -95,7 +96,8 @@
 		"canUpdate" : true,
 		"canReport" : true,
 		"canOrder" : true,
-		"display" : null,
+		"display" : "function(){return ${value}?'是':'否'}",
+		"comboDataArray" : [{"id":"N","name":"否"},{"id":"Y","name":"是"}],
 		"orderNum" : 4
 	},
 	{

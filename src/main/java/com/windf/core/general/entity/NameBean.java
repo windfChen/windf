@@ -1,4 +1,4 @@
-package com.windf.core.general.bean;
+package com.windf.core.general.entity;
 
 /**
  * 具有name和id的bean

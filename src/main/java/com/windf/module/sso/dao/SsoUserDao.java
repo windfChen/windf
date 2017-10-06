@@ -1,31 +1,31 @@
 package com.windf.module.sso.dao;
 
-import com.windf.module.sso.entity.Sso;
+import com.windf.module.sso.entity.SsoUser;
 
-public interface SsoDao  {
+public interface SsoUserDao  {
 	/**
 	 * 插入用户
 	 * id自增
 	 * @param ssoUser
 	 */
-	Integer insert(Sso ssoUser);
+	Integer insert(SsoUser ssoUser);
 	/**
 	 * 修改用户电话信息
 	 * @param ssoUser
 	 */
-	Integer updatePhone(Sso ssoUser);
+	Integer updatePhone(SsoUser ssoUser);
 	/**
 	 * 修改登录信息 
 	 * @param ssoUser
 	 * @return
 	 */
-	Integer updateLogin(Sso ssoUser);
+	Integer updateLogin(SsoUser ssoUser);
 	/**
 	 * 修改密码
 	 * @param ssoUser
 	 * @return
 	 */
-	Integer updatePassword(Sso ssoUser);
+	Integer updatePassword(SsoUser ssoUser);
 	/**
 	 * 根据id删除用户
 	 * @param id
@@ -36,10 +36,10 @@ public interface SsoDao  {
 	 * @param id
 	 * @return
 	 */
-	Sso getById(int id);
+	SsoUser getById(int id);
 	/**
 	 * 根据用户名获得用户
 	 * @param username
 	 */
-	Sso getByUsername(String username);
+	SsoUser getByUsername(String username);
 }

@@ -2,7 +2,7 @@ package com.windf.module.form.entity;
 
 import java.util.Date;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
 public class FormItem extends AbstractBean {
 	private static final long serialVersionUID = -8776339158900342309L;

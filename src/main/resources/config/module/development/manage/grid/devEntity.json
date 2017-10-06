@@ -29,6 +29,34 @@
 		"orderNum" : 4
 	},
 	{
+		"name" : "表名",
+		"dataIndex" : "tableName",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 4
+	},
+	{
+		"name" : "备注",
+		"dataIndex" : "comment",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 4
+	},
+	{
 		"name" : "操作",
 		"dataIndex" : "info",
 		"type" : "TextField",
@@ -39,7 +67,7 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${id}'>管理</a>",
+		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='../field/?moduleCode=${param.moduleCode}&entityName=${name}'>管理</a>",
 		"orderNum" : 6
 	}],
 	"menus" : [],

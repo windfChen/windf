@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.core.exception.UserException;
 import com.windf.module.sso.Constant;
-import com.windf.module.sso.service.SsoService;
+import com.windf.module.sso.service.SsoUserService;
 import com.windf.plugins.web.BaseControler;
 import com.windf.plugins.web.WebContext;
 
@@ -19,7 +19,7 @@ import com.windf.plugins.web.WebContext;
 public class LoginControler extends BaseControler{
 	
 	@Resource
-	private SsoService ssoUserService ;
+	private SsoUserService ssoUserService ;
 		
 	@RequestMapping(value = {"/login", ""}, method = {RequestMethod.GET})
 	public String loginPage() {

@@ -1,6 +1,6 @@
 package com.windf.module.sso;
 
-import com.windf.module.sso.entity.Sso;
+import com.windf.module.sso.entity.SsoUser;
 import com.windf.plugins.web.WebContext;
 
 public class Constant {
@@ -16,8 +16,8 @@ public class Constant {
 	 * 获得session的当前用户
 	 * @return
 	 */
-	public static Sso getCurrentUser() {
-		return (Sso) WebContext.getSession().getAttribute(SESSION_SSO);
+	public static SsoUser getCurrentUser() {
+		return (SsoUser) WebContext.getSession().getAttribute(SESSION_SSO);
 	}
 
 }

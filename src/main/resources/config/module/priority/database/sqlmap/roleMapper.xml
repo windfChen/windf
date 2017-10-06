@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.windf.module.priority.dao.RoleDao">
 
-    <select id="getByUserId" parameterType="string" resultType="com.windf.module.priority.entity.Role">
+    <select id="getByUserId" parameterType="string" resultType="com.windf.module.priority.entity.PriorityRole">
        SELECT
 			r.*
 		FROM
@@ -14,7 +14,7 @@
 			u.id = #{param1}
     </select>
     
-    <select id="getMyList" resultType="com.windf.core.general.bean.NameBean">
+    <select id="getMyList" resultType="com.windf.core.general.entity.NameBean">
        SELECT
 			id as id, name
 		FROM

@@ -80,7 +80,7 @@
 		"canUpdate" : false,
 		"canReport" : false,
 		"canOrder" : false,
-		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${code}'>管理</a>",
+		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='entity/?moduleCode=${code}'>管理实体</a>",
 		"orderNum" : 6
 	}],
 	"menus" : [],

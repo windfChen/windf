@@ -1,23 +1,23 @@
 package com.windf.module.user.entity;
 
-import com.windf.core.general.bean.BaseEntity;
+import com.windf.core.general.entity.BaseEntity;
 import com.windf.module.organization.entity.Organization;
-import com.windf.module.priority.entity.Role;
-import com.windf.module.sso.entity.Sso;
+import com.windf.module.priority.entity.PriorityRole;
+import com.windf.module.sso.entity.SsoUser;
 
 public class User extends BaseEntity {
 	private static final long serialVersionUID = 6026904399528051304L;
 	
-	private Sso ssoUser;
-	private Role role;
+	private SsoUser ssoUser;
+	private PriorityRole role;
 	private Organization organization; // 所属机构
 	private String sex; // 性别
 
-	public Role getRole() {
+	public PriorityRole getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(PriorityRole role) {
 		this.role = role;
 	}
 
@@ -37,12 +37,13 @@ public class User extends BaseEntity {
 		this.sex = sex;
 	}
 
-	public Sso getSsoUser() {
+	public SsoUser getSsoUser() {
 		return ssoUser;
 	}
 
-	public void setSsoUser(Sso ssoUser) {
+	public void setSsoUser(SsoUser ssoUser) {
 		this.ssoUser = ssoUser;
 	}
+
 
 }

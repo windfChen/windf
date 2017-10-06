@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.general.dao.CrudDao;
 import com.windf.core.general.dao.WritableDao;
-import com.windf.module.sso.service.SsoService;
+import com.windf.module.sso.service.SsoUserService;
 import com.windf.module.user.dao.UserDao;
 import com.windf.module.user.entity.User;
 import com.windf.module.user.service.UserService;
@@ -18,7 +18,7 @@ public class UserServiceImpl extends ManagerGirdiServiceImpl implements UserServ
 	@Resource
 	private UserDao userDao;
 	@Resource
-	private SsoService ssoUserService;
+	private SsoUserService ssoUserService;
 
 	@Override
 	public CrudDao getGridDao() {

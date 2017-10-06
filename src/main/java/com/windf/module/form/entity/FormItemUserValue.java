@@ -2,7 +2,7 @@ package com.windf.module.form.entity;
 
 import java.util.Date;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 import com.windf.module.user.entity.User;
 
 public class FormItemUserValue extends AbstractBean {

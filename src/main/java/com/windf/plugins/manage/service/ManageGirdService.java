@@ -36,7 +36,7 @@ public interface ManageGirdService extends CrudService {
 	 * @throws UserException
 	 * @throws DataAccessException 
 	 */
-	Page<? extends Object> list(Map<String, Object> condition, Integer pageNo, Integer PageSize) throws Exception;
+	Page<? extends Object> list(Map<String, Object> condition, Integer pageNo, Integer pageSize) throws Exception;
 
 	/**
 	 * 添加

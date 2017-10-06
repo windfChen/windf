@@ -2,7 +2,7 @@ package com.windf.module.organization.service;
 
 import java.util.List;
 
-import com.windf.core.general.bean.NameBean;
+import com.windf.core.general.entity.NameBean;
 import com.windf.plugins.manage.service.ManageGirdService;
 
 public interface OrganizationService extends ManageGirdService{

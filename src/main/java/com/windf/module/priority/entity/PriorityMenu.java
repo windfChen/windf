@@ -1,8 +1,8 @@
 package com.windf.module.priority.entity;
 
-import com.windf.core.general.bean.TreeEntity;
+import com.windf.core.general.entity.TreeEntity;
 
-public class Menu extends TreeEntity<Menu> {
+public class PriorityMenu extends TreeEntity<PriorityMenu> {
 	private static final long serialVersionUID = -1971900433702039341L;
 
 	private String url; // 地址

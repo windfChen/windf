@@ -48,11 +48,7 @@ public class SQLUtil {
 	
 	public static String tableName2EntityName(String tableName) {
 		if (tableName.contains("_r_")) {
-			tableName = tableName.replace("_r_", "");
-		}
-		
-		if (tableName.contains("_")) {
-			tableName = tableName.substring(tableName.indexOf("_"));
+			tableName = tableName.replace("_r_", "_");
 		}
 
 		String result = StringUtil.toCamelCase(tableName, "_");

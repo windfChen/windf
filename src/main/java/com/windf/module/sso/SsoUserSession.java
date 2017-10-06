@@ -1,17 +1,17 @@
 package com.windf.module.sso;
 
 import com.windf.core.frame.SessionContext;
-import com.windf.module.sso.entity.Sso;
+import com.windf.module.sso.entity.SsoUser;
 
-public class SsoSession {
+public class SsoUserSession {
 
 	/**
 	 * 获取当前会话的登录用户
 	 * @return
 	 */
-	public static Sso getCurrentUser() {
+	public static SsoUser getCurrentUser() {
 		// TODO 获取当前登录用户
-		return (Sso) SessionContext.get(Constant.SESSION_SSO);
+		return (SsoUser) SessionContext.get(Constant.SESSION_SSO);
 	}
 
 	/**

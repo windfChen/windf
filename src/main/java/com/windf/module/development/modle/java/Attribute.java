@@ -11,7 +11,7 @@ public class Attribute extends AbstractType {
 	 */
 	static boolean isAttributeLine(String lineContent) {
 		boolean result = false;
-		
+		lineContent = lineContent.split("//")[0];
 		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0 && lineContent.trim().endsWith(";")) {
 			result = true; 
 		}
@@ -26,6 +26,9 @@ public class Attribute extends AbstractType {
 	/*
 	 * info
 	 */
+	String modifier;
+	boolean isFinal;
+	boolean isStatic;
 	String type;
 	String name;
 
@@ -43,10 +46,26 @@ public class Attribute extends AbstractType {
 	}
 
 	private void initInfoByCodes() {
-		String[] ss = codes.split("=")[0].split(CodeConst.WORD_SPLIT);
-		if (ss.length >= 2) {
-			type = ss[ss.length - 2];
-			name = ss[ss.length - 1];
+		if (codes.contains("//")) {
+			System.out.println(codes);
+		}
+		String[] ss = CodeConst.getInnerString(codes.split("=")[0], "^\\s*(public|private|protected)?( static)?( final)?\\s+(\\w*)\\s+(\\w*)\\s*;?\\s*(//(.*))?$");
+		if (ss.length > 0) {
+			modifier = ss[0];
+			if (modifier == null) {
+				modifier = "package";
+			}
+			isStatic = ss[1] != null;
+			isFinal = ss[2] != null;
+			type = ss[3];
+			name = ss[4];
+			name = name.trim();
+			if (name.endsWith(";")) {
+				name = name.substring(0, name.length() - 1);
+				name = name.trim();
+			}
+		} else {
+			System.out.println(ss);
 		}
 	}
 	
@@ -91,7 +110,29 @@ public class Attribute extends AbstractType {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
 	
-	
+	public boolean isFinal() {
+		return isFinal;
+	}
+
+	public void setFinal(boolean isFinal) {
+		this.isFinal = isFinal;
+	}
+
+	public boolean isStatic() {
+		return isStatic;
+	}
+
+	public void setStatic(boolean isStatic) {
+		this.isStatic = isStatic;
+	}
 
 }

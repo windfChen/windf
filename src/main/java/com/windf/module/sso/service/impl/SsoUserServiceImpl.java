@@ -9,19 +9,19 @@ import com.windf.core.frame.SessionContext;
 import com.windf.core.util.Encrypt;
 import com.windf.core.util.StringUtil;
 import com.windf.module.sso.Constant;
-import com.windf.module.sso.dao.SsoDao;
-import com.windf.module.sso.entity.Sso;
+import com.windf.module.sso.dao.SsoUserDao;
+import com.windf.module.sso.entity.SsoUser;
 import com.windf.module.sso.modle.LoginSubject;
-import com.windf.module.sso.service.SsoService;
+import com.windf.module.sso.service.SsoUserService;
 
 @Service
-public class SsoServiceImpl implements SsoService {
+public class SsoUserServiceImpl implements SsoUserService {
 
 	@Resource
-	private SsoDao ssoUserAccess;
+	private SsoUserDao ssoUserDao;
 
 	@Override
-	public int addUser(Sso ssoUser) throws UserException {
+	public int addUser(SsoUser ssoUser) throws UserException {
 		
 		/*
 		 * 设置默认密码
@@ -30,12 +30,12 @@ public class SsoServiceImpl implements SsoService {
 			ssoUser.setPassword(Encrypt.MD5(Constant.DEFAULT_USER_PASSWORD));
 		}
 		
-		return ssoUserAccess.insert(ssoUser);
+		return ssoUserDao.insert(ssoUser);
 	}
 
 	@Override
-	public Sso login(String username, String password, String loginIp) throws UserException {
-		Sso ssoUserDB = ssoUserAccess.getByUsername(username);
+	public SsoUser login(String username, String password, String loginIp) throws UserException {
+		SsoUser ssoUserDB = ssoUserDao.getByUsername(username);
 		
 		if (ssoUserDB == null) {
 			throw new UserException("用户不存在");
@@ -44,7 +44,7 @@ public class SsoServiceImpl implements SsoService {
 		}
 		
 		ssoUserDB.setLastLoginIp(loginIp);
-		ssoUserAccess.updateLogin(ssoUserDB);
+		ssoUserDao.updateLogin(ssoUserDB);
 		
 		SessionContext.set(Constant.SESSION_SSO, ssoUserDB);
 		// 登录通知
@@ -62,10 +62,10 @@ public class SsoServiceImpl implements SsoService {
 	}
 
 	@Override
-	public Sso loginOrCreatUser(Sso ssoUser) throws UserException {
-		Sso result = null;
+	public SsoUser loginOrCreatUser(SsoUser ssoUser) throws UserException {
+		SsoUser result = null;
 		// 如果用户不存在，则创建
-		Sso ssoUserDB = ssoUserAccess.getByUsername(ssoUser.getUsername());
+		SsoUser ssoUserDB = ssoUserDao.getByUsername(ssoUser.getUsername());
 		if (ssoUserDB == null) {
 			this.addUser(ssoUser);
 		}

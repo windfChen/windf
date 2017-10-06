@@ -2,9 +2,9 @@ package com.windf.module.sso.entity;
 
 import java.util.Date;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
-public class Sso extends AbstractBean {
+public class SsoUser extends AbstractBean {
 	private static final long serialVersionUID = 4132177381683804504L;
 	
 	private String username;

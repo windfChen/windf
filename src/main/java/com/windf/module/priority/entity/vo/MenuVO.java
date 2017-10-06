@@ -2,7 +2,7 @@ package com.windf.module.priority.entity.vo;
 
 import java.util.List;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
 public class MenuVO extends AbstractBean {
 	private static final long serialVersionUID = 8064319048898614343L;

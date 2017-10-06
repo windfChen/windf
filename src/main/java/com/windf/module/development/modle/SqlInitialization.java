@@ -36,38 +36,71 @@ public class SqlInitialization implements ScannerHandler{
 			
 			@Override
 			public String readLine(List<String> oldLines, String lineContent, int lineNo) {
+				/*
+				 * 表头
+				 */
 				String[] ss = CodeConst.getInnerString(lineContent, "^CREATE\\s+TABLE\\s+`(\\w*)`\\s+\\(\\s*$");
 				if (ss.length > 0) {
 					String tableName = ss[0];
 					String entityName = SQLUtil.tableName2EntityName(tableName);
-				System.out.println(tableName + "-" + entityName);
 					currentEntity = currentModule.getEntityByName(entityName);
 					currentEntity.setTableName(tableName);
 					return null;
 				}
 				
-				ss = CodeConst.getInnerString(lineContent, "^\\s*`(\\w*)` (\\w*)(\\((\\d+)\\))?( NOT NULL)?( DEFAULT '([^']*)')?( AUTO_INCREMENT)?( COMMENT '([^']*)')?,?$");
+				/*
+				 * 字段
+				 */
+				ss = CodeConst.getInnerString(lineContent, "^\\s*`(\\w*)` (\\w*)(\\((\\d+)\\))?( NOT NULL)?( DEFAULT ('[^']*'|NULL))?( AUTO_INCREMENT)?( COMMENT '([^']*)')?,?$");
 				if (ss.length > 0) {
-					String name = ss[0];
+					String databaseName = ss[0];
 					String type = ss[1];
 					String length = ss[3];
 					String isNotNull = ss[4];
 					String defaultValue = ss[6];
 					String isAutoIncrement = ss[7];
 					String comment = ss[9];
+					if (comment != null) {
+						System.out.println(comment);
+					}
+
+					Field field = null;
+					String name = databaseName;
+					String[] ss2 = CodeConst.getInnerString(name, "fk_(\\w*)_id");
+					if (ss2.length > 0) {
+						name = ss2[0];
+					}
+					name = StringUtil.toCamelCase(name, "_");
+					for (int i = 0; i < currentEntity.getFields().size(); i++) {
+						Field f = currentEntity.getFields().get(i);
+						if (f.getName().equals(name)) {
+							field = f;
+							break;
+						}
+					}
 					
-					Field field = new Field();
-					field.setId(currentEntity.getId() + "." + name);
-					field.setName(name);
-					field.setType(type);
-					field.setLength(length == null? null: new Integer(length));
-					field.setIsNotNull(StringUtil.isNotEmpty(isNotNull));
-					field.setDefaultValue(defaultValue);
-					field.setIsAutoIncrement(StringUtil.isNotEmpty(isAutoIncrement));
-					field.setComment(comment);
+					if (field != null) {
+						field.setDatabaseName(databaseName);
+						field.setType(type);
+						field.setLength(length == null? null: new Integer(length));
+						field.setIsNotNull(StringUtil.isNotEmpty(isNotNull));
+						field.setDefaultValue(defaultValue);
+						field.setIsAutoIncrement(StringUtil.isNotEmpty(isAutoIncrement));
+						field.setComment(comment);
+					}
 					
-					currentEntity.getFields().add(field);
 					return null;
+				} 
+				
+				/*
+				 * 尾部信息
+				 */
+				ss = CodeConst.getInnerString(lineContent, "\\) ENGINE=InnoDB DEFAULT CHARSET=utf8( COMMENT='([^']*)')?;");
+				if (ss.length > 0) {
+					currentEntity.setComment(ss[1]);
+					return null;
+				} else {
+					System.out.println(lineContent);
 				}
 				return null;
 			}

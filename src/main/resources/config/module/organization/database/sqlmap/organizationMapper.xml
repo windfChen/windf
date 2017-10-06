@@ -13,7 +13,7 @@
 			parent_ids LIKE CONCAT('%,', #{param1},',%')
     </select>
     
-    <select id="getMyList" resultType="com.windf.core.general.bean.NameBean">
+    <select id="getMyList" resultType="com.windf.core.general.entity.NameBean">
        SELECT
 			id as id, name
 		FROM

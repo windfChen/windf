@@ -6,8 +6,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.general.bean.NameBean;
 import com.windf.core.general.dao.CrudDao;
+import com.windf.core.general.entity.NameBean;
 import com.windf.module.priority.dao.RoleDao;
 import com.windf.module.priority.service.RoleService;
 import com.windf.plugins.manage.service.impl.ManagerGirdiServiceImpl;

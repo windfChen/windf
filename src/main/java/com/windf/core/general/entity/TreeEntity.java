@@ -1,4 +1,4 @@
-package com.windf.core.general.bean;
+package com.windf.core.general.entity;
 
 /**
  * 树形结构

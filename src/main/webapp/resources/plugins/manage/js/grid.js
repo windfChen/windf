@@ -160,8 +160,9 @@ Grid.prototype = {
 			if (result.indexOf('<a>编辑</a>') > -1) {
 				result = result.replace('<a>编辑</a>', '<a href="javascript:void(0)" class="edit_a" data-id="' + this._getValue(d, 'id') + '">编辑</a>')
 			}
+						
 		}
-		return result == ''? '&nbsp;': result;
+		return (result == '' || result == undefined)? '&nbsp;': result;
 	},
 	
 	_getValue : function (d, dataIndex) {

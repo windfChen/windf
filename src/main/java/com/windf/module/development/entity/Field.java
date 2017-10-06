@@ -1,6 +1,7 @@
 package com.windf.module.development.entity;
 
 public class Field extends AbstractBaseCodeBean {
+	private String databaseName;
 	private String type;
 	private Integer length;
 	private boolean isNotNull;
@@ -54,6 +55,22 @@ public class Field extends AbstractBaseCodeBean {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public String getDatabaseName() {
+		return databaseName;
+	}
+
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
+	}
+
+	public void setNotNull(boolean isNotNull) {
+		this.isNotNull = isNotNull;
+	}
+
+	public void setAutoIncrement(boolean isAutoIncrement) {
+		this.isAutoIncrement = isAutoIncrement;
 	}
 
 }

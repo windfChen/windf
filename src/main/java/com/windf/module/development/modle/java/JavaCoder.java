@@ -2,20 +2,25 @@ package com.windf.module.development.modle.java;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
+import com.windf.core.util.StringUtil;
 import com.windf.module.development.util.file.JavaFileUtil;
 import com.windf.module.development.util.file.LineReader;
 import com.windf.module.development.util.file.SourceFileUtil;
 
 public class JavaCoder extends AbstractType{
-
+	
+	private static Map<String, JavaCoder> allJavaCoders = new HashMap<String, JavaCoder>();
 
 	private String modifier;
 	private String classType;
 	private boolean isAbstract;
+	private String classGenre;
 	
 	private String classPath;
 	private String packageInfo;
@@ -47,6 +52,11 @@ public class JavaCoder extends AbstractType{
 			this.classEnd = "}";
 			this.write();
 		}
+		
+		/*
+		 * 统一存储
+		 */
+		allJavaCoders.put(className, this);
 	}
 
 	private void readCodes(File javaFile) {
@@ -69,16 +79,17 @@ public class JavaCoder extends AbstractType{
 					packageInfo = lineContent;
 				} else if (lineContent.startsWith("import ")) {
 					imports.addLine(lineContent);
-				} else if (CodeConst.verify(lineContent, "^\\s*public\\s*(abstract|static|final)?\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$")) {
-					String[] ss = CodeConst.getInnerString(lineContent, "^\\s*(public|private|protected)?\\s*(abstract)?\\s*(class|interface|@interface){1}\\s*(\\w*)\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
+				} else if (CodeConst.verify(lineContent, "^\\s*(public|private|protected)?\\s*(abstract)?\\s*(class|interface|@interface){1}\\s*(\\w*)(<(\\w*)>)?\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$")) {
+					String[] ss = CodeConst.getInnerString(lineContent, "^\\s*(public|private|protected)?\\s*(abstract)?\\s*(class|interface|@interface){1}\\s*(\\w*)(<(\\w*)>)?\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
 					modifier = ss[0];
 					if (ss[1] != null) {
 						isAbstract = true;
 					}
 					classType = ss[2];
 					className = ss[3];
-					extendsStr = ss[4];
-					implementsStr = ss[5];
+					classGenre = ss[5];
+					extendsStr = ss[6];
+					implementsStr = ss[7];
 					
 					setComment(comment);
 					setAnnotations(annotations);
@@ -255,7 +266,18 @@ public class JavaCoder extends AbstractType{
 	}
 	
 	public List<Attribute> getAllAttributes() {
-		return this.attributes;
+		JavaCoder parent = this.getParent();
+		
+		List<Attribute> result = null;
+		if (parent != null) {
+			result = new ArrayList<Attribute>();
+			result.addAll(parent.getAllAttributes());
+			result.addAll(this.attributes);
+		} else {
+			result = this.attributes;
+		}
+		
+		return result;
 	}
 
 	/**
@@ -270,6 +292,19 @@ public class JavaCoder extends AbstractType{
 			result = true; 
 		}
 		
+		return result;
+	}
+	
+	protected JavaCoder getParent() {
+		JavaCoder result = null;
+		if (StringUtil.isNotEmpty(extendsStr)) {
+			String parentName = extendsStr.trim();
+			String[] ss = CodeConst.getInnerString(parentName, "extends (\\w+)(<(\\w*)>)?");
+			if (ss.length > 0) {
+				parentName = ss[0];
+			}
+			result = allJavaCoders.get(parentName);
+		}
 		return result;
 	}
 
@@ -368,6 +403,15 @@ public class JavaCoder extends AbstractType{
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
 	}
+
+	public String getClassGenre() {
+		return classGenre;
+	}
+
+	public void setClassGenre(String classGenre) {
+		this.classGenre = classGenre;
+	}
+	
 	
 }
 

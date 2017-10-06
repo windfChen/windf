@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Entity extends AbstractBaseCodeBean {
 	private String tableName;
+	private String comment;
 	private List<Field> fields = new ArrayList<Field>();
 
 	public String getTableName() {
@@ -21,6 +22,14 @@ public class Entity extends AbstractBaseCodeBean {
 
 	public void setFields(List<Field> fields) {
 		this.fields = fields;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

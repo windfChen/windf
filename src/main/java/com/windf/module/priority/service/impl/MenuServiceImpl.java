@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.priority.dao.MenuDao;
-import com.windf.module.priority.entity.Menu;
+import com.windf.module.priority.entity.PriorityMenu;
 import com.windf.module.priority.entity.vo.MenuVO;
 import com.windf.module.priority.service.MenuService;
 
@@ -31,13 +31,13 @@ public class MenuServiceImpl implements MenuService {
 	 */
 	private List<MenuVO> findChildrenSubTree(Integer id) {
 		// 查询直接子节点
-		List<Menu> menuList = menuDao.findChildren(id);
+		List<PriorityMenu> menuList = menuDao.findChildren(id);
 		
 		/*
 		 * 构建树,递归查询
 		 */
 		List<MenuVO> result = new ArrayList<MenuVO>();
-		for (Menu m : menuList) {
+		for (PriorityMenu m : menuList) {
 			MenuVO menuVO = new MenuVO();
 			menuVO.setId(m.getId());
 			menuVO.setCode(m.getCode());

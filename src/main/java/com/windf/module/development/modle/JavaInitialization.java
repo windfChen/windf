@@ -54,13 +54,19 @@ public class JavaInitialization implements ScannerHandler {
 				 */
 				if ("entity".equals(moduleFile.getPackageName())) {
 					JavaCoder javaCode = new JavaCoder(moduleFile.getRelativePath(), moduleFile.getFileName());
-					if (!javaCode.isAbstract()) {
+					
+					if (currentModule != null && !javaCode.isAbstract()) {
 						Entity e = new Entity();
 						e.setName(javaCode.getClassName());
 						e.setId(moduleFile.getClassName());
 						
 						for (int i = 0; i < javaCode.getAllAttributes().size(); i++) {
 							Attribute b = javaCode.getAllAttributes().get(i);
+							
+							if (b.isStatic()) {
+								continue;
+							}
+							
 							Field f = new Field();
 							f.setName(b.getName());
 							f.setId(moduleFile.getClassName() + "." + b.getName());

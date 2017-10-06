@@ -1,6 +1,6 @@
 package com.windf.module.organization.entity;
 
-import com.windf.core.general.bean.TreeEntity;
+import com.windf.core.general.entity.TreeEntity;
 
 public class Organization extends TreeEntity<Organization>{
 	private static final long serialVersionUID = -595344647876115988L;

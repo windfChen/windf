@@ -1,6 +1,5 @@
 package com.windf.module.priority.frame;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.FilterChain;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import com.windf.core.frame.Filter;
-import com.windf.module.priority.PriorityContext;
 
 @Component
 public class PriorityFilter implements Filter{
@@ -23,33 +21,33 @@ public class PriorityFilter implements Filter{
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
-		try {
-			
-			if (true || request.getRequestURI().contains("/index") 
-					|| request.getRequestURI().contains("/login") 
-					|| request.getRequestURI().contains("/menu") 
-					|| request.getRequestURI().contains("/error") 
-					|| request.getRequestURI().contains("/logout") 
-					|| request.getRequestURI().contains("/resource")) {
-				return true;
-			}
-			
-			String uri = request.getRequestURI();
-			String contextPath = request.getContextPath();
-			if (uri.startsWith(contextPath)) {
-				uri = uri.substring(contextPath.length());
-			}
-			if (uri.lastIndexOf(".") > 0) {
-				uri = uri.substring(0, uri.lastIndexOf("."));
-			}
-			if (!PriorityContext.verify(uri)) {
-				response.sendRedirect(request.getContextPath() + "/login?code=2");
-				return false;
-			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			
+//			if (true || request.getRequestURI().contains("/index") 
+//					|| request.getRequestURI().contains("/login") 
+//					|| request.getRequestURI().contains("/menu") 
+//					|| request.getRequestURI().contains("/error") 
+//					|| request.getRequestURI().contains("/logout") 
+//					|| request.getRequestURI().contains("/resource")) {
+//				return true;
+//			}
+//			
+//			String uri = request.getRequestURI();
+//			String contextPath = request.getContextPath();
+//			if (uri.startsWith(contextPath)) {
+//				uri = uri.substring(contextPath.length());
+//			}
+//			if (uri.lastIndexOf(".") > 0) {
+//				uri = uri.substring(0, uri.lastIndexOf("."));
+//			}
+//			if (!PriorityContext.verify(uri)) {
+//				response.sendRedirect(request.getContextPath() + "/login?code=2");
+//				return false;
+//			}
+//			
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		return true;
 	}
 

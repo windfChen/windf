@@ -1,19 +1,19 @@
 package com.windf.module.priority.entity;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
-public class RolePriority extends AbstractBean {
+public class PriorityRolePriority extends AbstractBean {
 	private static final long serialVersionUID = 1661437607513229617L;
 
-	private Role pePriRole;
+	private PriorityRole pePriRole;
 	private Priority pePriority;
 	private String flagIsvalid;
 
-	public Role getPePriRole() {
+	public PriorityRole getPePriRole() {
 		return pePriRole;
 	}
 
-	public void setPePriRole(Role pePriRole) {
+	public void setPePriRole(PriorityRole pePriRole) {
 		this.pePriRole = pePriRole;
 	}
 

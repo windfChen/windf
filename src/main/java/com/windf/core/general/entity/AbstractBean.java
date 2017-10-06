@@ -1,4 +1,4 @@
-package com.windf.core.general.bean;
+package com.windf.core.general.entity;
 
 import java.io.Serializable;
 

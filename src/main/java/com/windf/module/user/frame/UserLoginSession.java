@@ -2,7 +2,7 @@ package com.windf.module.user.frame;
 
 import com.windf.core.frame.SessionContext;
 import com.windf.core.spring.SpringUtil;
-import com.windf.module.sso.SsoSession;
+import com.windf.module.sso.SsoUserSession;
 import com.windf.module.sso.modle.LoginObserver;
 import com.windf.module.user.Constant;
 import com.windf.module.user.entity.User;
@@ -19,7 +19,7 @@ public class UserLoginSession implements LoginObserver {
 	public void login() {
 		UserService userService = (UserService) SpringUtil.getBean("userService");
 		
-		User user = userService.getUserBySsoUserId(SsoSession.getCurrentUser().getId());
+		User user = userService.getUserBySsoUserId(SsoUserSession.getCurrentUser().getId());
 		SessionContext.set(Constant.SESSION_USER, user);
 	}
 

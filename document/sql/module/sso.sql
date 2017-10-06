@@ -1,4 +1,4 @@
-CREATE TABLE `sso` (
+CREATE TABLE `sso_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) DEFAULT NULL COMMENT '用户名',
   `turename` varchar(50) DEFAULT NULL COMMENT '真实姓名',
@@ -9,4 +9,4 @@ CREATE TABLE `sso` (
   `lastLoginTime` datetime DEFAULT NULL COMMENT '最后一次登录时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unit_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8 COMMENT='用户表存储登录相关信息'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表存储登录相关信息';

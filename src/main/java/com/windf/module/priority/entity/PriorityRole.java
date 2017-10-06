@@ -1,6 +1,6 @@
 package com.windf.module.priority.entity;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
 /**
  * PePriRole entity.
@@ -8,7 +8,7 @@ import com.windf.core.general.bean.AbstractBean;
  * @author MyEclipse Persistence Tools
  */
 
-public class Role extends AbstractBean {
+public class PriorityRole extends AbstractBean {
 
 	private static final long serialVersionUID = -5206736284133401356L;
 
