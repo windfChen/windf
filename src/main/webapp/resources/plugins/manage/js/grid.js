@@ -207,7 +207,7 @@ Grid.prototype = {
 		})
 	},
 	
-	initSavePage : function(isUupdate){
+	initSavePage : function(isUpdate){
 		$('#savePage').html('<div class="mod_title1">\
 						<div class="pull-right work_qxbtn">\
 							<a href="javascript:;" id="return_btn"><i class="iconfont icon-arrLeft"></i>返回</a>\
@@ -215,7 +215,7 @@ Grid.prototype = {
 						<h3 class="pull-left">' + this.gridConfig.title + '-添加</h3>\
 					</div>\
 					<div class="work_fabu">\
-						<form id="form" action="' + (isUupdate? 'update': 'save') + '.json' + queryString + '" method="post">'	+		
+						<form id="form" action="' + (isUpdate? 'update': 'save') + '.json' + queryString + '" method="post">'	+		
 							'<div id="form_inputs"></div>\
 							<div class="clearfix work_table">\
 								<div class="col-md-12 col-xs-12"><button type="submit" class="work_save trans" >保存</button></div>\
@@ -226,11 +226,11 @@ Grid.prototype = {
 					for (var i = 0; i < this.gridConfig.columns.length; i++) {
 						var c = this.gridConfig.columns[i];
 						
-						if (!isUupdate && !c.canAdd) {
+						if (!isUpdate && !c.canAdd) {
 							continue;
 						}
 						
-						if (isUupdate && !c.canUpdate) {
+						if (isUpdate && !c.canUpdate) {
 							var a = '<input type="hidden" name="entity.' + c.dataIndex + '" />';
 							$('#form_inputs').append(a);
 							continue;
@@ -284,6 +284,9 @@ Grid.prototype = {
 								}
 								$('#combox_' + _dataIndex).append(b);
 							}
+						} else if (c.type == 'Hidden') {
+							var a = '<input type="hidden" name="entity.' + c.dataIndex + '" value="' + c.display + '" />';
+							$('#form_inputs').append(a);
 						}
 						
 					}

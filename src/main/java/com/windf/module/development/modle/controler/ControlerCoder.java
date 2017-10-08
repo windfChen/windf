@@ -141,7 +141,7 @@ public class ControlerCoder {
 		/*
 		 * 更新代码
 		 */
-		CodeBlock<List<Parameter>> codeBlock = new  CodeBlock<List<Parameter>>();
+		CodeBlock<List<Parameter>> codeBlock = new CodeBlock<List<Parameter>>();
 		codeBlock.setCodeable(new ParameterVerifyCoder());
 		codeBlock.setTabCount(2);
 		codeBlock.serialize(parameters);

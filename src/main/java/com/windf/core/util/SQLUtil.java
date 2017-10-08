@@ -1,9 +1,28 @@
 package com.windf.core.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SQLUtil {
+	
+	private static Map<String, String> dataTypeMap = new HashMap<String, String>();
+	static {
+		dataTypeMap.put("varchar", "String");
+		dataTypeMap.put("text", "String");
+		dataTypeMap.put("longtext", "String");
+		dataTypeMap.put("char", "String");
+		dataTypeMap.put("int", "Integer");
+		dataTypeMap.put("tinyint", "Integer");
+		dataTypeMap.put("bigint", "Integer");
+		dataTypeMap.put("double", "Double");
+		dataTypeMap.put("decimal", "Double");
+		dataTypeMap.put("float", "Float");
+		dataTypeMap.put("date", "Date");
+		dataTypeMap.put("datetime", "Date");
+		dataTypeMap.put("time", "Date");
+	}
 
 	/**
 	 * 查询sql中select和from中的字段
@@ -46,6 +65,15 @@ public class SQLUtil {
 		return selectNames;
 	}
 	
+	public static String dbName2JavaName(String dbName) {
+		return StringUtil.toCamelCase(dbName, "_");
+	}
+	
+	/**
+	 * 表名称转换为实体名称
+	 * @param tableName
+	 * @return
+	 */
 	public static String tableName2EntityName(String tableName) {
 		if (tableName.contains("_r_")) {
 			tableName = tableName.replace("_r_", "_");
@@ -55,5 +83,14 @@ public class SQLUtil {
 		result = StringUtil.firstLetterUppercase(result);
 		
 		return result;
+	}
+	
+	/**
+	 * 数据库类型转换为java类型
+	 * TODO 应该从配置文件中读取
+	 * @return
+	 */
+	public static String dbType2JavaType(String dbType) {
+		return dataTypeMap.get(dbType);
 	}
 }

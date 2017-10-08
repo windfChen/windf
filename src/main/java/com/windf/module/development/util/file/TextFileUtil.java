@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaFileUtil {
+public class TextFileUtil {
 	/**
 	 * 按行读取每个内容
 	 * @param file

@@ -3,22 +3,26 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.windf.core.util.StringUtil;
+
 public class Attribute extends AbstractType {
 	/**
 	 * 判断是否是属性，所有属性都是一行
+	 * 
 	 * @param lineContent
 	 * @return
 	 */
 	static boolean isAttributeLine(String lineContent) {
 		boolean result = false;
 		lineContent = lineContent.split("//")[0];
-		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0 && lineContent.trim().endsWith(";")) {
-			result = true; 
+		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0
+				&& lineContent.trim().endsWith(";")) {
+			result = true;
 		}
-		
+
 		return result;
 	}
-	
+
 	/*
 	 * codes
 	 */
@@ -27,35 +31,44 @@ public class Attribute extends AbstractType {
 	 * info
 	 */
 	String modifier;
-	boolean isFinal;
 	boolean isStatic;
+	boolean isFinal;
 	String type;
 	String name;
+	String valueStr;
+	String lineComment;
 
-	Attribute(String lineContent) {
+	public Attribute(String lineContent) {
 		this.codes = lineContent;
-		
+
 		initInfoByCodes();
 	}
 
-	Attribute(String type, String name) {
+	public Attribute(String type, String name) {
 		this.type = type;
 		this.name = name;
-		
-		initCodesByInfo();
 	}
 
 	private void initInfoByCodes() {
-		String[] ss = CodeConst.getInnerString(codes.split("=")[0], "^\\s*(public|private|protected)?( static)?( final)?\\s+(\\w*)\\s+(\\w*)\\s*;?\\s*(//(.*))?$");
-		if (ss.length > 0) {
-			modifier = ss[0];
+		String[] ss1 = codes.split(";");
+		if (ss1.length > 1) {
+			this.lineComment = ss1[1].trim().substring(2).trim();
+		}
+		String[] ss2 = ss1[0].split("=");
+		if (ss2.length > 1) {
+			this.valueStr = ss2[1].trim();
+		}
+		
+		String[] ss3 = CodeConst.getInnerString(ss2[0],"^\\s*(public|private|protected)?( static)?( final)?\\s+(\\w*)\\s+(\\w*)\\s*$");
+		if (ss3.length > 0) {
+			modifier = ss3[0];
 			if (modifier == null) {
 				modifier = "package";
 			}
-			isStatic = ss[1] != null;
-			isFinal = ss[2] != null;
-			type = ss[3];
-			name = ss[4];
+			isStatic = ss3[1] != null;
+			isFinal = ss3[2] != null;
+			type = ss3[3];
+			name = ss3[4];
 			name = name.trim();
 			if (name.endsWith(";")) {
 				name = name.substring(0, name.length() - 1);
@@ -63,23 +76,44 @@ public class Attribute extends AbstractType {
 			}
 		}
 	}
-	
-	private void initCodesByInfo() {
-		this.codes = CodeConst.TAB + "private" + CodeConst.WORD_SPLIT + (type == null? "void": type) + CodeConst.WORD_SPLIT + name + ";";
-	}
 
 	/**
 	 * write codes
+	 * 
 	 * @return
 	 */
 	List<String> write() {
 		List<String> result = new ArrayList<String>();
-		
+
 		result.addAll(this.getComment());
 		result.addAll(this.getAnnotationsString(1));
-		result.add(codes);
-		
+		result.add(this.getLineCode());
+
 		return result;
+	}
+	
+	private String getLineCode() {
+		StringBuffer line = new StringBuffer();
+		line.append(CodeConst.getTabString(1));
+		if (!"package".equals(this.getModifier()) && StringUtil.isNotEmpty(this.getModifier())) {
+			line.append(this.getModifier() + CodeConst.WORD_SPLIT); 
+		}
+		if (isStatic) {
+			line.append("static" + CodeConst.WORD_SPLIT);
+		}
+		if (isFinal) {
+			line.append("final" + CodeConst.WORD_SPLIT);
+		}
+		line.append(this.getType() + CodeConst.WORD_SPLIT + this.getName());
+		if (StringUtil.isNotEmpty(this.getValueStr())) {
+			line.append(CodeConst.WORD_SPLIT + "=" + CodeConst.WORD_SPLIT);
+			line.append(valueStr);
+		}
+		line.append(";");
+		if (StringUtil.isNotEmpty(this.getLineComment())) {
+			line.append(CodeConst.WORD_SPLIT + "//" + CodeConst.WORD_SPLIT + this.getLineComment());
+		}
+		return line.toString();
 	}
 
 	public String getCodes() {
@@ -113,7 +147,7 @@ public class Attribute extends AbstractType {
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
 	}
-	
+
 	public boolean isFinal() {
 		return isFinal;
 	}
@@ -129,5 +163,21 @@ public class Attribute extends AbstractType {
 	public void setStatic(boolean isStatic) {
 		this.isStatic = isStatic;
 	}
+
+	public String getLineComment() {
+		return lineComment;
+	}
+
+	public void setLineComment(String lineComment) {
+		this.lineComment = lineComment;
+	}
+	public String getValueStr() {
+		return valueStr;
+	}
+
+	public void setValueStr(String valueStr) {
+		this.valueStr = valueStr;
+	}
+
 
 }

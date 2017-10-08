@@ -7,6 +7,8 @@ public class Entity extends AbstractBaseCodeBean {
 	private String tableName;
 	private String comment;
 	private List<Field> fields = new ArrayList<Field>();
+	
+	private Module module;
 
 	public String getTableName() {
 		return tableName;
@@ -30,6 +32,14 @@ public class Entity extends AbstractBaseCodeBean {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Module getModule() {
+		return module;
+	}
+
+	public void setModule(Module module) {
+		this.module = module;
 	}
 
 }

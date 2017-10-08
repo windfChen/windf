@@ -69,6 +69,7 @@ public class JavaInitialization implements ScannerHandler {
 							
 							Field f = new Field();
 							f.setName(b.getName());
+							f.setType(b.getType());
 							f.setId(moduleFile.getClassName() + "." + b.getName());
 
 							e.getFields().add(f);

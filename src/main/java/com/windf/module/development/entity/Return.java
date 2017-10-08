@@ -3,6 +3,7 @@ package com.windf.module.development.entity;
 public class Return {
 	public static final String STRING = "String";
 	public static final String MAP_STRING_OBJECT = "Map<String, Object>";
+	public static final String VOID = "void";
 	
 	private String type;
 	

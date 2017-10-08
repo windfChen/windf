@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.windf.core.frame.ProjectStart;
 import com.windf.module.index.Constant;
 import com.windf.plugins.web.BaseControler;
 
@@ -21,7 +20,6 @@ public class IndexControler extends BaseControler{
 	 */
 	@RequestMapping(value = {"/", ""}, method = {RequestMethod.GET})
 	public String index() {
-		ProjectStart.getInstance().start();
 		return responseReturn.redirect("/dev/");
 	}
 	

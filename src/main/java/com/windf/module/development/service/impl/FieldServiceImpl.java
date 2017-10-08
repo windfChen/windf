@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.bean.Page;
 import com.windf.core.exception.ParameterException;
+import com.windf.core.util.SQLUtil;
 import com.windf.module.development.entity.Entity;
 import com.windf.module.development.entity.Field;
 import com.windf.module.development.entity.Module;
 import com.windf.module.development.entity.ModuleMaster;
+import com.windf.module.development.modle.entity.EntityCoder;
 import com.windf.module.development.service.FieldService;
 
 @Service
@@ -19,16 +21,7 @@ public class FieldServiceImpl extends BaseManageGridServiceImpl implements Field
 
 	@Override
 	public Page<? extends Object> list(Map<String, Object> condition, Integer pageNo, Integer pageSize) throws Exception {
-
-		ModuleMaster moduleMaster = ModuleMaster.getInstance();
-		Module module = moduleMaster.findModuleByCode((String) condition.get("moduleCode"));
-		if (module == null) {
-			throw new ParameterException("模块不存在！");
-		}
-		Entity entity = module.getEntityByName((String) condition.get("entityName"));
-		if (entity == null) {
-			throw new ParameterException("实体不存在！");
-		}
+		Entity entity = this.getEntity((String) condition.get("moduleCode"), (String) condition.get("entityName"));
 		
 		Page<Field> page = new Page<Field>(Long.valueOf(pageNo) , pageSize);
 		if (entity.getFields().size() > 0) {
@@ -41,7 +34,16 @@ public class FieldServiceImpl extends BaseManageGridServiceImpl implements Field
 
 	@Override
 	public int save(Object bean) throws Exception {
-		// TODO Auto-generated method stub
+		Field field = (Field) bean;
+		field.setType(SQLUtil.dbType2JavaType(field.getDatabaseType()));
+		field.setName(SQLUtil.dbName2JavaName(field.getDatabaseName()));
+		
+		Entity entity = this.getEntity(field.getEntity().getModule().getCode(), field.getEntity().getName());
+		
+		EntityCoder entityCoder = new EntityCoder(entity);
+		entityCoder.addField(field);
+		entityCoder.write();
+		
 		return 0;
 	}
 
@@ -61,6 +63,27 @@ public class FieldServiceImpl extends BaseManageGridServiceImpl implements Field
 	public int delete(List<? extends Serializable> id) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	/**
+	 * 根据参数获取
+	 * @param condition
+	 * @return
+	 * @throws ParameterException
+	 */
+	protected Entity getEntity(String moduleCode, String entityName) throws ParameterException {
+
+		ModuleMaster moduleMaster = ModuleMaster.getInstance();
+		Module module = moduleMaster.findModuleByCode(moduleCode);
+		if (module == null) {
+			throw new ParameterException("模块不存在！");
+		}
+		Entity entity = module.getEntityByName(entityName);
+		if (entity == null) {
+			throw new ParameterException("实体不存在！");
+		}
+		
+		return entity;
 	}
 
 }

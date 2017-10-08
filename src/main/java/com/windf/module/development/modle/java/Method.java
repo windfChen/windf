@@ -221,9 +221,11 @@ public class Method extends AbstractType {
 		
 		if (!unImplement) {
 			for (int i = 0; i < codeBlocks.size(); i++) {
+				if (i != 0) {
+					result.add("");
+				}
 				CodeBlock codeBlock = codeBlocks.get(i);
 				result.addAll(codeBlock.write());
-				result.add("");
 			}
 			
 			result.add(methodEnd);

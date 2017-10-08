@@ -9,28 +9,39 @@ import java.util.Map;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
-import com.windf.module.development.util.file.JavaFileUtil;
+import com.windf.module.development.util.file.TextFileUtil;
 import com.windf.module.development.util.file.LineReader;
 import com.windf.module.development.util.file.SourceFileUtil;
 
 public class JavaCoder extends AbstractType{
 	
 	private static Map<String, JavaCoder> allJavaCoders = new HashMap<String, JavaCoder>();
-
+	public static JavaCoder getJavaCoderByName(String name) {
+		return allJavaCoders.get(name);
+	}
+	
+	/*
+	 * 类信息
+	 */
+	private Imports imports = new Imports();
 	private String modifier;
 	private String classType;
+	private String className;
 	private boolean isAbstract;
 	private String classGenre;
-	
-	private String classPath;
-	private String packageInfo;
-	private Imports imports = new Imports();
-	private String className;
-	private String extendsStr;
-	private String implementsStr;
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 	private List<Method> methods = new ArrayList<Method>();
+	/*
+	 * 类文件行字符串信息
+	 */
+	private String packageInfo;
+	private String extendsStr;
+	private String implementsStr;
 	private String classEnd;
+	/*
+	 * 类文件信息
+	 */
+	private String classPath;
 	
 	public JavaCoder(String packagePath, String className) {
 		this.classPath = SourceFileUtil.getJavaPath() + "/" + packagePath + "/" + className + ".java";
@@ -48,7 +59,6 @@ public class JavaCoder extends AbstractType{
 				newPackagePath = newPackagePath.substring(1);
 			}
 			this.packageInfo = "package" + CodeConst.WORD_SPLIT + newPackagePath;
-			this.className = "public" + CodeConst.WORD_SPLIT + "class" + CodeConst.WORD_SPLIT + className + CodeConst.WORD_SPLIT + "{";
 			this.classEnd = "}";
 			this.write();
 		}
@@ -61,7 +71,7 @@ public class JavaCoder extends AbstractType{
 
 	private void readCodes(File javaFile) {
 		
-		JavaFileUtil.readLine(javaFile, new LineReader() {
+		TextFileUtil.readLine(javaFile, new LineReader() {
 			
 			List<String> annotations = new ArrayList<String>();
 			boolean isInMethod = false;
@@ -193,11 +203,16 @@ public class JavaCoder extends AbstractType{
 	 * @return
 	 */
 	public Attribute createAttribute(String type, String name) throws UserException {
-		if (this.getAttribute(name) != null) {
+		Attribute attribute = new Attribute(type, name);
+		createAttribute(attribute);
+		return attribute;
+	}
+	
+	public Attribute createAttribute(Attribute attribute) throws UserException {
+		if (this.getAttribute(attribute.getName()) != null) {
 			throw new UserException("属性已存在");
 		}
 		
-		Attribute attribute = new Attribute(type, name);
 		this.attributes.add(attribute);
 		
 		return attribute;
@@ -237,7 +252,7 @@ public class JavaCoder extends AbstractType{
 		
 		result.addAll(getComment());
 		result.addAll(getAnnotationsString(0));
-		result.add(className);
+		result.add(this.getClassNameLine());
 		result.add("");
 		
 		for (int i = 0; i < attributes.size(); i++) {
@@ -256,7 +271,7 @@ public class JavaCoder extends AbstractType{
 		
 		result.add(classEnd);
 		
-		JavaFileUtil.writeFile(new File(this.classPath), result);
+		TextFileUtil.writeFile(new File(this.classPath), result);
 		
 		return result;
 	}
@@ -278,6 +293,23 @@ public class JavaCoder extends AbstractType{
 		}
 		
 		return result;
+	}
+	
+	protected String getClassNameLine() {
+		StringBuffer classNameLine = new StringBuffer();
+		if (!"package".equals(modifier)) {
+			classNameLine.append(modifier + CodeConst.WORD_SPLIT);
+		}
+		classNameLine.append(classType + CodeConst.WORD_SPLIT);
+		classNameLine.append(className + CodeConst.WORD_SPLIT);
+		if (StringUtil.isNotEmpty(extendsStr)) {
+			classNameLine.append(extendsStr + CodeConst.WORD_SPLIT);
+		}
+		if (StringUtil.isNotEmpty(implementsStr)) {
+			classNameLine.append(implementsStr + CodeConst.WORD_SPLIT);
+		}
+		classNameLine.append("{");
+		return classNameLine.toString();
 	}
 
 	/**
@@ -411,7 +443,6 @@ public class JavaCoder extends AbstractType{
 	public void setClassGenre(String classGenre) {
 		this.classGenre = classGenre;
 	}
-	
 	
 }
 

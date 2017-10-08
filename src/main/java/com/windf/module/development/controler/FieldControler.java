@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.windf.module.development.Constant;
+import com.windf.module.development.entity.Field;
 import com.windf.module.development.service.FieldService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -23,6 +24,11 @@ public class FieldControler extends ManagerGridControler{
 	@Override
 	protected ManageGirdService getManagerGridService() {
 		return fieldService;
+	}
+
+	@Override
+	protected Class<? extends Object> getEntity() {
+		return Field.class;
 	}
 
 }

@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 public class CodeConst {
 	static final String TAB = "    ";
 	static final String WORD_SPLIT = " ";
+	public static final String MODIFY_PUBLIC = "public";
+	public static final String MODIFY_PRIVATE = "private";
+	public static final String MODIFY_PROTECTED = "protected";
+	public static final String MODIFY_PACKAGE = "pacakge";
 	
 	/**
 	 * 获取开始时空格的数量
