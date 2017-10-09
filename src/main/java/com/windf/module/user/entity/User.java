@@ -12,7 +12,6 @@ public class User extends BaseEntity {
     private PriorityRole role;
     private Organization organization; // 所属机构
     private String sex; // 性别
-    private String testTest; // 哈哈
 
     public PriorityRole getRole() {
         return role;
@@ -44,14 +43,6 @@ public class User extends BaseEntity {
 
     public void setSsoUser(SsoUser ssoUser) {
         this.ssoUser = ssoUser;
-    }
-
-    public String getTestTest() {
-        return this.testTest;
-    }
-
-    public void setTestTest(String testTest) {
-        this.testTest = testTest;
     }
 
 }
