@@ -2,32 +2,24 @@ package com.windf.module.form.entity;
 
 import java.util.Date;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
+import com.windf.module.user.entity.User;
 
 public class FormItemUserValue extends AbstractBean {
 	private static final long serialVersionUID = 60338476825966995L;
-	
-	private String id;
-	private String userId;
+
+	private User user;
 	private FormItem formItem;
 	private String value;
 	private Date createDate;
 	private Date updateDate;
 
-	public String getId() {
-		return id;
+	public User getUser() {
+		return user;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public FormItem getFormItem() {

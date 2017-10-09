@@ -3,22 +3,26 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
-class Attribute extends AbstractType {
+import com.windf.core.util.StringUtil;
+
+public class Attribute extends AbstractType {
 	/**
 	 * 判断是否是属性，所有属性都是一行
+	 * 
 	 * @param lineContent
 	 * @return
 	 */
 	static boolean isAttributeLine(String lineContent) {
 		boolean result = false;
-		
-		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0 && lineContent.trim().endsWith(";")) {
-			result = true; 
+		lineContent = lineContent.split("//")[0];
+		if (CodeConst.lineStartTabCount(lineContent) == 1 && lineContent.trim().length() > 0
+				&& lineContent.trim().endsWith(";")) {
+			result = true;
 		}
-		
+
 		return result;
 	}
-	
+
 	/*
 	 * codes
 	 */
@@ -26,46 +30,154 @@ class Attribute extends AbstractType {
 	/*
 	 * info
 	 */
+	String modifier;
+	boolean isStatic;
+	boolean isFinal;
 	String type;
 	String name;
+	String valueStr;
+	String lineComment;
 
-	Attribute(String lineContent) {
+	public Attribute(String lineContent) {
 		this.codes = lineContent;
-		
+
 		initInfoByCodes();
 	}
 
-	Attribute(String type, String name) {
+	public Attribute(String type, String name) {
 		this.type = type;
 		this.name = name;
-		
-		initCodesByInfo();
 	}
 
 	private void initInfoByCodes() {
-		String[] ss = codes.split("=")[0].split(CodeConst.WORD_SPLIT);
-		if (ss.length >= 2) {
-			type = ss[ss.length - 2];
-			name = ss[ss.length - 1];
+		String[] ss1 = codes.split(";");
+		if (ss1.length > 1) {
+			this.lineComment = ss1[1].trim().substring(2).trim();
 		}
-	}
-	
-	private void initCodesByInfo() {
-		this.codes = CodeConst.TAB + "private" + CodeConst.WORD_SPLIT + (type == null? "void": type) + CodeConst.WORD_SPLIT + name + ";";
+		String[] ss2 = ss1[0].split("=");
+		if (ss2.length > 1) {
+			this.valueStr = ss2[1].trim();
+		}
+		
+		String[] ss3 = CodeConst.getInnerString(ss2[0],"^\\s*(public|private|protected)?( static)?( final)?\\s+(\\w*)\\s+(\\w*)\\s*$");
+		if (ss3.length > 0) {
+			modifier = ss3[0];
+			if (modifier == null) {
+				modifier = "package";
+			}
+			isStatic = ss3[1] != null;
+			isFinal = ss3[2] != null;
+			type = ss3[3];
+			name = ss3[4];
+			name = name.trim();
+			if (name.endsWith(";")) {
+				name = name.substring(0, name.length() - 1);
+				name = name.trim();
+			}
+		}
 	}
 
 	/**
 	 * write codes
+	 * 
 	 * @return
 	 */
 	List<String> write() {
 		List<String> result = new ArrayList<String>();
-		
+
 		result.addAll(this.getComment());
 		result.addAll(this.getAnnotationsString(1));
-		result.add(codes);
-		
+		result.add(this.getLineCode());
+
 		return result;
 	}
+	
+	private String getLineCode() {
+		StringBuffer line = new StringBuffer();
+		line.append(CodeConst.getTabString(1));
+		if (!"package".equals(this.getModifier()) && StringUtil.isNotEmpty(this.getModifier())) {
+			line.append(this.getModifier() + CodeConst.WORD_SPLIT); 
+		}
+		if (isStatic) {
+			line.append("static" + CodeConst.WORD_SPLIT);
+		}
+		if (isFinal) {
+			line.append("final" + CodeConst.WORD_SPLIT);
+		}
+		line.append(this.getType() + CodeConst.WORD_SPLIT + this.getName());
+		if (StringUtil.isNotEmpty(this.getValueStr())) {
+			line.append(CodeConst.WORD_SPLIT + "=" + CodeConst.WORD_SPLIT);
+			line.append(valueStr);
+		}
+		line.append(";");
+		if (StringUtil.isNotEmpty(this.getLineComment())) {
+			line.append(CodeConst.WORD_SPLIT + "//" + CodeConst.WORD_SPLIT + this.getLineComment());
+		}
+		return line.toString();
+	}
+
+	public String getCodes() {
+		return codes;
+	}
+
+	public void setCodes(String codes) {
+		this.codes = codes;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+	public boolean isFinal() {
+		return isFinal;
+	}
+
+	public void setFinal(boolean isFinal) {
+		this.isFinal = isFinal;
+	}
+
+	public boolean isStatic() {
+		return isStatic;
+	}
+
+	public void setStatic(boolean isStatic) {
+		this.isStatic = isStatic;
+	}
+
+	public String getLineComment() {
+		return lineComment;
+	}
+
+	public void setLineComment(String lineComment) {
+		this.lineComment = lineComment;
+	}
+	public String getValueStr() {
+		return valueStr;
+	}
+
+	public void setValueStr(String valueStr) {
+		this.valueStr = valueStr;
+	}
+
 
 }

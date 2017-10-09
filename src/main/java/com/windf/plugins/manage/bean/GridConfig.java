@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.windf.core.bean.Module;
 import com.windf.core.exception.CodeException;
-import com.windf.core.frame.Moudle;
 import com.windf.core.util.JSONUtil;
 import com.windf.core.util.file.FileReadUtil;
 import com.windf.plugins.manage.Constant;
@@ -18,12 +18,11 @@ public class GridConfig {
 	 * @param code
 	 * @param condition
 	 * @return
-	 * @throws CodeException
 	 */
-	public static GridConfig loadGridConfigByCode(String code, Map<String, Object> condition) throws CodeException {
+	public static GridConfig loadGridConfigByCode(String code, Map<String, Object> condition) {
 		GridConfig result = null;
 		try {
-			Moudle module = Moudle.getCurrentMoudle();
+			Module module = Module.getCurrentMoudle();
 			String gridConfigFilePath = module.getConfigFilePath() + Constant.MANAGE_JSON_CONFIG_PATH + code + ".json";
 			String gridConfigJsonStr = FileReadUtil.readFileAsString(gridConfigFilePath);
 

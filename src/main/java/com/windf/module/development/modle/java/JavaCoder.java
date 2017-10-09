@@ -2,26 +2,49 @@ package com.windf.module.development.modle.java;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
-import com.windf.module.development.Constant;
-import com.windf.module.development.file.JavaFileUtil;
-import com.windf.module.development.file.JavaFileUtil.LineReader;
+import com.windf.core.util.StringUtil;
+import com.windf.module.development.util.file.TextFileUtil;
+import com.windf.module.development.util.file.LineReader;
+import com.windf.module.development.util.file.SourceFileUtil;
 
 public class JavaCoder extends AbstractType{
-
-	private String classPath;
-	private String packageInfo;
+	
+	private static Map<String, JavaCoder> allJavaCoders = new HashMap<String, JavaCoder>();
+	public static JavaCoder getJavaCoderByName(String name) {
+		return allJavaCoders.get(name);
+	}
+	
+	/*
+	 * 类信息
+	 */
 	private Imports imports = new Imports();
+	private String modifier;
+	private String classType;
 	private String className;
+	private boolean isAbstract;
+	private String classGenre;
 	private List<Attribute> attributes = new ArrayList<Attribute>();
 	private List<Method> methods = new ArrayList<Method>();
+	/*
+	 * 类文件行字符串信息
+	 */
+	private String packageInfo;
+	private String extendsStr;
+	private String implementsStr;
 	private String classEnd;
+	/*
+	 * 类文件信息
+	 */
+	private String classPath;
 	
 	public JavaCoder(String packagePath, String className) {
-		this.classPath = Constant.JAVA_SOURCE_BASE_PATH + packagePath + "/" + className + ".java";
+		this.classPath = SourceFileUtil.getJavaPath() + "/" + packagePath + "/" + className + ".java";
 		
 		File javaFile = new File(this.classPath);
 		
@@ -36,15 +59,19 @@ public class JavaCoder extends AbstractType{
 				newPackagePath = newPackagePath.substring(1);
 			}
 			this.packageInfo = "package" + CodeConst.WORD_SPLIT + newPackagePath;
-			this.className = "public" + CodeConst.WORD_SPLIT + "class" + CodeConst.WORD_SPLIT + className + CodeConst.WORD_SPLIT + "{";
 			this.classEnd = "}";
 			this.write();
 		}
+		
+		/*
+		 * 统一存储
+		 */
+		allJavaCoders.put(className, this);
 	}
 
 	private void readCodes(File javaFile) {
 		
-		JavaFileUtil.readLine(javaFile, new LineReader() {
+		TextFileUtil.readLine(javaFile, new LineReader() {
 			
 			List<String> annotations = new ArrayList<String>();
 			boolean isInMethod = false;
@@ -57,13 +84,23 @@ public class JavaCoder extends AbstractType{
 				
 				// 统一制表符
 				lineContent = lineContent.replace("\t", CodeConst.TAB);
-				
+			
 				if (lineContent.startsWith("package ")) {
 					packageInfo = lineContent;
 				} else if (lineContent.startsWith("import ")) {
 					imports.addLine(lineContent);
-				} else if (lineContent.startsWith("public class ")) {
-					className = lineContent;
+				} else if (CodeConst.verify(lineContent, "^\\s*(public|private|protected)?\\s*(abstract)?\\s*(class|interface|@interface){1}\\s*(\\w*)(<(\\w*)>)?\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$")) {
+					String[] ss = CodeConst.getInnerString(lineContent, "^\\s*(public|private|protected)?\\s*(abstract)?\\s*(class|interface|@interface){1}\\s*(\\w*)(<(\\w*)>)?\\s*(extends \\S*)?\\s*(implements\\s*[^\\{]*)?\\s*\\{\\s*$");
+					modifier = ss[0];
+					if (ss[1] != null) {
+						isAbstract = true;
+					}
+					classType = ss[2];
+					className = ss[3];
+					classGenre = ss[5];
+					extendsStr = ss[6];
+					implementsStr = ss[7];
+					
 					setComment(comment);
 					setAnnotations(annotations);
 					reset();
@@ -166,11 +203,16 @@ public class JavaCoder extends AbstractType{
 	 * @return
 	 */
 	public Attribute createAttribute(String type, String name) throws UserException {
-		if (this.getAttribute(name) != null) {
+		Attribute attribute = new Attribute(type, name);
+		createAttribute(attribute);
+		return attribute;
+	}
+	
+	public Attribute createAttribute(Attribute attribute) throws UserException {
+		if (this.getAttribute(attribute.getName()) != null) {
 			throw new UserException("属性已存在");
 		}
 		
-		Attribute attribute = new Attribute(type, name);
 		this.attributes.add(attribute);
 		
 		return attribute;
@@ -210,7 +252,7 @@ public class JavaCoder extends AbstractType{
 		
 		result.addAll(getComment());
 		result.addAll(getAnnotationsString(0));
-		result.add(className);
+		result.add(this.getClassNameLine());
 		result.add("");
 		
 		for (int i = 0; i < attributes.size(); i++) {
@@ -229,13 +271,45 @@ public class JavaCoder extends AbstractType{
 		
 		result.add(classEnd);
 		
-		JavaFileUtil.writeFile(new File(this.classPath), result);
+		TextFileUtil.writeFile(new File(this.classPath), result);
 		
 		return result;
 	}
 	
 	public List<Method> getAllMethods() {
 		return this.methods;
+	}
+	
+	public List<Attribute> getAllAttributes() {
+		JavaCoder parent = this.getParent();
+		
+		List<Attribute> result = null;
+		if (parent != null) {
+			result = new ArrayList<Attribute>();
+			result.addAll(parent.getAllAttributes());
+			result.addAll(this.attributes);
+		} else {
+			result = this.attributes;
+		}
+		
+		return result;
+	}
+	
+	protected String getClassNameLine() {
+		StringBuffer classNameLine = new StringBuffer();
+		if (!"package".equals(modifier)) {
+			classNameLine.append(modifier + CodeConst.WORD_SPLIT);
+		}
+		classNameLine.append(classType + CodeConst.WORD_SPLIT);
+		classNameLine.append(className + CodeConst.WORD_SPLIT);
+		if (StringUtil.isNotEmpty(extendsStr)) {
+			classNameLine.append(extendsStr + CodeConst.WORD_SPLIT);
+		}
+		if (StringUtil.isNotEmpty(implementsStr)) {
+			classNameLine.append(implementsStr + CodeConst.WORD_SPLIT);
+		}
+		classNameLine.append("{");
+		return classNameLine.toString();
 	}
 
 	/**
@@ -251,6 +325,123 @@ public class JavaCoder extends AbstractType{
 		}
 		
 		return result;
+	}
+	
+	protected JavaCoder getParent() {
+		JavaCoder result = null;
+		if (StringUtil.isNotEmpty(extendsStr)) {
+			String parentName = extendsStr.trim();
+			String[] ss = CodeConst.getInnerString(parentName, "extends (\\w+)(<(\\w*)>)?");
+			if (ss.length > 0) {
+				parentName = ss[0];
+			}
+			result = allJavaCoders.get(parentName);
+		}
+		return result;
+	}
+
+	public String getClassPath() {
+		return classPath;
+	}
+
+	public void setClassPath(String classPath) {
+		this.classPath = classPath;
+	}
+
+	public String getPackageInfo() {
+		return packageInfo;
+	}
+
+	public void setPackageInfo(String packageInfo) {
+		this.packageInfo = packageInfo;
+	}
+
+	public Imports getImports() {
+		return imports;
+	}
+
+	public void setImports(Imports imports) {
+		this.imports = imports;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public List<Attribute> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<Attribute> attributes) {
+		this.attributes = attributes;
+	}
+
+	public List<Method> getMethods() {
+		return methods;
+	}
+
+	public void setMethods(List<Method> methods) {
+		this.methods = methods;
+	}
+
+	public String getClassEnd() {
+		return classEnd;
+	}
+
+	public void setClassEnd(String classEnd) {
+		this.classEnd = classEnd;
+	}
+
+	public String getExtendsStr() {
+		return extendsStr;
+	}
+
+	public void setExtendsStr(String extendsStr) {
+		this.extendsStr = extendsStr;
+	}
+
+	public String getImplementsStr() {
+		return implementsStr;
+	}
+
+	public void setImplementsStr(String implementsStr) {
+		this.implementsStr = implementsStr;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+	public String getClassType() {
+		return classType;
+	}
+
+	public void setClassType(String classType) {
+		this.classType = classType;
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+
+	public String getClassGenre() {
+		return classGenre;
+	}
+
+	public void setClassGenre(String classGenre) {
+		this.classGenre = classGenre;
 	}
 	
 }

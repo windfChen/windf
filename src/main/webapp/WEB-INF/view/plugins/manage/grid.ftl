@@ -1,60 +1,49 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>管理端表格</title>
-		<meta charset="utf-8" />
+		<title></title>
+		<#include "/common/include/res.ftl" >
 		
-		<script type="text/javascript">
-			var Sys = {};
-			var ua = navigator.userAgent.toLowerCase();
-			var s;
-			(s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua
-					.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua
-					.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua
-					.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua
-					.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1]
-					: 0;
-			//以下进行测试
-			if(Sys.ie > '7.0') {
-				document.write("<meta http-equiv='X-UA-Compatible' content='IE=EmulateIE8' >");
-			}
-			
-			var basePath = '${rc.contextPath}';
-			var resourceBasePath = '${rc.contextPath}/resources/';
-			var queryString = '${data.queryString}';
-			queryString = queryString == ''? '': '?' + queryString;
+		<script>
+			$(function(){
+				window.grid = new Grid();
+				grid.init();
+			});
 		</script>
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/plugins/manage/css/admincss.css">
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/ext-all.css" />
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/ext-ext.css" />
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/css/whatyExtjs.css" />
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/examples/Datetime/datetime.css"></link>
-		<link rel="stylesheet" type="text/css" href="${rc.contextPath}/resources/common/plugins/extjs/pub/Multiselect.css" />
-		
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/adapter/ext/ext-base.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ext-all.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/whatyExtjs.js?version=1"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/examples/Datetime/Datetime.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ext-lang-zh_CN.js"></script> 
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/ajax.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/plugins/manage/js/grid.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/DDView.js"></script>
-		<script type="text/javascript" src="${rc.contextPath}/resources/common/plugins/extjs/pub/Multiselect.js"></script>
-		
 	</head>
-	<body id="main_content" leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0" style="background-color:#ffffff;">
-		<table width="100%" height="100%">
-			<tr>
-				<td width="1%"></td>
-				<td valign="top">
-					<div id="user-defined-content"></div>
-					<div id="searchtool"></div>
-					<div id="model-grid"></div>
-					<div id="note"></div>
-					<div id="exportexcel"></div>
-				</td>
-				<td width="1%"></td>
-			</tr>
-		</table>
+	<body>
+	
+		<#include "/common/include/header.ftl" >
+		
+		<!--main start -->
+		<section class="container mt-sm25 mt-xs-15">
+			<div class="row">
+			
+				<#include "/common/include/left.ftl" >
+				
+				<div class="te-md-8 mt-xs-10">
+					<div class="center_rigt">
+						<div id="listPage" class="boxClear">
+							<div class="mod_title1">
+								<div id="menus_div" class="pull-right work_qxbtn">
+									<a href="javascript:;" style="display:none;" id="add_btn"><i class="iconfont icon-tianjia"></i>添加</a>
+									<a href="javascript:;" style="display:none;" id="del_btn"><i class="iconfont icon-weibiaoti--"></i>删除</a>
+								</div>
+						    	<h3 class="pull-left" id="title"></h3>
+						    </div>
+						    <div class="work_qxbox">
+						    	<div class="work_qxlist">
+						    		<ul id="grid" class="clearfix"></ul>
+						    	</div>
+								<div id="page" ></div>
+						    </div>
+						</div>
+						<div id="savePage" style="display:none;" class="boxClear">
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	    <!-- main end -->
 	</body>
 </html>

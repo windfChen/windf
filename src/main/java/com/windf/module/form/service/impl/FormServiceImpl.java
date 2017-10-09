@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.windf.core.exception.DataAccessException;
 import com.windf.module.form.dao.FormDao;
 import com.windf.module.form.entity.Form;
 import com.windf.module.form.service.FormService;
@@ -15,8 +16,13 @@ public class FormServiceImpl implements FormService {
 	private FormDao formDao;
 
 	@Override
-	public Form getFormById(String formId) {
-		return formDao.find(formId);
+	public Form getFormById(Integer formId) {
+		try {
+			return (Form) formDao.find(formId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

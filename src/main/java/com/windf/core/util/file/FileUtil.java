@@ -18,30 +18,35 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 
+import com.windf.core.exception.CodeException;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
 
 public class FileUtil {
 	private static Logger logger = LogFactory.getLogger(FileUtil.class);
 
+	private static String classPath = null;
+	
 	/**
 	 * 获取类文件路径 e: 项目路径/WEB-INF/classes
 	 * 
 	 * @return
 	 */
 	public static String getClassPath() {
-		return new File(FileUtil.class.getClassLoader().getResource("").getPath()).getPath();
+		if (classPath == null) {
+			classPath = new File(FileUtil.class.getClassLoader().getResource("").getPath()).getPath();
+		}
+		return classPath;
 	}
 
 	/**
-	 * 获取配置文件路径 e: 项目路径/WEB-INF/config
+	 * 获取配置文件路径 e: 项目路径/WEB-INF/classes/config
 	 * 
 	 * @return 配置文件路径
 	 */
 	public static String getConfigPath() {
 		String classPath = getClassPath();
-		String webinfoPath = classPath.substring(0, classPath.lastIndexOf("classes"));
-		String configPath = webinfoPath + "config";
+		String configPath = classPath + File.separator + "config";
 		return configPath;
 	}
 
@@ -71,12 +76,24 @@ public class FileUtil {
 	}
 	
 	/**
-	 * 获得文件
+	 * 获得文件,根据是否已webweb路径开头，判断是否是相对路径
 	 * @param filePath
 	 * @return
 	 */
 	public static File getFile(String filePath) {
-		String realPath = FileUtil.getFileRealPath(filePath);
+		return getFile(filePath, false);
+	}
+	
+	/**
+	 * 获得文件
+	 * @param filePath
+	 * @return
+	 */
+	public static File getFile(String filePath, boolean isRealPath) {
+		String realPath = filePath;
+		if (!isRealPath) {
+			realPath = FileUtil.getFileRealPath(filePath);
+		}
 		File file = new File(realPath);
 		return file;
 	}
@@ -217,6 +234,20 @@ public class FileUtil {
 	}
 	
 	/**
+	 * 获取路径中的后缀名
+	 * @param fileName
+	 * @return
+	 */
+	public static String getPrefix (String fileName) {
+		int lastPointIndex = fileName.lastIndexOf(".");
+		String prefix = null;
+		if (lastPointIndex > 0) {
+			prefix = fileName.substring(fileName.lastIndexOf(".")+1);
+		}
+		return prefix;
+	}
+	
+	/**
 	 * 解压缩
 	 * @param zipFile
 	 * @param unzipDir
@@ -262,6 +293,26 @@ public class FileUtil {
 		}
 		zipfile.close();
 		return unzipDir;
+	}
+
+	/**
+	 * 如果文件不存在，创建
+	 * @param file
+	 * @param onlyPath	是否只创建目录
+	 */
+	public static File createIfNotExists(File file, boolean onlyPath) {
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+			if (!onlyPath) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					throw new CodeException(e);
+				}
+			}
+		}
+		
+		return file;
 	}
 
 }

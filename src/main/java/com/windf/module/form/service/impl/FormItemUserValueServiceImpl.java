@@ -14,6 +14,7 @@ import com.windf.module.form.dao.FormItemUserValueDao;
 import com.windf.module.form.entity.FormItem;
 import com.windf.module.form.entity.FormItemUserValue;
 import com.windf.module.form.service.FormItemUserValueService;
+import com.windf.module.user.UserSession;
 
 @Service
 public class FormItemUserValueServiceImpl implements FormItemUserValueService{
@@ -25,7 +26,7 @@ public class FormItemUserValueServiceImpl implements FormItemUserValueService{
 	private FormItemUserValueDao formItemUserValueDao;
 
 	@Override
-	public List<FormItemUserValue> saveUserValue(String formId, Map<String, Object> data) {
+	public List<FormItemUserValue> saveUserValue(Integer formId, Map<String, Object> data) {
 		/*
 		 * 查询实体项
 		 */
@@ -34,7 +35,7 @@ public class FormItemUserValueServiceImpl implements FormItemUserValueService{
 		/*
 		 * 删除已经存在的
 		 */
-		formItemUserValueDao.deleteByUser(formId, "test");
+		formItemUserValueDao.deleteByUser(formId, UserSession.getCurrentUser().getId());
 		
 		/*
 		 * 批量设置数据，用于保存
@@ -42,12 +43,12 @@ public class FormItemUserValueServiceImpl implements FormItemUserValueService{
 		List<FormItemUserValue> formItemUserValues = new ArrayList<FormItemUserValue>();
 		for (FormItem formItem : formItems) {
 			String value = (String) data.get(formItem.getCode());
-			
+
 			FormItemUserValue formItemUserValue = new FormItemUserValue();
 			
 			formItemUserValue = new FormItemUserValue();
 			formItemUserValue.setFormItem(formItem);
-			formItemUserValue.setUserId("test");
+			formItemUserValue.setUser(UserSession.getCurrentUser());
 			formItemUserValue.setValue(value);
 			
 			formItemUserValues.add(formItemUserValue);
@@ -64,9 +65,9 @@ public class FormItemUserValueServiceImpl implements FormItemUserValueService{
 	}
 
 	@Override
-	public List<FormItemUserValue> getUserValue(String formId) {
+	public List<FormItemUserValue> getUserValue(Integer formId) {
 		
-		return formItemUserValueDao.getByFormId(formId);
+		return formItemUserValueDao.getByFormId(formId, UserSession.getCurrentUser().getId());
 	}
 
 }

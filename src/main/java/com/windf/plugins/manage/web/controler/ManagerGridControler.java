@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.windf.core.bean.Page;
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
 import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.StringUtil;
@@ -21,11 +20,12 @@ import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.web.BaseControler;
 
 public abstract class ManagerGridControler extends BaseControler {
-		
+	protected final static String MANAGE_PATH = Constant.WEB_BASE_PATH;
+	
 	@RequestMapping(value = "", method = {RequestMethod.GET})
 	public String index() {
 		responseReturn.page(Constant.WEB_BASE_VIEW + "grid");
-		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		String queryString = request.getQueryString();
 		data.put("queryString", queryString);
 		return responseReturn.successData(data);
@@ -43,32 +43,23 @@ public abstract class ManagerGridControler extends BaseControler {
 			gridConfig = this.getManagerGridService().getGridConfig(code, roleId, condition);
 		} catch (UserException e) {
 			e.printStackTrace();
-		} catch (CodeException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return responseReturn.successData(gridConfig);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/list", method = {RequestMethod.GET})
 	public String list() {
 		Map<String, Object> condition = paramenter.getMap("condition");
 		condition = this.filterMapValue(condition);
-		String pageNoStr = paramenter.getString("page");
-		String pageSizeStr = paramenter.getString("limit");
-		Integer pageNo = 1;
-		Integer pageSize = 10;
-		try {
-			pageNo = Integer.parseInt(pageNoStr);
-			pageSize = Integer.parseInt(pageSizeStr);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Integer pageNo = paramenter.getInteger("page", 1);
+		Integer pageSize = paramenter.getInteger("limit", 10);
 		
 		Map<String, Object> result = null;
 		try {
-			Page<Map<String, Object>> page = this.getManagerGridService().list(condition, pageNo, pageSize);
+			Page page = this.getManagerGridService().list(condition, pageNo, pageSize);
 			result = new HashMap<String, Object>();
 			result.put("models", page.getData());
 			result.put("totalCount", page.getTotal());
@@ -103,8 +94,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/save", method = {RequestMethod.POST})
 	public String save() {
-		Map<String, Object> entity = paramenter.getMap("entity");	
-		entity = this.filterMapValue(entity);
+		Object entity = this.getParamenterEntity();
 		
 		try {
 			this.getManagerGridService().save(entity);
@@ -117,8 +107,7 @@ public abstract class ManagerGridControler extends BaseControler {
 	
 	@RequestMapping(value = "/update", method = {RequestMethod.POST})
 	public String update() {
-		Map<String, Object> entity = paramenter.getMap("entity");
-		entity = this.filterMapValue(entity);
+		Object entity = this.getParamenterEntity();
 		
 		try {
 			this.getManagerGridService().update(entity);
@@ -152,10 +141,51 @@ public abstract class ManagerGridControler extends BaseControler {
 	}
 	
 	/**
+	 * 获取实体，可能是map，可以是实体类
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	protected Object getParamenterEntity() {
+		Object entity = paramenter.getMap("param");
+		if (entity != null) {	// 如果是param，则是直接转换为map
+			entity = this.filterMapValue((Map<String, Object>) entity);
+		} else {
+			// 否则可能是entity里传参数
+			Class<? extends Object> clazz = this.getEntity();
+			if (clazz != null) {
+				entity = paramenter.getObject("entity", clazz);
+			} else {
+				entity = paramenter.getMap("entity");
+				entity = this.filterMapValue((Map<String, Object>) entity);
+			}
+			
+			// 如果都没有，直接把属性名作为key或者字段名
+			if (entity == null) {
+				if (clazz != null) {
+					entity = paramenter.getObject("", clazz);
+				} else {
+					entity = paramenter.getAll();
+					entity = this.filterMapValue((Map<String, Object>) entity);
+				}
+			}
+		}
+		
+		return entity;
+	}
+	
+	/**
 	 * 获取管理表格服务
 	 * @return
 	 */
 	protected abstract ManageGirdService getManagerGridService();
+	
+	/**
+	 * 获取实体类，如果不为空，则用实体初始化表格
+	 * @return
+	 */
+	protected Class<? extends Object> getEntity() {
+		return null;
+	}
 
 	/**
 	 * 获得请求地址，生成的code
@@ -168,6 +198,9 @@ public abstract class ManagerGridControler extends BaseControler {
 		int index = requestPath.lastIndexOf('.');
 		if (index > 0) {
 			requestPath = requestPath.substring(0, index);
+		}
+		if (requestPath.startsWith(MANAGE_PATH)) {
+			requestPath = requestPath.substring(MANAGE_PATH.length());
 		}
 		
 		String result = StringUtil.toCamelCase(requestPath, "/");

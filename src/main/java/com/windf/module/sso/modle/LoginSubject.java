@@ -3,6 +3,8 @@ package com.windf.module.sso.modle;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.windf.core.frame.OrderHandler;
+
 /**
  * 登录通知
  * @author chenyafeng
@@ -29,7 +31,7 @@ public class LoginSubject {
 	 * @param observer
 	 */
 	public void attach(LoginObserver observer) {
-		observers.add(observer);
+		OrderHandler.add(observers, observer);
 	}
 
 	/**

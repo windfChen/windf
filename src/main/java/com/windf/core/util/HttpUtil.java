@@ -4,12 +4,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.windf.plugins.log.LogFactory;
 
 public class HttpUtil {
 
@@ -80,7 +85,6 @@ public class HttpUtil {
         BufferedReader in = null;
         try {
             String urlNameString = StringUtils.isNotBlank(param) ? url + "?" + param : url;
-            System.out.println("urlNameString==" + urlNameString);
             URL realUrl = new URL(urlNameString);
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
@@ -97,7 +101,7 @@ public class HttpUtil {
             Map<String, List<String>> map = connection.getHeaderFields();
             // 遍历所有的响应头字段
             for (String key : map.keySet()) {
-                System.out.println(key + "--->" + map.get(key));
+                LogFactory.getLogger(HttpUtil.class).debug(key + "--->" + map.get(key));
             }
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -106,8 +110,7 @@ public class HttpUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
+        	LogFactory.getLogger(HttpUtil.class).error("发送GET请求出现异常！" + e, e);
         } finally { // 使用finally块来关闭输入流
             try {
                 if (in != null) {
@@ -158,8 +161,7 @@ public class HttpUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送POST请求出现异常！" + e);
-            e.printStackTrace();
+        	LogFactory.getLogger(HttpUtil.class).error("发送POST请求出现异常！" + e, e);
         } finally {  // 使用finally块来关闭输出流、输入流
             try {
                 if (out != null) {
@@ -193,5 +195,46 @@ public class HttpUtil {
         } else {
             return 0;
         }
+    }
+    
+    /**
+     * 
+     * @param map
+     * @param isURLEncoder
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public static String mapToFormData(Map map, boolean isURLEncoder) {
+    	String result = null;
+    	
+    	StringBuffer formData = new StringBuffer();
+        if (CollectionUtil.isNotEmpty(map)) {
+        	Iterator<String> iterator = map.keySet().iterator();
+        	while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				String value = String.valueOf(map.get(key));
+				
+				if (StringUtil.isEmpty(key)) {
+					continue;
+				}
+				
+				if (formData.length() > 0) {
+					formData.append("&");
+				}
+				formData.append(key + "=" + TextUtil.fixNull(value));
+			}
+        	
+        	result = formData.toString();
+            if (isURLEncoder) {
+            	try {
+					result = URLEncoder.encode(result, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+            }
+        }
+        
+        return result;
     }
 }

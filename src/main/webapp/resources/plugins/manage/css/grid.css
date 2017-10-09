@@ -1,0 +1,27 @@
+﻿#page {
+	text-align: center;
+}
+
+.work_save {
+	width : 100%;
+	line-height: 22px;
+}
+
+.work_qxbtn a{
+	    margin: 0 2px;
+}
+
+.tuichu {
+    font-size: 16px;
+    position: absolute;
+    top: 40px;
+    right: 50%;
+    margin-right: -500px;
+}
+.tuichu a {
+	color: #fff;
+}
+
+.work_qxlist ul li {
+	height:50px;
+}

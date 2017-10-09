@@ -11,5 +11,6 @@ public interface PriorityDao extends CrudDao {
 	 * @param userId
 	 * @return
 	 */
-	List<Priority> getPrioritiesByRoleId(String roleId);
+	List<Priority> getPrioritiesByRoleId(Integer roleId);
+
 }

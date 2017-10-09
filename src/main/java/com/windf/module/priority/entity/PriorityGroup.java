@@ -1,9 +1,10 @@
 package com.windf.module.priority.entity;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
 /**
  * 权限分组
+ * 
  * @author chenyafeng
  *
  */
@@ -11,25 +12,20 @@ public class PriorityGroup extends AbstractBean {
 
 	private static final long serialVersionUID = 4333038898160940125L;
 
-	private String id;
-	private PriorityGroup priorityGroup;
+	private PriorityGroup group;
 	private String name;
 	private Long serialNumber;
 
-	public String getId() {
-		return id;
+	public PriorityGroup getGroup() {
+		return group;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setGroup(PriorityGroup group) {
+		this.group = group;
 	}
 
-	public PriorityGroup getPriorityGroup() {
-		return priorityGroup;
-	}
-
-	public void setPriorityGroup(PriorityGroup priorityGroup) {
-		this.priorityGroup = priorityGroup;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public String getName() {

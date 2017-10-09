@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.windf.module.user.dao.UserDao">
+    
+     <select id="getUserBySsoUserId" parameterType="int" resultType="com.windf.module.user.entity.User" >
+        SELECT
+            t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
+            t.fk_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            r.name `role.name`,
+            u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
+            o.name as `organization.name`
+        FROM 
+            user t
+        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN sso_user u ON t.fk_sso_user_id = u.id  
+          LEFT JOIN organization o on t.fk_organization_id = o.id
+        WHERE u.id = #{param1}
+    </select>
+    
+     <select id="count" parameterType="java.util.HashMap" resultType="long" >
+        SELECT
+            count(t.id)
+        FROM 
+            user t
+        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN sso_user u ON t.fk_sso_user_id = u.id 
+          LEFT JOIN organization o on t.fk_organization_id = o.id
+        WHERE 1=1
+        <if test="name != null">    
+            and name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="role != null and role.name != null">    
+            and r.name like CONCAT('%',#{role.name},'%')
+        </if>   
+        <if test="ssoUser != null and ssoUser.phone != null">    
+            and u.phone like CONCAT('%',#{ssoUser.phone},'%')
+        </if>   
+        <if test="ssoUser != null and ssoUser.email != null">    
+            and u.email like CONCAT('%',#{ssoUser.email},'%')
+        </if> 
+        <if test="organization != null and organization.name != null">    
+            and o.name like CONCAT('%',#{organization.name},'%')
+        </if>  
+    </select>
+    
+     <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+        SELECT
+            t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
+            t.fk_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            r.name `role.name`,
+            u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
+            o.name as `organization.name`
+        FROM 
+            user t
+        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN sso_user u ON t.fk_sso_user_id = u.id  
+          LEFT JOIN organization o on t.fk_organization_id = o.id
+        WHERE 1=1
+        <if test="param1 != null" >
+	        <if test="param1.name != null">    
+	            and name like CONCAT('%',#{name},'%')
+	        </if>
+	        <if test="param1.role != null and param1.role.name != null">    
+	            and r.name like CONCAT('%',#{role.name},'%')
+	        </if>   
+	        <if test="param1.ssoUser != null and param1.ssoUser.phone != null">    
+	            and u.phone like CONCAT('%',#{ssoUser.phone},'%')
+	        </if>   
+	        <if test="param1.ssoUser != null and param1.ssoUser.email != null">    
+	            and u.email like CONCAT('%',#{ssoUser.email},'%')
+	        </if> 
+	        <if test="param1.ssoUser != null and param1.ssoUser.username != null">    
+	            and u.username like CONCAT('%',#{ssoUser.username},'%')
+	        </if> 
+	        <if test="param1.ssoUser != null and param1.ssoUser.truename != null">    
+	            and u.truename like CONCAT('%',#{ssoUser.truename},'%')
+	        </if> 
+	        <if test="param1.organization != null and param1.organization.name != null">    
+	            and o.name like CONCAT('%',#{organization.name},'%')
+	        </if>  
+	   	</if>
+	    <if test="param2 != null and param3 != null"> 
+	     LIMIT #{param2}, #{param3}
+	    </if>
+    </select>
+    
+    <select id="find" parameterType="string" resultType="java.util.HashMap" >
+        SELECT
+            t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
+            t.fk_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            r.name `role.name`,
+            u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
+            o.name as `organization.name`
+        FROM 
+            user t
+        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN sso_user u ON t.fk_sso_user_id = u.id  
+          LEFT JOIN organization o on t.fk_organization_id = o.id
+        WHERE t.id = #{param1}
+    </select>
+    
+    <insert id="insert" parameterType="java.util.HashMap" keyProperty="id">
+       INSERT INTO `user` (name, create_date, update_date, sex, fk_organization_id, fk_role_id, fk_sso_user_id)
+        VALUES
+            (#{name}, now(), now(), #{sex}, #{organization.id}, #{role.id}, #{ssoUser.id})
+    </insert>
+    
+    <update id="update" parameterType="java.util.HashMap" >
+        update `user` set name = #{name}, sex = #{sex}, update_date=now(), 
+        	fk_organization_id = #{organization.id}, fk_role_id = #{role.id}, fk_sso_user_id = #{ssoUser.id}
+        where id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="List" >
+        delete from `user` where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+          #{item}  
+         </foreach> 
+    </delete>
+   
+</mapper>

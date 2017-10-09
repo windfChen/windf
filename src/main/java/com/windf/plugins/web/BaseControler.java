@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.windf.core.frame.Moudle;
+import com.windf.core.bean.Module;
 import com.windf.plugins.log.LogFactory;
 import com.windf.plugins.log.Logger;
 import com.windf.plugins.web.request.RequestParamenter;
@@ -34,7 +34,7 @@ public abstract class BaseControler {
 		}
 
 		// 初始化模块
-		Moudle.setCurrentMoudle(this);
+		Module.setCurrentMoudle(this);
 		
 		// 获取请求
 		request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();

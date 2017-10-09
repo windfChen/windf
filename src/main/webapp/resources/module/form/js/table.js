@@ -39,17 +39,24 @@ Table.prototype = {
 		this.tableData = data;
 
 		// 深度优先，依次获得title和left的叶子节点
-		this.titleLeafNode = this.getLeafNodes(this.tableData.title);
-		this.leftLeafNode = this.getLeafNodes(this.tableData.left);
+		if (this.tableData.title.length > 0 && this.tableData.left.length > 0) {
+			this.titleLeafNode = this.getLeafNodes(this.tableData.title);
+			this.leftLeafNode = this.getLeafNodes(this.tableData.left);	
+			
+			// 广度优先初始化title的tr、th
+			var trs = this.initTitle();
+			this.bodyTrs = this.bodyTrs.concat(trs);
+			this.colCount = this.getTrCellCount(trs[0]);
+			
+			// 深度优先初始化Left的tr、th、td
+			trs = this.initLeft();
+			this.bodyTrs = this.bodyTrs.concat(trs);
+		}
 		
-		// 广度优先初始化title的tr、th
-		var trs = this.initTitle();
-		this.bodyTrs = this.bodyTrs.concat(trs);
-		this.colCount = this.getTrCellCount(trs[0]);
+		if (this.tableData.data && this.tableData.data.length > 0) {
+			this.bodyTrs = this.initData(this.tableData.titleCount, this.tableData.data);
+		}
 		
-		// 深度优先初始化Left的tr、th、td
-		trs = this.initLeft();
-		this.bodyTrs = this.bodyTrs.concat(trs);
 		
 		//初始化tfoot
 		this.footTr = this.initFoot();
@@ -84,6 +91,14 @@ Table.prototype = {
 			w = w.replace('px', '') - 20 + "px";
 			$(this).css('width', w);
 		});
+		$form.find('tbody td textarea').each(function(){
+			var w = $(this).parent().css('width');
+			var h = $(this).parent().css('height');
+			w = w.replace('px', '') - 20 + "px";
+			h = h.replace('px', '') - 10 + "px";
+			$(this).css('width', w);
+			$(this).css('height', h);
+		});
 		
 	},
 	
@@ -94,7 +109,7 @@ Table.prototype = {
 		var $form = $('#' + this.divId);
 		
 		var data = {};
-		$form.find('input').each(function(input) {
+		$form.find('input,textarea').each(function(input) {
 			var name = $(this).attr('name');
 			var value = $(this).val();
 			
@@ -146,6 +161,7 @@ Table.prototype = {
 			var d = data[i];
 
 			$form.find('input[name=' + d.formItem.code + ']').val(d.value);
+			$form.find('textarea[name=' + d.formItem.code + ']').val(d.value);
 
 		}
 	},
@@ -232,6 +248,52 @@ Table.prototype = {
 			}
 		}
 				
+		return trs;
+	},
+	
+	initData : function (titleCount, data) {
+		var trs = [];
+		var $tr = null;
+		var count = 0;
+		for (var i = 0 ; i < data.length; i++) {
+			
+			if (count % titleCount == 0) {
+				$tr = $('<tr></tr>');
+				trs[trs.length] = $tr;
+			}
+			
+			var d = data[i];
+			
+			var $td = $('<td></td>');
+			if (d.type == 'label') {
+				$td = $('<th></th>');
+				$td.append(d.text);
+			} else if (d.type == 'input') {
+				$td.append('<input name="' + d.code + '" type="text" />');
+			} else if (d.type == 'texarea') {
+				$td.append('<textarea  name="' + d.code + '" ></textarea >');
+			}
+			
+			if (d.colSpan && d.colSpan > 1) {
+				$td.attr('colSpan', d.colSpan);
+				count += d.colSpan;
+			} else {
+				count++;
+			}
+			if (d.rowSpan && d.rowSpan > 1) {
+				$td.attr('rowSpan', d.rowSpan);
+			}
+			
+			if (d.width) {
+				$td.css('width', d.width + 'px');
+			}
+			if (d.height) {
+				$td.css('height', d.height + 'px');
+			}
+			
+			$tr.append($td);
+		}
+		
 		return trs;
 	},
 	

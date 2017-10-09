@@ -2,6 +2,7 @@ package com.windf.core.util.reflect;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,17 +12,23 @@ public class BeanUtil {
 
 	/**
 	 * 判断，是否是用户自定义的getter方法
-	 * 
+	 * 今天方法除外
 	 * @param method
 	 * @return
 	 */
 	public static boolean isGetterMethod(Method method) {
-		String methodName = method.getName();
-		return methodName.startsWith("get") && method.getParameterTypes().length == 0 && !"getClass".equals(methodName);
+		boolean result = false;
+		int  modifiers  = method.getModifiers();
+		if (!Modifier.isStatic(modifiers)) {
+			String methodName = method.getName();
+			result = methodName.startsWith("get") && method.getParameterTypes().length == 0 && !"getClass".equals(methodName);
+		}
+		
+		return result;
 	}
 	
 	/**
-	 * 获得对象的所有非空属性
+	 * 获得对象的所有非空属性，静态方法除外，非序列化方法除外
 	 * 
 	 * @param clazz
 	 * @return 属性名-属性值
@@ -36,20 +43,30 @@ public class BeanUtil {
 				Method method = methods[i];
 				String methodName = method.getName();
 
+				// 是getter方法，而且不是不序列化方法的
 				if (isGetterMethod(method)) {
-					Object result = null;
+					boolean isUnSerializable = false;
 					try {
-						result = method.invoke(object);
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
+						isUnSerializable = method.getAnnotation(UnSerializable.class) != null;
+					} catch (Exception e) {
+						isUnSerializable = false;
 					}
-					if (result != null) {
-						methodName = getNameByGetterOrSetter(methodName);
-						getterMethodValueMap.put(methodName, result);
+					
+					if (!isUnSerializable) {
+						Object result = null;
+						try {
+							result = method.invoke(object);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						}
+						if (result != null) {
+							methodName = getNameByGetterOrSetter(methodName);
+							getterMethodValueMap.put(methodName, result);
+						}
 					}
 				}
 			}
@@ -129,6 +146,7 @@ public class BeanUtil {
 	 * @param values
 	 * @return
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Object setValueByMap(Object object, Map<String, ? extends Object> values) {
 		if (object != null) {
 			Class<? extends Object> clazz = object.getClass();
@@ -137,27 +155,51 @@ public class BeanUtil {
 				String key = (String) iterator.next();
 				Object value = values.get(key);
 				
-				if (ReflectUtil.isBaseType(value.getClass())) {
-					String setterMethodName = getSetterMethodName(key);
-					try {
-						Method setterMethod = clazz.getMethod(setterMethodName, value.getClass());
-						setterMethod.invoke(object, value);
-					} catch (NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						e.printStackTrace();
+				try {
+					Method getterMethod = clazz.getMethod(getGetterMethodName(key));
+					Method setterMethod = clazz.getMethod(getSetterMethodName(key), getterMethod.getReturnType());
+					if (ReflectUtil.isBaseType((getterMethod.getReturnType()))) {
+						setBaseTypeValue(object, setterMethod, getterMethod.getReturnType(), value);
+					} else if (ReflectUtil.isMap(value.getClass())) {
+						setterMethod.invoke(object, getObjectByMap(getterMethod.getReturnType(), (Map) value));
 					}
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
 				}
 			}
 		}
 		
 		return object;
+	}
+	
+	/**
+	 * 设置基本类型的值
+	 * @param object
+	 * @param setterMethod
+	 * @param type
+	 * @param value
+	 * @throws NumberFormatException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void setBaseTypeValue(Object object, Method setterMethod, Class type, Object value) throws NumberFormatException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (ReflectUtil.isInteger(type)) {
+			setterMethod.invoke(object, Integer.valueOf(value.toString()));
+		} else if (ReflectUtil.isLong(type)) {
+			setterMethod.invoke(object, Long.valueOf(value.toString()));
+		} else if (String.class.isAssignableFrom(type)) {
+			setterMethod.invoke(object, value);
+		} 
 	}
 	
 	/**
@@ -168,6 +210,16 @@ public class BeanUtil {
 	 */
 	public static String getSetterMethodName(String name) {
 		return "set" + name.substring(0, 1).toUpperCase() + name.substring(1); 
+	}
+	
+	/**
+	 * 根据属性名称，获得getter方法名称
+	 * 只是拼接字符串，不做任何验证
+	 * @param name
+	 * @return
+	 */
+	public static String getGetterMethodName(String name) {
+		return "get" + name.substring(0, 1).toUpperCase() + name.substring(1); 
 	}
 	
 	/**

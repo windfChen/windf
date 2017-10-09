@@ -8,9 +8,13 @@ import java.util.regex.Pattern;
 public class CodeConst {
 	static final String TAB = "    ";
 	static final String WORD_SPLIT = " ";
+	public static final String MODIFY_PUBLIC = "public";
+	public static final String MODIFY_PRIVATE = "private";
+	public static final String MODIFY_PROTECTED = "protected";
+	public static final String MODIFY_PACKAGE = "pacakge";
 	
 	/**
-	 * 开始时空格的数量
+	 * 获取开始时空格的数量
 	 * @param lineContent
 	 * @return
 	 */
@@ -25,7 +29,7 @@ public class CodeConst {
 	}
 	
 	/**
-	 * 开始时空格的数量
+	 * 设置开始时空格的数量
 	 * @param lineContent
 	 * @return
 	 */
@@ -59,6 +63,17 @@ public class CodeConst {
 		return result.toArray(new String[result.size()]);
 	}
 	
+	/**
+	 * 验证改行是否和表达式相匹配
+	 * @param line
+	 * @param patternStr
+	 * @return
+	 */
+	public static boolean verify(String line, String patternStr) {
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(line);
+		return matcher.matches();
+	}
 
 	/**
 	 * 获得字符串内容中的字符串

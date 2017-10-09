@@ -3,10 +3,11 @@ package com.windf.module.development.modle.java;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.windf.core.exception.CodeException;
 import com.windf.core.util.CollectionUtil;
-import com.windf.module.development.pojo.ExceptionType;
-import com.windf.module.development.pojo.Parameter;
-import com.windf.module.development.pojo.Return;
+import com.windf.module.development.entity.ExceptionType;
+import com.windf.module.development.entity.Parameter;
+import com.windf.module.development.entity.Return;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Method extends AbstractType {
@@ -43,13 +44,15 @@ public class Method extends AbstractType {
 		return result;
 	}
 	
+	private static final String INTERFACE_METHOD_PATTERN = "(public )?(abstract )?(\\w*) (\\w*)\\((\\w* \\w*(, )?)*\\)( throws (\\w*(, )?)*)?;";
+	
 	/**
 	 * 是否是接口中的方法或者抽象方法
 	 * @param lineContent
 	 * @return    public String getNameById(String name, Integer age) throws UserException, CodeException;"
 	 */
 	public static boolean isInterfaceMethod(String lineContent) {
-		return CodeConst.getInnerString(lineContent.trim(), "(public )?(abstract )?(\\w*) (\\w*)\\((\\w* \\w*(, )?)*\\)( throws (\\w*(, )?)*)?;").length > 0;
+		return CodeConst.verify(lineContent.trim(), INTERFACE_METHOD_PATTERN);
 	}
 	
 	/*
@@ -63,9 +66,15 @@ public class Method extends AbstractType {
 	/*
 	 * 方法信息
 	 */
+	String modifier;
+	boolean isAbstract;
+	boolean isFinal;
+	boolean isStatic;
+	boolean isSynchronized;
+	String t;
+	Return ret;
 	String methodName;
 	List<Parameter> parameters = new ArrayList<Parameter>();
-	Return ret;
 	ExceptionType exceptionType;
 	boolean unImplement;
 
@@ -212,9 +221,11 @@ public class Method extends AbstractType {
 		
 		if (!unImplement) {
 			for (int i = 0; i < codeBlocks.size(); i++) {
+				if (i != 0) {
+					result.add("");
+				}
 				CodeBlock codeBlock = codeBlocks.get(i);
 				result.addAll(codeBlock.write());
-				result.add("");
 			}
 			
 			result.add(methodEnd);
@@ -232,37 +243,107 @@ public class Method extends AbstractType {
 			unImplement = true;
 		}
 		
-		String parameterStr = methodStart.substring(methodStart.indexOf("(") + 1, methodStart.indexOf(")"));
-		String nameStrs = methodStart.substring(0, methodStart.indexOf("(")) + methodStart.substring(methodStart.indexOf(")") + 1);
+		String methodLinePattern = "(public |private |protected )?([^\\(]*)(\\([^\\)]*\\))(\\s?throws[^\\{;]*)?\\s*[\\{;]";
+		String[] ss = CodeConst.getInnerString(this.methodStart, methodLinePattern);
 		
-		String[] titles = nameStrs.trim().split(CodeConst.WORD_SPLIT);
-		int index = 1;
-		String retStr = titles[index++];
-		if (retStr.contains("<") && !retStr.contains(">")) {
-			do {
-				retStr += CodeConst.WORD_SPLIT + titles[index++];
-			} while (!retStr.contains(">"));
-		}
-		String methodNameStr = titles[index++];
-		String exceptionTypeStr = null;
-		if (titles.length > index + 1) {
-			exceptionTypeStr = titles[index];
-		}
-		
-		this.ret = new Return(retStr);
-		this.methodName = methodNameStr;
-		String[] parameterStrs = parameterStr.split(", ");
-		for (int i = 1; i < parameterStrs.length; i++) {
-			String[] ss = parameterStrs[i].split(CodeConst.WORD_SPLIT);
+		/*
+		 * 判断是否是静态块
+		 */
+		if (ss.length == 0) {
+			if (CodeConst.verify(methodStart, "\\s*static\\s*\\{\\s*")) {
+				isStatic = true;
+			} else {
+				throw new CodeException("方法解析错误");
+			}
+		} else {
+
+			modifier = ss[0];
+			if (modifier == null) {
+				modifier = "package";
+			}
 			
-			Parameter parameter = new Parameter();
-			parameter.setType(ss[0]);
-			parameter.setName(ss[1]);
-			parameters.add(parameter);
+			String[] names = ss[1].split("\\s");
+			names = mergin(names);
+			for (int i = 0; i < names.length; i++) {
+				String s = names[i].trim();
+				
+				if ("abstract".equals(s)) {
+					isAbstract = true;
+				} else if ("final".equals(s)) {
+					isFinal = true;
+				} else if ("static".equals(s)) {
+					isStatic = true;
+				} else if ("synchronized".equals(s)) {
+					isSynchronized = true;
+				} else {
+					if (s.startsWith("<")) {
+						t = s;
+					} else if (ret == null) {
+						this.ret = new Return(s);
+					} else {
+						methodName = s;
+					}
+				}
+			}
+
+			String parameterStr = ss[2];
+			if (parameterStr.length() > 2) {
+				parameterStr = parameterStr.substring(1, parameterStr.length() - 1);
+				
+				String[] parameterStrs = parameterStr.split(",\\s?");
+				parameterStrs = mergin(parameterStrs);
+				for (int i = 0; i < parameterStrs.length; i++) {
+					String s = parameterStrs[i];
+					String[] ss2 = s.split("\\s");
+					
+					Parameter parameter = new Parameter();
+					parameter.setType(ss2[0]);
+					parameter.setName(ss2[1]);
+					parameters.add(parameter);
+				}	
+				
+				if (ss[3] != null) {
+					this.exceptionType = new ExceptionType(ss[3]);
+				}
+			}
 		}
-		if (exceptionTypeStr != null) {
-			exceptionType = new ExceptionType(exceptionTypeStr);
-		}
+		
+	}
+	
+	private String[] mergin(String[] ss) {
+		List<String> list = new ArrayList<String>();
+
+		int leftCount = 0;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < ss.length; i++) {
+			String s = ss[i];
+			
+			boolean left = s.indexOf("<") > -1;
+			boolean right = s.indexOf(">") > -1;
+			
+			if (left && !right) {
+				sb.append(s);
+				leftCount++;
+			} else if (sb.length() > 0 && !right) {
+				sb.append(s);
+			} else if (right) {
+				sb.append(s);
+				if (leftCount > 0) {
+					leftCount--;
+				}
+				
+				if (leftCount == 0) {
+					list.add(sb.toString());
+					sb.setLength(0);
+				}
+			} else {
+				list.add(s);
+			}
+		}	
+		
+		String[] result = new String[list.size()];
+		list.toArray(result);
+		return result;
 	}
 
 	/*

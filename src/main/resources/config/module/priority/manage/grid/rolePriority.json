@@ -1,0 +1,72 @@
+{
+	"title": "【${param.roleName}】的权限",
+	"columns": [{
+		"name" : "id",
+		"dataIndex" : "id",
+		"type" : "TextField",
+		"canList" : false,
+		"canSearch" : false,
+		"canAdd" : false,
+		"canBatchAdd" : false,
+		"canUpdate" : false,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 0
+	},{
+		"name" : "权限名称",
+		"dataIndex" : "name",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : null,
+		"orderNum" : 1
+	},{
+		"name" : "是否有效",
+		"dataIndex" : "flagIsvalid",
+		"type" : "TextField",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : "function(){return '${flagIsvalid}' == '1'? '是' :'否';}",
+		"orderNum" : 4
+	}],
+	"menus" : [{
+		"name" : "给角色添加权限",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : null,
+		"actionAddress" : '/manage/role/priority/add/${queryString}',
+		"ajaxReturn" : false,
+		"confirm": false,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	},{
+		"name" : "返回",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : '',
+		"actionAddress" : '/manage/role/',
+		"ajaxReturn" : false,
+		"confirm": false,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	}],
+	"isPrepared" : false,
+	"canAdd" : false,
+	"canBatchAdd" : false,
+	"canDelete" : true,
+	"canUpdate" : false,
+	"canSearch" : true
+}

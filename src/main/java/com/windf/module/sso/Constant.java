@@ -10,14 +10,14 @@ public class Constant {
 	/**
 	 * 当前 session中当前用户的 key
 	 */
-	public static final String SESSION_USER = "current_session_user";	
+	public static final String SESSION_SSO = "current_sso";	
 	
 	/**
 	 * 获得session的当前用户
 	 * @return
 	 */
 	public static SsoUser getCurrentUser() {
-		return (SsoUser) WebContext.getSession().getAttribute(SESSION_USER);
+		return (SsoUser) WebContext.getSession().getAttribute(SESSION_SSO);
 	}
 
 }

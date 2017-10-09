@@ -31,7 +31,7 @@ public class FromInputControler extends BaseControler{
 	private FormService formService;
 
 	@RequestMapping(value = "{formId}", method = {RequestMethod.GET})
-	public String index(@PathVariable String formId) {
+	public String index(@PathVariable Integer formId) {
 		Form form = formService.getFormById(formId);
 		
 		responseReturn.page(Constant.WEB_BASE_VIEW + "/index");
@@ -40,7 +40,7 @@ public class FromInputControler extends BaseControler{
 	
 	@RequestMapping(value = "/saveUserValue", method = {RequestMethod.POST})
 	public String saveUserValue() {
-		String formId =  paramenter.getString("formId");
+		Integer formId =  paramenter.getInteger("formId");
 		Map<String, Object> data = paramenter.getMap("data");
 		if (ParameterUtil.hasEmpty(formId, data)) {
 			return responseReturn.parameterError();
@@ -52,7 +52,7 @@ public class FromInputControler extends BaseControler{
 	}
 
 	@RequestMapping(value = "/user/value", method = {RequestMethod.GET})
-	public String getUserValue(String formId) {
+	public String getUserValue(Integer formId) {
 		if (ParameterUtil.hasEmpty(formId)) {
 			return responseReturn.parameterError();
 		}

@@ -9,8 +9,8 @@ import java.util.Map;
 
 import com.windf.core.util.CollectionUtil;
 import com.windf.module.development.Constant;
+import com.windf.module.development.entity.Parameter;
 import com.windf.module.development.modle.java.CodeConst;
-import com.windf.module.development.pojo.Parameter;
 
 public class ParameterVerifyCoder extends AbstractCodeable<List<Parameter>> {
 	

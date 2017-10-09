@@ -2,12 +2,11 @@ package com.windf.module.sso.entity;
 
 import java.util.Date;
 
-import com.windf.core.general.bean.AbstractBean;
+import com.windf.core.general.entity.AbstractBean;
 
 public class SsoUser extends AbstractBean {
 	private static final long serialVersionUID = 4132177381683804504L;
 	
-	private int id;
 	private String username;
 	private String turename;
 	private String password;
@@ -16,12 +15,6 @@ public class SsoUser extends AbstractBean {
 	private String lastLoginIp;
 	private Date lastLoginTime;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getUsername() {
 		return username;
 	}

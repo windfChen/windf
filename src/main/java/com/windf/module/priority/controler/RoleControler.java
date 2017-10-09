@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.windf.core.general.bean.NameBean;
+import com.windf.core.general.entity.NameBean;
 import com.windf.module.priority.service.RoleService;
 import com.windf.plugins.web.BaseControler;
 

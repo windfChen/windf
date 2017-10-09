@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<moduleInfo>
+  <basePath>/org</basePath>
+  <services/>
+  <name>机构</name>
+  <controlers/>
+  <code>organization</code>
+  <info>机构管理</info>
+</moduleInfo>

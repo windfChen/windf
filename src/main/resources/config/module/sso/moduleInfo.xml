@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<moduleInfo>
+  <basePath>/sso</basePath>
+  <services/>
+  <name>用户中心</name>
+  <controlers/>
+  <code>sso</code>
+  <info>用户登录</info>
+</moduleInfo>

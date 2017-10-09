@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.windf.core.bean.Page;
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.DataAccessException;
 import com.windf.core.exception.UserException;
 import com.windf.core.general.service.CrudService;
@@ -25,7 +24,6 @@ public interface ManageGirdService extends CrudService {
 	 * @param condition
 	 * @return
 	 * @throws UserException
-	 * @throws CodeException 
 	 */
 	GridConfig getGridConfig(String code, String roleId, Map<String, Object> condition) throws Exception;
 
@@ -36,10 +34,9 @@ public interface ManageGirdService extends CrudService {
 	 * @param PageSize
 	 * @return
 	 * @throws UserException
-	 * @throws CodeException 
 	 * @throws DataAccessException 
 	 */
-	Page<Map<String, Object>> list(Map<String, Object> condition, Integer pageNo, Integer PageSize) throws Exception;
+	Page<? extends Object> list(Map<String, Object> condition, Integer pageNo, Integer pageSize) throws Exception;
 
 	/**
 	 * 添加

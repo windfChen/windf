@@ -24,8 +24,8 @@ public class PriorityServiceImpl extends ManagerGirdiServiceImpl implements Prio
 	private PriorityDao priorityDao;
 
 	@Override
-	public List<Priority> getPrioritiesByUser(String userId) {
-		return null;
+	public List<Priority> getPrioritiesByRoleId(Integer userId) {
+		return priorityDao.getPrioritiesByRoleId(userId);
 	}
 
 	@Override

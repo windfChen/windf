@@ -4,9 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.windf.core.exception.CodeException;
 import com.windf.core.exception.UserException;
-import com.windf.core.frame.session.SessionContext;
+import com.windf.core.frame.SessionContext;
+import com.windf.core.util.Encrypt;
 import com.windf.core.util.StringUtil;
 import com.windf.module.sso.Constant;
 import com.windf.module.sso.dao.SsoUserDao;
@@ -18,7 +18,7 @@ import com.windf.module.sso.service.SsoUserService;
 public class SsoUserServiceImpl implements SsoUserService {
 
 	@Resource
-	private SsoUserDao ssoUserAccess;
+	private SsoUserDao ssoUserDao;
 
 	@Override
 	public int addUser(SsoUser ssoUser) throws UserException {
@@ -27,15 +27,15 @@ public class SsoUserServiceImpl implements SsoUserService {
 		 * 设置默认密码
 		 */
 		if(StringUtil.isEmpty(ssoUser.getPassword())) {
-			ssoUser.setPassword(Constant.DEFAULT_USER_PASSWORD);
+			ssoUser.setPassword(Encrypt.MD5(Constant.DEFAULT_USER_PASSWORD));
 		}
 		
-		return ssoUserAccess.insert(ssoUser);
+		return ssoUserDao.insert(ssoUser);
 	}
 
 	@Override
 	public SsoUser login(String username, String password, String loginIp) throws UserException {
-		SsoUser ssoUserDB = ssoUserAccess.getByUsername(username);
+		SsoUser ssoUserDB = ssoUserDao.getByUsername(username);
 		
 		if (ssoUserDB == null) {
 			throw new UserException("用户不存在");
@@ -44,15 +44,11 @@ public class SsoUserServiceImpl implements SsoUserService {
 		}
 		
 		ssoUserDB.setLastLoginIp(loginIp);
-		ssoUserAccess.updateLogin(ssoUserDB);
+		ssoUserDao.updateLogin(ssoUserDB);
 		
-		try {
-			SessionContext.set(Constant.SESSION_USER, ssoUserDB);
-			// 登录通知
-			LoginSubject.getInstance().login();
-		} catch (CodeException e) {
-			e.printStackTrace();
-		}
+		SessionContext.set(Constant.SESSION_SSO, ssoUserDB);
+		// 登录通知
+		LoginSubject.getInstance().login();
 		
 		return ssoUserDB;
 	}
@@ -62,18 +58,14 @@ public class SsoUserServiceImpl implements SsoUserService {
 		// 退出通知
 		LoginSubject.getInstance().loginOut();
 		
-		try {
-			SessionContext.invalidate();
-		} catch (CodeException e) {
-			e.printStackTrace();
-		}
+		SessionContext.invalidate();
 	}
 
 	@Override
 	public SsoUser loginOrCreatUser(SsoUser ssoUser) throws UserException {
 		SsoUser result = null;
 		// 如果用户不存在，则创建
-		SsoUser ssoUserDB = ssoUserAccess.getByUsername(ssoUser.getUsername());
+		SsoUser ssoUserDB = ssoUserDao.getByUsername(ssoUser.getUsername());
 		if (ssoUserDB == null) {
 			this.addUser(ssoUser);
 		}

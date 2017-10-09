@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.windf.core.util.StringUtil;
 import com.windf.core.util.reflect.BeanUtil;
 
+
 public class RequestParamenter {
 
 	protected HttpServletRequest request;
@@ -99,6 +100,23 @@ public class RequestParamenter {
 		}
 		return result;
 	}
+	
+	/**
+	 * 获取参数
+	 * 
+	 * @param name
+	 * @param defaultValue
+	 * @return
+	 */
+	public boolean getBoolean(String name) {
+		boolean result = false;
+		String strValue = request.getParameter(name);
+		try {
+			result = Boolean.parseBoolean(strValue);
+		} catch (Exception e) {
+		}
+		return result;
+	}
 
 	/**
 	 * 获得map形式的parameter
@@ -117,10 +135,19 @@ public class RequestParamenter {
 			String parameterName = (String) enumeration.nextElement();
 			if (parameterName.startsWith(nameKey)) {
 				String key = parameterName.substring(nameKey.length());
-				String value = this.getString(parameterName);
-				if (StringUtil.isNotEmpty(value)) {
-					result.put(key, value);
+				
+				// 如果key中还有.递归寻找map,否则直接放到value中
+				int pointIndex = key.indexOf(".");
+				if (pointIndex > -1) {
+					key = key.substring(0, pointIndex);
+					result.put(key, getMap(nameKey + key));
+				} else {
+					String value = this.getString(parameterName);
+					if (StringUtil.isNotEmpty(value)) {
+						result.put(key, value);
+					}
 				}
+				
 			}
 
 		}
@@ -130,6 +157,26 @@ public class RequestParamenter {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * 获取类
+	 * @param <T>
+	 * @param name
+	 * @param clazz
+	 * @return
+	 */
+	public <T> T getObject(String name, Class<T> clazz) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (StringUtil.isEmpty(name)) {
+			map = this.getAll();
+		} else {
+			map = this.getMap(name);
+		}
+		
+		T result = BeanUtil.getObjectByMap(clazz, map);
+		
+		return result;
 	}
 
 	/**

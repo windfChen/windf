@@ -93,7 +93,7 @@ public class ReflectUtil {
 				Class<? extends Object>[] interfaces = clazz.getInterfaces();
 				for (int i = 0; i < interfaces.length; i++) {
 					Class<? extends Object> c = interfaces[i];
-					if (c.isAssignableFrom(List.class) || c.isAssignableFrom(Set.class)) {
+					if (List.class.isAssignableFrom(c) || Set.class.isAssignableFrom(c)) {
 						result = true;
 						break;
 					}
@@ -111,7 +111,7 @@ public class ReflectUtil {
 	 */
 	public static boolean isMap(Class<? extends Object> clazz) {
 		boolean result = false;
-		if (clazz.isAssignableFrom(Map.class)) {
+		if (Map.class.isAssignableFrom(clazz)) {
 			result = true;
 		}
 
@@ -119,7 +119,7 @@ public class ReflectUtil {
 			Class<? extends Object>[] interfaces = clazz.getInterfaces();
 			for (int i = 0; i < interfaces.length; i++) {
 				Class<? extends Object> c = interfaces[i];
-				if (c.isAssignableFrom(Map.class)) {
+				if (Map.class.isAssignableFrom(c)) {
 					result = true;
 					break;
 				}
@@ -230,6 +230,21 @@ public class ReflectUtil {
 	public static Type getGenericOfCollection(Type type) {
 		ParameterizedType parameterizedType = (ParameterizedType) type;
 		return  parameterizedType.getActualTypeArguments()[0];
+	}
+	
+	/**
+	 * 获得类的所有泛型
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static Class<? extends Object>[]  getGenericOfClass(Class<? extends Object> clazz) {
+		Type[] types = ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
+		Class<? extends Object>[] result = new Class[types.length];
+		for (int i = 0; i < types.length; i++) {
+			result[i] = (Class<? extends Object>) types[i];
+		}
+		return result;
 	}
 	
 	/**
