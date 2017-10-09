@@ -12,7 +12,10 @@ public class Field extends AbstractBaseCodeBean {
 	private String defaultValue;
 	private boolean isAutoIncrement;
 	private String comment;
-	
+	private boolean isPrimaryKey;
+	/*
+	 * 反向引用
+	 */
 	private Entity entity;
 	
 	/**
@@ -124,5 +127,14 @@ public class Field extends AbstractBaseCodeBean {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public boolean isPrimaryKey() {
+		return isPrimaryKey;
+	}
+
+	public void setPrimaryKey(boolean isPrimaryKey) {
+		this.isPrimaryKey = isPrimaryKey;
+	}
+
 
 }

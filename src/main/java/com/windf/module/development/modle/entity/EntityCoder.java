@@ -15,14 +15,17 @@ import com.windf.module.development.modle.java.CodeConst;
 import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.modle.java.code.FieldCoder;
+import com.windf.module.development.modle.sql.CreateTableCoder;
 
 public class EntityCoder {
 	private JavaCoder javaCoder;
+	private CreateTableCoder createTableCoder;
 	private Entity entity;
 	
 	public EntityCoder(Entity entity) {
 		this.entity = entity;
 		javaCoder = JavaCoder.getJavaCoderByName(entity.getName());
+		createTableCoder = CreateTableCoder.getCreateTableCoder(entity.getModule().getCode());
 	}
 	
 	/**
@@ -72,6 +75,11 @@ public class EntityCoder {
 		fieldSetterCoderBlock.serialize(field);
 		setterMethod.addCodeBlock(0, fieldSetterCoderBlock);
 		javaCoder.createMethod(setterMethod);
+		
+		/*
+		 * sql语句更新
+		 */
+		createTableCoder.write();
 	}
 	
 	public void write() {

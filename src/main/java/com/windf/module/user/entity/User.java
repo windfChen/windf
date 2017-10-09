@@ -6,44 +6,52 @@ import com.windf.module.priority.entity.PriorityRole;
 import com.windf.module.sso.entity.SsoUser;
 
 public class User extends BaseEntity {
-	private static final long serialVersionUID = 6026904399528051304L;
-	
-	private SsoUser ssoUser;
-	private PriorityRole role;
-	private Organization organization; // 所属机构
-	private String sex; // 性别
 
-	public PriorityRole getRole() {
-		return role;
-	}
+    private static final long serialVersionUID = 6026904399528051304L;
+    private SsoUser ssoUser;
+    private PriorityRole role;
+    private Organization organization; // 所属机构
+    private String sex; // 性别
+    private String testTest; // 哈哈
 
-	public void setRole(PriorityRole role) {
-		this.role = role;
-	}
+    public PriorityRole getRole() {
+        return role;
+    }
 
-	public Organization getOrganization() {
-		return organization;
-	}
+    public void setRole(PriorityRole role) {
+        this.role = role;
+    }
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
+    public Organization getOrganization() {
+        return organization;
+    }
 
-	public String getSex() {
-		return sex;
-	}
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public String getSex() {
+        return sex;
+    }
 
-	public SsoUser getSsoUser() {
-		return ssoUser;
-	}
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-	public void setSsoUser(SsoUser ssoUser) {
-		this.ssoUser = ssoUser;
-	}
+    public SsoUser getSsoUser() {
+        return ssoUser;
+    }
 
+    public void setSsoUser(SsoUser ssoUser) {
+        this.ssoUser = ssoUser;
+    }
+
+    public String getTestTest() {
+        return this.testTest;
+    }
+
+    public void setTestTest(String testTest) {
+        this.testTest = testTest;
+    }
 
 }

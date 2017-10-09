@@ -143,6 +143,21 @@
 		"orderNum" : 4
 	},
 	{
+		"name" : "是否是主键",
+		"dataIndex" : "primaryKey",
+		"type" : "ComboBox",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : "function(){return ${value}?'是':'否'}",
+		"comboDataArray" : [{"id":"Y","name":"是"},{"id":"N","name":"否"}],
+		"orderNum" : 4
+	},
+	{
 		"name" : "实体名称",
 		"dataIndex" : "entity.name",
 		"type" : "Hidden",

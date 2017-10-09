@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.windf.core.util.reflect.Scanner;
 import com.windf.core.util.reflect.ScannerHandler;
-import com.windf.module.development.modle.sql.CreateTableSql;
+import com.windf.module.development.modle.sql.CreateTableCoder;
 import com.windf.module.development.util.file.SourceFileUtil;
 
 public class SqlInitialization implements ScannerHandler{
@@ -16,7 +16,7 @@ public class SqlInitialization implements ScannerHandler{
 	
 	@Override
 	public void handle(File file) {
-		new CreateTableSql(file);
+		new CreateTableCoder(file);
 	}
 
 }

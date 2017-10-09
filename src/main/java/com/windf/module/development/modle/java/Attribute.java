@@ -52,7 +52,10 @@ public class Attribute extends AbstractType {
 	private void initInfoByCodes() {
 		String[] ss1 = codes.split(";");
 		if (ss1.length > 1) {
-			this.lineComment = ss1[1].trim().substring(2).trim();
+			String comment2 = ss1[1].trim();
+			if (comment2.length() > 2) {
+				this.lineComment = comment2.substring(2).trim();
+			}
 		}
 		String[] ss2 = ss1[0].split("=");
 		if (ss2.length > 1) {

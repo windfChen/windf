@@ -65,6 +65,19 @@ public class ReflectUtil {
 		return result;
 	}
 	
+	public static boolean isBoolean(Class<? extends Object> clazz) {
+		boolean result = false;
+		
+		if (clazz != null) {
+			if ("java.lang.Boolean".equals(clazz.getName())) {
+				result = true;
+			}
+		}
+
+		return result;
+	}
+
+	
 	public static boolean isDate(Class<? extends Object> clazz) {
 		boolean result = false;
 		
