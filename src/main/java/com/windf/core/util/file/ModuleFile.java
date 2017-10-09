@@ -22,8 +22,13 @@ public class ModuleFile {
 			paths = relativePath.replace(File.separator, ".").split("\\."); // 相对路径数组
 		}
 		String fileFullName = file.getName();
-		fileName = fileFullName.substring(0, fileFullName.lastIndexOf(".")); // 文件名，不带拓展名
-		prefix = FileUtil.getPrefix(file.getName()); // 拓展名
+		if (fileFullName.lastIndexOf(".") > -1) {
+			fileName = fileFullName.substring(0, fileFullName.lastIndexOf(".")); // 文件名，不带拓展名
+			prefix = FileUtil.getPrefix(file.getName()); // 拓展名
+		} else {
+			fileName = fileFullName;
+			prefix = "";
+		}
 		currentFile = file;
 		
 	}
