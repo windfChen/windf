@@ -156,6 +156,45 @@
             <version>1.2.3</version>  
         </dependency>  
 		<!-- orm end -->
+		<!-- email start-->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+		<!-- email end-->
+		<!-- sms start -->
+		<dependency>
+            <groupId>taobao-sdk</groupId>
+			<artifactId>taobao-sdk</artifactId>
+			<version>20160607</version>
+        </dependency>
+		<!-- sms end -->
+        <!-- redis start-->
+		<dependency>
+            <groupId>com.whaty</groupId>
+            <artifactId>whatycache</artifactId>
+            <version>3.2.0-beta</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-asm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- redis end-->
+        <!-- solr start -->
+        <dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>5.3.1</version>
+		</dependency>
+ 		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.4.1</version>
+		 </dependency>
+		<!-- solr end -->
 		<!-- plugins end -->
 		
 	</dependencies>
@@ -209,4 +248,24 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+        <repository>
+            <id>nexus</id>
+            <name>Nexus</name>
+            <url>http://192.168.20.31/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 </project>
