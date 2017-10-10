@@ -20,7 +20,7 @@ public class PriorityLoginSession implements LoginObserver {
 	@Override
 	public void login() {
 		PriorityService priorityService = (PriorityService) SpringUtil.getBean("priorityService");
-		List<Priority> prioritys = priorityService.getPrioritiesByRoleId(UserSession.getCurrentUser().getRole().getId());
+		List<Priority> prioritys = priorityService.getPrioritiesByRoleId(UserSession.getCurrentUser().getPriorityRole().getId());
 		SessionContext.set(Constant.SESSION_PRIORITY, prioritys);
 	}
 

@@ -59,6 +59,7 @@ public class JavaInitialization implements ScannerHandler {
 						Entity e = new Entity();
 						e.setName(javaCode.getClassName());
 						e.setId(moduleFile.getClassName());
+						e.setModule(currentModule);
 						
 						for (int i = 0; i < javaCode.getAllAttributes().size(); i++) {
 							Attribute b = javaCode.getAllAttributes().get(i);
@@ -75,7 +76,7 @@ public class JavaInitialization implements ScannerHandler {
 							e.getFields().add(f);
 						}
 						
-						currentModule.getEntitys().add(e);
+						currentModule.listEntitys().add(e);
 					}
 				}
 				

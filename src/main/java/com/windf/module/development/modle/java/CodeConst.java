@@ -12,6 +12,9 @@ public class CodeConst {
 	public static final String MODIFY_PRIVATE = "private";
 	public static final String MODIFY_PROTECTED = "protected";
 	public static final String MODIFY_PACKAGE = "pacakge";
+	public static final String TYPE_CLASS = "class";
+	public static final String TYPE_INTERFACE = "interface";
+	public static final String TYPE_AT_INTERFACE = "@interface";
 	
 	/**
 	 * 获取开始时空格的数量

@@ -46,11 +46,11 @@ public class ServiceCoder {
 		}
 		
 		module = ModuleMaster.getInstance().findModuleByCode(moduleCode);
-		service = module.getServiceByName(serviceName);
+//		service = module.getServiceByName(serviceName);
 		if (service == null) {
 			service = new Service();
 			service.setServiceName(serviceName);
-			module.addService(service);
+//			module.addService(service);
 		}
 	}
 	

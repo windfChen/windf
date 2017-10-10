@@ -30,6 +30,13 @@ CREATE TABLE `priority_menu` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `priority_role` (
+  `id` int(50) NOT NULL AUTO_INCREMENT,
+  `code` varchar(10) DEFAULT NULL COMMENT '编号',
+  `name` varchar(50) DEFAULT NULL COMMENT '名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `priority_r_role_priority` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `fk_role_id` int(11) NOT NULL,
@@ -40,11 +47,4 @@ CREATE TABLE `priority_r_role_priority` (
   KEY `role_priority_fk_priority_id` (`fk_priority_id`),
   CONSTRAINT `role_priority_fk_priority_id` FOREIGN KEY (`fk_priority_id`) REFERENCES `priority` (`id`),
   CONSTRAINT `role_priority_fk_role_id` FOREIGN KEY (`fk_role_id`) REFERENCES `priority_role` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `priority_role` (
-  `id` int(50) NOT NULL AUTO_INCREMENT,
-  `code` varchar(10) DEFAULT NULL COMMENT '编号',
-  `name` varchar(50) DEFAULT NULL COMMENT '名称',
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

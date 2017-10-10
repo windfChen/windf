@@ -199,6 +199,14 @@ public class BeanUtil {
 			setterMethod.invoke(object, Long.valueOf(value.toString()));
 		} else if (String.class.isAssignableFrom(type)) {
 			setterMethod.invoke(object, value);
+		}  else if (ReflectUtil.isBoolean(type)) {
+			boolean result = false;
+			if (value != null) {
+				if ("Y".equals(value.toString()) || "true".equals(value.toString())) {
+					result = true;
+				}
+			}
+			setterMethod.invoke(object, result);
 		} 
 	}
 	

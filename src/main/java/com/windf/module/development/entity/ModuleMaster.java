@@ -41,7 +41,6 @@ public class ModuleMaster implements Cloneable {
 		}
 
 		Module module = XmlFileUtil.readXml2Object(exampleDescriptFile, Module.class);
-		//module.init(); // TODO 好像有用
 
 		return module;
 	}

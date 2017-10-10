@@ -19,7 +19,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获取参数
+	 * 获取字符串类型的参数
 	 * 
 	 * @param name
 	 * @return
@@ -29,7 +29,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获取参数
+	 * 获取int类型的参数
 	 * 
 	 * @param name
 	 * @param defaultValue
@@ -40,7 +40,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获取参数
+	 * 获取long类型的参数
 	 * 
 	 * @param name
 	 * @param defaultValue
@@ -51,7 +51,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获取参数
+	 * 获取integer类型的参数
 	 * 
 	 * @param name
 	 * @param defaultValue
@@ -68,7 +68,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获取参数
+	 * 获取long类型的参数
 	 * 
 	 * @param name
 	 * @param defaultValue
@@ -85,7 +85,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获取参数
+	 * 获取double类型的参数
 	 * 
 	 * @param name
 	 * @param defaultValue
@@ -102,7 +102,7 @@ public class RequestParamenter {
 	}
 	
 	/**
-	 * 获取参数
+	 * 获取boolean参数
 	 * 
 	 * @param name
 	 * @param defaultValue
@@ -119,7 +119,7 @@ public class RequestParamenter {
 	}
 
 	/**
-	 * 获得map形式的parameter
+	 * 获得map形式的参数
 	 * 
 	 * @param name
 	 * @return
@@ -160,7 +160,7 @@ public class RequestParamenter {
 	}
 	
 	/**
-	 * 获取类
+	 * 获取对象类型参数
 	 * @param <T>
 	 * @param name
 	 * @param clazz
@@ -220,18 +220,6 @@ public class RequestParamenter {
 			}
 		}
 
-		return result;
-	}
-
-	/**
-	 * 获取对象
-	 * 
-	 * @param clazz
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public <T> T getObject(Class<T> clazz) {
-		T result = (T) BeanUtil.getObjectByMap(clazz, request.getParameterMap());
 		return result;
 	}
 

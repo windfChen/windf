@@ -6,19 +6,19 @@ import com.windf.module.priority.entity.PriorityRole;
 import com.windf.module.sso.entity.SsoUser;
 
 public class User extends BaseEntity {
+
 	private static final long serialVersionUID = 6026904399528051304L;
-	
 	private SsoUser ssoUser;
-	private PriorityRole role;
+	private PriorityRole priorityRole;
 	private Organization organization; // 所属机构
 	private String sex; // 性别
 
-	public PriorityRole getRole() {
-		return role;
+	public PriorityRole getPriorityRole() {
+		return priorityRole;
 	}
 
-	public void setRole(PriorityRole role) {
-		this.role = role;
+	public void setPriorityRole(PriorityRole priorityRole) {
+		this.priorityRole = priorityRole;
 	}
 
 	public Organization getOrganization() {
@@ -44,6 +44,4 @@ public class User extends BaseEntity {
 	public void setSsoUser(SsoUser ssoUser) {
 		this.ssoUser = ssoUser;
 	}
-
-
 }

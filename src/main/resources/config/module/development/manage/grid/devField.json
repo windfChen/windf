@@ -96,7 +96,7 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : "function(){return ${value}?'是':'否'}",
-		"comboDataArray" : [{"id":"Y","name":"是"},{"id":"N","name":"否"}],
+		"comboDataArray" : [{"id":"N","name":"否"},{"id":"Y","name":"是"}],
 		"orderNum" : 4
 	},
 	{
@@ -143,6 +143,21 @@
 		"orderNum" : 4
 	},
 	{
+		"name" : "是否是主键",
+		"dataIndex" : "isPrimaryKey",
+		"type" : "ComboBox",
+		"canList" : true,
+		"canSearch" : true,
+		"canAdd" : true,
+		"canBatchAdd" : true,
+		"canUpdate" : true,
+		"canReport" : true,
+		"canOrder" : true,
+		"display" : "function(){return ${value}?'是':'否'}",
+		"comboDataArray" : [{"id":"N","name":"否"},{"id":"Y","name":"是"}],
+		"orderNum" : 4
+	},
+	{
 		"name" : "实体名称",
 		"dataIndex" : "entity.name",
 		"type" : "Hidden",
@@ -184,7 +199,18 @@
 		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${id}'>管理</a>",
 		"orderNum" : 6
 	}],
-	"menus" : [],
+	"menus" : [{
+		"name" : "返回",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : '',
+		"actionAddress" : '/dev/entity/?moduleCode=${param.moduleCode}',
+		"ajaxReturn" : false,
+		"confirm": false,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	}],
 	"isPrepared" : true,
 	"canAdd" : true,
 	"canBatchAdd" : false,

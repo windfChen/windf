@@ -84,6 +84,16 @@ public class SQLUtil {
 		
 		return result;
 	}
+
+	/**
+	 * 实体名称转换为表名称
+	 * @param entityName
+	 * @return
+	 */
+	public static String entityName2TableName(String entityName) {
+		String result = StringUtil.splitCamelCase(entityName, "_");
+		return result;
+	}
 	
 	/**
 	 * 数据库类型转换为java类型

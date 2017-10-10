@@ -58,7 +58,10 @@ public class JavaCoder extends AbstractType{
 			if (newPackagePath.startsWith(".")) {
 				newPackagePath = newPackagePath.substring(1);
 			}
-			this.packageInfo = "package" + CodeConst.WORD_SPLIT + newPackagePath;
+			this.packageInfo = "package" + CodeConst.WORD_SPLIT + newPackagePath + ";";
+			this.className = className;
+			this.modifier = CodeConst.MODIFY_PUBLIC;
+			this.classType = CodeConst.TYPE_CLASS;
 			this.classEnd = "}";
 			this.write();
 		}

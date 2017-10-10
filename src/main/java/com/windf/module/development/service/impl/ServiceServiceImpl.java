@@ -19,7 +19,7 @@ public class ServiceServiceImpl implements ServiceService{
 		List<Service> result = new ArrayList<Service>();
 		Module module = ModuleMaster.getInstance().findModuleByCode(moduleCode);
 		if (module != null) {
-			result = module.getServices();
+//			result = module.getServices();
 		} else {
 			throw new UserException("模块[code:" + moduleCode + "]不存在");
 		}

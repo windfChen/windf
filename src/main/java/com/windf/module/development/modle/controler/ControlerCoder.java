@@ -33,11 +33,11 @@ public class ControlerCoder {
 		javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + moduleCode + "/controler", className);
 		
 		module = ModuleMaster.getInstance().findModuleByCode(moduleCode);
-		controler = module.getControler(className);
+//		controler = module.getControler(className);
 		if (controler == null) {
 			controler = new Controler();
 			controler.setName(className);
-			module.addControler(controler);
+//			module.addControler(controler);
 		}
 	}
 	

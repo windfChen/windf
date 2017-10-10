@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.StringUtil;
+import com.windf.module.development.Constant;
 import com.windf.module.development.entity.Entity;
 import com.windf.module.development.entity.Field;
 import com.windf.module.development.entity.Parameter;
@@ -15,14 +16,28 @@ import com.windf.module.development.modle.java.CodeConst;
 import com.windf.module.development.modle.java.JavaCoder;
 import com.windf.module.development.modle.java.Method;
 import com.windf.module.development.modle.java.code.FieldCoder;
+import com.windf.module.development.modle.sql.CreateTableCoder;
 
 public class EntityCoder {
 	private JavaCoder javaCoder;
+	private CreateTableCoder createTableCoder;
 	private Entity entity;
 	
 	public EntityCoder(Entity entity) {
 		this.entity = entity;
 		javaCoder = JavaCoder.getJavaCoderByName(entity.getName());
+		createTableCoder = CreateTableCoder.getCreateTableCoder(entity.getModule().getCode());
+	}
+	
+	/**
+	 * 创建实体
+	 * 前提：javaCoder为空
+	 */
+	public void createEntity() {
+		if (javaCoder == null) {
+			javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + entity.getModule().getCode() + "/entity", entity.getName());
+			javaCoder.write();
+		}
 	}
 	
 	/**
@@ -72,6 +87,11 @@ public class EntityCoder {
 		fieldSetterCoderBlock.serialize(field);
 		setterMethod.addCodeBlock(0, fieldSetterCoderBlock);
 		javaCoder.createMethod(setterMethod);
+		
+		/*
+		 * sql语句更新
+		 */
+		createTableCoder.write();
 	}
 	
 	public void write() {
