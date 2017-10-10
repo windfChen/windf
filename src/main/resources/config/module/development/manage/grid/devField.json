@@ -199,7 +199,18 @@
 		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='detail?id=${id}'>管理</a>",
 		"orderNum" : 6
 	}],
-	"menus" : [],
+	"menus" : [{
+		"name" : "返回",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : '',
+		"actionAddress" : '/dev/entity/?moduleCode=${param.moduleCode}',
+		"ajaxReturn" : false,
+		"confirm": false,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	}],
 	"isPrepared" : true,
 	"canAdd" : true,
 	"canBatchAdd" : false,

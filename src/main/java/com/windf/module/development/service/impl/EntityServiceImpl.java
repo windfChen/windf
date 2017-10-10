@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.windf.core.bean.Page;
 import com.windf.core.exception.ParameterException;
+import com.windf.core.util.SQLUtil;
 import com.windf.module.development.entity.Entity;
 import com.windf.module.development.entity.Module;
 import com.windf.module.development.entity.ModuleMaster;
+import com.windf.module.development.modle.entity.EntityCoder;
 import com.windf.module.development.service.EntityService;
 
 @Service
@@ -36,7 +38,25 @@ public class EntityServiceImpl extends BaseManageGridServiceImpl implements Enti
 
 	@Override
 	public int save(Object bean) throws Exception {
-		// TODO Auto-generated method stub
+		/*
+		 * 转换参数
+		 */
+		Entity entity = (Entity) bean;	
+		/*
+		 * 设置默认参数
+		 */
+		entity.setTableName(SQLUtil.entityName2TableName(entity.getName()));
+		/*
+		 * 数据模型创建更新
+		 */
+		Module module = ModuleMaster.getInstance().findModuleByCode(entity.getModule().getCode());
+		entity.setModule(module);
+		module.listEntitys().add(entity);
+		/*
+		 * 代码更新
+		 */
+		EntityCoder entityCoder = new EntityCoder(entity);
+		entityCoder.createEntity();
 		return 0;
 	}
 

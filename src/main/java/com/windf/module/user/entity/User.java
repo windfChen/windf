@@ -7,60 +7,41 @@ import com.windf.module.sso.entity.SsoUser;
 
 public class User extends BaseEntity {
 
-    private static final long serialVersionUID = 6026904399528051304L;
-    private SsoUser ssoUser;
-    private PriorityRole role;
-    private Organization organization; // 所属机构
-    private String sex; // 性别
-    private String testTest; // 哈哈
-    private String testTest2; // 哈哈
+	private static final long serialVersionUID = 6026904399528051304L;
+	private SsoUser ssoUser;
+	private PriorityRole priorityRole;
+	private Organization organization; // 所属机构
+	private String sex; // 性别
 
-    public PriorityRole getRole() {
-        return role;
-    }
+	public PriorityRole getPriorityRole() {
+		return priorityRole;
+	}
 
-    public void setRole(PriorityRole role) {
-        this.role = role;
-    }
+	public void setPriorityRole(PriorityRole priorityRole) {
+		this.priorityRole = priorityRole;
+	}
 
-    public Organization getOrganization() {
-        return organization;
-    }
+	public Organization getOrganization() {
+		return organization;
+	}
 
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
 
-    public String getSex() {
-        return sex;
-    }
+	public String getSex() {
+		return sex;
+	}
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 
-    public SsoUser getSsoUser() {
-        return ssoUser;
-    }
+	public SsoUser getSsoUser() {
+		return ssoUser;
+	}
 
-    public void setSsoUser(SsoUser ssoUser) {
-        this.ssoUser = ssoUser;
-    }
-
-    public String getTestTest() {
-        return this.testTest;
-    }
-
-    public void setTestTest(String testTest) {
-        this.testTest = testTest;
-    }
-
-    public String getTestTest2() {
-        return this.testTest2;
-    }
-
-    public void setTestTest2(String testTest2) {
-        this.testTest2 = testTest2;
-    }
-
+	public void setSsoUser(SsoUser ssoUser) {
+		this.ssoUser = ssoUser;
+	}
 }

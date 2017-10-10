@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.windf.core.exception.UserException;
 import com.windf.core.util.StringUtil;
+import com.windf.module.development.Constant;
 import com.windf.module.development.entity.Entity;
 import com.windf.module.development.entity.Field;
 import com.windf.module.development.entity.Parameter;
@@ -26,6 +27,17 @@ public class EntityCoder {
 		this.entity = entity;
 		javaCoder = JavaCoder.getJavaCoderByName(entity.getName());
 		createTableCoder = CreateTableCoder.getCreateTableCoder(entity.getModule().getCode());
+	}
+	
+	/**
+	 * 创建实体
+	 * 前提：javaCoder为空
+	 */
+	public void createEntity() {
+		if (javaCoder == null) {
+			javaCoder = new JavaCoder(Constant.JAVA_MODULE_BASE_PACKAGE + "/" + entity.getModule().getCode() + "/entity", entity.getName());
+			javaCoder.write();
+		}
 	}
 	
 	/**

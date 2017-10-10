@@ -57,6 +57,20 @@
 		"orderNum" : 4
 	},
 	{
+		"name" : "模块code",
+		"dataIndex" : "module.code",
+		"type" : "Hidden",
+		"canList" : false,
+		"canSearch" : false,
+		"canAdd" : true,
+		"canBatchAdd" : false,
+		"canUpdate" : true,
+		"canReport" : false,
+		"canOrder" : false,
+		"display" : "${param.moduleCode}",
+		"orderNum" : 4
+	},
+	{
 		"name" : "操作",
 		"dataIndex" : "info",
 		"type" : "TextField",
@@ -70,7 +84,18 @@
 		"display" : "<a>编辑</a>&nbsp;&nbsp;<a href='../field/?moduleCode=${param.moduleCode}&entityName=${name}'>管理</a>",
 		"orderNum" : 6
 	}],
-	"menus" : [],
+	"menus" : [{
+		"name" : "返回",
+		"canSelect" : false,
+		"isSingleSelect" : false,
+		"checkColumn" : '',
+		"actionAddress" : '/dev/',
+		"ajaxReturn" : false,
+		"confirm": false,
+		"title" : null,
+		"fields" : null,
+		"orderNum" : 1
+	}],
 	"isPrepared" : true,
 	"canAdd" : true,
 	"canBatchAdd" : false,

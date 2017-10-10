@@ -7,7 +7,7 @@
      <select id="getUserBySsoUserId" parameterType="int" resultType="com.windf.module.user.entity.User" >
         SELECT
             t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
-            t.fk_priority_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            t.fk_priority_role_id as `priorityRole.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
             r.name `role.name`,
             u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
             o.name as `organization.name`
@@ -48,7 +48,7 @@
      <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
         SELECT
             t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
-            t.fk_priority_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            t.fk_priority_role_id as `priorityRole.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
             r.name `role.name`,
             u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
             o.name as `organization.name`
@@ -89,7 +89,7 @@
     <select id="find" parameterType="string" resultType="java.util.HashMap" >
         SELECT
             t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
-            t.fk_priority_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            t.fk_priority_role_id as `priorityRole.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
             r.name `role.name`,
             u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
             o.name as `organization.name`

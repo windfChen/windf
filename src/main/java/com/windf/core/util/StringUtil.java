@@ -60,6 +60,27 @@ public class StringUtil {
 			return str.substring(0, 1).toUpperCase() + str.substring(1); 
 		}
     }
+    /**
+     * 将驼峰命名法的字符串，单词之间用指定字符隔开，切单词首字母小写
+     * @param str
+     * @param separator
+     * @return
+     */
+    public static String splitCamelCase(String str, String separator) {
+    	StringBuffer result = new StringBuffer();
+    	
+    	if (StringUtil.isNotEmpty(str)) {
+    		String[] ss = str.split("(?=[A-Z])");
+    		for (int i = 0; i < ss.length; i++) {
+    			if (i != 0) {
+    				result.append(separator);
+				}
+    			result.append(ss[i].toLowerCase());
+			}
+		}
+    	
+    	return result.toString();
+    }
     
     /**
      * 将字符中指定字符作为分隔符，分隔符后首字母大写

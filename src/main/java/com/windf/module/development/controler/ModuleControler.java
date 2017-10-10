@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.windf.core.util.SQLUtil;
 import com.windf.module.development.Constant;
 import com.windf.module.development.entity.Module;
-import com.windf.module.development.frame.Initialization;
 import com.windf.module.development.service.ModuleService;
 import com.windf.plugins.manage.service.ManageGirdService;
 import com.windf.plugins.manage.web.controler.ManagerGridControler;
@@ -35,8 +35,7 @@ public class ModuleControler extends ManagerGridControler{
 
 	@RequestMapping(value = "/test", method = {RequestMethod.GET})
 	public String test() {
-		Initialization a = new Initialization(); 
-		a.init();
+		SQLUtil.entityName2TableName("testField");
 		
 		return responseReturn.success();
 	}

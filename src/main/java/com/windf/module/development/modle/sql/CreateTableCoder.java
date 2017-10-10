@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.windf.core.util.CollectionUtil;
 import com.windf.core.util.SQLUtil;
 import com.windf.core.util.StringUtil;
 import com.windf.core.util.file.FileUtil;
@@ -149,7 +150,19 @@ public class CreateTableCoder {
 		List<String> result = new ArrayList<String>();
 		for (int i = 0; i < module.listEntitys().size(); i++) {
 			Entity e = module.listEntitys().get(i);
+			/*
+			 * 如果没有字段，不输出
+			 */
+			if (CollectionUtil.isEmpty(e.getFields())) {
+				continue;
+			}
+			/*
+			 * 每个entity的建表语句
+			 */
 			result.addAll(this.writeEntity(e));
+			/*
+			 * 空行样式
+			 */
 			if (i != module.listEntitys().size() - 1) {
 				result.add("");
 			}
