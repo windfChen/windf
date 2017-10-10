@@ -96,7 +96,7 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : "function(){return ${value}?'是':'否'}",
-		"comboDataArray" : [{"id":"Y","name":"是"},{"id":"N","name":"否"}],
+		"comboDataArray" : [{"id":"N","name":"否"},{"id":"Y","name":"是"}],
 		"orderNum" : 4
 	},
 	{
@@ -144,7 +144,7 @@
 	},
 	{
 		"name" : "是否是主键",
-		"dataIndex" : "primaryKey",
+		"dataIndex" : "isPrimaryKey",
 		"type" : "ComboBox",
 		"canList" : true,
 		"canSearch" : true,
@@ -154,7 +154,7 @@
 		"canReport" : true,
 		"canOrder" : true,
 		"display" : "function(){return ${value}?'是':'否'}",
-		"comboDataArray" : [{"id":"Y","name":"是"},{"id":"N","name":"否"}],
+		"comboDataArray" : [{"id":"N","name":"否"},{"id":"Y","name":"是"}],
 		"orderNum" : 4
 	},
 	{

@@ -7,13 +7,13 @@
      <select id="getUserBySsoUserId" parameterType="int" resultType="com.windf.module.user.entity.User" >
         SELECT
             t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
-            t.fk_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            t.fk_priority_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
             r.name `role.name`,
             u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
             o.name as `organization.name`
         FROM 
             user t
-        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN priority_role r ON t.fk_priority_role_id = r.id
         INNER JOIN sso_user u ON t.fk_sso_user_id = u.id  
           LEFT JOIN organization o on t.fk_organization_id = o.id
         WHERE u.id = #{param1}
@@ -24,7 +24,7 @@
             count(t.id)
         FROM 
             user t
-        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN priority_role r ON t.fk_priority_role_id = r.id
         INNER JOIN sso_user u ON t.fk_sso_user_id = u.id 
           LEFT JOIN organization o on t.fk_organization_id = o.id
         WHERE 1=1
@@ -48,13 +48,13 @@
      <select id="list" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
         SELECT
             t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
-            t.fk_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            t.fk_priority_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
             r.name `role.name`,
             u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
             o.name as `organization.name`
         FROM 
             user t
-        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN priority_role r ON t.fk_priority_role_id = r.id
         INNER JOIN sso_user u ON t.fk_sso_user_id = u.id  
           LEFT JOIN organization o on t.fk_organization_id = o.id
         WHERE 1=1
@@ -89,27 +89,27 @@
     <select id="find" parameterType="string" resultType="java.util.HashMap" >
         SELECT
             t.id, t.name, t.sex, t.create_date as createDate, t.update_date updateDate,
-            t.fk_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
+            t.fk_priority_role_id as `role.id`, t.fk_sso_user_id as `ssoUser.id`, t.fk_organization_id as `organization.id`,
             r.name `role.name`,
             u.turename as `ssoUser.trueName`, u.username as `ssoUser.username`, u.phone as `ssoUser.phone`, u.email as `ssoUser.email`,  
             o.name as `organization.name`
         FROM 
             user t
-        INNER JOIN priority_role r ON t.fk_role_id = r.id
+        INNER JOIN priority_role r ON t.fk_priority_role_id = r.id
         INNER JOIN sso_user u ON t.fk_sso_user_id = u.id  
           LEFT JOIN organization o on t.fk_organization_id = o.id
         WHERE t.id = #{param1}
     </select>
     
     <insert id="insert" parameterType="java.util.HashMap" keyProperty="id">
-       INSERT INTO `user` (name, create_date, update_date, sex, fk_organization_id, fk_role_id, fk_sso_user_id)
+       INSERT INTO `user` (name, create_date, update_date, sex, fk_organization_id, fk_priority_role_id, fk_sso_user_id)
         VALUES
             (#{name}, now(), now(), #{sex}, #{organization.id}, #{role.id}, #{ssoUser.id})
     </insert>
     
     <update id="update" parameterType="java.util.HashMap" >
         update `user` set name = #{name}, sex = #{sex}, update_date=now(), 
-        	fk_organization_id = #{organization.id}, fk_role_id = #{role.id}, fk_sso_user_id = #{ssoUser.id}
+        	fk_organization_id = #{organization.id}, fk_priority_role_id = #{role.id}, fk_sso_user_id = #{ssoUser.id}
         where id = #{id}
     </update>
     

@@ -64,7 +64,7 @@ public class Module extends com.windf.core.bean.Module{
 		this.setCode(code);
 	}
 	
-	public List<Entity> getEntitys() {
+	public List<Entity> listEntitys() {
 		return entitys;
 	}
 

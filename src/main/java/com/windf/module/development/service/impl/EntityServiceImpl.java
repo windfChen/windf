@@ -26,9 +26,9 @@ public class EntityServiceImpl extends BaseManageGridServiceImpl implements Enti
 		}
 		
 		Page<Entity> page = new Page<Entity>(Long.valueOf(pageNo) , pageSize);
-		if (module.getEntitys().size() > 0) {
-			page.setTotal(Long.valueOf(module.getEntitys().size()));
-			page.setData(module.getEntitys().subList(page.getStartIndex().intValue(), page.getEndIndex().intValue()));
+		if (module.listEntitys().size() > 0) {
+			page.setTotal(Long.valueOf(module.listEntitys().size()));
+			page.setData(module.listEntitys().subList(page.getStartIndex().intValue(), page.getEndIndex().intValue()));
 		}
 		
 		return page;

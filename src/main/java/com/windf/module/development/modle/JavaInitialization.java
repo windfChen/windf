@@ -76,7 +76,7 @@ public class JavaInitialization implements ScannerHandler {
 							e.getFields().add(f);
 						}
 						
-						currentModule.getEntitys().add(e);
+						currentModule.listEntitys().add(e);
 					}
 				}
 				

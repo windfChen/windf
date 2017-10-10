@@ -128,11 +128,11 @@ public class Field extends AbstractBaseCodeBean {
 		this.type = type;
 	}
 
-	public boolean isPrimaryKey() {
+	public boolean getIsPrimaryKey() {
 		return isPrimaryKey;
 	}
 
-	public void setPrimaryKey(boolean isPrimaryKey) {
+	public void setIsPrimaryKey(boolean isPrimaryKey) {
 		this.isPrimaryKey = isPrimaryKey;
 	}
 

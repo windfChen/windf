@@ -71,6 +71,8 @@ public class ReflectUtil {
 		if (clazz != null) {
 			if ("java.lang.Boolean".equals(clazz.getName())) {
 				result = true;
+			} else if ("boolean".equals(clazz.getName())) {
+				result = true;
 			}
 		}
 

@@ -125,7 +125,7 @@ public class CreateTableCoder {
 					for (int i = 0; i < ss2.length; i++) {
 						for (Field field : currentEntity.getFields()) {
 							if (ss2[i].equals(field.getDatabaseName())) {
-								field.setPrimaryKey(true);
+								field.setIsPrimaryKey(true);
 								break;
 							}
 						}
@@ -147,10 +147,10 @@ public class CreateTableCoder {
 	
 	public void write() {
 		List<String> result = new ArrayList<String>();
-		for (int i = 0; i < module.getEntitys().size(); i++) {
-			Entity e = module.getEntitys().get(i);
+		for (int i = 0; i < module.listEntitys().size(); i++) {
+			Entity e = module.listEntitys().get(i);
 			result.addAll(this.writeEntity(e));
-			if (i != module.getEntitys().size() - 1) {
+			if (i != module.listEntitys().size() - 1) {
 				result.add("");
 			}
 		}
@@ -176,9 +176,20 @@ public class CreateTableCoder {
 		 */
 		result.add(this.writePrimaryKey(t));
 		/*
+		 * 表索引
+		 */
+		result.addAll(this.writeIndex(t));
+		/*
 		 * 表外键
 		 */
-		result.add(this.writeForeignKey(t));
+		result.addAll(this.writeForeignKey(t));
+		/*
+		 * 去除逗号
+		 */
+		String lastLine = result.get(result.size() - 1);
+		if (lastLine.endsWith(",")) {
+			 result.set(result.size() - 1, lastLine.substring(0, lastLine.length() - 1));
+		}
 		/*
 		 * 表尾部 
 		 */
@@ -221,21 +232,50 @@ public class CreateTableCoder {
 	
 	private String writePrimaryKey(Entity t) {
 		StringBuffer result = new StringBuffer();
+		result.append(CodeConst.getTabString(1) + "PRIMARY KEY (");
+		boolean firstPrimaryKey = true;
 		for (Field field : t.getFields()) {
-			if (field.isPrimaryKey()) {
-				if (result.length() > 0) {
+			if (field.getIsPrimaryKey()) {
+				if (!firstPrimaryKey) {
 					result.append(", ");
+				} else {
+					firstPrimaryKey = false;
 				}
-				result.append("`" + field.getName() + "`");
+				result.append("`" + field.getDatabaseName() + "`");
 			}
 		}
+		result.append("),");
 		
 		return result.toString();
 	}
+
+	private List<String> writeIndex(Entity t) {
+		List<String> result = new ArrayList<String>();
+		for (Field field : t.getFields()) {
+			if (field.getDatabaseName().startsWith("fk_")) {
+				String constraintName = "index__" + field.getDatabaseName();
+				String sqlStr = CodeConst.getTabString(1) + "KEY `" + constraintName + "` (`" + field.getDatabaseName() + "`) USING BTREE,";
+				result.add(sqlStr);
+			}
+		}
+		return result;
+	}
 	
-	private String writeForeignKey(Entity t) {
-		// TODO 生成表的外键
-		return "";
+	private List<String> writeForeignKey(Entity t) {
+		List<String> result = new ArrayList<String>();
+		for (Field field : t.getFields()) {
+			if (field.getDatabaseName().startsWith("fk_")) {
+				String constraintName = t.getTableName() + "__" + field.getDatabaseName();
+				String referenceTableName = "";
+				String[] ss2 = CodeConst.getInnerString(field.getDatabaseName(), "fk_(\\w*)_id");
+				if (ss2.length > 0) {
+					referenceTableName = ss2[0];
+				}
+				String sqlStr = CodeConst.getTabString(1) + "CONSTRAINT `" + constraintName + "` FOREIGN KEY (`" + field.getDatabaseName() + "`) REFERENCES `" + referenceTableName + "` (`id`),";
+				result.add(sqlStr);
+			}
+		}
+		return result;
 	}
 	
 }

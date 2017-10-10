@@ -203,7 +203,7 @@ public class BeanUtil {
 			boolean result = false;
 			if (value != null) {
 				if ("Y".equals(value.toString()) || "true".equals(value.toString())) {
-					value = true;
+					result = true;
 				}
 			}
 			setterMethod.invoke(object, result);
